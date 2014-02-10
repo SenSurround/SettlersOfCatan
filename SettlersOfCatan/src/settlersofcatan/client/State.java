@@ -11,30 +11,33 @@ public class State {
     //                             N = NODE
     //                             P = PATH
     //                             H = HEX
+    //                             M = HARBOR
     //
-    //                   N00         N01         N02
-    //                P00   P01   P02   P03   P04   P05
-    //             N03         N04         N05         N06
-    //             P06   H00   P07   H01   P08   H02   P09
-    //             N07         N08         N09         N10
-    //          P10   P11   P12   P13   P14   P15   P16   P17
-    //       N11         N12         N13         N14         N15
-    //       P18   H03   P19   H04   P20   H05   P21   H06   P22
-    //       N16         N17         N18         N19         N20
-    //    P23   P24   P25   P26   P27   P28   P29   P30   P31   P32
-    // N21         N22         N23         N24         N25         N26
-    // P33   H07   P34   H08   P35   H09   P36   H10   P37   H11   P38
-    // N27         N28         N29         N30         N31         N32
-    //    P39   P40   P41   P42   P43   P44   P45   P46   P47   P48
-    //       N33         N34         N35         N36         N37
-    //       P49   H12   P50   H13   P51   H14   P52   H15   P53
-    //       N38         N39         N40         N41         N42
-    //          P54   P55   P56   P57   P58   P59   P60   P61
-    //             N43         N44         N45         N46
-    //             P62   H16   P63   H17   P64   H18   P65
-    //             N47         N48         N49         N50
-    //                P66   P67   P68   P69   P70   P71
-    //                   N51         N52         N53
+    //                                    ___M01
+    //            M00------N00         N01    |    N02
+    //              \   P00   P01   P02   P03 | P04   P05
+    //               N03         N04         N05         N06
+    //               P06   H00   P07   H01   P08   H02   P09
+    //               N07         N08         N09         N10-------M02
+    //            P10   P11   P12   P13   P14   P15   P16   P17   /
+    //      ___N11         N12         N13         N14         N15
+    //   M08___P18   H03   P19   H04   P20   H05   P21   H06   P22
+    //         N16         N17         N18         N19         N20
+    //      P23   P24   P25   P26   P27   P28   P29   P30   P31   P32
+    //   N21         N22         N23         N24         N25         N26___
+    //   P33   H07   P34   H08   P35   H09   P36   H10   P37   H11   P38___M03
+    //   N27         N28         N29         N30         N31         N32
+    //      P39   P40   P41   P42   P43   P44   P45   P46   P47   P48
+    //      ___N33         N34         N35         N36         N37
+    //   M07___P49   H12   P50   H13   P51   H14   P52   H15   P53
+    //         N38         N39         N40         N41         N42
+    //            P54   P55   P56   P57   P58   P59   P60   P61   \
+    //               N43         N44         N45         N46-------M04
+    //               P62   H16   P63   H17   P64   H18   P65
+    //               N47         N48         N49         N50
+    //              /   P66   P67   P68   P69 | P70   P71
+    //           M06-------N51         N52___ |    N53
+    //                                       M05
     
     static final int MAX_PLAYERS = 4;
     
@@ -88,6 +91,10 @@ public class State {
     }
     
     public State(int players) {
+        for (int i = 0; i < MAX_PLAYERS; i++) {
+            player[i] = new Player(i);
+        }
+            
         playerTurn = 0;
         developmentCardStack.clear();
         
@@ -101,10 +108,6 @@ public class State {
         initNodes();
         initPaths();
         initHex();
-        
-        for (int i = 0; i < MAX_PLAYERS; i++) {
-            player[i] = new Player(i);
-        }
     }
 
 /*********************************************************************************/

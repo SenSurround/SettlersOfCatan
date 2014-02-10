@@ -1,0 +1,165 @@
+Two to Four players: Blue (PB), Red (PR), Yellow (PY), Green (PG) (Yellow and Green as needed)
+Each player: 4 Cities, 4 Settlements, 15 Roads
+A board: 19 Hex, 54 Nodes, 72 Paths, 9 Harbors, 1 Robber, 25 Development Cards,
+         Pools of Ore, Grain, Lumber, Wool, Brick Resources
+Each Hex: A resource, a production value, 6 Nodes (overlapping w/ other Hex), 6 Paths (overlapping w/ other Hex).
+          These are keyed H00..H18 and have a predefined oeder. There are a total of 4 Grain Lumber and Wool, 3 Ore
+          Brick, and 1 lack of resource (Desert). These begin in an array R00...R18 and are shuffled prior to the game
+          then assigned R->H.
+Each Node: Empty to start, can contain a City or Settlement from a player, connected via Roads on Paths. May also contain
+           access to a Harbor. These are keyed N00..N53 and have a defined order.
+Each Path: Empty to start, can contain a Road from a player, connects Nodes and other paths
+           These are keyed P00..P71 and have a defined order.
+Each Harbor: Allows players to access a specific upgrade to trading particular Resources. These Harbors are attached
+             to predefined Nodes, but the benefits they give are randomized during board setup. There is 1 Harbor for
+             each specific Resource which allows for 2:1 trade, and 4 Harbors that allow for 3:1 trade for any resource.
+             These are keyed M00..M08 and are shuffled prior to the game.
+Robber: Halts production of resources for a specific node and allows players to steal cards from each other.
+        Keyed ROB. The Robber is moved when a 7 is rolled or a Development Card: Soldier is played. The Robber
+        it then moved to a Hex of the player's choosing and he is allowed to take 1 random Resource card from one
+        owner of a City or Settlement built on an attached Node.
+Development Cards: Contain benefits for players, purchased with Resources. Keyed D0...D24 and shuffled prior to the
+                   game. Once in a player's hand, they are only visible to the player until they chose to use its benefit,
+                   at which point all players are aware of it. The card is then discarded and removed from the game.
+Cities / Settlements: Allow for player resource accumulation, purchased with other resources. These are keyed
+                      CIT0PB..CIT3PB, SET0PB..SET4PB, with variants for each player.
+Roads: Allow for players to lead to new nodes to build new Cities / Settlements. These are keyed RD00PB..RD14PB with
+       variants for each player.
+Resource Cards: Each player can collect these and hold them in their hand to be used as currency. At any time, a 
+                player may trade 4 of a single type for 1 of another. This can be discounted through building a City
+                or Settlement on a node connected to a Harbor. These are keyed RC00PB...RC29PB and can contain
+                resources keyed ORE, GRA, LUM, WOO, BRI.
+
+The game also runs on a 2 Die rolling system, keyed DIE0 and DIE1. This value will always be given to the players
+at the beginning of any turn, as it dictates which resources are produced that turn
+
+Things purchased with resources:
+    Road = 1 Brick 1 Lumber. Placed on empty Path, must connect to an existing player's City / Settlement or Path.
+    Settlement = 1 Brick 1 Lumber 1 Wool 1 Grain. Placed on empty node, must connect to an existing player's
+                 road and there must not be any cities / settlements for any player in a directly adjacent node.
+    City = 3 Ore 2 Grain. Replaces a player's already existing Settlement. The settlement is removed back to
+           the player's settlement pool.
+    Development Card = 1 Ore 1 Wool 1 Grain. Goes into a player's hand to be played at the player's discretion.
+    
+Things that give victory points:
+    Settlement - 1 point each
+    City - 2 points each
+    Having the largest army - 2 points
+    Having the longest road - 2 points
+    Certain development cards - 1 point each
+
+The goal of the game is to accumulate 10 victory points fastest, and the player can get there various ways. The players
+build their settlements, cities, and roads to expand the territory of the board they control to allow for increased
+resource production. Players may also purchase development cards to aquire cards that help them in specific ways, as
+well as victory points directly.
+
+
+
+PB gets and empty state {} and does:
+
+[set(players,2), // assume 2 players
+set(turn,PB),
+set(R00,"Resource 0"),...,set(R18,"Resource 18"), // defines the Resource tiles the game needs in proper numbers
+shuffle(R00,R25), // randomize the Resources to be applied to the Hex
+set(H00,R0O),...,set(H18,R18), // applies the randomized Resources to defined Hexes
+setVisibility(H00,[PB,PR]),...,setVisibility(H18,[PB,PR,PY,PG]), // all the Hexes are always visible
+set(M00,"Harbor 0"),...,set(M08,"Harbor 8"), // set the Harbor bonuses
+shuffle(M00,M08), // randomize the Harbor bonuses
+set(D00,"Card Description 0"),...,set(D24,"Card Description 24"), // sets all 25 Development Cards with their specifics
+shuffle(D00,25), // randomize the Development Card stack
+setVisibility(D00,[]),...,setVisibility(D24,[]), // all the cards begin not visible
+
+And then the random winner of the roll gets this state (call it PB for now):
+(This is a pre-initial state. There is initial staging needed to be done once the physical board is set based on
+input from the players)
+turn:PBPre0
+D00:null,...,D24:null
+H00:"Resource 7",...,H18:"Resource 13", // this is random
+N00:[],...,N53:[], // Nodes are initially empty, can eventually contain CIT or SET
+P00:[],...,P71:[], // Paths are initially empty, can eventually contain RD
+M00:"Harbor 3",...,M08:"Harbor 1", // So the players know where the Harbors ended up
+(The game internally knows which Nodes and Paths are connected to each other,
+ as well as which Nodes are tied to what Hexes and which Harbors are tied to
+ which Nodes. This is constant for every game)
+ROB:H10, // the Robber begins wherever the Hex with no resource (Desert) is
+RC00PB:[],...,RC29PB:[],
+RC00PR:[],...,RC29PR:[],
+(All players start with no cards, and each player knows how many cards each opponent has in their hand, but are
+only allowed to know the specific values of the cards in their own hand. So in subsequent turns, the values of
+RC00PB will be either [] or ORE (some resource)) and the values of RC00PR will be either [] or null)
+
+From this state, each player from random initial player in order to the end (PB -> PR in this case) places a
+single free Settlement and Road on the board. Call this turn sequence Pre0.
+
+Once Pre0 finishes, there is a second round of prep, running in order of players reverse of Pre0 (PR -> PB in
+this case) the player places a second Settlement and Road, collecting a resource card for each Hex connected to
+the Node chosen for this second Settlement. Call this turn sequence Pre1.
+
+The random initial player now gets to the real first turn:
+turn:PB
+D00:null,...,D24:null
+N00:[],...,N25:SET00PR,...,N34:SET00PB,...,N53:[], // Nodes now contain 2 Settlements per player
+P00:[],...,P30:RD00PR,...,P42:RD00PB,...,P71:[], // Paths now contain 2 Roads per player
+ROB:H10,
+RC00PB:ORE,RC01PB:BRI,RC02PB:LUM, RC03PB:BRI,...,RC29PB:[],
+RC00PR:null,RC01PR:null,RC02PR:null,...,RC29PR:[],
+DIE00:1,DIE01:2
+
+With the die roll coming up 1 and 2, PB collects an extra resource for owning Node 34, which is attached to
+Hex 08 and produces Resources based on rolls of 3.
+
+It is now PB's turn. He can purchase as many things as he cares to and can afford, can make 
+The PB player then chooses to build a road, and since it's not the end of his turn, he requests
+his turn continue until he's finished.
+[set(turn,PB),set(P35,RD02PB),set(RC01PB,[]),set(RC02PB,[])]
+
+After this, he receives the state:
+turn:PB
+D00:null,...,D24:null
+N00:[],...,N25:SET00PR,...,N34:SET00PB,...,N53:[],
+P00:[],...,P30:RD00PR,...,P35:RD02PC,...,P42:RD00PB,...,P71:[], // The road is added
+ROB:H10,
+RC00PB:ORE,RC01PB:[],RC02PB:[], RC03PB:BRI,...,RC29PB:[], // The cards are nulled out
+RC00PR:null,RC01PR:null,RC02PR:null,...,RC29PR:[],
+
+PB now wants to end his turn, so he sends a single command to the server:
+[set(turn,[])]
+
+The server now knows PB is done, and shifts the turn to the next in line. PR is next,
+and receives the state:
+turn:PR
+D00:null,...,D24:null
+N00:[],...,N25:SET00PR,...,N34:SET00PB,...,N53:[], // Nodes now contain 4 Settlements
+P00:[],...,P30:RD00PR,...,P35:RD02PC,...,P42:RD00PB,...,P71:[],
+ROB:H10,
+RC00PB:null,RC01PB:[],RC02PB:[], RC03PB:null,...,RC29PB:[],
+RC00PR:WOO,RC01PR:ORE,RC02PR:GRA,...,RC29PR:[],
+DIE00:6,DIE01:5
+
+The die roll of 11 produces no resources for anyone since there are no settlements on those
+Hexes. PR wants to buy a Development Card.
+[set(turn,Pr),set(D,PR),set(RC00PR,[]),set(RC01PR,[]),set(RC02PR,[])]
+
+With it, PR is allowed to see a new Development Card (D00 in this case) and the Resource
+cards in their hand is now empty.
+
+turn:PR
+D00:"Card Description 5",...,D24:null
+N00:[],...,N25:SET00PR,...,N34:SET00PB,...,N53:[], // Nodes now contain 4 Settlements
+P00:[],...,P30:RD00PR,...,P35:RD02PC,...,P42:RD00PB,...,P71:[],
+ROB:H10,
+RC00PB:null,RC01PB:[],RC02PB:[], RC03PB:null,...,RC29PB:[],
+RC00PR:[],RC01PR:[],RC02PR:[],...,RC29PR:[],
+
+PR now wants to end his turn, so he sends a single command to the server:
+[set(turn,[])]
+
+PB now gets the state, and the cycle continues until the game ends.
+turn:PB
+D00:null,...,D24:null
+N00:[],...,N25:SET00PR,...,N34:SET00PB,...,N53:[], // Nodes now contain 4 Settlements
+P00:[],...,P30:RD00PR,...,P35:RD02PC,...,P42:RD00PB,...,P71:[],
+ROB:H10,
+RC00PB:ORE,RC01PB:[],RC02PB:[], RC03PB:BRI,...,RC29PB:[],
+RC00PR:[],RC01PR:[],RC02PR:[],...,RC29PR:[],
+DIE00:3,DIE01:4
