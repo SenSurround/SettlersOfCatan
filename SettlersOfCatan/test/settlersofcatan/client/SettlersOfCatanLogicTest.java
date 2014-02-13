@@ -35,7 +35,7 @@ public class SettlersOfCatanLogicTest {
     
     private Map<String, Object> createEmptyState()
     {
-    	Map<String, Object> emptyState;
+    	Map<String, Object> emptyState = null;
 		emptyState.put(Constants.TURN, Constants.PB);
 		emptyState.put(Constants.DIE0, "");
 		emptyState.put(Constants.DIE1, "");
@@ -435,6 +435,46 @@ public class SettlersOfCatanLogicTest {
 		emptyState.put(Constants.RESOURCECARD27PG, "");
 		emptyState.put(Constants.RESOURCECARD28PG, "");
 		emptyState.put(Constants.RESOURCECARD29PG, "");
+		return emptyState;
+    }
+    
+    private Map<String, Object> createAddRoadState()
+    {
+    	Map<String, Object> addRoadState = createEmptyState();
+    	addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
+    	addRoadState = changeState(addRoadState, Constants.NODE23, Constants.SETTLEMENT00PB);
+    	addRoadState = changeState(addRoadState, Constants.PATH26, Constants.ROAD00PB);
+    	addRoadState = changeState(addRoadState, Constants.PATH19, Constants.ROAD01PB);
+    	addRoadState = changeState(addRoadState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+    	addRoadState = changeState(addRoadState, Constants.RESOURCECARD01PB, Constants.BRICK);
+    	addRoadState = changeState(addRoadState, Constants.RESOURCECARD02PB, Constants.ORE);
+    	
+    	return addRoadState;
+    }
+    
+    private Map<String, Object> applyMoveToState(Map<String, Object> initialState, ImmutableList<Operation> move)
+    {
+    	Map<String, Object> newState = initialState;
+    	
+    	for(int i = 0; i < move.size(); i++)
+    	{
+    		Operation current = move.get(i);
+    		switch(current.getClassName())
+    		{
+    			case "Set":
+    				newState.put(((Set)current).getKey(), ((Set)current).getValue());
+    				break;
+    				
+    			case "Delete":
+    				newState.put(((Delete)current).getKey(), "[]");
+    				break;
+    				
+    			default:
+    				break;
+    		}
+    	}
+    	
+    	return newState;
     }
 
     /*@Test
@@ -459,17 +499,70 @@ public class SettlersOfCatanLogicTest {
     //				LastMovePlayerId - Int
     
     
-    private Map<String[]Object> addRoadState = ImmutableMap.<String, Object>of(
-    		TURN, PB
-    		);
+    
     
     @Test
     public void testlegalAddRoad() {
-        VerifyMove verifyMove = new VerifyMove(pbId, (List) playersInfo, emptyState, emptyState, null, pbId);
+    	ImmutableList<Operation> addRoad = ImmutableList.<Operation>of(
+    			new Set(Constants.TURN, Constants.PB),
+    			new Set(Constants.PATH12, Constants.ROAD02PB),
+    			new Set(Constants.RESOURCECARD00PB, "[]"),
+    			new Set(Constants.RESOURCECARD01PB, "[]")
+    			);
+    	
+        VerifyMove verifyMove = new VerifyMove(
+        		Constants.pbId,
+        		Constants.playersInfo,
+        		applyMoveToState(createAddRoadState(), addRoad),
+        		createAddRoadState(),
+        		addRoad,
+        		Constants.pbId);
+        
+        assertMoveOk(verifyMove);
+    }
+    
+    @Test
+    public void testIllegalAddRoadNoAdjacentPath() {
+    	ImmutableList<Operation> addRoad = ImmutableList.<Operation>of(
+    			new Set(Constants.TURN, Constants.PB),
+    			new Set(Constants.PATH66, Constants.ROAD02PB),
+    			new Set(Constants.RESOURCECARD00PB, "[]"),
+    			new Set(Constants.RESOURCECARD01PB, "[]")
+    			);
+    	
+        VerifyMove verifyMove = new VerifyMove(
+        		Constants.pbId,
+        		Constants.playersInfo,
+        		applyMoveToState(createAddRoadState(), addRoad),
+        		createAddRoadState(),
+        		addRoad,
+        		Constants.pbId);
+
+        assertHacker(verifyMove);
+    }
+    
+    @Test
+    public void testIllegalAddRoadIncorrectResources() {
+    	ImmutableList<Operation> addRoad = ImmutableList.<Operation>of(
+    			new Set(Constants.TURN, Constants.PB),
+    			new Set(Constants.PATH66, Constants.ROAD02PB),
+    			new Set(Constants.RESOURCECARD00PB, "[]"),
+    			new Set(Constants.RESOURCECARD02PB, "[]")
+    			);
+    	
+        VerifyMove verifyMove = new VerifyMove(
+        		Constants.pbId,
+        		Constants.playersInfo,
+        		applyMoveToState(createAddRoadState(), addRoad),
+        		createAddRoadState(),
+        		addRoad,
+        		Constants.pbId);
+
+        assertHacker(verifyMove);
     }
     
     
-    private Map<String, Object> changeState(ImmutableMap<String, Object> previousState, String propString, Object propObject)
+    private Map<String, Object> changeState(Map<String, Object> previousState, String propString, Object propObject)
     {
     	Map<String, Object> newState = previousState;
     	
