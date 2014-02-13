@@ -8,7 +8,8 @@ import com.google.common.collect.ImmutableMap;
 public class Constants {
 	
     public static final String TURN = "turn"; // turn of which player (PB,PR,PY,PG)
-    public static final String EMPTY = "";
+    public static final String NOTHING = "";
+    public static final String ALL = "";
     public static final String PLAYER_ID = "playerId";
     public static final String HEX_ID = "hexId";
     public static final String NODE_ID = "nodeId";
@@ -31,6 +32,9 @@ public class Constants {
     public static final String RESOURCECARD_PR_ID = "resourceCardPRId";
     public static final String RESOURCECARD_PY_ID = "resourceCardPYId";
     public static final String RESOURCECARD_PG_ID = "resourceCardPGId";
+    public static final String SOLDIERCOUNT_ID = "soldierCountId";
+    public static final String LONGESTROAD_ID = "longestRoadId";
+    public static final String LARGESTARMY_ID = "largestArmyId";
     public static final String PB = "PB"; // Blue Player
     public static final String PR = "PR"; // Red Player
     public static final String PY = "PY"; // Yellow Player
@@ -454,10 +458,16 @@ public class Constants {
     public static final String WOOL = "WOO";
     public static final String BRICK = "BRI";
     public static final String DESERT = "DES";
-    public static final int pbId = 0;
-    public static final int prId = 1;
-    public static final int pyId = 2;
-    public static final int pgId = 3;
+    public static final String SOLDIERCOUNTPB = "SOLPB";
+    public static final String SOLDIERCOUNTPR = "SOLPY";
+    public static final String SOLDIERCOUNTPY = "SOLPY";
+    public static final String SOLDIERCOUNTPG = "SOLPG";
+    public static final String LONGESTROAD = "LR";
+    public static final String LARGESTARMY = "LA";
+    public static final int pbId = 70;
+    public static final int prId = 71;
+    public static final int pyId = 72;
+    public static final int pgId = 73;
     public static final int hex00Id = 0;
     public static final int hex01Id = 1;
     public static final int hex02Id = 2;
@@ -857,6 +867,7 @@ public class Constants {
     public static final ImmutableList<Integer> visibleToPR = ImmutableList.of(prId);
     public static final ImmutableList<Integer> visibleToPY = ImmutableList.of(pyId);
     public static final ImmutableList<Integer> visibleToPG = ImmutableList.of(pgId);
+    public static final ImmutableList<Integer> visibleToNone = ImmutableList.of();
     public static final ImmutableMap<String, Object> pbInfo = ImmutableMap.<String, Object>of(PLAYER_ID, pbId);
     public static final ImmutableMap<String, Object> prInfo = ImmutableMap.<String, Object>of(PLAYER_ID, prId);
     public static final ImmutableMap<String, Object> pyInfo = ImmutableMap.<String, Object>of(PLAYER_ID, pyId);
