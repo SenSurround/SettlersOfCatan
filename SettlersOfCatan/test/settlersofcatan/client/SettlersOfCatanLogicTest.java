@@ -657,11 +657,291 @@ public class SettlersOfCatanLogicTest {
     //                LastMove - List
     //                LastMovePlayerId - Int
     
+    @Test
+    public void testLegalNormalHarborTrade() {
+        Map<String, Object> harborTradeState = createEmptyState();
+        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD03PB, Constants.LUMBER);
+        
+        
+        ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
+                new Set(Constants.TURN, Constants.PB),
+                new SetVisibility(Constants.RESOURCECARD00PB),
+                new SetVisibility(Constants.RESOURCECARD01PB),
+                new SetVisibility(Constants.RESOURCECARD02PB),
+                new SetVisibility(Constants.RESOURCECARD03PB),
+                new Delete(Constants.RESOURCECARD00PB),
+                new Delete(Constants.RESOURCECARD01PB),
+                new Delete(Constants.RESOURCECARD02PB),
+                new Delete(Constants.RESOURCECARD03PB),
+                new Set(Constants.RESOURCECARD00PB, Constants.ORE)
+                );
+        
+        VerifyMove verifyMove = new VerifyMove(
+                Constants.pbId,
+                Constants.playersInfo,
+                applyMoveToState(harborTradeState, harborTrade),
+                harborTradeState,
+                harborTrade,
+                Constants.pbId);
+        
+        assertMoveOk(verifyMove);
+    }
     
+    @Test
+    public void testIllegalNormalHarborTradeResourcesNotSame() {
+        Map<String, Object> harborTradeState = createEmptyState();
+        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD03PB, Constants.WOOL);
+        
+        
+        ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
+                new Set(Constants.TURN, Constants.PB),
+                new SetVisibility(Constants.RESOURCECARD00PB),
+                new SetVisibility(Constants.RESOURCECARD01PB),
+                new SetVisibility(Constants.RESOURCECARD02PB),
+                new SetVisibility(Constants.RESOURCECARD03PB),
+                new Delete(Constants.RESOURCECARD00PB),
+                new Delete(Constants.RESOURCECARD01PB),
+                new Delete(Constants.RESOURCECARD02PB),
+                new Delete(Constants.RESOURCECARD03PB),
+                new Set(Constants.RESOURCECARD00PB, Constants.ORE)
+                );
+        
+        VerifyMove verifyMove = new VerifyMove(
+                Constants.pbId,
+                Constants.playersInfo,
+                applyMoveToState(harborTradeState, harborTrade),
+                harborTradeState,
+                harborTrade,
+                Constants.pbId);
+        
+        assertHacker(verifyMove);
+    }
+    
+    @Test
+    public void testIllegalNormalHarborTradeNotEnoughResources() {
+        Map<String, Object> harborTradeState = createEmptyState();
+        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
+        
+        
+        ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
+                new Set(Constants.TURN, Constants.PB),
+                new SetVisibility(Constants.RESOURCECARD00PB),
+                new SetVisibility(Constants.RESOURCECARD01PB),
+                new SetVisibility(Constants.RESOURCECARD02PB),
+                new Delete(Constants.RESOURCECARD00PB),
+                new Delete(Constants.RESOURCECARD01PB),
+                new Delete(Constants.RESOURCECARD02PB),
+                new Set(Constants.RESOURCECARD00PB, Constants.ORE)
+                );
+        
+        VerifyMove verifyMove = new VerifyMove(
+                Constants.pbId,
+                Constants.playersInfo,
+                applyMoveToState(harborTradeState, harborTrade),
+                harborTradeState,
+                harborTrade,
+                Constants.pbId);
+        
+        assertHacker(verifyMove);
+    }
+    
+    @Test
+    public void testLegalThreeForOneHarborTrade() {
+        Map<String, Object> harborTradeState = createEmptyState();
+        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(harborTradeState, Constants.NODE05, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE05);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
+        
+        
+        ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
+                new Set(Constants.TURN, Constants.PB),
+                new SetVisibility(Constants.RESOURCECARD00PB),
+                new SetVisibility(Constants.RESOURCECARD01PB),
+                new SetVisibility(Constants.RESOURCECARD02PB),
+                new Delete(Constants.RESOURCECARD00PB),
+                new Delete(Constants.RESOURCECARD01PB),
+                new Delete(Constants.RESOURCECARD02PB),
+                new Set(Constants.RESOURCECARD00PB, Constants.ORE)
+                );
+        
+        VerifyMove verifyMove = new VerifyMove(
+                Constants.pbId,
+                Constants.playersInfo,
+                applyMoveToState(harborTradeState, harborTrade),
+                harborTradeState,
+                harborTrade,
+                Constants.pbId);
+        
+        assertMoveOk(verifyMove);
+    }
+    
+    @Test
+    public void testIllegalThreeForOneHarborTradeResourcesNotSame() {
+        Map<String, Object> harborTradeState = createEmptyState();
+        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(harborTradeState, Constants.NODE05, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE05);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD02PB, Constants.WOOL);
+        
+        
+        ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
+                new Set(Constants.TURN, Constants.PB),
+                new SetVisibility(Constants.RESOURCECARD00PB),
+                new SetVisibility(Constants.RESOURCECARD01PB),
+                new SetVisibility(Constants.RESOURCECARD02PB),
+                new Delete(Constants.RESOURCECARD00PB),
+                new Delete(Constants.RESOURCECARD01PB),
+                new Delete(Constants.RESOURCECARD02PB),
+                new Set(Constants.RESOURCECARD00PB, Constants.ORE)
+                );
+        
+        VerifyMove verifyMove = new VerifyMove(
+                Constants.pbId,
+                Constants.playersInfo,
+                applyMoveToState(harborTradeState, harborTrade),
+                harborTradeState,
+                harborTrade,
+                Constants.pbId);
+        
+        assertHacker(verifyMove);
+    }
+    
+    @Test
+    public void testIllegalThreeForOneHarborTradeNotEnoughResources() {
+        Map<String, Object> harborTradeState = createEmptyState();
+        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(harborTradeState, Constants.NODE05, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE05);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        
+        
+        ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
+                new Set(Constants.TURN, Constants.PB),
+                new SetVisibility(Constants.RESOURCECARD00PB),
+                new SetVisibility(Constants.RESOURCECARD01PB),
+                new Delete(Constants.RESOURCECARD00PB),
+                new Delete(Constants.RESOURCECARD01PB),
+                new Set(Constants.RESOURCECARD00PB, Constants.ORE)
+                );
+        
+        VerifyMove verifyMove = new VerifyMove(
+                Constants.pbId,
+                Constants.playersInfo,
+                applyMoveToState(harborTradeState, harborTrade),
+                harborTradeState,
+                harborTrade,
+                Constants.pbId);
+        
+        assertHacker(verifyMove);
+    }
+    
+    @Test
+    public void testLegalTwoForOneLumberHarborTrade() {
+        Map<String, Object> harborTradeState = createEmptyState();
+        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(harborTradeState, Constants.NODE03, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE03);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        
+        
+        ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
+                new Set(Constants.TURN, Constants.PB),
+                new SetVisibility(Constants.RESOURCECARD00PB),
+                new SetVisibility(Constants.RESOURCECARD01PB),
+                new Delete(Constants.RESOURCECARD00PB),
+                new Delete(Constants.RESOURCECARD01PB),
+                new Set(Constants.RESOURCECARD00PB, Constants.ORE)
+                );
+        
+        VerifyMove verifyMove = new VerifyMove(
+                Constants.pbId,
+                Constants.playersInfo,
+                applyMoveToState(harborTradeState, harborTrade),
+                harborTradeState,
+                harborTrade,
+                Constants.pbId);
+        
+        assertMoveOk(verifyMove);
+    }
+    
+    @Test
+    public void testIllegalTwoForOneLumberHarborTradeResourcesNotSame() {
+        Map<String, Object> harborTradeState = createEmptyState();
+        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(harborTradeState, Constants.NODE03, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE03);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.WOOL);
+        
+        
+        ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
+                new Set(Constants.TURN, Constants.PB),
+                new SetVisibility(Constants.RESOURCECARD00PB),
+                new SetVisibility(Constants.RESOURCECARD01PB),
+                new Delete(Constants.RESOURCECARD00PB),
+                new Delete(Constants.RESOURCECARD01PB),
+                new Set(Constants.RESOURCECARD00PB, Constants.ORE)
+                );
+        
+        VerifyMove verifyMove = new VerifyMove(
+                Constants.pbId,
+                Constants.playersInfo,
+                applyMoveToState(harborTradeState, harborTrade),
+                harborTradeState,
+                harborTrade,
+                Constants.pbId);
+        
+        assertHacker(verifyMove);
+    }
+    
+    @Test
+    public void testIllegalTwoForOneLumberHarborTradeNotEnoughResources() {
+        Map<String, Object> harborTradeState = createEmptyState();
+        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(harborTradeState, Constants.NODE03, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE03);
+        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        
+        
+        ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
+                new Set(Constants.TURN, Constants.PB),
+                new SetVisibility(Constants.RESOURCECARD00PB),
+                new Delete(Constants.RESOURCECARD00PB),
+                new Set(Constants.RESOURCECARD00PB, Constants.ORE)
+                );
+        
+        VerifyMove verifyMove = new VerifyMove(
+                Constants.pbId,
+                Constants.playersInfo,
+                applyMoveToState(harborTradeState, harborTrade),
+                harborTradeState,
+                harborTrade,
+                Constants.pbId);
+        
+        assertHacker(verifyMove);
+    }
     
     
     @Test
-    public void testlegalAddRoad() {
+    public void testLegalAddRoad() {
         ImmutableList<Operation> addRoad = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
                 new Set(Constants.PATH12, Constants.ROAD02PB),
@@ -776,7 +1056,7 @@ public class SettlersOfCatanLogicTest {
     }
 
     @Test
-    public void testlegalAddSettlement() {
+    public void testLegalAddSettlement() {
         ImmutableList<Operation> addSettlement = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
                 new Set(Constants.NODE12, Constants.SETTLEMENT01PB),
@@ -938,7 +1218,7 @@ public class SettlersOfCatanLogicTest {
     }
 
     @Test
-    public void testlegalAddCity() {
+    public void testLegalAddCity() {
         ImmutableList<Operation> addCity = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
                 new Set(Constants.NODE23, Constants.CITY00PB),
@@ -1057,7 +1337,7 @@ public class SettlersOfCatanLogicTest {
     }
 
     @Test
-    public void testlegalPurchaseDevelopmentCard() {
+    public void testLegalPurchaseDevelopmentCard() {
         ImmutableList<Operation> addDevelopmentCard = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
                 new SetVisibility(Constants.DEVELOPMENTCARD00, Constants.visibleToPB),
