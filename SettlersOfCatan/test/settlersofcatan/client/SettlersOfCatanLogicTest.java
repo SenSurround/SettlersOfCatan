@@ -2,11 +2,7 @@ package settlersofcatan.client;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-
-import settlersofcatan.client.Constants;
 
 import settlersofcatan.client.GameApi.Delete;
 import settlersofcatan.client.GameApi.EndGame;
@@ -20,25 +16,27 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ImmutableMap.Builder;
 import com.google.common.collect.Maps;
 
 public class SettlersOfCatanLogicTest {
+    // The Logic of the Settlers Of Catan game
     SettlersOfCatanLogic settlersOfCatanLogic = new SettlersOfCatanLogic();
     
+    // Assert to JUnit that this move is expected to be OK
     private void assertMoveOk(VerifyMove verifyMove) {
         settlersOfCatanLogic.checkMoveIsLegal(verifyMove);
     }
 
+    // Assert to JUnit that this move is expected to fail
+    // A hacker must have submitted the move
     private void assertHacker(VerifyMove verifyMove) {
         VerifyMoveDone verifyDone = settlersOfCatanLogic.verify(verifyMove);
         assertEquals(verifyMove.getLastMovePlayerId(), verifyDone.getHackerPlayerId());
     }
-    
+
+    // Take a move and an input state
+    // return the new state after the move is applied
     private Map<String, Object> applyMoveToState(
             Map<String, Object> initialState, ImmutableList<Operation> move) {
         Map<String, Object> newState = initialState;
@@ -51,7 +49,6 @@ public class SettlersOfCatanLogicTest {
                     break;
                     
                 case "Delete":
-                  //newState.put(((Delete) current).getKey(), Constants.NOTHING);
                     newState.remove(((Delete) current).getKey());
                     break;
                     
@@ -63,7 +60,8 @@ public class SettlersOfCatanLogicTest {
         return newState;
     }
     
-    
+    // Take an initial state and a new String/Object pair
+    // return the new state after the new String/Object pair is applied
     private Map<String, Object> changeState(
             Map<String, Object> previousState, String propString, Object propObject) {
         Map<String, Object> newState = previousState;
@@ -73,12 +71,13 @@ public class SettlersOfCatanLogicTest {
         return newState;
     }
     
+    // Create an initial empty state for testing
+    // The normally randomized elements are defaulted to specific values
+    // to allow for testing
     private Map<String, Object> createEmptyState() {
         Map<String, Object> emptyState = Maps.<String, Object>newHashMap();
         emptyState.put(Constants.TURN, Constants.PB);
-      //emptyState.put(Constants.DIE0, Constants.NOTHING);
-      //emptyState.put(Constants.DIE1, Constants.NOTHING);
-        // These will be randomized in real game
+        // These will be randomized in real game, set for testing purposes
         emptyState.put(Constants.HEX00, Constants.ORE);
         emptyState.put(Constants.HEX01, Constants.LUMBER);
         emptyState.put(Constants.HEX02, Constants.DESERT);
@@ -98,133 +97,7 @@ public class SettlersOfCatanLogicTest {
         emptyState.put(Constants.HEX16, Constants.GRAIN);
         emptyState.put(Constants.HEX17, Constants.BRICK);
         emptyState.put(Constants.HEX18, Constants.LUMBER);
-      /*emptyState.put(Constants.NODE00, Constants.NOTHING);
-        emptyState.put(Constants.NODE01, Constants.NOTHING);
-        emptyState.put(Constants.NODE02, Constants.NOTHING);
-        emptyState.put(Constants.NODE03, Constants.NOTHING);
-        emptyState.put(Constants.NODE04, Constants.NOTHING);
-        emptyState.put(Constants.NODE05, Constants.NOTHING);
-        emptyState.put(Constants.NODE06, Constants.NOTHING);
-        emptyState.put(Constants.NODE07, Constants.NOTHING);
-        emptyState.put(Constants.NODE08, Constants.NOTHING);
-        emptyState.put(Constants.NODE09, Constants.NOTHING);
-        emptyState.put(Constants.NODE10, Constants.NOTHING);
-        emptyState.put(Constants.NODE11, Constants.NOTHING);
-        emptyState.put(Constants.NODE12, Constants.NOTHING);
-        emptyState.put(Constants.NODE13, Constants.NOTHING);
-        emptyState.put(Constants.NODE14, Constants.NOTHING);
-        emptyState.put(Constants.NODE15, Constants.NOTHING);
-        emptyState.put(Constants.NODE16, Constants.NOTHING);
-        emptyState.put(Constants.NODE17, Constants.NOTHING);
-        emptyState.put(Constants.NODE18, Constants.NOTHING);
-        emptyState.put(Constants.NODE19, Constants.NOTHING);
-        emptyState.put(Constants.NODE20, Constants.NOTHING);
-        emptyState.put(Constants.NODE21, Constants.NOTHING);
-        emptyState.put(Constants.NODE22, Constants.NOTHING);
-        emptyState.put(Constants.NODE23, Constants.NOTHING);
-        emptyState.put(Constants.NODE24, Constants.NOTHING);
-        emptyState.put(Constants.NODE25, Constants.NOTHING);
-        emptyState.put(Constants.NODE26, Constants.NOTHING);
-        emptyState.put(Constants.NODE27, Constants.NOTHING);
-        emptyState.put(Constants.NODE28, Constants.NOTHING);
-        emptyState.put(Constants.NODE29, Constants.NOTHING);
-        emptyState.put(Constants.NODE30, Constants.NOTHING);
-        emptyState.put(Constants.NODE31, Constants.NOTHING);
-        emptyState.put(Constants.NODE32, Constants.NOTHING);
-        emptyState.put(Constants.NODE33, Constants.NOTHING);
-        emptyState.put(Constants.NODE34, Constants.NOTHING);
-        emptyState.put(Constants.NODE35, Constants.NOTHING);
-        emptyState.put(Constants.NODE36, Constants.NOTHING);
-        emptyState.put(Constants.NODE37, Constants.NOTHING);
-        emptyState.put(Constants.NODE38, Constants.NOTHING);
-        emptyState.put(Constants.NODE39, Constants.NOTHING);
-        emptyState.put(Constants.NODE40, Constants.NOTHING);
-        emptyState.put(Constants.NODE41, Constants.NOTHING);
-        emptyState.put(Constants.NODE42, Constants.NOTHING);
-        emptyState.put(Constants.NODE43, Constants.NOTHING);
-        emptyState.put(Constants.NODE44, Constants.NOTHING);
-        emptyState.put(Constants.NODE45, Constants.NOTHING);
-        emptyState.put(Constants.NODE46, Constants.NOTHING);
-        emptyState.put(Constants.NODE47, Constants.NOTHING);
-        emptyState.put(Constants.NODE48, Constants.NOTHING);
-        emptyState.put(Constants.NODE49, Constants.NOTHING);
-        emptyState.put(Constants.NODE50, Constants.NOTHING);
-        emptyState.put(Constants.NODE51, Constants.NOTHING);
-        emptyState.put(Constants.NODE52, Constants.NOTHING);
-        emptyState.put(Constants.NODE53, Constants.NOTHING);
-        emptyState.put(Constants.PATH00, Constants.NOTHING);
-        emptyState.put(Constants.PATH01, Constants.NOTHING);
-        emptyState.put(Constants.PATH02, Constants.NOTHING);
-        emptyState.put(Constants.PATH03, Constants.NOTHING);
-        emptyState.put(Constants.PATH04, Constants.NOTHING);
-        emptyState.put(Constants.PATH05, Constants.NOTHING);
-        emptyState.put(Constants.PATH06, Constants.NOTHING);
-        emptyState.put(Constants.PATH07, Constants.NOTHING);
-        emptyState.put(Constants.PATH08, Constants.NOTHING);
-        emptyState.put(Constants.PATH09, Constants.NOTHING);
-        emptyState.put(Constants.PATH10, Constants.NOTHING);
-        emptyState.put(Constants.PATH11, Constants.NOTHING);
-        emptyState.put(Constants.PATH12, Constants.NOTHING);
-        emptyState.put(Constants.PATH13, Constants.NOTHING);
-        emptyState.put(Constants.PATH14, Constants.NOTHING);
-        emptyState.put(Constants.PATH15, Constants.NOTHING);
-        emptyState.put(Constants.PATH16, Constants.NOTHING);
-        emptyState.put(Constants.PATH17, Constants.NOTHING);
-        emptyState.put(Constants.PATH18, Constants.NOTHING);
-        emptyState.put(Constants.PATH19, Constants.NOTHING);
-        emptyState.put(Constants.PATH20, Constants.NOTHING);
-        emptyState.put(Constants.PATH21, Constants.NOTHING);
-        emptyState.put(Constants.PATH22, Constants.NOTHING);
-        emptyState.put(Constants.PATH23, Constants.NOTHING);
-        emptyState.put(Constants.PATH24, Constants.NOTHING);
-        emptyState.put(Constants.PATH25, Constants.NOTHING);
-        emptyState.put(Constants.PATH26, Constants.NOTHING);
-        emptyState.put(Constants.PATH27, Constants.NOTHING);
-        emptyState.put(Constants.PATH28, Constants.NOTHING);
-        emptyState.put(Constants.PATH29, Constants.NOTHING);
-        emptyState.put(Constants.PATH30, Constants.NOTHING);
-        emptyState.put(Constants.PATH31, Constants.NOTHING);
-        emptyState.put(Constants.PATH32, Constants.NOTHING);
-        emptyState.put(Constants.PATH33, Constants.NOTHING);
-        emptyState.put(Constants.PATH34, Constants.NOTHING);
-        emptyState.put(Constants.PATH35, Constants.NOTHING);
-        emptyState.put(Constants.PATH36, Constants.NOTHING);
-        emptyState.put(Constants.PATH37, Constants.NOTHING);
-        emptyState.put(Constants.PATH38, Constants.NOTHING);
-        emptyState.put(Constants.PATH39, Constants.NOTHING);
-        emptyState.put(Constants.PATH40, Constants.NOTHING);
-        emptyState.put(Constants.PATH41, Constants.NOTHING);
-        emptyState.put(Constants.PATH42, Constants.NOTHING);
-        emptyState.put(Constants.PATH43, Constants.NOTHING);
-        emptyState.put(Constants.PATH44, Constants.NOTHING);
-        emptyState.put(Constants.PATH45, Constants.NOTHING);
-        emptyState.put(Constants.PATH46, Constants.NOTHING);
-        emptyState.put(Constants.PATH47, Constants.NOTHING);
-        emptyState.put(Constants.PATH48, Constants.NOTHING);
-        emptyState.put(Constants.PATH49, Constants.NOTHING);
-        emptyState.put(Constants.PATH50, Constants.NOTHING);
-        emptyState.put(Constants.PATH51, Constants.NOTHING);
-        emptyState.put(Constants.PATH52, Constants.NOTHING);
-        emptyState.put(Constants.PATH53, Constants.NOTHING);
-        emptyState.put(Constants.PATH54, Constants.NOTHING);
-        emptyState.put(Constants.PATH55, Constants.NOTHING);
-        emptyState.put(Constants.PATH56, Constants.NOTHING);
-        emptyState.put(Constants.PATH57, Constants.NOTHING);
-        emptyState.put(Constants.PATH58, Constants.NOTHING);
-        emptyState.put(Constants.PATH59, Constants.NOTHING);
-        emptyState.put(Constants.PATH60, Constants.NOTHING);
-        emptyState.put(Constants.PATH61, Constants.NOTHING);
-        emptyState.put(Constants.PATH62, Constants.NOTHING);
-        emptyState.put(Constants.PATH63, Constants.NOTHING);
-        emptyState.put(Constants.PATH64, Constants.NOTHING);
-        emptyState.put(Constants.PATH65, Constants.NOTHING);
-        emptyState.put(Constants.PATH66, Constants.NOTHING);
-        emptyState.put(Constants.PATH67, Constants.NOTHING);
-        emptyState.put(Constants.PATH68, Constants.NOTHING);
-        emptyState.put(Constants.PATH69, Constants.NOTHING);
-        emptyState.put(Constants.PATH70, Constants.NOTHING);
-        emptyState.put(Constants.PATH71, Constants.NOTHING);*/
-        // These will be randomized in real game
+        // These will be randomized in real game, set for testing purposes
         emptyState.put(Constants.HARBOR00, Constants.HARBORTYPE03);
         emptyState.put(Constants.HARBOR01, Constants.HARBORTYPE00);
         emptyState.put(Constants.HARBOR02, Constants.HARBORTYPE01);
@@ -234,8 +107,7 @@ public class SettlersOfCatanLogicTest {
         emptyState.put(Constants.HARBOR06, Constants.HARBORTYPE02);
         emptyState.put(Constants.HARBOR07, Constants.HARBORTYPE00);
         emptyState.put(Constants.HARBOR08, Constants.HARBORTYPE04);
-      //emptyState.put(Constants.ROBBER, Constants.NOTHING);
-        // These will be randomized in real game
+        // These will be randomized in real game, set for testing purposes
         // These will also need to be set to visible to no one pre game start
         emptyState.put(Constants.DEVELOPMENTCARD00, Constants.DEVELOPMENTCARDTYPE00);
         emptyState.put(Constants.DEVELOPMENTCARD01, Constants.DEVELOPMENTCARDTYPE03);
@@ -262,222 +134,6 @@ public class SettlersOfCatanLogicTest {
         emptyState.put(Constants.DEVELOPMENTCARD22, Constants.DEVELOPMENTCARDTYPE00);
         emptyState.put(Constants.DEVELOPMENTCARD23, Constants.DEVELOPMENTCARDTYPE02);
         emptyState.put(Constants.DEVELOPMENTCARD24, Constants.DEVELOPMENTCARDTYPE00);
-      /*emptyState.put(Constants.CITY00PB, Constants.NOTHING);
-        emptyState.put(Constants.CITY01PB, Constants.NOTHING);
-        emptyState.put(Constants.CITY02PB, Constants.NOTHING);
-        emptyState.put(Constants.CITY03PB, Constants.NOTHING);
-        emptyState.put(Constants.CITY00PR, Constants.NOTHING);
-        emptyState.put(Constants.CITY01PR, Constants.NOTHING);
-        emptyState.put(Constants.CITY02PR, Constants.NOTHING);
-        emptyState.put(Constants.CITY03PR, Constants.NOTHING);
-        emptyState.put(Constants.CITY00PY, Constants.NOTHING);
-        emptyState.put(Constants.CITY01PY, Constants.NOTHING);
-        emptyState.put(Constants.CITY02PY, Constants.NOTHING);
-        emptyState.put(Constants.CITY03PY, Constants.NOTHING);
-        emptyState.put(Constants.CITY00PG, Constants.NOTHING);
-        emptyState.put(Constants.CITY01PG, Constants.NOTHING);
-        emptyState.put(Constants.CITY02PG, Constants.NOTHING);
-        emptyState.put(Constants.CITY03PG, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT00PB, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT01PB, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT02PB, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT03PB, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT04PB, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT00PR, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT01PR, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT02PR, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT03PR, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT04PR, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT00PY, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT01PY, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT02PY, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT03PY, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT04PY, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT00PG, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT01PG, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT02PG, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT03PG, Constants.NOTHING);
-        emptyState.put(Constants.SETTLEMENT04PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD00PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD01PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD02PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD03PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD04PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD05PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD06PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD07PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD08PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD09PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD10PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD11PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD12PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD13PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD14PB, Constants.NOTHING);
-        emptyState.put(Constants.ROAD00PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD01PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD02PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD03PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD04PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD05PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD06PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD07PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD08PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD09PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD10PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD11PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD12PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD13PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD14PR, Constants.NOTHING);
-        emptyState.put(Constants.ROAD00PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD01PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD02PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD03PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD04PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD05PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD06PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD07PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD08PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD09PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD10PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD11PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD12PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD13PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD14PY, Constants.NOTHING);
-        emptyState.put(Constants.ROAD00PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD01PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD02PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD03PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD04PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD05PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD06PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD07PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD08PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD09PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD10PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD11PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD12PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD13PG, Constants.NOTHING);
-        emptyState.put(Constants.ROAD14PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD00PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD01PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD02PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD03PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD04PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD05PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD06PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD07PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD08PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD09PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD10PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD11PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD12PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD13PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD14PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD15PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD16PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD17PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD18PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD19PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD20PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD21PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD22PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD23PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD24PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD25PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD26PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD27PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD28PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD29PB, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD00PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD01PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD02PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD03PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD04PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD05PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD06PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD07PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD08PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD09PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD10PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD11PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD12PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD13PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD14PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD15PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD16PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD17PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD18PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD19PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD20PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD21PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD22PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD23PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD24PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD25PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD26PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD27PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD28PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD29PR, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD00PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD01PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD02PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD03PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD04PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD05PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD06PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD07PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD08PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD09PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD10PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD11PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD12PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD13PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD14PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD15PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD16PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD17PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD18PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD19PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD20PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD21PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD22PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD23PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD24PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD25PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD26PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD27PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD28PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD29PY, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD00PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD01PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD02PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD03PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD04PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD05PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD06PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD07PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD08PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD09PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD10PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD11PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD12PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD13PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD14PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD15PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD16PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD17PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD18PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD19PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD20PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD21PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD22PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD23PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD24PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD25PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD26PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD27PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD28PG, Constants.NOTHING);
-        emptyState.put(Constants.RESOURCECARD29PG, Constants.NOTHING);*/
         emptyState.put(Constants.SOLDIERCOUNTPB, 0);
         emptyState.put(Constants.SOLDIERCOUNTPR, 0);
         emptyState.put(Constants.SOLDIERCOUNTPY, 0);
@@ -485,6 +141,7 @@ public class SettlersOfCatanLogicTest {
         return emptyState;
     }
     
+    // A specialized state to test adding assets via resource purchase
     private Map<String, Object> createAddAssetState() {
         Map<String, Object> addRoadState = createEmptyState();
         addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
@@ -505,7 +162,9 @@ public class SettlersOfCatanLogicTest {
         
         return addRoadState;
     }
-    
+
+    // A specialized state to test failures caused by a player having exhausted their
+    // allotment of specific assets
     private Map<String, Object> createAllAssetsUsedState() {
         Map<String, Object> addRoadState = createEmptyState();
         addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
@@ -569,6 +228,8 @@ public class SettlersOfCatanLogicTest {
         return addRoadState;
     }
     
+    // a specialized state that allows for a user to claim victory the next move in
+    // a variety of ways
     private Map<String, Object> createPrepForVictoryState() {
         Map<String, Object> addRoadState = createEmptyState();
         addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
@@ -650,21 +311,36 @@ public class SettlersOfCatanLogicTest {
         return addRoadState;
     }
     
+    // A Mapping of what parameters VerifyMove is looking for
+    //
     // VerifyMove - YourPlayerId - int
     //              Player List - List
     //              State - Map
-    //                LastState - Map
-    //                LastMove - List
-    //                LastMovePlayerId - Int
+    //              LastState - Map
+    //              LastMove - List
+    //              LastMovePlayerId - Int
     
+    /*------------------------------------------------------------------------------------*/
+    /*                                   TEST CASES                                       */
+    /*------------------------------------------------------------------------------------*/
+    
+    
+    
+    // Legal Test
+    // Normal Harbor Trade
     @Test
     public void testLegalNormalHarborTrade() {
         Map<String, Object> harborTradeState = createEmptyState();
-        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD03PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD03PB, Constants.LUMBER);
         
         
         ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
@@ -690,15 +366,23 @@ public class SettlersOfCatanLogicTest {
         
         assertMoveOk(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Normal Harbor Trade
+    // Resources Not The Same
     @Test
     public void testIllegalNormalHarborTradeResourcesNotSame() {
         Map<String, Object> harborTradeState = createEmptyState();
-        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD03PB, Constants.WOOL);
+        harborTradeState = changeState(
+                harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD03PB, Constants.WOOL);
         
         
         ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
@@ -724,14 +408,21 @@ public class SettlersOfCatanLogicTest {
         
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Normal Harbor Trade
+    // Not Enough Resources
     @Test
     public void testIllegalNormalHarborTradeNotEnoughResources() {
         Map<String, Object> harborTradeState = createEmptyState();
-        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
         
         
         ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
@@ -755,16 +446,23 @@ public class SettlersOfCatanLogicTest {
         
         assertHacker(verifyMove);
     }
-    
+
+    // Legal Test
+    // 3 For 1 Harbor Trade
     @Test
     public void testLegalThreeForOneHarborTrade() {
         Map<String, Object> harborTradeState = createEmptyState();
         harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
-        harborTradeState = changeState(harborTradeState, Constants.NODE05, Constants.SETTLEMENT00PB);
-        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE05);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.NODE05, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE05);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
         
         
         ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
@@ -788,16 +486,25 @@ public class SettlersOfCatanLogicTest {
         
         assertMoveOk(verifyMove);
     }
-    
+
+    // Illegal Test
+    // 3 For 1 Harbor Trade
+    // Resources Not The Same
     @Test
     public void testIllegalThreeForOneHarborTradeResourcesNotSame() {
         Map<String, Object> harborTradeState = createEmptyState();
-        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
-        harborTradeState = changeState(harborTradeState, Constants.NODE05, Constants.SETTLEMENT00PB);
-        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE05);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD02PB, Constants.WOOL);
+        harborTradeState = changeState(
+                harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.NODE05, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE05);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD02PB, Constants.WOOL);
         
         
         ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
@@ -821,15 +528,23 @@ public class SettlersOfCatanLogicTest {
         
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // 3 For 1 Harbor Trade
+    // Not Enough Resources
     @Test
     public void testIllegalThreeForOneHarborTradeNotEnoughResources() {
         Map<String, Object> harborTradeState = createEmptyState();
-        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
-        harborTradeState = changeState(harborTradeState, Constants.NODE05, Constants.SETTLEMENT00PB);
-        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE05);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.NODE05, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE05);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
         
         
         ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
@@ -851,15 +566,22 @@ public class SettlersOfCatanLogicTest {
         
         assertHacker(verifyMove);
     }
-    
+
+    // Legal Test
+    // 2 For 1 Lumber Harbor Trade
     @Test
     public void testLegalTwoForOneLumberHarborTrade() {
         Map<String, Object> harborTradeState = createEmptyState();
-        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
-        harborTradeState = changeState(harborTradeState, Constants.NODE03, Constants.SETTLEMENT00PB);
-        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE03);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.NODE03, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE03);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD01PB, Constants.LUMBER);
         
         
         ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
@@ -881,15 +603,23 @@ public class SettlersOfCatanLogicTest {
         
         assertMoveOk(verifyMove);
     }
-    
+
+    // Illegal Test
+    // 2 For 1 Lumber Harbor Trade
+    // Resources Not The Same
     @Test
     public void testIllegalTwoForOneLumberHarborTradeResourcesNotSame() {
         Map<String, Object> harborTradeState = createEmptyState();
-        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
-        harborTradeState = changeState(harborTradeState, Constants.NODE03, Constants.SETTLEMENT00PB);
-        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE03);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD01PB, Constants.WOOL);
+        harborTradeState = changeState(
+                harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.NODE03, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE03);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD01PB, Constants.WOOL);
         
         
         ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
@@ -911,14 +641,21 @@ public class SettlersOfCatanLogicTest {
         
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // 2 For 1 Lumber Harbor Trade
+    // Not Enough Resources
     @Test
     public void testIllegalTwoForOneLumberHarborTradeNotEnoughResources() {
         Map<String, Object> harborTradeState = createEmptyState();
-        harborTradeState = changeState(harborTradeState, Constants.TURN, Constants.PB);
-        harborTradeState = changeState(harborTradeState, Constants.NODE03, Constants.SETTLEMENT00PB);
-        harborTradeState = changeState(harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE03);
-        harborTradeState = changeState(harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        harborTradeState = changeState(
+                harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.NODE03, Constants.SETTLEMENT00PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.SETTLEMENT00PB, Constants.NODE03);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD00PB, Constants.LUMBER);
         
         
         ImmutableList<Operation> harborTrade = ImmutableList.<Operation>of(
@@ -939,7 +676,8 @@ public class SettlersOfCatanLogicTest {
         assertHacker(verifyMove);
     }
     
-    
+    // Legal Test
+    // Add Road
     @Test
     public void testLegalAddRoad() {
         ImmutableList<Operation> addRoad = ImmutableList.<Operation>of(
@@ -962,9 +700,12 @@ public class SettlersOfCatanLogicTest {
         
         assertMoveOk(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add Road
+    // No Adjacent Road
     @Test
-    public void testIllegalAddRoadNoAdjacentPath() {
+    public void testIllegalAddRoadNoAdjacentRoad() {
         ImmutableList<Operation> addRoad = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
                 new Set(Constants.PATH66, Constants.ROAD02PB),
@@ -985,7 +726,10 @@ public class SettlersOfCatanLogicTest {
 
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add Road
+    // Incorrect Resources
     @Test
     public void testIllegalAddRoadIncorrectResources() {
         ImmutableList<Operation> addRoad = ImmutableList.<Operation>of(
@@ -1008,7 +752,10 @@ public class SettlersOfCatanLogicTest {
 
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add Road
+    // Path Taken
     @Test
     public void testIllegalAddRoadPathTaken() {
         ImmutableList<Operation> addRoad = ImmutableList.<Operation>of(
@@ -1031,7 +778,10 @@ public class SettlersOfCatanLogicTest {
 
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add Road
+    // None Left
     @Test
     public void testIllegalAddRoadNoneLeft() {
         ImmutableList<Operation> addRoad = ImmutableList.<Operation>of(
@@ -1055,6 +805,8 @@ public class SettlersOfCatanLogicTest {
         assertHacker(verifyMove);
     }
 
+    // Legal Test
+    // Add Settlement
     @Test
     public void testLegalAddSettlement() {
         ImmutableList<Operation> addSettlement = ImmutableList.<Operation>of(
@@ -1081,7 +833,10 @@ public class SettlersOfCatanLogicTest {
         
         assertMoveOk(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add Settlement
+    // No Road
     @Test
     public void testIllegalAddSettlementNoRoad() {
         ImmutableList<Operation> addSettlement = ImmutableList.<Operation>of(
@@ -1108,7 +863,10 @@ public class SettlersOfCatanLogicTest {
 
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add Settlement
+    // Settlement Too Close
     @Test
     public void testIllegalAddSettlementTooClose() {
         ImmutableList<Operation> addSettlement = ImmutableList.<Operation>of(
@@ -1135,7 +893,10 @@ public class SettlersOfCatanLogicTest {
 
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add Settlement
+    // Incorrect Resources
     @Test
     public void testIllegalAddSettlementIncorrectResources() {
         ImmutableList<Operation> addSettlement = ImmutableList.<Operation>of(
@@ -1162,7 +923,10 @@ public class SettlersOfCatanLogicTest {
 
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add Settlement
+    // Node Taken
     @Test
     public void testIllegalAddSettlementNodeTaken() {
         ImmutableList<Operation> addSettlement = ImmutableList.<Operation>of(
@@ -1189,7 +953,10 @@ public class SettlersOfCatanLogicTest {
 
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add Settlement
+    // None Left
     @Test
     public void testIllegalAddSettlementNoneLeft() {
         ImmutableList<Operation> addSettlement = ImmutableList.<Operation>of(
@@ -1217,6 +984,8 @@ public class SettlersOfCatanLogicTest {
         assertHacker(verifyMove);
     }
 
+    // Legal Test
+    // Add City
     @Test
     public void testLegalAddCity() {
         ImmutableList<Operation> addCity = ImmutableList.<Operation>of(
@@ -1246,7 +1015,10 @@ public class SettlersOfCatanLogicTest {
         
         assertMoveOk(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add City
+    // No Settlement
     @Test
     public void testIllegalAddCityNoSettlement() {
         ImmutableList<Operation> addCity = ImmutableList.<Operation>of(
@@ -1275,7 +1047,10 @@ public class SettlersOfCatanLogicTest {
 
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add City
+    // Incorrect Resources
     @Test
     public void testIllegalAddCityIncorrectResources() {
         ImmutableList<Operation> addCity = ImmutableList.<Operation>of(
@@ -1305,7 +1080,10 @@ public class SettlersOfCatanLogicTest {
 
         assertHacker(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Add City
+    // None Left
     @Test
     public void testIllegalAddCityNoneLeft() {
         ImmutableList<Operation> addCity = ImmutableList.<Operation>of(
@@ -1336,6 +1114,8 @@ public class SettlersOfCatanLogicTest {
         assertHacker(verifyMove);
     }
 
+    // Legal Test
+    // Purchase Development Card
     @Test
     public void testLegalPurchaseDevelopmentCard() {
         ImmutableList<Operation> addDevelopmentCard = ImmutableList.<Operation>of(
@@ -1356,7 +1136,10 @@ public class SettlersOfCatanLogicTest {
         
         assertMoveOk(verifyMove);
     }
-    
+
+    // Illegal Test
+    // Purchase Development Card
+    // Incorrect Resources
     @Test
     public void testIllegalPurchaseDevelopmentCardIncorrectResources() {
         ImmutableList<Operation> addDevelopmentCard = ImmutableList.<Operation>of(
@@ -1377,7 +1160,10 @@ public class SettlersOfCatanLogicTest {
 
         assertHacker(verifyMove);
     }
-    
+
+    // Legal Test
+    // End Game
+    // Via Building Settlement
     @Test
     public void testEndGameByBuildingSettlement() {
         ImmutableList<Operation> addSettlement = ImmutableList.<Operation>of(
@@ -1405,7 +1191,10 @@ public class SettlersOfCatanLogicTest {
         
         assertMoveOk(verifyMove);
     }
-    
+
+    // Legal Test
+    // End Game
+    // Via Building City
     @Test
     public void testEndGameByBuildingCity() {
         ImmutableList<Operation> addCity = ImmutableList.<Operation>of(
@@ -1436,7 +1225,10 @@ public class SettlersOfCatanLogicTest {
         
         assertMoveOk(verifyMove);
     }
-    
+
+    // Legal Test
+    // End Game
+    // Via Building Road And Taking Longest Road
     @Test
     public void testEndGameByGettingLongestRoad() {
         ImmutableList<Operation> addRoad = ImmutableList.<Operation>of(
@@ -1461,7 +1253,10 @@ public class SettlersOfCatanLogicTest {
         
         assertMoveOk(verifyMove);
     }
-    
+
+    // Legal Test
+    // End Game
+    // Via Playing Soldier Card And Taking Largest Army
     @Test
     public void testEndGameByGettingLargestArmy() {
         ImmutableList<Operation> playDevelopmentCard = ImmutableList.<Operation>of(

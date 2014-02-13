@@ -6,7 +6,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 public class Constants {
-	
+    
     public static final String TURN = "turn"; // turn of which player (PB,PR,PY,PG)
     public static final String NOTHING = "";
     public static final String ALL = "";
@@ -868,510 +868,952 @@ public class Constants {
     public static final ImmutableList<Integer> visibleToPY = ImmutableList.of(pyId);
     public static final ImmutableList<Integer> visibleToPG = ImmutableList.of(pgId);
     public static final ImmutableList<Integer> visibleToNone = ImmutableList.of();
-    public static final ImmutableMap<String, Object> pbInfo = ImmutableMap.<String, Object>of(PLAYER_ID, pbId);
-    public static final ImmutableMap<String, Object> prInfo = ImmutableMap.<String, Object>of(PLAYER_ID, prId);
-    public static final ImmutableMap<String, Object> pyInfo = ImmutableMap.<String, Object>of(PLAYER_ID, pyId);
-    public static final ImmutableMap<String, Object> pgInfo = ImmutableMap.<String, Object>of(PLAYER_ID, pgId);
-    public static final ImmutableMap<String, Object> hex00Info = ImmutableMap.<String, Object>of(HEX_ID, hex00Id);
-    public static final ImmutableMap<String, Object> hex01Info = ImmutableMap.<String, Object>of(HEX_ID, hex01Id);
-    public static final ImmutableMap<String, Object> hex02Info = ImmutableMap.<String, Object>of(HEX_ID, hex02Id);
-    public static final ImmutableMap<String, Object> hex03Info = ImmutableMap.<String, Object>of(HEX_ID, hex03Id);
-    public static final ImmutableMap<String, Object> hex04Info = ImmutableMap.<String, Object>of(HEX_ID, hex04Id);
-    public static final ImmutableMap<String, Object> hex05Info = ImmutableMap.<String, Object>of(HEX_ID, hex05Id);
-    public static final ImmutableMap<String, Object> hex06Info = ImmutableMap.<String, Object>of(HEX_ID, hex06Id);
-    public static final ImmutableMap<String, Object> hex07Info = ImmutableMap.<String, Object>of(HEX_ID, hex07Id);
-    public static final ImmutableMap<String, Object> hex08Info = ImmutableMap.<String, Object>of(HEX_ID, hex08Id);
-    public static final ImmutableMap<String, Object> hex09Info = ImmutableMap.<String, Object>of(HEX_ID, hex09Id);
-    public static final ImmutableMap<String, Object> hex10Info = ImmutableMap.<String, Object>of(HEX_ID, hex10Id);
-    public static final ImmutableMap<String, Object> hex11Info = ImmutableMap.<String, Object>of(HEX_ID, hex11Id);
-    public static final ImmutableMap<String, Object> hex12Info = ImmutableMap.<String, Object>of(HEX_ID, hex12Id);
-    public static final ImmutableMap<String, Object> hex13Info = ImmutableMap.<String, Object>of(HEX_ID, hex13Id);
-    public static final ImmutableMap<String, Object> hex14Info = ImmutableMap.<String, Object>of(HEX_ID, hex14Id);
-    public static final ImmutableMap<String, Object> hex15Info = ImmutableMap.<String, Object>of(HEX_ID, hex15Id);
-    public static final ImmutableMap<String, Object> hex16Info = ImmutableMap.<String, Object>of(HEX_ID, hex16Id);
-    public static final ImmutableMap<String, Object> hex17Info = ImmutableMap.<String, Object>of(HEX_ID, hex17Id);
-    public static final ImmutableMap<String, Object> hex18Info = ImmutableMap.<String, Object>of(HEX_ID, hex18Id);
-    public static final ImmutableMap<String, Object> node00Info = ImmutableMap.<String, Object>of(NODE_ID, node00Id);
-    public static final ImmutableMap<String, Object> node01Info = ImmutableMap.<String, Object>of(NODE_ID, node01Id);
-    public static final ImmutableMap<String, Object> node02Info = ImmutableMap.<String, Object>of(NODE_ID, node02Id);
-    public static final ImmutableMap<String, Object> node03Info = ImmutableMap.<String, Object>of(NODE_ID, node03Id);
-    public static final ImmutableMap<String, Object> node04Info = ImmutableMap.<String, Object>of(NODE_ID, node04Id);
-    public static final ImmutableMap<String, Object> node05Info = ImmutableMap.<String, Object>of(NODE_ID, node05Id);
-    public static final ImmutableMap<String, Object> node06Info = ImmutableMap.<String, Object>of(NODE_ID, node06Id);
-    public static final ImmutableMap<String, Object> node07Info = ImmutableMap.<String, Object>of(NODE_ID, node07Id);
-    public static final ImmutableMap<String, Object> node08Info = ImmutableMap.<String, Object>of(NODE_ID, node08Id);
-    public static final ImmutableMap<String, Object> node09Info = ImmutableMap.<String, Object>of(NODE_ID, node09Id);
-    public static final ImmutableMap<String, Object> node10Info = ImmutableMap.<String, Object>of(NODE_ID, node10Id);
-    public static final ImmutableMap<String, Object> node11Info = ImmutableMap.<String, Object>of(NODE_ID, node11Id);
-    public static final ImmutableMap<String, Object> node12Info = ImmutableMap.<String, Object>of(NODE_ID, node12Id);
-    public static final ImmutableMap<String, Object> node13Info = ImmutableMap.<String, Object>of(NODE_ID, node13Id);
-    public static final ImmutableMap<String, Object> node14Info = ImmutableMap.<String, Object>of(NODE_ID, node14Id);
-    public static final ImmutableMap<String, Object> node15Info = ImmutableMap.<String, Object>of(NODE_ID, node15Id);
-    public static final ImmutableMap<String, Object> node16Info = ImmutableMap.<String, Object>of(NODE_ID, node16Id);
-    public static final ImmutableMap<String, Object> node17Info = ImmutableMap.<String, Object>of(NODE_ID, node17Id);
-    public static final ImmutableMap<String, Object> node18Info = ImmutableMap.<String, Object>of(NODE_ID, node18Id);
-    public static final ImmutableMap<String, Object> node19Info = ImmutableMap.<String, Object>of(NODE_ID, node19Id);
-    public static final ImmutableMap<String, Object> node20Info = ImmutableMap.<String, Object>of(NODE_ID, node20Id);
-    public static final ImmutableMap<String, Object> node21Info = ImmutableMap.<String, Object>of(NODE_ID, node21Id);
-    public static final ImmutableMap<String, Object> node22Info = ImmutableMap.<String, Object>of(NODE_ID, node22Id);
-    public static final ImmutableMap<String, Object> node23Info = ImmutableMap.<String, Object>of(NODE_ID, node23Id);
-    public static final ImmutableMap<String, Object> node24Info = ImmutableMap.<String, Object>of(NODE_ID, node24Id);
-    public static final ImmutableMap<String, Object> node25Info = ImmutableMap.<String, Object>of(NODE_ID, node25Id);
-    public static final ImmutableMap<String, Object> node26Info = ImmutableMap.<String, Object>of(NODE_ID, node26Id);
-    public static final ImmutableMap<String, Object> node27Info = ImmutableMap.<String, Object>of(NODE_ID, node27Id);
-    public static final ImmutableMap<String, Object> node28Info = ImmutableMap.<String, Object>of(NODE_ID, node28Id);
-    public static final ImmutableMap<String, Object> node29Info = ImmutableMap.<String, Object>of(NODE_ID, node29Id);
-    public static final ImmutableMap<String, Object> node30Info = ImmutableMap.<String, Object>of(NODE_ID, node30Id);
-    public static final ImmutableMap<String, Object> node31Info = ImmutableMap.<String, Object>of(NODE_ID, node31Id);
-    public static final ImmutableMap<String, Object> node32Info = ImmutableMap.<String, Object>of(NODE_ID, node32Id);
-    public static final ImmutableMap<String, Object> node33Info = ImmutableMap.<String, Object>of(NODE_ID, node33Id);
-    public static final ImmutableMap<String, Object> node34Info = ImmutableMap.<String, Object>of(NODE_ID, node34Id);
-    public static final ImmutableMap<String, Object> node35Info = ImmutableMap.<String, Object>of(NODE_ID, node35Id);
-    public static final ImmutableMap<String, Object> node36Info = ImmutableMap.<String, Object>of(NODE_ID, node36Id);
-    public static final ImmutableMap<String, Object> node37Info = ImmutableMap.<String, Object>of(NODE_ID, node37Id);
-    public static final ImmutableMap<String, Object> node38Info = ImmutableMap.<String, Object>of(NODE_ID, node38Id);
-    public static final ImmutableMap<String, Object> node39Info = ImmutableMap.<String, Object>of(NODE_ID, node39Id);
-    public static final ImmutableMap<String, Object> node40Info = ImmutableMap.<String, Object>of(NODE_ID, node40Id);
-    public static final ImmutableMap<String, Object> node41Info = ImmutableMap.<String, Object>of(NODE_ID, node41Id);
-    public static final ImmutableMap<String, Object> node42Info = ImmutableMap.<String, Object>of(NODE_ID, node42Id);
-    public static final ImmutableMap<String, Object> node43Info = ImmutableMap.<String, Object>of(NODE_ID, node43Id);
-    public static final ImmutableMap<String, Object> node44Info = ImmutableMap.<String, Object>of(NODE_ID, node44Id);
-    public static final ImmutableMap<String, Object> node45Info = ImmutableMap.<String, Object>of(NODE_ID, node45Id);
-    public static final ImmutableMap<String, Object> node46Info = ImmutableMap.<String, Object>of(NODE_ID, node46Id);
-    public static final ImmutableMap<String, Object> node47Info = ImmutableMap.<String, Object>of(NODE_ID, node47Id);
-    public static final ImmutableMap<String, Object> node48Info = ImmutableMap.<String, Object>of(NODE_ID, node48Id);
-    public static final ImmutableMap<String, Object> node49Info = ImmutableMap.<String, Object>of(NODE_ID, node49Id);
-    public static final ImmutableMap<String, Object> node50Info = ImmutableMap.<String, Object>of(NODE_ID, node50Id);
-    public static final ImmutableMap<String, Object> node51Info = ImmutableMap.<String, Object>of(NODE_ID, node51Id);
-    public static final ImmutableMap<String, Object> node52Info = ImmutableMap.<String, Object>of(NODE_ID, node52Id);
-    public static final ImmutableMap<String, Object> node53Info = ImmutableMap.<String, Object>of(NODE_ID, node53Id);
-    public static final ImmutableMap<String, Object> path00Info = ImmutableMap.<String, Object>of(PATH_ID, path00Id);
-    public static final ImmutableMap<String, Object> path01Info = ImmutableMap.<String, Object>of(PATH_ID, path01Id);
-    public static final ImmutableMap<String, Object> path02Info = ImmutableMap.<String, Object>of(PATH_ID, path02Id);
-    public static final ImmutableMap<String, Object> path03Info = ImmutableMap.<String, Object>of(PATH_ID, path03Id);
-    public static final ImmutableMap<String, Object> path04Info = ImmutableMap.<String, Object>of(PATH_ID, path04Id);
-    public static final ImmutableMap<String, Object> path05Info = ImmutableMap.<String, Object>of(PATH_ID, path05Id);
-    public static final ImmutableMap<String, Object> path06Info = ImmutableMap.<String, Object>of(PATH_ID, path06Id);
-    public static final ImmutableMap<String, Object> path07Info = ImmutableMap.<String, Object>of(PATH_ID, path07Id);
-    public static final ImmutableMap<String, Object> path08Info = ImmutableMap.<String, Object>of(PATH_ID, path08Id);
-    public static final ImmutableMap<String, Object> path09Info = ImmutableMap.<String, Object>of(PATH_ID, path09Id);
-    public static final ImmutableMap<String, Object> path10Info = ImmutableMap.<String, Object>of(PATH_ID, path10Id);
-    public static final ImmutableMap<String, Object> path11Info = ImmutableMap.<String, Object>of(PATH_ID, path11Id);
-    public static final ImmutableMap<String, Object> path12Info = ImmutableMap.<String, Object>of(PATH_ID, path12Id);
-    public static final ImmutableMap<String, Object> path13Info = ImmutableMap.<String, Object>of(PATH_ID, path13Id);
-    public static final ImmutableMap<String, Object> path14Info = ImmutableMap.<String, Object>of(PATH_ID, path14Id);
-    public static final ImmutableMap<String, Object> path15Info = ImmutableMap.<String, Object>of(PATH_ID, path15Id);
-    public static final ImmutableMap<String, Object> path16Info = ImmutableMap.<String, Object>of(PATH_ID, path16Id);
-    public static final ImmutableMap<String, Object> path17Info = ImmutableMap.<String, Object>of(PATH_ID, path17Id);
-    public static final ImmutableMap<String, Object> path18Info = ImmutableMap.<String, Object>of(PATH_ID, path18Id);
-    public static final ImmutableMap<String, Object> path19Info = ImmutableMap.<String, Object>of(PATH_ID, path19Id);
-    public static final ImmutableMap<String, Object> path20Info = ImmutableMap.<String, Object>of(PATH_ID, path20Id);
-    public static final ImmutableMap<String, Object> path21Info = ImmutableMap.<String, Object>of(PATH_ID, path21Id);
-    public static final ImmutableMap<String, Object> path22Info = ImmutableMap.<String, Object>of(PATH_ID, path22Id);
-    public static final ImmutableMap<String, Object> path23Info = ImmutableMap.<String, Object>of(PATH_ID, path23Id);
-    public static final ImmutableMap<String, Object> path24Info = ImmutableMap.<String, Object>of(PATH_ID, path24Id);
-    public static final ImmutableMap<String, Object> path25Info = ImmutableMap.<String, Object>of(PATH_ID, path25Id);
-    public static final ImmutableMap<String, Object> path26Info = ImmutableMap.<String, Object>of(PATH_ID, path26Id);
-    public static final ImmutableMap<String, Object> path27Info = ImmutableMap.<String, Object>of(PATH_ID, path27Id);
-    public static final ImmutableMap<String, Object> path28Info = ImmutableMap.<String, Object>of(PATH_ID, path28Id);
-    public static final ImmutableMap<String, Object> path29Info = ImmutableMap.<String, Object>of(PATH_ID, path29Id);
-    public static final ImmutableMap<String, Object> path30Info = ImmutableMap.<String, Object>of(PATH_ID, path30Id);
-    public static final ImmutableMap<String, Object> path31Info = ImmutableMap.<String, Object>of(PATH_ID, path31Id);
-    public static final ImmutableMap<String, Object> path32Info = ImmutableMap.<String, Object>of(PATH_ID, path32Id);
-    public static final ImmutableMap<String, Object> path33Info = ImmutableMap.<String, Object>of(PATH_ID, path33Id);
-    public static final ImmutableMap<String, Object> path34Info = ImmutableMap.<String, Object>of(PATH_ID, path34Id);
-    public static final ImmutableMap<String, Object> path35Info = ImmutableMap.<String, Object>of(PATH_ID, path35Id);
-    public static final ImmutableMap<String, Object> path36Info = ImmutableMap.<String, Object>of(PATH_ID, path36Id);
-    public static final ImmutableMap<String, Object> path37Info = ImmutableMap.<String, Object>of(PATH_ID, path37Id);
-    public static final ImmutableMap<String, Object> path38Info = ImmutableMap.<String, Object>of(PATH_ID, path38Id);
-    public static final ImmutableMap<String, Object> path39Info = ImmutableMap.<String, Object>of(PATH_ID, path39Id);
-    public static final ImmutableMap<String, Object> path40Info = ImmutableMap.<String, Object>of(PATH_ID, path40Id);
-    public static final ImmutableMap<String, Object> path41Info = ImmutableMap.<String, Object>of(PATH_ID, path41Id);
-    public static final ImmutableMap<String, Object> path42Info = ImmutableMap.<String, Object>of(PATH_ID, path42Id);
-    public static final ImmutableMap<String, Object> path43Info = ImmutableMap.<String, Object>of(PATH_ID, path43Id);
-    public static final ImmutableMap<String, Object> path44Info = ImmutableMap.<String, Object>of(PATH_ID, path44Id);
-    public static final ImmutableMap<String, Object> path45Info = ImmutableMap.<String, Object>of(PATH_ID, path45Id);
-    public static final ImmutableMap<String, Object> path46Info = ImmutableMap.<String, Object>of(PATH_ID, path46Id);
-    public static final ImmutableMap<String, Object> path47Info = ImmutableMap.<String, Object>of(PATH_ID, path47Id);
-    public static final ImmutableMap<String, Object> path48Info = ImmutableMap.<String, Object>of(PATH_ID, path48Id);
-    public static final ImmutableMap<String, Object> path49Info = ImmutableMap.<String, Object>of(PATH_ID, path49Id);
-    public static final ImmutableMap<String, Object> path50Info = ImmutableMap.<String, Object>of(PATH_ID, path50Id);
-    public static final ImmutableMap<String, Object> path51Info = ImmutableMap.<String, Object>of(PATH_ID, path51Id);
-    public static final ImmutableMap<String, Object> path52Info = ImmutableMap.<String, Object>of(PATH_ID, path52Id);
-    public static final ImmutableMap<String, Object> path53Info = ImmutableMap.<String, Object>of(PATH_ID, path53Id);
-    public static final ImmutableMap<String, Object> path54Info = ImmutableMap.<String, Object>of(PATH_ID, path54Id);
-    public static final ImmutableMap<String, Object> path55Info = ImmutableMap.<String, Object>of(PATH_ID, path55Id);
-    public static final ImmutableMap<String, Object> path56Info = ImmutableMap.<String, Object>of(PATH_ID, path56Id);
-    public static final ImmutableMap<String, Object> path57Info = ImmutableMap.<String, Object>of(PATH_ID, path57Id);
-    public static final ImmutableMap<String, Object> path58Info = ImmutableMap.<String, Object>of(PATH_ID, path58Id);
-    public static final ImmutableMap<String, Object> path59Info = ImmutableMap.<String, Object>of(PATH_ID, path59Id);
-    public static final ImmutableMap<String, Object> path60Info = ImmutableMap.<String, Object>of(PATH_ID, path60Id);
-    public static final ImmutableMap<String, Object> path61Info = ImmutableMap.<String, Object>of(PATH_ID, path61Id);
-    public static final ImmutableMap<String, Object> path62Info = ImmutableMap.<String, Object>of(PATH_ID, path62Id);
-    public static final ImmutableMap<String, Object> path63Info = ImmutableMap.<String, Object>of(PATH_ID, path63Id);
-    public static final ImmutableMap<String, Object> path64Info = ImmutableMap.<String, Object>of(PATH_ID, path64Id);
-    public static final ImmutableMap<String, Object> path65Info = ImmutableMap.<String, Object>of(PATH_ID, path65Id);
-    public static final ImmutableMap<String, Object> path66Info = ImmutableMap.<String, Object>of(PATH_ID, path66Id);
-    public static final ImmutableMap<String, Object> path67Info = ImmutableMap.<String, Object>of(PATH_ID, path67Id);
-    public static final ImmutableMap<String, Object> path68Info = ImmutableMap.<String, Object>of(PATH_ID, path68Id);
-    public static final ImmutableMap<String, Object> path69Info = ImmutableMap.<String, Object>of(PATH_ID, path69Id);
-    public static final ImmutableMap<String, Object> path70Info = ImmutableMap.<String, Object>of(PATH_ID, path70Id);
-    public static final ImmutableMap<String, Object> path71Info = ImmutableMap.<String, Object>of(PATH_ID, path71Id);
-    public static final ImmutableMap<String, Object> harbor00Info = ImmutableMap.<String, Object>of(HARBOR_ID, harbor00Id);
-    public static final ImmutableMap<String, Object> harbor01Info = ImmutableMap.<String, Object>of(HARBOR_ID, harbor01Id);
-    public static final ImmutableMap<String, Object> harbor02Info = ImmutableMap.<String, Object>of(HARBOR_ID, harbor02Id);
-    public static final ImmutableMap<String, Object> harbor03Info = ImmutableMap.<String, Object>of(HARBOR_ID, harbor03Id);
-    public static final ImmutableMap<String, Object> harbor04Info = ImmutableMap.<String, Object>of(HARBOR_ID, harbor04Id);
-    public static final ImmutableMap<String, Object> harbor05Info = ImmutableMap.<String, Object>of(HARBOR_ID, harbor05Id);
-    public static final ImmutableMap<String, Object> harbor06Info = ImmutableMap.<String, Object>of(HARBOR_ID, harbor06Id);
-    public static final ImmutableMap<String, Object> harbor07Info = ImmutableMap.<String, Object>of(HARBOR_ID, harbor07Id);
-    public static final ImmutableMap<String, Object> harbor08Info = ImmutableMap.<String, Object>of(HARBOR_ID, harbor08Id);
-    public static final ImmutableMap<String, Object> developmentCard00Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard00Id);
-    public static final ImmutableMap<String, Object> developmentCard01Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard01Id);
-    public static final ImmutableMap<String, Object> developmentCard02Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard02Id);
-    public static final ImmutableMap<String, Object> developmentCard03Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard03Id);
-    public static final ImmutableMap<String, Object> developmentCard04Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard04Id);
-    public static final ImmutableMap<String, Object> developmentCard05Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard05Id);
-    public static final ImmutableMap<String, Object> developmentCard06Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard06Id);
-    public static final ImmutableMap<String, Object> developmentCard07Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard07Id);
-    public static final ImmutableMap<String, Object> developmentCard08Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard08Id);
-    public static final ImmutableMap<String, Object> developmentCard09Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard09Id);
-    public static final ImmutableMap<String, Object> developmentCard10Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard10Id);
-    public static final ImmutableMap<String, Object> developmentCard11Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard11Id);
-    public static final ImmutableMap<String, Object> developmentCard12Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard12Id);
-    public static final ImmutableMap<String, Object> developmentCard13Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard13Id);
-    public static final ImmutableMap<String, Object> developmentCard14Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard14Id);
-    public static final ImmutableMap<String, Object> developmentCard15Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard15Id);
-    public static final ImmutableMap<String, Object> developmentCard16Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard16Id);
-    public static final ImmutableMap<String, Object> developmentCard17Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard17Id);
-    public static final ImmutableMap<String, Object> developmentCard18Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard18Id);
-    public static final ImmutableMap<String, Object> developmentCard19Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard19Id);
-    public static final ImmutableMap<String, Object> developmentCard20Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard20Id);
-    public static final ImmutableMap<String, Object> developmentCard21Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard21Id);
-    public static final ImmutableMap<String, Object> developmentCard22Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard22Id);
-    public static final ImmutableMap<String, Object> developmentCard23Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard23Id);
-    public static final ImmutableMap<String, Object> developmentCard24Info = ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard24Id);
-    public static final ImmutableMap<String, Object> city00PBInfo = ImmutableMap.<String, Object>of(CITY_PB_ID, city00PBId);
-    public static final ImmutableMap<String, Object> city01PBInfo = ImmutableMap.<String, Object>of(CITY_PB_ID, city01PBId);
-    public static final ImmutableMap<String, Object> city02PBInfo = ImmutableMap.<String, Object>of(CITY_PB_ID, city02PBId);
-    public static final ImmutableMap<String, Object> city03PBInfo = ImmutableMap.<String, Object>of(CITY_PB_ID, city03PBId);
-    public static final ImmutableMap<String, Object> city00PRInfo = ImmutableMap.<String, Object>of(CITY_PR_ID, city00PRId);
-    public static final ImmutableMap<String, Object> city01PRInfo = ImmutableMap.<String, Object>of(CITY_PR_ID, city01PRId);
-    public static final ImmutableMap<String, Object> city02PRInfo = ImmutableMap.<String, Object>of(CITY_PR_ID, city02PRId);
-    public static final ImmutableMap<String, Object> city03PRInfo = ImmutableMap.<String, Object>of(CITY_PR_ID, city03PRId);
-    public static final ImmutableMap<String, Object> city00PYInfo = ImmutableMap.<String, Object>of(CITY_PY_ID, city00PYId);
-    public static final ImmutableMap<String, Object> city01PYInfo = ImmutableMap.<String, Object>of(CITY_PY_ID, city01PYId);
-    public static final ImmutableMap<String, Object> city02PYInfo = ImmutableMap.<String, Object>of(CITY_PY_ID, city02PYId);
-    public static final ImmutableMap<String, Object> city03PYInfo = ImmutableMap.<String, Object>of(CITY_PY_ID, city03PYId);
-    public static final ImmutableMap<String, Object> city00PGInfo = ImmutableMap.<String, Object>of(CITY_PG_ID, city00PGId);
-    public static final ImmutableMap<String, Object> city01PGInfo = ImmutableMap.<String, Object>of(CITY_PG_ID, city01PGId);
-    public static final ImmutableMap<String, Object> city02PGInfo = ImmutableMap.<String, Object>of(CITY_PG_ID, city02PGId);
-    public static final ImmutableMap<String, Object> city03PGInfo = ImmutableMap.<String, Object>of(CITY_PG_ID, city03PGId);
-    public static final ImmutableMap<String, Object> settlement00PBInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PB_ID, settlement00PBId);
-    public static final ImmutableMap<String, Object> settlement01PBInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PB_ID, settlement01PBId);
-    public static final ImmutableMap<String, Object> settlement02PBInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PB_ID, settlement02PBId);
-    public static final ImmutableMap<String, Object> settlement03PBInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PB_ID, settlement03PBId);
-    public static final ImmutableMap<String, Object> settlement04PBInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PB_ID, settlement04PBId);
-    public static final ImmutableMap<String, Object> settlement00PRInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PR_ID, settlement00PRId);
-    public static final ImmutableMap<String, Object> settlement01PRInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PR_ID, settlement01PRId);
-    public static final ImmutableMap<String, Object> settlement02PRInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PR_ID, settlement02PRId);
-    public static final ImmutableMap<String, Object> settlement03PRInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PR_ID, settlement03PRId);
-    public static final ImmutableMap<String, Object> settlement04PRInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PR_ID, settlement04PRId);
-    public static final ImmutableMap<String, Object> settlement00PYInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PY_ID, settlement00PYId);
-    public static final ImmutableMap<String, Object> settlement01PYInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PY_ID, settlement01PYId);
-    public static final ImmutableMap<String, Object> settlement02PYInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PY_ID, settlement02PYId);
-    public static final ImmutableMap<String, Object> settlement03PYInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PY_ID, settlement03PYId);
-    public static final ImmutableMap<String, Object> settlement04PYInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PY_ID, settlement04PYId);
-    public static final ImmutableMap<String, Object> settlement00PGInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PG_ID, settlement00PGId);
-    public static final ImmutableMap<String, Object> settlement01PGInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PG_ID, settlement01PGId);
-    public static final ImmutableMap<String, Object> settlement02PGInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PG_ID, settlement02PGId);
-    public static final ImmutableMap<String, Object> settlement03PGInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PG_ID, settlement03PGId);
-    public static final ImmutableMap<String, Object> settlement04PGInfo = ImmutableMap.<String, Object>of(SETTLEMENT_PG_ID, settlement04PGId);
-    public static final ImmutableMap<String, Object> road00PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road00PBId);
-    public static final ImmutableMap<String, Object> road01PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road01PBId);
-    public static final ImmutableMap<String, Object> road02PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road02PBId);
-    public static final ImmutableMap<String, Object> road03PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road03PBId);
-    public static final ImmutableMap<String, Object> road04PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road04PBId);
-    public static final ImmutableMap<String, Object> road05PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road05PBId);
-    public static final ImmutableMap<String, Object> road06PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road06PBId);
-    public static final ImmutableMap<String, Object> road07PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road07PBId);
-    public static final ImmutableMap<String, Object> road08PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road08PBId);
-    public static final ImmutableMap<String, Object> road09PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road09PBId);
-    public static final ImmutableMap<String, Object> road10PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road10PBId);
-    public static final ImmutableMap<String, Object> road11PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road11PBId);
-    public static final ImmutableMap<String, Object> road12PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road12PBId);
-    public static final ImmutableMap<String, Object> road13PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road13PBId);
-    public static final ImmutableMap<String, Object> road14PBInfo = ImmutableMap.<String, Object>of(ROAD_PB_ID, road14PBId);
-    public static final ImmutableMap<String, Object> road00PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road00PRId);
-    public static final ImmutableMap<String, Object> road01PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road01PRId);
-    public static final ImmutableMap<String, Object> road02PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road02PRId);
-    public static final ImmutableMap<String, Object> road03PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road03PRId);
-    public static final ImmutableMap<String, Object> road04PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road04PRId);
-    public static final ImmutableMap<String, Object> road05PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road05PRId);
-    public static final ImmutableMap<String, Object> road06PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road06PRId);
-    public static final ImmutableMap<String, Object> road07PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road07PRId);
-    public static final ImmutableMap<String, Object> road08PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road08PRId);
-    public static final ImmutableMap<String, Object> road09PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road09PRId);
-    public static final ImmutableMap<String, Object> road10PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road10PRId);
-    public static final ImmutableMap<String, Object> road11PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road11PRId);
-    public static final ImmutableMap<String, Object> road12PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road12PRId);
-    public static final ImmutableMap<String, Object> road13PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road13PRId);
-    public static final ImmutableMap<String, Object> road14PRInfo = ImmutableMap.<String, Object>of(ROAD_PR_ID, road14PRId);
-    public static final ImmutableMap<String, Object> road00PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road00PYId);
-    public static final ImmutableMap<String, Object> road01PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road01PYId);
-    public static final ImmutableMap<String, Object> road02PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road02PYId);
-    public static final ImmutableMap<String, Object> road03PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road03PYId);
-    public static final ImmutableMap<String, Object> road04PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road04PYId);
-    public static final ImmutableMap<String, Object> road05PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road05PYId);
-    public static final ImmutableMap<String, Object> road06PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road06PYId);
-    public static final ImmutableMap<String, Object> road07PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road07PYId);
-    public static final ImmutableMap<String, Object> road08PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road08PYId);
-    public static final ImmutableMap<String, Object> road09PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road09PYId);
-    public static final ImmutableMap<String, Object> road10PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road10PYId);
-    public static final ImmutableMap<String, Object> road11PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road11PYId);
-    public static final ImmutableMap<String, Object> road12PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road12PYId);
-    public static final ImmutableMap<String, Object> road13PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road13PYId);
-    public static final ImmutableMap<String, Object> road14PYInfo = ImmutableMap.<String, Object>of(ROAD_PY_ID, road14PYId);
-    public static final ImmutableMap<String, Object> road00PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road00PGId);
-    public static final ImmutableMap<String, Object> road01PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road01PGId);
-    public static final ImmutableMap<String, Object> road02PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road02PGId);
-    public static final ImmutableMap<String, Object> road03PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road03PGId);
-    public static final ImmutableMap<String, Object> road04PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road04PGId);
-    public static final ImmutableMap<String, Object> road05PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road05PGId);
-    public static final ImmutableMap<String, Object> road06PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road06PGId);
-    public static final ImmutableMap<String, Object> road07PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road07PGId);
-    public static final ImmutableMap<String, Object> road08PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road08PGId);
-    public static final ImmutableMap<String, Object> road09PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road09PGId);
-    public static final ImmutableMap<String, Object> road10PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road10PGId);
-    public static final ImmutableMap<String, Object> road11PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road11PGId);
-    public static final ImmutableMap<String, Object> road12PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road12PGId);
-    public static final ImmutableMap<String, Object> road13PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road13PGId);
-    public static final ImmutableMap<String, Object> road14PGInfo = ImmutableMap.<String, Object>of(ROAD_PG_ID, road14PGId);
-    public static final ImmutableMap<String, Object> resourceCard00PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard00PBId);
-    public static final ImmutableMap<String, Object> resourceCard01PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard01PBId);
-    public static final ImmutableMap<String, Object> resourceCard02PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard02PBId);
-    public static final ImmutableMap<String, Object> resourceCard03PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard03PBId);
-    public static final ImmutableMap<String, Object> resourceCard04PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard04PBId);
-    public static final ImmutableMap<String, Object> resourceCard05PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard05PBId);
-    public static final ImmutableMap<String, Object> resourceCard06PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard06PBId);
-    public static final ImmutableMap<String, Object> resourceCard07PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard07PBId);
-    public static final ImmutableMap<String, Object> resourceCard08PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard08PBId);
-    public static final ImmutableMap<String, Object> resourceCard09PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard09PBId);
-    public static final ImmutableMap<String, Object> resourceCard10PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard10PBId);
-    public static final ImmutableMap<String, Object> resourceCard11PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard11PBId);
-    public static final ImmutableMap<String, Object> resourceCard12PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard12PBId);
-    public static final ImmutableMap<String, Object> resourceCard13PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard13PBId);
-    public static final ImmutableMap<String, Object> resourceCard14PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard14PBId);
-    public static final ImmutableMap<String, Object> resourceCard15PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard15PBId);
-    public static final ImmutableMap<String, Object> resourceCard16PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard16PBId);
-    public static final ImmutableMap<String, Object> resourceCard17PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard17PBId);
-    public static final ImmutableMap<String, Object> resourceCard18PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard18PBId);
-    public static final ImmutableMap<String, Object> resourceCard19PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard19PBId);
-    public static final ImmutableMap<String, Object> resourceCard20PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard20PBId);
-    public static final ImmutableMap<String, Object> resourceCard21PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard21PBId);
-    public static final ImmutableMap<String, Object> resourceCard22PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard22PBId);
-    public static final ImmutableMap<String, Object> resourceCard23PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard23PBId);
-    public static final ImmutableMap<String, Object> resourceCard24PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard24PBId);
-    public static final ImmutableMap<String, Object> resourceCard25PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard25PBId);
-    public static final ImmutableMap<String, Object> resourceCard26PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard26PBId);
-    public static final ImmutableMap<String, Object> resourceCard27PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard27PBId);
-    public static final ImmutableMap<String, Object> resourceCard28PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard28PBId);
-    public static final ImmutableMap<String, Object> resourceCard29PBInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard29PBId);
-    public static final ImmutableMap<String, Object> resourceCard00PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard00PRId);
-    public static final ImmutableMap<String, Object> resourceCard01PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard01PRId);
-    public static final ImmutableMap<String, Object> resourceCard02PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard02PRId);
-    public static final ImmutableMap<String, Object> resourceCard03PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard03PRId);
-    public static final ImmutableMap<String, Object> resourceCard04PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard04PRId);
-    public static final ImmutableMap<String, Object> resourceCard05PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard05PRId);
-    public static final ImmutableMap<String, Object> resourceCard06PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard06PRId);
-    public static final ImmutableMap<String, Object> resourceCard07PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard07PRId);
-    public static final ImmutableMap<String, Object> resourceCard08PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard08PRId);
-    public static final ImmutableMap<String, Object> resourceCard09PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard09PRId);
-    public static final ImmutableMap<String, Object> resourceCard10PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard10PRId);
-    public static final ImmutableMap<String, Object> resourceCard11PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard11PRId);
-    public static final ImmutableMap<String, Object> resourceCard12PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard12PRId);
-    public static final ImmutableMap<String, Object> resourceCard13PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard13PRId);
-    public static final ImmutableMap<String, Object> resourceCard14PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard14PRId);
-    public static final ImmutableMap<String, Object> resourceCard15PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard15PRId);
-    public static final ImmutableMap<String, Object> resourceCard16PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard16PRId);
-    public static final ImmutableMap<String, Object> resourceCard17PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard17PRId);
-    public static final ImmutableMap<String, Object> resourceCard18PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard18PRId);
-    public static final ImmutableMap<String, Object> resourceCard19PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard19PRId);
-    public static final ImmutableMap<String, Object> resourceCard20PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard20PRId);
-    public static final ImmutableMap<String, Object> resourceCard21PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard21PRId);
-    public static final ImmutableMap<String, Object> resourceCard22PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard22PRId);
-    public static final ImmutableMap<String, Object> resourceCard23PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard23PRId);
-    public static final ImmutableMap<String, Object> resourceCard24PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard24PRId);
-    public static final ImmutableMap<String, Object> resourceCard25PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard25PRId);
-    public static final ImmutableMap<String, Object> resourceCard26PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard26PRId);
-    public static final ImmutableMap<String, Object> resourceCard27PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard27PRId);
-    public static final ImmutableMap<String, Object> resourceCard28PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard28PRId);
-    public static final ImmutableMap<String, Object> resourceCard29PRInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard29PRId);
-    public static final ImmutableMap<String, Object> resourceCard00PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard00PYId);
-    public static final ImmutableMap<String, Object> resourceCard01PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard01PYId);
-    public static final ImmutableMap<String, Object> resourceCard02PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard02PYId);
-    public static final ImmutableMap<String, Object> resourceCard03PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard03PYId);
-    public static final ImmutableMap<String, Object> resourceCard04PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard04PYId);
-    public static final ImmutableMap<String, Object> resourceCard05PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard05PYId);
-    public static final ImmutableMap<String, Object> resourceCard06PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard06PYId);
-    public static final ImmutableMap<String, Object> resourceCard07PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard07PYId);
-    public static final ImmutableMap<String, Object> resourceCard08PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard08PYId);
-    public static final ImmutableMap<String, Object> resourceCard09PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard09PYId);
-    public static final ImmutableMap<String, Object> resourceCard10PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard10PYId);
-    public static final ImmutableMap<String, Object> resourceCard11PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard11PYId);
-    public static final ImmutableMap<String, Object> resourceCard12PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard12PYId);
-    public static final ImmutableMap<String, Object> resourceCard13PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard13PYId);
-    public static final ImmutableMap<String, Object> resourceCard14PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard14PYId);
-    public static final ImmutableMap<String, Object> resourceCard15PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard15PYId);
-    public static final ImmutableMap<String, Object> resourceCard16PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard16PYId);
-    public static final ImmutableMap<String, Object> resourceCard17PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard17PYId);
-    public static final ImmutableMap<String, Object> resourceCard18PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard18PYId);
-    public static final ImmutableMap<String, Object> resourceCard19PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard19PYId);
-    public static final ImmutableMap<String, Object> resourceCard20PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard20PYId);
-    public static final ImmutableMap<String, Object> resourceCard21PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard21PYId);
-    public static final ImmutableMap<String, Object> resourceCard22PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard22PYId);
-    public static final ImmutableMap<String, Object> resourceCard23PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard23PYId);
-    public static final ImmutableMap<String, Object> resourceCard24PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard24PYId);
-    public static final ImmutableMap<String, Object> resourceCard25PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard25PYId);
-    public static final ImmutableMap<String, Object> resourceCard26PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard26PYId);
-    public static final ImmutableMap<String, Object> resourceCard27PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard27PYId);
-    public static final ImmutableMap<String, Object> resourceCard28PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard28PYId);
-    public static final ImmutableMap<String, Object> resourceCard29PYInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard29PYId);
-    public static final ImmutableMap<String, Object> resourceCard00PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard00PGId);
-    public static final ImmutableMap<String, Object> resourceCard01PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard01PGId);
-    public static final ImmutableMap<String, Object> resourceCard02PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard02PGId);
-    public static final ImmutableMap<String, Object> resourceCard03PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard03PGId);
-    public static final ImmutableMap<String, Object> resourceCard04PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard04PGId);
-    public static final ImmutableMap<String, Object> resourceCard05PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard05PGId);
-    public static final ImmutableMap<String, Object> resourceCard06PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard06PGId);
-    public static final ImmutableMap<String, Object> resourceCard07PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard07PGId);
-    public static final ImmutableMap<String, Object> resourceCard08PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard08PGId);
-    public static final ImmutableMap<String, Object> resourceCard09PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard09PGId);
-    public static final ImmutableMap<String, Object> resourceCard10PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard10PGId);
-    public static final ImmutableMap<String, Object> resourceCard11PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard11PGId);
-    public static final ImmutableMap<String, Object> resourceCard12PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard12PGId);
-    public static final ImmutableMap<String, Object> resourceCard13PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard13PGId);
-    public static final ImmutableMap<String, Object> resourceCard14PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard14PGId);
-    public static final ImmutableMap<String, Object> resourceCard15PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard15PGId);
-    public static final ImmutableMap<String, Object> resourceCard16PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard16PGId);
-    public static final ImmutableMap<String, Object> resourceCard17PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard17PGId);
-    public static final ImmutableMap<String, Object> resourceCard18PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard18PGId);
-    public static final ImmutableMap<String, Object> resourceCard19PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard19PGId);
-    public static final ImmutableMap<String, Object> resourceCard20PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard20PGId);
-    public static final ImmutableMap<String, Object> resourceCard21PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard21PGId);
-    public static final ImmutableMap<String, Object> resourceCard22PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard22PGId);
-    public static final ImmutableMap<String, Object> resourceCard23PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard23PGId);
-    public static final ImmutableMap<String, Object> resourceCard24PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard24PGId);
-    public static final ImmutableMap<String, Object> resourceCard25PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard25PGId);
-    public static final ImmutableMap<String, Object> resourceCard26PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard26PGId);
-    public static final ImmutableMap<String, Object> resourceCard27PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard27PGId);
-    public static final ImmutableMap<String, Object> resourceCard28PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard28PGId);
-    public static final ImmutableMap<String, Object> resourceCard29PGInfo = ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard29PGId);
-    public static final ImmutableList<Map<String, Object>> playersInfo = ImmutableList.<Map<String, Object>>of(pbInfo, prInfo, pyInfo, pgInfo);
-    public static final ImmutableList<Map<String, Object>> hexInfo = ImmutableList.<Map<String, Object>>of(hex00Info, hex01Info, hex02Info, hex03Info, hex04Info,
-    																   hex05Info, hex06Info, hex07Info, hex08Info, hex09Info, 
-    																   hex10Info, hex11Info, hex12Info, hex13Info, hex14Info,
-    																   hex15Info, hex16Info, hex17Info, hex18Info);
-    public static final ImmutableList<Map<String, Object>> nodeInfo = ImmutableList.<Map<String, Object>>of(node00Info, node01Info, node02Info, node03Info, node04Info,
-    																	node05Info, node06Info, node07Info, node08Info, node09Info,
-    																	node10Info, node11Info, node12Info, node13Info, node14Info,
-    																	node15Info, node16Info, node17Info, node18Info, node19Info,
-    																	node20Info, node21Info, node22Info, node23Info, node24Info,
-    																	node25Info, node26Info, node27Info, node28Info, node29Info,
-    																	node30Info, node31Info, node32Info, node33Info, node34Info,
-    																	node35Info, node36Info, node37Info, node38Info, node39Info,
-    																	node40Info, node41Info, node42Info, node43Info, node44Info,
-    																	node45Info, node46Info, node47Info, node48Info, node49Info,
-    																	node50Info, node51Info, node52Info, node53Info);
-    public static final ImmutableList<Map<String, Object>> pathInfo = ImmutableList.<Map<String, Object>>of(path00Info, path01Info, path02Info, path03Info, path04Info,
-    																	path05Info, path06Info, path07Info, path08Info, path09Info,
-    																	path10Info, path11Info, path12Info, path13Info, path14Info,
-    																	path15Info, path16Info, path17Info, path18Info, path19Info,
-    																	path20Info, path21Info, path22Info, path23Info, path24Info,
-    																	path25Info, path26Info, path27Info, path28Info, path29Info,
-    																	path30Info, path31Info, path32Info, path33Info, path34Info,
-    																	path35Info, path36Info, path37Info, path38Info, path39Info,
-    																	path40Info, path41Info, path42Info, path43Info, path44Info,
-    																	path45Info, path46Info, path47Info, path48Info, path49Info,
-    																	path50Info, path51Info, path52Info, path53Info, path54Info,
-    																	path55Info, path56Info, path57Info, path58Info, path59Info,
-    																	path60Info, path61Info, path62Info, path63Info, path64Info,
-    																	path65Info, path66Info, path67Info, path68Info, path69Info,
-    																	path70Info, path71Info);
-    public static final ImmutableList<Map<String, Object>> harborInfo = ImmutableList.<Map<String, Object>>of(harbor00Info, harbor01Info, harbor02Info, harbor03Info, harbor04Info,
-    																	  harbor05Info, harbor06Info, harbor07Info, harbor08Info);
-    public static final ImmutableList<Map<String, Object>> developmentCardInfo = ImmutableList.<Map<String, Object>>of(developmentCard00Info, developmentCard01Info, developmentCard02Info,
-    																			   developmentCard03Info, developmentCard04Info, developmentCard05Info,
-    																			   developmentCard06Info, developmentCard07Info, developmentCard08Info,
-    																			   developmentCard09Info, developmentCard10Info, developmentCard11Info,
-    																			   developmentCard12Info, developmentCard13Info, developmentCard14Info,
-    																			   developmentCard15Info, developmentCard16Info, developmentCard17Info,
-    																			   developmentCard18Info, developmentCard19Info, developmentCard20Info,
-    																			   developmentCard21Info, developmentCard22Info, developmentCard23Info,
-    																			   developmentCard24Info);
-    public static final ImmutableList<Map<String, Object>> cityPBInfo = ImmutableList.<Map<String, Object>>of(city00PBInfo, city01PBInfo, city02PBInfo, city03PBInfo);
-    public static final ImmutableList<Map<String, Object>> cityPRInfo = ImmutableList.<Map<String, Object>>of(city00PRInfo, city01PRInfo, city02PRInfo, city03PRInfo);
-    public static final ImmutableList<Map<String, Object>> cityPYInfo = ImmutableList.<Map<String, Object>>of(city00PYInfo, city01PYInfo, city02PYInfo, city03PYInfo);
-    public static final ImmutableList<Map<String, Object>> cityPGInfo = ImmutableList.<Map<String, Object>>of(city00PGInfo, city01PGInfo, city02PGInfo, city03PGInfo);
-    public static final ImmutableList<Map<String, Object>> settlementPBInfo = ImmutableList.<Map<String, Object>>of(settlement00PBInfo, settlement01PBInfo, settlement02PBInfo,
-    																			settlement03PBInfo, settlement04PBInfo);
-    public static final ImmutableList<Map<String, Object>> settlementPRInfo = ImmutableList.<Map<String, Object>>of(settlement00PRInfo, settlement01PRInfo, settlement02PRInfo,
-    																			settlement03PRInfo, settlement04PRInfo);
-    public static final ImmutableList<Map<String, Object>> settlementPYInfo = ImmutableList.<Map<String, Object>>of(settlement00PYInfo, settlement01PYInfo, settlement02PYInfo,
-    																			settlement03PYInfo, settlement04PYInfo);
-    public static final ImmutableList<Map<String, Object>> settlementPGInfo = ImmutableList.<Map<String, Object>>of(settlement00PGInfo, settlement01PGInfo, settlement02PGInfo,
-    																			settlement03PGInfo, settlement04PGInfo);
-    public static final ImmutableList<Map<String, Object>> roadPBInfo = ImmutableList.<Map<String, Object>>of(road00PBInfo, road01PBInfo, road02PBInfo, road03PBInfo, road04PBInfo,
-    																	  road05PBInfo, road06PBInfo, road07PBInfo, road08PBInfo, road09PBInfo,
-    																	  road10PBInfo, road11PBInfo, road12PBInfo, road13PBInfo, road14PBInfo);
-    public static final ImmutableList<Map<String, Object>> roadPRInfo = ImmutableList.<Map<String, Object>>of(road00PRInfo, road01PRInfo, road02PRInfo, road03PRInfo, road04PRInfo,
-			 															  road05PRInfo, road06PRInfo, road07PRInfo, road08PRInfo, road09PRInfo,
-			 															  road10PRInfo, road11PRInfo, road12PRInfo, road13PRInfo, road14PRInfo);
-    public static final ImmutableList<Map<String, Object>> roadPYInfo = ImmutableList.<Map<String, Object>>of(road00PYInfo, road01PYInfo, road02PYInfo, road03PYInfo, road04PYInfo,
-			 															  road05PYInfo, road06PYInfo, road07PYInfo, road08PYInfo, road09PYInfo,
-			 															  road10PYInfo, road11PYInfo, road12PYInfo, road13PYInfo, road14PYInfo);
-    public static final ImmutableList<Map<String, Object>> roadPGInfo = ImmutableList.<Map<String, Object>>of(road00PGInfo, road01PGInfo, road02PGInfo, road03PGInfo, road04PGInfo,
-			 															  road05PGInfo, road06PGInfo, road07PGInfo, road08PGInfo, road09PGInfo,
-			 															  road10PGInfo, road11PGInfo, road12PGInfo, road13PGInfo, road14PGInfo);
-    public static final ImmutableList<Map<String, Object>> resourceCardPBInfo = ImmutableList.<Map<String, Object>>of(resourceCard00PBInfo, resourceCard01PBInfo, resourceCard02PBInfo,
-    																			  resourceCard03PBInfo, resourceCard04PBInfo, resourceCard05PBInfo,
-    																			  resourceCard06PBInfo, resourceCard07PBInfo, resourceCard08PBInfo,
-    																			  resourceCard09PBInfo, resourceCard10PBInfo, resourceCard11PBInfo,
-    																			  resourceCard12PBInfo, resourceCard13PBInfo, resourceCard14PBInfo,
-    																			  resourceCard15PBInfo, resourceCard16PBInfo, resourceCard17PBInfo,
-    																			  resourceCard18PBInfo, resourceCard19PBInfo, resourceCard20PBInfo,
-    																			  resourceCard21PBInfo, resourceCard22PBInfo, resourceCard23PBInfo,
-    																			  resourceCard24PBInfo, resourceCard25PBInfo, resourceCard26PBInfo,
-    																			  resourceCard27PBInfo, resourceCard28PBInfo, resourceCard29PBInfo);
-    public static final ImmutableList<Map<String, Object>> resourceCardPRInfo = ImmutableList.<Map<String, Object>>of(resourceCard00PRInfo, resourceCard01PRInfo, resourceCard02PRInfo,
-																				  resourceCard03PRInfo, resourceCard04PRInfo, resourceCard05PRInfo,
-																				  resourceCard06PRInfo, resourceCard07PRInfo, resourceCard08PRInfo,
-																				  resourceCard09PRInfo, resourceCard10PRInfo, resourceCard11PRInfo,
-																				  resourceCard12PRInfo, resourceCard13PRInfo, resourceCard14PRInfo,
-																				  resourceCard15PRInfo, resourceCard16PRInfo, resourceCard17PRInfo,
-																				  resourceCard18PRInfo, resourceCard19PRInfo, resourceCard20PRInfo,
-																				  resourceCard21PRInfo, resourceCard22PRInfo, resourceCard23PRInfo,
-																				  resourceCard24PRInfo, resourceCard25PRInfo, resourceCard26PRInfo,
-																				  resourceCard27PRInfo, resourceCard28PRInfo, resourceCard29PRInfo);
-    public static final ImmutableList<Map<String, Object>> resourceCardPYInfo = ImmutableList.<Map<String, Object>>of(resourceCard00PYInfo, resourceCard01PYInfo, resourceCard02PYInfo,
-																				  resourceCard03PYInfo, resourceCard04PYInfo, resourceCard05PYInfo,
-																				  resourceCard06PYInfo, resourceCard07PYInfo, resourceCard08PYInfo,
-																				  resourceCard09PYInfo, resourceCard10PYInfo, resourceCard11PYInfo,
-																				  resourceCard12PYInfo, resourceCard13PYInfo, resourceCard14PYInfo,
-																				  resourceCard15PYInfo, resourceCard16PYInfo, resourceCard17PYInfo,
-																				  resourceCard18PYInfo, resourceCard19PYInfo, resourceCard20PYInfo,
-																				  resourceCard21PYInfo, resourceCard22PYInfo, resourceCard23PYInfo,
-																				  resourceCard24PYInfo, resourceCard25PYInfo, resourceCard26PYInfo,
-																				  resourceCard27PYInfo, resourceCard28PYInfo, resourceCard29PYInfo);
-    public static final ImmutableList<Map<String, Object>> resourceCardPGInfo = ImmutableList.<Map<String, Object>>of(resourceCard00PGInfo, resourceCard01PGInfo, resourceCard02PGInfo,
-																				  resourceCard03PGInfo, resourceCard04PGInfo, resourceCard05PGInfo,
-																				  resourceCard06PGInfo, resourceCard07PGInfo, resourceCard08PGInfo,
-																				  resourceCard09PGInfo, resourceCard10PGInfo, resourceCard11PGInfo,
-																				  resourceCard12PGInfo, resourceCard13PGInfo, resourceCard14PGInfo,
-																				  resourceCard15PGInfo, resourceCard16PGInfo, resourceCard17PGInfo,
-																				  resourceCard18PGInfo, resourceCard19PGInfo, resourceCard20PGInfo,
-																				  resourceCard21PGInfo, resourceCard22PGInfo, resourceCard23PGInfo,
-																				  resourceCard24PGInfo, resourceCard25PGInfo, resourceCard26PGInfo,
-																				  resourceCard27PGInfo, resourceCard28PGInfo, resourceCard29PGInfo);
+    public static final ImmutableMap<String, Object> pbInfo =
+            ImmutableMap.<String, Object>of(PLAYER_ID, pbId);
+    public static final ImmutableMap<String, Object> prInfo =
+            ImmutableMap.<String, Object>of(PLAYER_ID, prId);
+    public static final ImmutableMap<String, Object> pyInfo =
+            ImmutableMap.<String, Object>of(PLAYER_ID, pyId);
+    public static final ImmutableMap<String, Object> pgInfo =
+            ImmutableMap.<String, Object>of(PLAYER_ID, pgId);
+    public static final ImmutableMap<String, Object> hex00Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex00Id);
+    public static final ImmutableMap<String, Object> hex01Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex01Id);
+    public static final ImmutableMap<String, Object> hex02Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex02Id);
+    public static final ImmutableMap<String, Object> hex03Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex03Id);
+    public static final ImmutableMap<String, Object> hex04Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex04Id);
+    public static final ImmutableMap<String, Object> hex05Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex05Id);
+    public static final ImmutableMap<String, Object> hex06Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex06Id);
+    public static final ImmutableMap<String, Object> hex07Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex07Id);
+    public static final ImmutableMap<String, Object> hex08Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex08Id);
+    public static final ImmutableMap<String, Object> hex09Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex09Id);
+    public static final ImmutableMap<String, Object> hex10Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex10Id);
+    public static final ImmutableMap<String, Object> hex11Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex11Id);
+    public static final ImmutableMap<String, Object> hex12Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex12Id);
+    public static final ImmutableMap<String, Object> hex13Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex13Id);
+    public static final ImmutableMap<String, Object> hex14Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex14Id);
+    public static final ImmutableMap<String, Object> hex15Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex15Id);
+    public static final ImmutableMap<String, Object> hex16Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex16Id);
+    public static final ImmutableMap<String, Object> hex17Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex17Id);
+    public static final ImmutableMap<String, Object> hex18Info =
+            ImmutableMap.<String, Object>of(HEX_ID, hex18Id);
+    public static final ImmutableMap<String, Object> node00Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node00Id);
+    public static final ImmutableMap<String, Object> node01Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node01Id);
+    public static final ImmutableMap<String, Object> node02Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node02Id);
+    public static final ImmutableMap<String, Object> node03Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node03Id);
+    public static final ImmutableMap<String, Object> node04Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node04Id);
+    public static final ImmutableMap<String, Object> node05Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node05Id);
+    public static final ImmutableMap<String, Object> node06Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node06Id);
+    public static final ImmutableMap<String, Object> node07Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node07Id);
+    public static final ImmutableMap<String, Object> node08Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node08Id);
+    public static final ImmutableMap<String, Object> node09Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node09Id);
+    public static final ImmutableMap<String, Object> node10Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node10Id);
+    public static final ImmutableMap<String, Object> node11Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node11Id);
+    public static final ImmutableMap<String, Object> node12Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node12Id);
+    public static final ImmutableMap<String, Object> node13Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node13Id);
+    public static final ImmutableMap<String, Object> node14Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node14Id);
+    public static final ImmutableMap<String, Object> node15Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node15Id);
+    public static final ImmutableMap<String, Object> node16Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node16Id);
+    public static final ImmutableMap<String, Object> node17Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node17Id);
+    public static final ImmutableMap<String, Object> node18Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node18Id);
+    public static final ImmutableMap<String, Object> node19Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node19Id);
+    public static final ImmutableMap<String, Object> node20Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node20Id);
+    public static final ImmutableMap<String, Object> node21Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node21Id);
+    public static final ImmutableMap<String, Object> node22Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node22Id);
+    public static final ImmutableMap<String, Object> node23Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node23Id);
+    public static final ImmutableMap<String, Object> node24Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node24Id);
+    public static final ImmutableMap<String, Object> node25Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node25Id);
+    public static final ImmutableMap<String, Object> node26Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node26Id);
+    public static final ImmutableMap<String, Object> node27Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node27Id);
+    public static final ImmutableMap<String, Object> node28Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node28Id);
+    public static final ImmutableMap<String, Object> node29Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node29Id);
+    public static final ImmutableMap<String, Object> node30Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node30Id);
+    public static final ImmutableMap<String, Object> node31Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node31Id);
+    public static final ImmutableMap<String, Object> node32Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node32Id);
+    public static final ImmutableMap<String, Object> node33Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node33Id);
+    public static final ImmutableMap<String, Object> node34Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node34Id);
+    public static final ImmutableMap<String, Object> node35Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node35Id);
+    public static final ImmutableMap<String, Object> node36Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node36Id);
+    public static final ImmutableMap<String, Object> node37Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node37Id);
+    public static final ImmutableMap<String, Object> node38Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node38Id);
+    public static final ImmutableMap<String, Object> node39Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node39Id);
+    public static final ImmutableMap<String, Object> node40Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node40Id);
+    public static final ImmutableMap<String, Object> node41Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node41Id);
+    public static final ImmutableMap<String, Object> node42Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node42Id);
+    public static final ImmutableMap<String, Object> node43Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node43Id);
+    public static final ImmutableMap<String, Object> node44Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node44Id);
+    public static final ImmutableMap<String, Object> node45Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node45Id);
+    public static final ImmutableMap<String, Object> node46Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node46Id);
+    public static final ImmutableMap<String, Object> node47Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node47Id);
+    public static final ImmutableMap<String, Object> node48Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node48Id);
+    public static final ImmutableMap<String, Object> node49Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node49Id);
+    public static final ImmutableMap<String, Object> node50Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node50Id);
+    public static final ImmutableMap<String, Object> node51Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node51Id);
+    public static final ImmutableMap<String, Object> node52Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node52Id);
+    public static final ImmutableMap<String, Object> node53Info =
+            ImmutableMap.<String, Object>of(NODE_ID, node53Id);
+    public static final ImmutableMap<String, Object> path00Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path00Id);
+    public static final ImmutableMap<String, Object> path01Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path01Id);
+    public static final ImmutableMap<String, Object> path02Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path02Id);
+    public static final ImmutableMap<String, Object> path03Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path03Id);
+    public static final ImmutableMap<String, Object> path04Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path04Id);
+    public static final ImmutableMap<String, Object> path05Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path05Id);
+    public static final ImmutableMap<String, Object> path06Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path06Id);
+    public static final ImmutableMap<String, Object> path07Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path07Id);
+    public static final ImmutableMap<String, Object> path08Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path08Id);
+    public static final ImmutableMap<String, Object> path09Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path09Id);
+    public static final ImmutableMap<String, Object> path10Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path10Id);
+    public static final ImmutableMap<String, Object> path11Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path11Id);
+    public static final ImmutableMap<String, Object> path12Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path12Id);
+    public static final ImmutableMap<String, Object> path13Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path13Id);
+    public static final ImmutableMap<String, Object> path14Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path14Id);
+    public static final ImmutableMap<String, Object> path15Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path15Id);
+    public static final ImmutableMap<String, Object> path16Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path16Id);
+    public static final ImmutableMap<String, Object> path17Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path17Id);
+    public static final ImmutableMap<String, Object> path18Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path18Id);
+    public static final ImmutableMap<String, Object> path19Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path19Id);
+    public static final ImmutableMap<String, Object> path20Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path20Id);
+    public static final ImmutableMap<String, Object> path21Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path21Id);
+    public static final ImmutableMap<String, Object> path22Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path22Id);
+    public static final ImmutableMap<String, Object> path23Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path23Id);
+    public static final ImmutableMap<String, Object> path24Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path24Id);
+    public static final ImmutableMap<String, Object> path25Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path25Id);
+    public static final ImmutableMap<String, Object> path26Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path26Id);
+    public static final ImmutableMap<String, Object> path27Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path27Id);
+    public static final ImmutableMap<String, Object> path28Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path28Id);
+    public static final ImmutableMap<String, Object> path29Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path29Id);
+    public static final ImmutableMap<String, Object> path30Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path30Id);
+    public static final ImmutableMap<String, Object> path31Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path31Id);
+    public static final ImmutableMap<String, Object> path32Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path32Id);
+    public static final ImmutableMap<String, Object> path33Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path33Id);
+    public static final ImmutableMap<String, Object> path34Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path34Id);
+    public static final ImmutableMap<String, Object> path35Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path35Id);
+    public static final ImmutableMap<String, Object> path36Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path36Id);
+    public static final ImmutableMap<String, Object> path37Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path37Id);
+    public static final ImmutableMap<String, Object> path38Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path38Id);
+    public static final ImmutableMap<String, Object> path39Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path39Id);
+    public static final ImmutableMap<String, Object> path40Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path40Id);
+    public static final ImmutableMap<String, Object> path41Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path41Id);
+    public static final ImmutableMap<String, Object> path42Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path42Id);
+    public static final ImmutableMap<String, Object> path43Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path43Id);
+    public static final ImmutableMap<String, Object> path44Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path44Id);
+    public static final ImmutableMap<String, Object> path45Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path45Id);
+    public static final ImmutableMap<String, Object> path46Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path46Id);
+    public static final ImmutableMap<String, Object> path47Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path47Id);
+    public static final ImmutableMap<String, Object> path48Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path48Id);
+    public static final ImmutableMap<String, Object> path49Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path49Id);
+    public static final ImmutableMap<String, Object> path50Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path50Id);
+    public static final ImmutableMap<String, Object> path51Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path51Id);
+    public static final ImmutableMap<String, Object> path52Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path52Id);
+    public static final ImmutableMap<String, Object> path53Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path53Id);
+    public static final ImmutableMap<String, Object> path54Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path54Id);
+    public static final ImmutableMap<String, Object> path55Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path55Id);
+    public static final ImmutableMap<String, Object> path56Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path56Id);
+    public static final ImmutableMap<String, Object> path57Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path57Id);
+    public static final ImmutableMap<String, Object> path58Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path58Id);
+    public static final ImmutableMap<String, Object> path59Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path59Id);
+    public static final ImmutableMap<String, Object> path60Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path60Id);
+    public static final ImmutableMap<String, Object> path61Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path61Id);
+    public static final ImmutableMap<String, Object> path62Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path62Id);
+    public static final ImmutableMap<String, Object> path63Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path63Id);
+    public static final ImmutableMap<String, Object> path64Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path64Id);
+    public static final ImmutableMap<String, Object> path65Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path65Id);
+    public static final ImmutableMap<String, Object> path66Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path66Id);
+    public static final ImmutableMap<String, Object> path67Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path67Id);
+    public static final ImmutableMap<String, Object> path68Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path68Id);
+    public static final ImmutableMap<String, Object> path69Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path69Id);
+    public static final ImmutableMap<String, Object> path70Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path70Id);
+    public static final ImmutableMap<String, Object> path71Info =
+            ImmutableMap.<String, Object>of(PATH_ID, path71Id);
+    public static final ImmutableMap<String, Object> harbor00Info =
+            ImmutableMap.<String, Object>of(HARBOR_ID, harbor00Id);
+    public static final ImmutableMap<String, Object> harbor01Info =
+            ImmutableMap.<String, Object>of(HARBOR_ID, harbor01Id);
+    public static final ImmutableMap<String, Object> harbor02Info =
+            ImmutableMap.<String, Object>of(HARBOR_ID, harbor02Id);
+    public static final ImmutableMap<String, Object> harbor03Info =
+            ImmutableMap.<String, Object>of(HARBOR_ID, harbor03Id);
+    public static final ImmutableMap<String, Object> harbor04Info =
+            ImmutableMap.<String, Object>of(HARBOR_ID, harbor04Id);
+    public static final ImmutableMap<String, Object> harbor05Info =
+            ImmutableMap.<String, Object>of(HARBOR_ID, harbor05Id);
+    public static final ImmutableMap<String, Object> harbor06Info =
+            ImmutableMap.<String, Object>of(HARBOR_ID, harbor06Id);
+    public static final ImmutableMap<String, Object> harbor07Info =
+            ImmutableMap.<String, Object>of(HARBOR_ID, harbor07Id);
+    public static final ImmutableMap<String, Object> harbor08Info =
+            ImmutableMap.<String, Object>of(HARBOR_ID, harbor08Id);
+    public static final ImmutableMap<String, Object> developmentCard00Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard00Id);
+    public static final ImmutableMap<String, Object> developmentCard01Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard01Id);
+    public static final ImmutableMap<String, Object> developmentCard02Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard02Id);
+    public static final ImmutableMap<String, Object> developmentCard03Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard03Id);
+    public static final ImmutableMap<String, Object> developmentCard04Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard04Id);
+    public static final ImmutableMap<String, Object> developmentCard05Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard05Id);
+    public static final ImmutableMap<String, Object> developmentCard06Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard06Id);
+    public static final ImmutableMap<String, Object> developmentCard07Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard07Id);
+    public static final ImmutableMap<String, Object> developmentCard08Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard08Id);
+    public static final ImmutableMap<String, Object> developmentCard09Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard09Id);
+    public static final ImmutableMap<String, Object> developmentCard10Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard10Id);
+    public static final ImmutableMap<String, Object> developmentCard11Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard11Id);
+    public static final ImmutableMap<String, Object> developmentCard12Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard12Id);
+    public static final ImmutableMap<String, Object> developmentCard13Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard13Id);
+    public static final ImmutableMap<String, Object> developmentCard14Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard14Id);
+    public static final ImmutableMap<String, Object> developmentCard15Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard15Id);
+    public static final ImmutableMap<String, Object> developmentCard16Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard16Id);
+    public static final ImmutableMap<String, Object> developmentCard17Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard17Id);
+    public static final ImmutableMap<String, Object> developmentCard18Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard18Id);
+    public static final ImmutableMap<String, Object> developmentCard19Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard19Id);
+    public static final ImmutableMap<String, Object> developmentCard20Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard20Id);
+    public static final ImmutableMap<String, Object> developmentCard21Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard21Id);
+    public static final ImmutableMap<String, Object> developmentCard22Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard22Id);
+    public static final ImmutableMap<String, Object> developmentCard23Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard23Id);
+    public static final ImmutableMap<String, Object> developmentCard24Info =
+            ImmutableMap.<String, Object>of(DEVELOPMENTCARD_ID, developmentCard24Id);
+    public static final ImmutableMap<String, Object> city00PBInfo =
+            ImmutableMap.<String, Object>of(CITY_PB_ID, city00PBId);
+    public static final ImmutableMap<String, Object> city01PBInfo =
+            ImmutableMap.<String, Object>of(CITY_PB_ID, city01PBId);
+    public static final ImmutableMap<String, Object> city02PBInfo =
+            ImmutableMap.<String, Object>of(CITY_PB_ID, city02PBId);
+    public static final ImmutableMap<String, Object> city03PBInfo =
+            ImmutableMap.<String, Object>of(CITY_PB_ID, city03PBId);
+    public static final ImmutableMap<String, Object> city00PRInfo =
+            ImmutableMap.<String, Object>of(CITY_PR_ID, city00PRId);
+    public static final ImmutableMap<String, Object> city01PRInfo =
+            ImmutableMap.<String, Object>of(CITY_PR_ID, city01PRId);
+    public static final ImmutableMap<String, Object> city02PRInfo =
+            ImmutableMap.<String, Object>of(CITY_PR_ID, city02PRId);
+    public static final ImmutableMap<String, Object> city03PRInfo =
+            ImmutableMap.<String, Object>of(CITY_PR_ID, city03PRId);
+    public static final ImmutableMap<String, Object> city00PYInfo =
+            ImmutableMap.<String, Object>of(CITY_PY_ID, city00PYId);
+    public static final ImmutableMap<String, Object> city01PYInfo =
+            ImmutableMap.<String, Object>of(CITY_PY_ID, city01PYId);
+    public static final ImmutableMap<String, Object> city02PYInfo =
+            ImmutableMap.<String, Object>of(CITY_PY_ID, city02PYId);
+    public static final ImmutableMap<String, Object> city03PYInfo =
+            ImmutableMap.<String, Object>of(CITY_PY_ID, city03PYId);
+    public static final ImmutableMap<String, Object> city00PGInfo =
+            ImmutableMap.<String, Object>of(CITY_PG_ID, city00PGId);
+    public static final ImmutableMap<String, Object> city01PGInfo =
+            ImmutableMap.<String, Object>of(CITY_PG_ID, city01PGId);
+    public static final ImmutableMap<String, Object> city02PGInfo =
+            ImmutableMap.<String, Object>of(CITY_PG_ID, city02PGId);
+    public static final ImmutableMap<String, Object> city03PGInfo =
+            ImmutableMap.<String, Object>of(CITY_PG_ID, city03PGId);
+    public static final ImmutableMap<String, Object> settlement00PBInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PB_ID, settlement00PBId);
+    public static final ImmutableMap<String, Object> settlement01PBInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PB_ID, settlement01PBId);
+    public static final ImmutableMap<String, Object> settlement02PBInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PB_ID, settlement02PBId);
+    public static final ImmutableMap<String, Object> settlement03PBInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PB_ID, settlement03PBId);
+    public static final ImmutableMap<String, Object> settlement04PBInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PB_ID, settlement04PBId);
+    public static final ImmutableMap<String, Object> settlement00PRInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PR_ID, settlement00PRId);
+    public static final ImmutableMap<String, Object> settlement01PRInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PR_ID, settlement01PRId);
+    public static final ImmutableMap<String, Object> settlement02PRInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PR_ID, settlement02PRId);
+    public static final ImmutableMap<String, Object> settlement03PRInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PR_ID, settlement03PRId);
+    public static final ImmutableMap<String, Object> settlement04PRInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PR_ID, settlement04PRId);
+    public static final ImmutableMap<String, Object> settlement00PYInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PY_ID, settlement00PYId);
+    public static final ImmutableMap<String, Object> settlement01PYInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PY_ID, settlement01PYId);
+    public static final ImmutableMap<String, Object> settlement02PYInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PY_ID, settlement02PYId);
+    public static final ImmutableMap<String, Object> settlement03PYInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PY_ID, settlement03PYId);
+    public static final ImmutableMap<String, Object> settlement04PYInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PY_ID, settlement04PYId);
+    public static final ImmutableMap<String, Object> settlement00PGInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PG_ID, settlement00PGId);
+    public static final ImmutableMap<String, Object> settlement01PGInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PG_ID, settlement01PGId);
+    public static final ImmutableMap<String, Object> settlement02PGInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PG_ID, settlement02PGId);
+    public static final ImmutableMap<String, Object> settlement03PGInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PG_ID, settlement03PGId);
+    public static final ImmutableMap<String, Object> settlement04PGInfo =
+            ImmutableMap.<String, Object>of(SETTLEMENT_PG_ID, settlement04PGId);
+    public static final ImmutableMap<String, Object> road00PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road00PBId);
+    public static final ImmutableMap<String, Object> road01PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road01PBId);
+    public static final ImmutableMap<String, Object> road02PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road02PBId);
+    public static final ImmutableMap<String, Object> road03PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road03PBId);
+    public static final ImmutableMap<String, Object> road04PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road04PBId);
+    public static final ImmutableMap<String, Object> road05PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road05PBId);
+    public static final ImmutableMap<String, Object> road06PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road06PBId);
+    public static final ImmutableMap<String, Object> road07PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road07PBId);
+    public static final ImmutableMap<String, Object> road08PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road08PBId);
+    public static final ImmutableMap<String, Object> road09PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road09PBId);
+    public static final ImmutableMap<String, Object> road10PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road10PBId);
+    public static final ImmutableMap<String, Object> road11PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road11PBId);
+    public static final ImmutableMap<String, Object> road12PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road12PBId);
+    public static final ImmutableMap<String, Object> road13PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road13PBId);
+    public static final ImmutableMap<String, Object> road14PBInfo =
+            ImmutableMap.<String, Object>of(ROAD_PB_ID, road14PBId);
+    public static final ImmutableMap<String, Object> road00PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road00PRId);
+    public static final ImmutableMap<String, Object> road01PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road01PRId);
+    public static final ImmutableMap<String, Object> road02PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road02PRId);
+    public static final ImmutableMap<String, Object> road03PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road03PRId);
+    public static final ImmutableMap<String, Object> road04PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road04PRId);
+    public static final ImmutableMap<String, Object> road05PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road05PRId);
+    public static final ImmutableMap<String, Object> road06PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road06PRId);
+    public static final ImmutableMap<String, Object> road07PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road07PRId);
+    public static final ImmutableMap<String, Object> road08PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road08PRId);
+    public static final ImmutableMap<String, Object> road09PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road09PRId);
+    public static final ImmutableMap<String, Object> road10PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road10PRId);
+    public static final ImmutableMap<String, Object> road11PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road11PRId);
+    public static final ImmutableMap<String, Object> road12PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road12PRId);
+    public static final ImmutableMap<String, Object> road13PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road13PRId);
+    public static final ImmutableMap<String, Object> road14PRInfo =
+            ImmutableMap.<String, Object>of(ROAD_PR_ID, road14PRId);
+    public static final ImmutableMap<String, Object> road00PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road00PYId);
+    public static final ImmutableMap<String, Object> road01PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road01PYId);
+    public static final ImmutableMap<String, Object> road02PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road02PYId);
+    public static final ImmutableMap<String, Object> road03PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road03PYId);
+    public static final ImmutableMap<String, Object> road04PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road04PYId);
+    public static final ImmutableMap<String, Object> road05PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road05PYId);
+    public static final ImmutableMap<String, Object> road06PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road06PYId);
+    public static final ImmutableMap<String, Object> road07PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road07PYId);
+    public static final ImmutableMap<String, Object> road08PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road08PYId);
+    public static final ImmutableMap<String, Object> road09PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road09PYId);
+    public static final ImmutableMap<String, Object> road10PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road10PYId);
+    public static final ImmutableMap<String, Object> road11PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road11PYId);
+    public static final ImmutableMap<String, Object> road12PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road12PYId);
+    public static final ImmutableMap<String, Object> road13PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road13PYId);
+    public static final ImmutableMap<String, Object> road14PYInfo =
+            ImmutableMap.<String, Object>of(ROAD_PY_ID, road14PYId);
+    public static final ImmutableMap<String, Object> road00PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road00PGId);
+    public static final ImmutableMap<String, Object> road01PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road01PGId);
+    public static final ImmutableMap<String, Object> road02PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road02PGId);
+    public static final ImmutableMap<String, Object> road03PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road03PGId);
+    public static final ImmutableMap<String, Object> road04PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road04PGId);
+    public static final ImmutableMap<String, Object> road05PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road05PGId);
+    public static final ImmutableMap<String, Object> road06PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road06PGId);
+    public static final ImmutableMap<String, Object> road07PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road07PGId);
+    public static final ImmutableMap<String, Object> road08PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road08PGId);
+    public static final ImmutableMap<String, Object> road09PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road09PGId);
+    public static final ImmutableMap<String, Object> road10PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road10PGId);
+    public static final ImmutableMap<String, Object> road11PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road11PGId);
+    public static final ImmutableMap<String, Object> road12PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road12PGId);
+    public static final ImmutableMap<String, Object> road13PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road13PGId);
+    public static final ImmutableMap<String, Object> road14PGInfo =
+            ImmutableMap.<String, Object>of(ROAD_PG_ID, road14PGId);
+    public static final ImmutableMap<String, Object> resourceCard00PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard00PBId);
+    public static final ImmutableMap<String, Object> resourceCard01PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard01PBId);
+    public static final ImmutableMap<String, Object> resourceCard02PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard02PBId);
+    public static final ImmutableMap<String, Object> resourceCard03PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard03PBId);
+    public static final ImmutableMap<String, Object> resourceCard04PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard04PBId);
+    public static final ImmutableMap<String, Object> resourceCard05PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard05PBId);
+    public static final ImmutableMap<String, Object> resourceCard06PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard06PBId);
+    public static final ImmutableMap<String, Object> resourceCard07PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard07PBId);
+    public static final ImmutableMap<String, Object> resourceCard08PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard08PBId);
+    public static final ImmutableMap<String, Object> resourceCard09PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard09PBId);
+    public static final ImmutableMap<String, Object> resourceCard10PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard10PBId);
+    public static final ImmutableMap<String, Object> resourceCard11PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard11PBId);
+    public static final ImmutableMap<String, Object> resourceCard12PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard12PBId);
+    public static final ImmutableMap<String, Object> resourceCard13PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard13PBId);
+    public static final ImmutableMap<String, Object> resourceCard14PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard14PBId);
+    public static final ImmutableMap<String, Object> resourceCard15PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard15PBId);
+    public static final ImmutableMap<String, Object> resourceCard16PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard16PBId);
+    public static final ImmutableMap<String, Object> resourceCard17PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard17PBId);
+    public static final ImmutableMap<String, Object> resourceCard18PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard18PBId);
+    public static final ImmutableMap<String, Object> resourceCard19PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard19PBId);
+    public static final ImmutableMap<String, Object> resourceCard20PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard20PBId);
+    public static final ImmutableMap<String, Object> resourceCard21PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard21PBId);
+    public static final ImmutableMap<String, Object> resourceCard22PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard22PBId);
+    public static final ImmutableMap<String, Object> resourceCard23PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard23PBId);
+    public static final ImmutableMap<String, Object> resourceCard24PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard24PBId);
+    public static final ImmutableMap<String, Object> resourceCard25PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard25PBId);
+    public static final ImmutableMap<String, Object> resourceCard26PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard26PBId);
+    public static final ImmutableMap<String, Object> resourceCard27PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard27PBId);
+    public static final ImmutableMap<String, Object> resourceCard28PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard28PBId);
+    public static final ImmutableMap<String, Object> resourceCard29PBInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PB_ID, resourceCard29PBId);
+    public static final ImmutableMap<String, Object> resourceCard00PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard00PRId);
+    public static final ImmutableMap<String, Object> resourceCard01PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard01PRId);
+    public static final ImmutableMap<String, Object> resourceCard02PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard02PRId);
+    public static final ImmutableMap<String, Object> resourceCard03PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard03PRId);
+    public static final ImmutableMap<String, Object> resourceCard04PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard04PRId);
+    public static final ImmutableMap<String, Object> resourceCard05PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard05PRId);
+    public static final ImmutableMap<String, Object> resourceCard06PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard06PRId);
+    public static final ImmutableMap<String, Object> resourceCard07PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard07PRId);
+    public static final ImmutableMap<String, Object> resourceCard08PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard08PRId);
+    public static final ImmutableMap<String, Object> resourceCard09PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard09PRId);
+    public static final ImmutableMap<String, Object> resourceCard10PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard10PRId);
+    public static final ImmutableMap<String, Object> resourceCard11PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard11PRId);
+    public static final ImmutableMap<String, Object> resourceCard12PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard12PRId);
+    public static final ImmutableMap<String, Object> resourceCard13PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard13PRId);
+    public static final ImmutableMap<String, Object> resourceCard14PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard14PRId);
+    public static final ImmutableMap<String, Object> resourceCard15PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard15PRId);
+    public static final ImmutableMap<String, Object> resourceCard16PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard16PRId);
+    public static final ImmutableMap<String, Object> resourceCard17PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard17PRId);
+    public static final ImmutableMap<String, Object> resourceCard18PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard18PRId);
+    public static final ImmutableMap<String, Object> resourceCard19PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard19PRId);
+    public static final ImmutableMap<String, Object> resourceCard20PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard20PRId);
+    public static final ImmutableMap<String, Object> resourceCard21PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard21PRId);
+    public static final ImmutableMap<String, Object> resourceCard22PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard22PRId);
+    public static final ImmutableMap<String, Object> resourceCard23PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard23PRId);
+    public static final ImmutableMap<String, Object> resourceCard24PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard24PRId);
+    public static final ImmutableMap<String, Object> resourceCard25PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard25PRId);
+    public static final ImmutableMap<String, Object> resourceCard26PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard26PRId);
+    public static final ImmutableMap<String, Object> resourceCard27PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard27PRId);
+    public static final ImmutableMap<String, Object> resourceCard28PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard28PRId);
+    public static final ImmutableMap<String, Object> resourceCard29PRInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PR_ID, resourceCard29PRId);
+    public static final ImmutableMap<String, Object> resourceCard00PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard00PYId);
+    public static final ImmutableMap<String, Object> resourceCard01PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard01PYId);
+    public static final ImmutableMap<String, Object> resourceCard02PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard02PYId);
+    public static final ImmutableMap<String, Object> resourceCard03PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard03PYId);
+    public static final ImmutableMap<String, Object> resourceCard04PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard04PYId);
+    public static final ImmutableMap<String, Object> resourceCard05PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard05PYId);
+    public static final ImmutableMap<String, Object> resourceCard06PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard06PYId);
+    public static final ImmutableMap<String, Object> resourceCard07PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard07PYId);
+    public static final ImmutableMap<String, Object> resourceCard08PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard08PYId);
+    public static final ImmutableMap<String, Object> resourceCard09PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard09PYId);
+    public static final ImmutableMap<String, Object> resourceCard10PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard10PYId);
+    public static final ImmutableMap<String, Object> resourceCard11PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard11PYId);
+    public static final ImmutableMap<String, Object> resourceCard12PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard12PYId);
+    public static final ImmutableMap<String, Object> resourceCard13PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard13PYId);
+    public static final ImmutableMap<String, Object> resourceCard14PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard14PYId);
+    public static final ImmutableMap<String, Object> resourceCard15PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard15PYId);
+    public static final ImmutableMap<String, Object> resourceCard16PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard16PYId);
+    public static final ImmutableMap<String, Object> resourceCard17PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard17PYId);
+    public static final ImmutableMap<String, Object> resourceCard18PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard18PYId);
+    public static final ImmutableMap<String, Object> resourceCard19PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard19PYId);
+    public static final ImmutableMap<String, Object> resourceCard20PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard20PYId);
+    public static final ImmutableMap<String, Object> resourceCard21PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard21PYId);
+    public static final ImmutableMap<String, Object> resourceCard22PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard22PYId);
+    public static final ImmutableMap<String, Object> resourceCard23PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard23PYId);
+    public static final ImmutableMap<String, Object> resourceCard24PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard24PYId);
+    public static final ImmutableMap<String, Object> resourceCard25PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard25PYId);
+    public static final ImmutableMap<String, Object> resourceCard26PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard26PYId);
+    public static final ImmutableMap<String, Object> resourceCard27PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard27PYId);
+    public static final ImmutableMap<String, Object> resourceCard28PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard28PYId);
+    public static final ImmutableMap<String, Object> resourceCard29PYInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PY_ID, resourceCard29PYId);
+    public static final ImmutableMap<String, Object> resourceCard00PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard00PGId);
+    public static final ImmutableMap<String, Object> resourceCard01PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard01PGId);
+    public static final ImmutableMap<String, Object> resourceCard02PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard02PGId);
+    public static final ImmutableMap<String, Object> resourceCard03PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard03PGId);
+    public static final ImmutableMap<String, Object> resourceCard04PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard04PGId);
+    public static final ImmutableMap<String, Object> resourceCard05PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard05PGId);
+    public static final ImmutableMap<String, Object> resourceCard06PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard06PGId);
+    public static final ImmutableMap<String, Object> resourceCard07PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard07PGId);
+    public static final ImmutableMap<String, Object> resourceCard08PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard08PGId);
+    public static final ImmutableMap<String, Object> resourceCard09PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard09PGId);
+    public static final ImmutableMap<String, Object> resourceCard10PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard10PGId);
+    public static final ImmutableMap<String, Object> resourceCard11PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard11PGId);
+    public static final ImmutableMap<String, Object> resourceCard12PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard12PGId);
+    public static final ImmutableMap<String, Object> resourceCard13PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard13PGId);
+    public static final ImmutableMap<String, Object> resourceCard14PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard14PGId);
+    public static final ImmutableMap<String, Object> resourceCard15PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard15PGId);
+    public static final ImmutableMap<String, Object> resourceCard16PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard16PGId);
+    public static final ImmutableMap<String, Object> resourceCard17PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard17PGId);
+    public static final ImmutableMap<String, Object> resourceCard18PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard18PGId);
+    public static final ImmutableMap<String, Object> resourceCard19PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard19PGId);
+    public static final ImmutableMap<String, Object> resourceCard20PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard20PGId);
+    public static final ImmutableMap<String, Object> resourceCard21PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard21PGId);
+    public static final ImmutableMap<String, Object> resourceCard22PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard22PGId);
+    public static final ImmutableMap<String, Object> resourceCard23PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard23PGId);
+    public static final ImmutableMap<String, Object> resourceCard24PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard24PGId);
+    public static final ImmutableMap<String, Object> resourceCard25PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard25PGId);
+    public static final ImmutableMap<String, Object> resourceCard26PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard26PGId);
+    public static final ImmutableMap<String, Object> resourceCard27PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard27PGId);
+    public static final ImmutableMap<String, Object> resourceCard28PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard28PGId);
+    public static final ImmutableMap<String, Object> resourceCard29PGInfo =
+            ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard29PGId);
+    public static final ImmutableList<Map<String, Object>> playersInfo =
+            ImmutableList.<Map<String, Object>>of(pbInfo, prInfo, pyInfo, pgInfo);
+    public static final ImmutableList<Map<String, Object>> hexInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    hex00Info, hex01Info, hex02Info, hex03Info, hex04Info,
+                    hex05Info, hex06Info, hex07Info, hex08Info, hex09Info, 
+                    hex10Info, hex11Info, hex12Info, hex13Info, hex14Info,
+                    hex15Info, hex16Info, hex17Info, hex18Info);
+    public static final ImmutableList<Map<String, Object>> nodeInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    node00Info, node01Info, node02Info, node03Info, node04Info,
+                    node05Info, node06Info, node07Info, node08Info, node09Info,
+                    node10Info, node11Info, node12Info, node13Info, node14Info,
+                    node15Info, node16Info, node17Info, node18Info, node19Info,
+                    node20Info, node21Info, node22Info, node23Info, node24Info,
+                    node25Info, node26Info, node27Info, node28Info, node29Info,
+                    node30Info, node31Info, node32Info, node33Info, node34Info,
+                    node35Info, node36Info, node37Info, node38Info, node39Info,
+                    node40Info, node41Info, node42Info, node43Info, node44Info,
+                    node45Info, node46Info, node47Info, node48Info, node49Info,
+                    node50Info, node51Info, node52Info, node53Info);
+    public static final ImmutableList<Map<String, Object>> pathInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    path00Info, path01Info, path02Info, path03Info, path04Info,
+                    path05Info, path06Info, path07Info, path08Info, path09Info,
+                    path10Info, path11Info, path12Info, path13Info, path14Info,
+                    path15Info, path16Info, path17Info, path18Info, path19Info,
+                    path20Info, path21Info, path22Info, path23Info, path24Info,
+                    path25Info, path26Info, path27Info, path28Info, path29Info,
+                    path30Info, path31Info, path32Info, path33Info, path34Info,
+                    path35Info, path36Info, path37Info, path38Info, path39Info,
+                    path40Info, path41Info, path42Info, path43Info, path44Info,
+                    path45Info, path46Info, path47Info, path48Info, path49Info,
+                    path50Info, path51Info, path52Info, path53Info, path54Info,
+                    path55Info, path56Info, path57Info, path58Info, path59Info,
+                    path60Info, path61Info, path62Info, path63Info, path64Info,
+                    path65Info, path66Info, path67Info, path68Info, path69Info,
+                    path70Info, path71Info);
+    public static final ImmutableList<Map<String, Object>> harborInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    harbor00Info, harbor01Info, harbor02Info, harbor03Info, harbor04Info,
+                    harbor05Info, harbor06Info, harbor07Info, harbor08Info);
+    public static final ImmutableList<Map<String, Object>> developmentCardInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    developmentCard00Info, developmentCard01Info, developmentCard02Info,
+                    developmentCard03Info, developmentCard04Info, developmentCard05Info,
+                    developmentCard06Info, developmentCard07Info, developmentCard08Info,
+                    developmentCard09Info, developmentCard10Info, developmentCard11Info,
+                    developmentCard12Info, developmentCard13Info, developmentCard14Info,
+                    developmentCard15Info, developmentCard16Info, developmentCard17Info,
+                    developmentCard18Info, developmentCard19Info, developmentCard20Info,
+                    developmentCard21Info, developmentCard22Info, developmentCard23Info,
+                    developmentCard24Info);
+    public static final ImmutableList<Map<String, Object>> cityPBInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    city00PBInfo, city01PBInfo, city02PBInfo, city03PBInfo);
+    public static final ImmutableList<Map<String, Object>> cityPRInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    city00PRInfo, city01PRInfo, city02PRInfo, city03PRInfo);
+    public static final ImmutableList<Map<String, Object>> cityPYInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    city00PYInfo, city01PYInfo, city02PYInfo, city03PYInfo);
+    public static final ImmutableList<Map<String, Object>> cityPGInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    city00PGInfo, city01PGInfo, city02PGInfo, city03PGInfo);
+    public static final ImmutableList<Map<String, Object>> settlementPBInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    settlement00PBInfo, settlement01PBInfo, settlement02PBInfo,
+                    settlement03PBInfo, settlement04PBInfo);
+    public static final ImmutableList<Map<String, Object>> settlementPRInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    settlement00PRInfo, settlement01PRInfo, settlement02PRInfo,
+                    settlement03PRInfo, settlement04PRInfo);
+    public static final ImmutableList<Map<String, Object>> settlementPYInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    settlement00PYInfo, settlement01PYInfo, settlement02PYInfo,
+                    settlement03PYInfo, settlement04PYInfo);
+    public static final ImmutableList<Map<String, Object>> settlementPGInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    settlement00PGInfo, settlement01PGInfo, settlement02PGInfo,
+                    settlement03PGInfo, settlement04PGInfo);
+    public static final ImmutableList<Map<String, Object>> roadPBInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    road00PBInfo, road01PBInfo, road02PBInfo, road03PBInfo, road04PBInfo,
+                    road05PBInfo, road06PBInfo, road07PBInfo, road08PBInfo, road09PBInfo,
+                    road10PBInfo, road11PBInfo, road12PBInfo, road13PBInfo, road14PBInfo);
+    public static final ImmutableList<Map<String, Object>> roadPRInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    road00PRInfo, road01PRInfo, road02PRInfo, road03PRInfo, road04PRInfo,
+                    road05PRInfo, road06PRInfo, road07PRInfo, road08PRInfo, road09PRInfo,
+                    road10PRInfo, road11PRInfo, road12PRInfo, road13PRInfo, road14PRInfo);
+    public static final ImmutableList<Map<String, Object>> roadPYInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    road00PYInfo, road01PYInfo, road02PYInfo, road03PYInfo, road04PYInfo,
+                    road05PYInfo, road06PYInfo, road07PYInfo, road08PYInfo, road09PYInfo,
+                    road10PYInfo, road11PYInfo, road12PYInfo, road13PYInfo, road14PYInfo);
+    public static final ImmutableList<Map<String, Object>> roadPGInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    road00PGInfo, road01PGInfo, road02PGInfo, road03PGInfo, road04PGInfo,
+                    road05PGInfo, road06PGInfo, road07PGInfo, road08PGInfo, road09PGInfo,
+                    road10PGInfo, road11PGInfo, road12PGInfo, road13PGInfo, road14PGInfo);
+    public static final ImmutableList<Map<String, Object>> resourceCardPBInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    resourceCard00PBInfo, resourceCard01PBInfo, resourceCard02PBInfo,
+                    resourceCard03PBInfo, resourceCard04PBInfo, resourceCard05PBInfo,
+                    resourceCard06PBInfo, resourceCard07PBInfo, resourceCard08PBInfo,
+                    resourceCard09PBInfo, resourceCard10PBInfo, resourceCard11PBInfo,
+                    resourceCard12PBInfo, resourceCard13PBInfo, resourceCard14PBInfo,
+                    resourceCard15PBInfo, resourceCard16PBInfo, resourceCard17PBInfo,
+                    resourceCard18PBInfo, resourceCard19PBInfo, resourceCard20PBInfo,
+                    resourceCard21PBInfo, resourceCard22PBInfo, resourceCard23PBInfo,
+                    resourceCard24PBInfo, resourceCard25PBInfo, resourceCard26PBInfo,
+                    resourceCard27PBInfo, resourceCard28PBInfo, resourceCard29PBInfo);
+    public static final ImmutableList<Map<String, Object>> resourceCardPRInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    resourceCard00PRInfo, resourceCard01PRInfo, resourceCard02PRInfo,
+                    resourceCard03PRInfo, resourceCard04PRInfo, resourceCard05PRInfo,
+                    resourceCard06PRInfo, resourceCard07PRInfo, resourceCard08PRInfo,
+                    resourceCard09PRInfo, resourceCard10PRInfo, resourceCard11PRInfo,
+                    resourceCard12PRInfo, resourceCard13PRInfo, resourceCard14PRInfo,
+                    resourceCard15PRInfo, resourceCard16PRInfo, resourceCard17PRInfo,
+                    resourceCard18PRInfo, resourceCard19PRInfo, resourceCard20PRInfo,
+                    resourceCard21PRInfo, resourceCard22PRInfo, resourceCard23PRInfo,
+                    resourceCard24PRInfo, resourceCard25PRInfo, resourceCard26PRInfo,
+                    resourceCard27PRInfo, resourceCard28PRInfo, resourceCard29PRInfo);
+    public static final ImmutableList<Map<String, Object>> resourceCardPYInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    resourceCard00PYInfo, resourceCard01PYInfo, resourceCard02PYInfo,
+                    resourceCard03PYInfo, resourceCard04PYInfo, resourceCard05PYInfo,
+                    resourceCard06PYInfo, resourceCard07PYInfo, resourceCard08PYInfo,
+                    resourceCard09PYInfo, resourceCard10PYInfo, resourceCard11PYInfo,
+                    resourceCard12PYInfo, resourceCard13PYInfo, resourceCard14PYInfo,
+                    resourceCard15PYInfo, resourceCard16PYInfo, resourceCard17PYInfo,
+                    resourceCard18PYInfo, resourceCard19PYInfo, resourceCard20PYInfo,
+                    resourceCard21PYInfo, resourceCard22PYInfo, resourceCard23PYInfo,
+                    resourceCard24PYInfo, resourceCard25PYInfo, resourceCard26PYInfo,
+                    resourceCard27PYInfo, resourceCard28PYInfo, resourceCard29PYInfo);
+    public static final ImmutableList<Map<String, Object>> resourceCardPGInfo =
+            ImmutableList.<Map<String, Object>>of(
+                    resourceCard00PGInfo, resourceCard01PGInfo, resourceCard02PGInfo,
+                    resourceCard03PGInfo, resourceCard04PGInfo, resourceCard05PGInfo,
+                    resourceCard06PGInfo, resourceCard07PGInfo, resourceCard08PGInfo,
+                    resourceCard09PGInfo, resourceCard10PGInfo, resourceCard11PGInfo,
+                    resourceCard12PGInfo, resourceCard13PGInfo, resourceCard14PGInfo,
+                    resourceCard15PGInfo, resourceCard16PGInfo, resourceCard17PGInfo,
+                    resourceCard18PGInfo, resourceCard19PGInfo, resourceCard20PGInfo,
+                    resourceCard21PGInfo, resourceCard22PGInfo, resourceCard23PGInfo,
+                    resourceCard24PGInfo, resourceCard25PGInfo, resourceCard26PGInfo,
+                    resourceCard27PGInfo, resourceCard28PGInfo, resourceCard29PGInfo);
 
 }
