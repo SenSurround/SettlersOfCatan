@@ -2,6 +2,7 @@ package settlersofcatan.client;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import settlersofcatan.client.GameApi.Delete;
@@ -20,6 +21,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 
 public class SettlersOfCatanLogicTest {
+    private String testName = "";
+    
     // The Logic of the Settlers Of Catan game
     SettlersOfCatanLogic settlersOfCatanLogic = new SettlersOfCatanLogic();
     
@@ -32,6 +35,11 @@ public class SettlersOfCatanLogicTest {
     // A hacker must have submitted the move
     private void assertHacker(VerifyMove verifyMove) {
         VerifyMoveDone verifyDone = settlersOfCatanLogic.verify(verifyMove);
+        
+        System.out.println(testName);
+        System.out.println(verifyDone.getMessage());
+        System.out.println();
+        
         assertEquals(verifyMove.getLastMovePlayerId(), verifyDone.getHackerPlayerId());
     }
 
@@ -39,7 +47,7 @@ public class SettlersOfCatanLogicTest {
     // return the new state after the move is applied
     private Map<String, Object> applyMoveToState(
             Map<String, Object> initialState, ImmutableList<Operation> move) {
-        Map<String, Object> newState = initialState;
+        Map<String, Object> newState = new HashMap<String, Object>(initialState);
         
         for (int i = 0; i < move.size(); i++) {
             Operation current = move.get(i);
@@ -109,31 +117,31 @@ public class SettlersOfCatanLogicTest {
         emptyState.put(Constants.HARBOR08, Constants.HARBORTYPE04);
         // These will be randomized in real game, set for testing purposes
         // These will also need to be set to visible to no one pre game start
-        emptyState.put(Constants.DEVELOPMENTCARD00, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD01, Constants.DEVELOPMENTCARDTYPE03);
-        emptyState.put(Constants.DEVELOPMENTCARD02, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD03, Constants.DEVELOPMENTCARDTYPE05);
-        emptyState.put(Constants.DEVELOPMENTCARD04, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD05, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD06, Constants.DEVELOPMENTCARDTYPE04);
-        emptyState.put(Constants.DEVELOPMENTCARD07, Constants.DEVELOPMENTCARDTYPE02);
-        emptyState.put(Constants.DEVELOPMENTCARD08, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD09, Constants.DEVELOPMENTCARDTYPE07);
-        emptyState.put(Constants.DEVELOPMENTCARD10, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD11, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD12, Constants.DEVELOPMENTCARDTYPE06);
-        emptyState.put(Constants.DEVELOPMENTCARD13, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD14, Constants.DEVELOPMENTCARDTYPE01);
-        emptyState.put(Constants.DEVELOPMENTCARD15, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD16, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD17, Constants.DEVELOPMENTCARDTYPE08);
-        emptyState.put(Constants.DEVELOPMENTCARD18, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD19, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD20, Constants.DEVELOPMENTCARDTYPE03);
-        emptyState.put(Constants.DEVELOPMENTCARD21, Constants.DEVELOPMENTCARDTYPE01);
-        emptyState.put(Constants.DEVELOPMENTCARD22, Constants.DEVELOPMENTCARDTYPE00);
-        emptyState.put(Constants.DEVELOPMENTCARD23, Constants.DEVELOPMENTCARDTYPE02);
-        emptyState.put(Constants.DEVELOPMENTCARD24, Constants.DEVELOPMENTCARDTYPE00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE00, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE01, Constants.DEVELOPMENTCARDTYPEDEF03);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE02, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE03, Constants.DEVELOPMENTCARDTYPEDEF05);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE04, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE05, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE06, Constants.DEVELOPMENTCARDTYPEDEF04);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE07, Constants.DEVELOPMENTCARDTYPEDEF02);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE08, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE09, Constants.DEVELOPMENTCARDTYPEDEF07);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE10, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE11, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE12, Constants.DEVELOPMENTCARDTYPEDEF06);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE13, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE14, Constants.DEVELOPMENTCARDTYPEDEF01);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE15, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE16, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE17, Constants.DEVELOPMENTCARDTYPEDEF08);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE18, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE19, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE20, Constants.DEVELOPMENTCARDTYPEDEF03);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE21, Constants.DEVELOPMENTCARDTYPEDEF01);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE22, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE23, Constants.DEVELOPMENTCARDTYPEDEF02);
+        emptyState.put(Constants.DEVELOPMENTCARDTYPE24, Constants.DEVELOPMENTCARDTYPEDEF00);
         emptyState.put(Constants.SOLDIERCOUNTPB, 0);
         emptyState.put(Constants.SOLDIERCOUNTPR, 0);
         emptyState.put(Constants.SOLDIERCOUNTPY, 0);
@@ -406,6 +414,8 @@ public class SettlersOfCatanLogicTest {
                 harborTrade,
                 Constants.pbId);
         
+        testName = "testIllegalNormalHarborTradeResourcesNotSame";
+        
         assertHacker(verifyMove);
     }
 
@@ -443,6 +453,8 @@ public class SettlersOfCatanLogicTest {
                 harborTradeState,
                 harborTrade,
                 Constants.pbId);
+
+        testName = "testIllegalNormalHarborTradeNotEnoughResources";
         
         assertHacker(verifyMove);
     }
@@ -525,6 +537,8 @@ public class SettlersOfCatanLogicTest {
                 harborTradeState,
                 harborTrade,
                 Constants.pbId);
+
+        testName = "testIllegalThreeForOneHarborTradeResourcesNotSame";
         
         assertHacker(verifyMove);
     }
@@ -563,6 +577,8 @@ public class SettlersOfCatanLogicTest {
                 harborTradeState,
                 harborTrade,
                 Constants.pbId);
+
+        testName = "testIllegalThreeForOneHarborTradeNotEnoughResources";
         
         assertHacker(verifyMove);
     }
@@ -638,6 +654,8 @@ public class SettlersOfCatanLogicTest {
                 harborTradeState,
                 harborTrade,
                 Constants.pbId);
+
+        testName = "testIllegalTwoForOneLumberHarborTradeResourcesNotSame";
         
         assertHacker(verifyMove);
     }
@@ -672,6 +690,8 @@ public class SettlersOfCatanLogicTest {
                 harborTradeState,
                 harborTrade,
                 Constants.pbId);
+
+        testName = "testIllegalTwoForOneLumberHarborTradeNotEnoughResources";
         
         assertHacker(verifyMove);
     }
@@ -724,6 +744,8 @@ public class SettlersOfCatanLogicTest {
                 addRoad,
                 Constants.pbId);
 
+        testName = "testIllegalAddRoadNoAdjacentRoad";
+
         assertHacker(verifyMove);
     }
 
@@ -734,8 +756,8 @@ public class SettlersOfCatanLogicTest {
     public void testIllegalAddRoadIncorrectResources() {
         ImmutableList<Operation> addRoad = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
-                new Set(Constants.PATH66, Constants.ROAD02PB),
-                new Set(Constants.ROAD02PB, Constants.PATH66),
+                new Set(Constants.PATH12, Constants.ROAD02PB),
+                new Set(Constants.ROAD02PB, Constants.PATH12),
                 new SetVisibility(Constants.RESOURCECARD00PB),
                 new SetVisibility(Constants.RESOURCECARD02PB),
                 new Delete(Constants.RESOURCECARD00PB),
@@ -749,6 +771,8 @@ public class SettlersOfCatanLogicTest {
                 createAddAssetState(),
                 addRoad,
                 Constants.pbId);
+
+        testName = "testIllegalAddRoadIncorrectResources";
 
         assertHacker(verifyMove);
     }
@@ -776,6 +800,8 @@ public class SettlersOfCatanLogicTest {
                 addRoad,
                 Constants.pbId);
 
+        testName = "testIllegalAddRoadPathTaken";
+
         assertHacker(verifyMove);
     }
 
@@ -801,6 +827,8 @@ public class SettlersOfCatanLogicTest {
                 createAllAssetsUsedState(),
                 addRoad,
                 Constants.pbId);
+
+        testName = "testIllegalAddRoadNoneLeft";
 
         assertHacker(verifyMove);
     }
@@ -861,6 +889,8 @@ public class SettlersOfCatanLogicTest {
                 addSettlement,
                 Constants.pbId);
 
+        testName = "testIllegalAddSettlementNoRoad";
+
         assertHacker(verifyMove);
     }
 
@@ -890,6 +920,8 @@ public class SettlersOfCatanLogicTest {
                 createAddAssetState(),
                 addSettlement,
                 Constants.pbId);
+
+        testName = "testIllegalAddSettlementTooClose";
 
         assertHacker(verifyMove);
     }
@@ -921,6 +953,8 @@ public class SettlersOfCatanLogicTest {
                 addSettlement,
                 Constants.pbId);
 
+        testName = "testIllegalAddSettlementIncorrectResources";
+
         assertHacker(verifyMove);
     }
 
@@ -951,6 +985,8 @@ public class SettlersOfCatanLogicTest {
                 addSettlement,
                 Constants.pbId);
 
+        testName = "testIllegalAddSettlementNodeTaken";
+
         assertHacker(verifyMove);
     }
 
@@ -980,6 +1016,8 @@ public class SettlersOfCatanLogicTest {
                 createAllAssetsUsedState(),
                 addSettlement,
                 Constants.pbId);
+
+        testName = "testIllegalAddSettlementNoneLeft";
 
         assertHacker(verifyMove);
     }
@@ -1045,6 +1083,8 @@ public class SettlersOfCatanLogicTest {
                 addCity,
                 Constants.pbId);
 
+        testName = "testIllegalAddCityNoSettlement";
+
         assertHacker(verifyMove);
     }
 
@@ -1055,8 +1095,8 @@ public class SettlersOfCatanLogicTest {
     public void testIllegalAddCityIncorrectResources() {
         ImmutableList<Operation> addCity = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
-                new Set(Constants.NODE21, Constants.CITY03PB),
-                new Set(Constants.CITY03PB, Constants.NODE21),
+                new Set(Constants.NODE23, Constants.CITY00PB),
+                new Set(Constants.CITY00PB, Constants.NODE23),
                 new Delete(Constants.SETTLEMENT00PB),
                 new SetVisibility(Constants.RESOURCECARD01PB),
                 new SetVisibility(Constants.RESOURCECARD04PB),
@@ -1073,10 +1113,12 @@ public class SettlersOfCatanLogicTest {
         VerifyMove verifyMove = new VerifyMove(
                 Constants.pbId,
                 Constants.playersInfo,
-                applyMoveToState(createAllAssetsUsedState(), addCity),
-                createAllAssetsUsedState(),
+                applyMoveToState(createAddAssetState(), addCity),
+                createAddAssetState(),
                 addCity,
                 Constants.pbId);
+
+        testName = "testIllegalAddCityIncorrectResources";
 
         assertHacker(verifyMove);
     }
@@ -1111,6 +1153,8 @@ public class SettlersOfCatanLogicTest {
                 addCity,
                 Constants.pbId);
 
+        testName = "testIllegalAddCityNoneLeft";
+
         assertHacker(verifyMove);
     }
 
@@ -1120,7 +1164,11 @@ public class SettlersOfCatanLogicTest {
     public void testLegalPurchaseDevelopmentCard() {
         ImmutableList<Operation> addDevelopmentCard = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
-                new SetVisibility(Constants.DEVELOPMENTCARD00, Constants.visibleToPB),
+                new Set(Constants.DEVELOPMENTCARD00, Constants.PB),
+                new SetVisibility(Constants.DEVELOPMENTCARDTYPE00, Constants.visibleToPB),
+                new SetVisibility(Constants.RESOURCECARD02PB),
+                new SetVisibility(Constants.RESOURCECARD03PB),
+                new SetVisibility(Constants.RESOURCECARD05PB),
                 new Delete(Constants.RESOURCECARD02PB),
                 new Delete(Constants.RESOURCECARD03PB),
                 new Delete(Constants.RESOURCECARD05PB)
@@ -1144,7 +1192,11 @@ public class SettlersOfCatanLogicTest {
     public void testIllegalPurchaseDevelopmentCardIncorrectResources() {
         ImmutableList<Operation> addDevelopmentCard = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
-                new SetVisibility(Constants.DEVELOPMENTCARD00, Constants.visibleToPB),
+                new Set(Constants.DEVELOPMENTCARD00, Constants.PB),
+                new SetVisibility(Constants.DEVELOPMENTCARDTYPE00, Constants.visibleToPB),
+                new SetVisibility(Constants.RESOURCECARD01PB),
+                new SetVisibility(Constants.RESOURCECARD03PB),
+                new SetVisibility(Constants.RESOURCECARD05PB),
                 new Delete(Constants.RESOURCECARD01PB),
                 new Delete(Constants.RESOURCECARD03PB),
                 new Delete(Constants.RESOURCECARD05PB)
@@ -1157,6 +1209,8 @@ public class SettlersOfCatanLogicTest {
                 createAddAssetState(),
                 addDevelopmentCard,
                 Constants.pbId);
+
+        testName = "testIllegalPurchaseDevelopmentCardIncorrectResources";
 
         assertHacker(verifyMove);
     }
@@ -1261,8 +1315,8 @@ public class SettlersOfCatanLogicTest {
     public void testEndGameByGettingLargestArmy() {
         ImmutableList<Operation> playDevelopmentCard = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
-                new SetVisibility(Constants.DEVELOPMENTCARD00), //this is a soldier card
-                new Delete(Constants.DEVELOPMENTCARD00),
+                new Set(Constants.DEVELOPMENTCARD00, Constants.PLAYED),
+                new SetVisibility(Constants.DEVELOPMENTCARDTYPE00), //this is a soldier card
                 new Set(Constants.ROBBER, Constants.HEX12),
                 new Set(Constants.SOLDIERCOUNTPB, 7),
                 new Set(Constants.LARGESTARMY, Constants.PB),

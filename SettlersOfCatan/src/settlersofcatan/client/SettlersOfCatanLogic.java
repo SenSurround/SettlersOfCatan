@@ -18,10 +18,19 @@ import settlersofcatan.client.GameApi.VerifyMoveDone;
 
 
 public class SettlersOfCatanLogic {  
-	public VerifyMoveDone verify(VerifyMove verifyMove) {
-        // TODO: I will implement this method in HW2
-        return new VerifyMoveDone();
-    }
+    
+    private Vector<String> attemptedDevelopmentCardPurchaseList = new Vector<String>();
+    
+    private String err = "";
+    
+    public VerifyMoveDone verify(VerifyMove verifyMove) {
+        try {
+            checkMoveIsLegal(verifyMove);
+            return new VerifyMoveDone();
+        } catch (Exception e) {
+            return new VerifyMoveDone(verifyMove.getLastMovePlayerId(), e.getMessage());
+        }
+      }
 	
 	public void checkMoveIsLegal(VerifyMove verifyMove) {
 	    List<Operation> lastMove = verifyMove.getLastMove();
@@ -31,6 +40,11 @@ public class SettlersOfCatanLogic {
 	    String playerString = getPlayerId(verifyMove.getPlayerIds(), lastMovePlayerId);
 	    
 	    boolean status = moveIsLegal(lastMove, lastState, playerString);
+	    
+	    if(!status)
+	    {
+	        throw new RuntimeException("We have a hacker!\n" + err);
+	    }
 	}
 	
 	private String getPlayerId(List<Integer> playerIds, int lastMovePlayerId) {
@@ -58,15 +72,20 @@ public class SettlersOfCatanLogic {
 
     private boolean moveIsLegal(List<Operation> lastMove, Map<String, Object> lastState, String playerString)
 	{
-	    boolean status = false;
+	    boolean status = true;
         int ore = 0;
         int grain = 0;
 	    int lumber = 0;
 	    int wool = 0;
         int brick = 0;
+        
+        attemptedDevelopmentCardPurchaseList.clear();
 	    
-	    for(int i = 0; i < lastMove.size(); i++)
+	    for(int i = 0; i < lastMove.size() && status; i++)
 	    {
+	        // Only checking set/delete at the moment
+	        status = status && individualMoveIsLegal(lastMove.get(i), lastState, playerString);
+	        
 	        if(lastMove.get(i).getClassName().equals("Delete"))
 	        {
 	            String key = ((Delete)lastMove.get(i)).getKey();
@@ -96,86 +115,789 @@ public class SettlersOfCatanLogic {
 	        }
 	    }
 	    
-	    // Settlement
-	    if(ore == 0 && grain == 1 && lumber == 1 && wool == 1 && brick == 1)
+	    if(status)
 	    {
-	        
+    	    // ensure card requests are paired correctly
+            if(status && !attemptedDevelopmentCardPurchaseList.isEmpty())
+            {
+                status = false;
+                err = "Development Card not paired with Development Card Type";
+            }
+    	    // Settlement
+            else if(status && ore == 0 && grain == 1 && lumber == 1 && wool == 1 && brick == 1)
+    	    {
+                status = ensureSettlementMoveCountCorrect(lastMove, playerString);
+    	    }
+    	    // Road
+    	    else if(status && ore == 0 && grain == 0 && lumber == 1 && wool == 0 && brick == 1)
+            {
+                status = ensureRoadMoveCountCorrect(lastMove, playerString);
+            }
+    	    // City
+            else if(status && ore == 3 && grain == 2 && lumber == 0 && wool == 0 && brick == 0)
+            {
+                status = ensureCityMoveCountCorrect(lastMove, lastState, playerString);
+            }
+    	    // Development Card
+            else if(status && ore == 1 && grain == 1 && lumber == 0 && wool == 1 && brick == 0)
+            {
+                status = ensureBuyDevelopmentCardMoveCountCorrect(lastMove, playerString);
+            }
+    	    // Normal Harbor Trade
+            else if( status
+                   &&( (ore == 4 && grain == 0 && lumber == 0 && wool == 0 && brick == 0)
+                     ||(ore == 0 && grain == 4 && lumber == 0 && wool == 0 && brick == 0)
+                     ||(ore == 0 && grain == 0 && lumber == 4 && wool == 0 && brick == 0)
+                     ||(ore == 0 && grain == 0 && lumber == 0 && wool == 4 && brick == 0)
+                     ||(ore == 0 && grain == 0 && lumber == 0 && wool == 0 && brick == 4)))
+            {
+                status = ensureTotalTradeMoveCountCorrect(lastMove, playerString, 4);
+            }
+    	    // 3 for 1 Harbor Trade
+            else if( status && ownsThreeToOneHarbor(lastState, playerString)
+                   && ( (ore == 3 && grain == 0 && lumber == 0 && wool == 0 && brick == 0)
+                      ||(ore == 0 && grain == 3 && lumber == 0 && wool == 0 && brick == 0)
+                      ||(ore == 0 && grain == 0 && lumber == 3 && wool == 0 && brick == 0)
+                      ||(ore == 0 && grain == 0 && lumber == 0 && wool == 3 && brick == 0)
+                      ||(ore == 0 && grain == 0 && lumber == 0 && wool == 0 && brick == 3)))
+            {
+                status = ensureTotalTradeMoveCountCorrect(lastMove, playerString, 3);
+            }
+            // 2 for 1 Ore Trade
+            else if( status && ownsTwoToOneHarbor(lastState, playerString, Constants.ORE)
+                     && ore == 2 && grain == 0 && lumber == 0 && wool == 0 && brick == 0)
+            {
+                status = ensureTotalTradeMoveCountCorrect(lastMove, playerString, 2);
+            }
+            // 2 for 1 Grain Trade
+            else if( status && ownsTwoToOneHarbor(lastState, playerString, Constants.GRAIN)
+                     && ore == 0 && grain == 2 && lumber == 0 && wool == 0 && brick == 0)
+            {
+                status = ensureTotalTradeMoveCountCorrect(lastMove, playerString, 2);
+            }
+            // 2 for 1 Lumber Trade
+            else if( status && ownsTwoToOneHarbor(lastState, playerString, Constants.LUMBER)
+                     && ore == 0 && grain == 0 && lumber == 2 && wool == 0 && brick == 0)
+            {
+                status = ensureTotalTradeMoveCountCorrect(lastMove, playerString, 2);
+            }
+            // 2 for 1 Wool Trade
+            else if( status && ownsTwoToOneHarbor(lastState, playerString, Constants.WOOL)
+                     && ore == 0 && grain == 0 && lumber == 0 && wool ==2 && brick == 0)
+            {
+                status = ensureTotalTradeMoveCountCorrect(lastMove, playerString, 2);
+            }
+            // 2 for 1 Brick Trade
+            else if( status && ownsTwoToOneHarbor(lastState, playerString, Constants.BRICK)
+                     && ore == 0 && grain == 0 && lumber == 0 && wool == 0 && brick == 2)
+            {
+                status = ensureTotalTradeMoveCountCorrect(lastMove, playerString, 2);
+            }
+    	    // No correct resources for any move
+            else
+            {
+                status = false;
+                err = "Incorrect Resources";
+            }
 	    }
-	    // Road
-	    else if(ore == 0 && grain == 0 && lumber == 1 && wool == 0 && brick == 1)
-        {
-            
-        }
-	    // City
-        else if(ore == 3 && grain == 2 && lumber == 0 && wool == 0 && brick == 0)
-        {
-            
-        }
-	    // Development Card
-        else if(ore == 1 && grain == 1 && lumber == 0 && wool == 1 && brick == 0)
-        {
-            
-        }
-	    // Normal Harbor Trade
-        else if( (ore == 4 && grain == 0 && lumber == 0 && wool == 0 && brick == 0)
-               ||(ore == 0 && grain == 4 && lumber == 0 && wool == 0 && brick == 0)
-               ||(ore == 0 && grain == 0 && lumber == 4 && wool == 0 && brick == 0)
-               ||(ore == 0 && grain == 0 && lumber == 0 && wool == 4 && brick == 0)
-               ||(ore == 0 && grain == 0 && lumber == 0 && wool == 0 && brick == 4))
-        {
-            
-        }
-	    // 3 for 1 Harbor Trade
-        else if( ownsThreeToOneHarbor(lastState, playerString)
-               && ( (ore == 3 && grain == 0 && lumber == 0 && wool == 0 && brick == 0)
-                  ||(ore == 0 && grain == 3 && lumber == 0 && wool == 0 && brick == 0)
-                  ||(ore == 0 && grain == 0 && lumber == 3 && wool == 0 && brick == 0)
-                  ||(ore == 0 && grain == 0 && lumber == 0 && wool == 3 && brick == 0)
-                  ||(ore == 0 && grain == 0 && lumber == 0 && wool == 0 && brick == 3)))
-        {
-            
-        }
-        // 2 for 1 Ore Trade
-        else if( ownsTwoToOneHarbor(lastState, playerString, Constants.ORE)
-                 && ore == 2 && grain == 0 && lumber == 0 && wool == 0 && brick == 0)
-        {
-            status = ensureTotalTwoTradeMoveCountCorrect(lastMove, playerString);
-        }
-        // 2 for 1 Grain Trade
-        else if( ownsTwoToOneHarbor(lastState, playerString, Constants.GRAIN)
-                 && ore == 0 && grain == 2 && lumber == 0 && wool == 0 && brick == 0)
-        {
-            status = ensureTotalTwoTradeMoveCountCorrect(lastMove, playerString);
-        }
-        // 2 for 1 Lumber Trade
-        else if( ownsTwoToOneHarbor(lastState, playerString, Constants.LUMBER)
-                 && ore == 0 && grain == 0 && lumber == 2 && wool == 0 && brick == 0)
-        {
-            status = ensureTotalTwoTradeMoveCountCorrect(lastMove, playerString);
-        }
-        // 2 for 1 Wool Trade
-        else if( ownsTwoToOneHarbor(lastState, playerString, Constants.WOOL)
-                 && ore == 0 && grain == 0 && lumber == 0 && wool ==2 && brick == 0)
-        {
-            status = ensureTotalTwoTradeMoveCountCorrect(lastMove, playerString);
-        }
-        // 2 for 1 Brick Trade
-        else if( ownsTwoToOneHarbor(lastState, playerString, Constants.BRICK)
-                 && ore == 0 && grain == 0 && lumber == 0 && wool == 0 && brick == 2)
-        {
-            status = ensureTotalTwoTradeMoveCountCorrect(lastMove, playerString);
-        }
 	    
 	    return status;
 	}
     
-    private boolean ensureTotalTwoTradeMoveCountCorrect(List<Operation> lastMove, String playerString)
+    private boolean individualMoveIsLegal(Operation move, Map<String, Object> lastState, String playerString)
+    {
+        boolean status = false;
+        
+        switch(move.getClassName())
+        {
+        case "Set":
+            if(((Set)move).getKey().equals(Constants.TURN))
+            {
+                status = ((String)lastState.get(((Set)move).getKey())).equals(playerString);
+            }
+            else if(((Set)move).getKey().contains("DEV"))
+            {
+                if( (((Set)move).getKey()).equals(findFirstOpenDevelopmentCard(lastState))
+                    && ( (((Set)move).getValue()).equals(Constants.PLAYED)
+                       ||((String)((Set)move).getValue()).contains(playerString)) )
+                {
+                    status = attemptedDevelopmentCardPurchaseList.add(((Set)move).getKey());
+                }
+                
+            }
+            else if(((Set)move).getKey().contains("RC"))
+            {
+                status = true;
+            }
+            else
+            {
+                if(((Set)move).getKey().contains("CIT") && ((Set)move).getKey().contains(playerString))
+                {
+                    status = (lastState.containsKey(((Set)move).getValue()))
+                           &&((String)lastState.get(((Set)move).getValue())).contains("SET")
+                           &&((String)lastState.get(((Set)move).getValue())).contains(playerString)
+                           &&!lastState.containsKey(((Set)move).getKey());
+                }
+                else if(((String)((Set)move).getValue()).contains("CIT") && ((Set)move).getValue().toString().contains(playerString))
+                {
+                    status = (lastState.containsKey(((Set)move).getKey()))
+                           &&((String)lastState.get(((Set)move).getKey())).contains("SET")
+                           &&((String)lastState.get(((Set)move).getKey())).contains(playerString)
+                           &&!lastState.containsKey(((Set)move).getValue());
+                }
+                else if(((Set)move).getKey().contains("SET") && ((Set)move).getKey().contains(playerString))
+                {
+                    status = (!lastState.containsKey(((Set)move).getValue()))
+                            && canAddNodeHere(lastState, ((Set)move).getValue().toString(), playerString)
+                            &&!lastState.containsKey(((Set)move).getKey());
+                }
+                else if(((String)((Set)move).getValue()).contains("SET") && ((Set)move).getValue().toString().contains(playerString))
+                {
+                    status = (!lastState.containsKey(((Set)move).getKey()))
+                            && canAddNodeHere(lastState, ((Set)move).getKey(), playerString)
+                            &&!lastState.containsKey(((Set)move).getValue());
+                }
+                else if(((Set)move).getKey().contains("RD") && ((Set)move).getKey().contains(playerString))
+                {
+                    status = (!lastState.containsKey(((Set)move).getValue()))
+                            && canAddRoadHere(lastState, ((Set)move).getValue().toString(), playerString)
+                            &&!lastState.containsKey(((Set)move).getKey());
+                }
+                else if(((String)((Set)move).getValue()).contains("RD") && ((Set)move).getValue().toString().contains(playerString))
+                {
+                    status = (!lastState.containsKey(((Set)move).getKey()))
+                            && canAddRoadHere(lastState, ((Set)move).getKey(), playerString)
+                            &&!lastState.containsKey(((Set)move).getValue());
+                }
+            }
+            
+            if(!status)
+            {
+                err = "Individual move is not legal\n"
+                    + "Set: " + ((Set)move).getKey() + ", " + ((Set)move).getValue().toString();
+            }
+            break;
+        case "Delete":
+            status = !((String)lastState.get(((Delete)move).getKey())).isEmpty();
+            
+            if(!status)
+            {
+                err = "Individual move is not legal\n"
+                    + "Delete: " + ((Delete)move).getKey();
+            }
+            break;
+        case "SetVisibility":
+            if(((SetVisibility)move).getKey().contains("DCT"))
+            {
+                if(attemptedDevelopmentCardPurchaseList.contains(findDevelopmentCardFromCardType(((SetVisibility)move).getKey())))
+                {
+                    status = attemptedDevelopmentCardPurchaseList.remove(findDevelopmentCardFromCardType(((SetVisibility)move).getKey()));
+                }
+                
+            }
+            else if(((SetVisibility)move).getKey().contains(playerString))
+            {
+                status = true;
+            }
+
+            if(!status)
+            {
+                err = "Individual move is not legal\n"
+                    + "SetVisibility: " + ((SetVisibility)move).getKey();
+            }
+            break;
+        default:
+            status = true;
+            break;
+        }
+        
+        return status;
+    }
+    
+    private String findDevelopmentCardFromCardType(String developmentCardType)
+    {
+        String developmentCard = "";
+        
+        switch(developmentCardType)
+        {
+        case Constants.DEVELOPMENTCARDTYPE00:
+            developmentCard = Constants.DEVELOPMENTCARD00;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE01:
+            developmentCard = Constants.DEVELOPMENTCARD01;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE02:
+            developmentCard = Constants.DEVELOPMENTCARD02;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE03:
+            developmentCard = Constants.DEVELOPMENTCARD03;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE04:
+            developmentCard = Constants.DEVELOPMENTCARD04;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE05:
+            developmentCard = Constants.DEVELOPMENTCARD05;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE06:
+            developmentCard = Constants.DEVELOPMENTCARD06;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE07:
+            developmentCard = Constants.DEVELOPMENTCARD07;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE08:
+            developmentCard = Constants.DEVELOPMENTCARD08;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE09:
+            developmentCard = Constants.DEVELOPMENTCARD09;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE10:
+            developmentCard = Constants.DEVELOPMENTCARD10;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE11:
+            developmentCard = Constants.DEVELOPMENTCARD11;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE12:
+            developmentCard = Constants.DEVELOPMENTCARD12;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE13:
+            developmentCard = Constants.DEVELOPMENTCARD13;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE14:
+            developmentCard = Constants.DEVELOPMENTCARD14;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE15:
+            developmentCard = Constants.DEVELOPMENTCARD15;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE16:
+            developmentCard = Constants.DEVELOPMENTCARD16;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE17:
+            developmentCard = Constants.DEVELOPMENTCARD17;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE18:
+            developmentCard = Constants.DEVELOPMENTCARD18;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE19:
+            developmentCard = Constants.DEVELOPMENTCARD19;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE20:
+            developmentCard = Constants.DEVELOPMENTCARD20;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE21:
+            developmentCard = Constants.DEVELOPMENTCARD21;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE22:
+            developmentCard = Constants.DEVELOPMENTCARD22;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE23:
+            developmentCard = Constants.DEVELOPMENTCARD23;
+            break;
+        case Constants.DEVELOPMENTCARDTYPE24:
+            developmentCard = Constants.DEVELOPMENTCARD24;
+            break;
+        }
+        
+        return developmentCard;
+    }
+
+    private String findFirstOpenDevelopmentCard(Map<String, Object> lastState)
+    {
+        String firstOpen = "";
+        
+        if(!lastState.containsKey(Constants.DEVELOPMENTCARD00))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD00;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD01))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD01;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD02))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD02;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD03))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD03;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD04))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD04;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD05))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD05;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD06))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD06;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD07))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD07;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD08))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD08;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD09))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD09;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD10))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD10;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD11))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD11;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD12))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD12;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD13))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD13;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD14))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD14;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD15))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD15;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD16))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD16;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD17))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD17;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD18))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD18;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD19))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD19;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD20))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD20;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD21))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD21;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD22))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD22;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD23))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD23;
+        }
+        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD24))
+        {
+            firstOpen = Constants.DEVELOPMENTCARD24;
+        }
+        
+        return firstOpen;
+    }
+    
+
+    private boolean canAddNodeHere(Map<String, Object> lastState, String node, String playerString)
+    {
+        boolean noAdjacentNodeStatus = true;
+        boolean roadPresetStatus = false;
+        
+        ImmutableList<String> pathsFromNode = getPathsFromNode(node);
+        
+        for(int i = 0; i < pathsFromNode.size(); i++)
+        {
+            ImmutableList<String> nodes = getNodesFromPath(pathsFromNode.get(i));
+            
+            for(int j = 0; j < nodes.size(); j++)
+            {
+                noAdjacentNodeStatus = noAdjacentNodeStatus && !lastState.containsKey(nodes.get(j));
+            }
+            
+            roadPresetStatus = roadPresetStatus || (lastState.containsKey(pathsFromNode.get(i))
+                                                 && lastState.get(pathsFromNode.get(i)).toString().contains(playerString));
+        }
+        
+        return noAdjacentNodeStatus && roadPresetStatus;
+    }
+    
+    private boolean canAddRoadHere(Map<String, Object> lastState, String path, String playerString)
+    {
+        boolean status = false;
+        
+        ImmutableList<String> nodesFromPath = getNodesFromPath(path);
+        
+        for(int i = 0; i < nodesFromPath.size(); i++)
+        {
+            ImmutableList<String> paths = getPathsFromNode(nodesFromPath.get(i));
+            
+            for(int j = 0; j < paths.size(); j++)
+            {
+                status = status || ( lastState.containsKey(paths.get(j))
+                                  && lastState.get(paths.get(j)).toString().contains(playerString));
+            }
+            
+            status = status || ( lastState.containsKey(nodesFromPath.get(i))
+                    && lastState.get(nodesFromPath.get(i)).toString().contains(playerString));
+        }
+        
+        return status;
+    }
+    
+    private boolean ensureSettlementMoveCountCorrect(List<Operation> lastMove, String playerString)
+    {
+        boolean status = false;
+        
+        int turnVerify = 1;
+        int oldCardVisibleAndDelete = 4;
+        int nodeAdd = 1;
+        int unknown = 0;
+        Vector<String> setVisibleList = new Vector<String>();
+        String nodeAddName = "";
+        
+        for(int i = 0; i < lastMove.size(); i++)
+        {
+            switch(lastMove.get(i).getClassName())
+            {
+                case "Set":
+                    if( ((Set) lastMove.get(i)).getKey().equals(Constants.TURN)
+                      &&((Set) lastMove.get(i)).getValue().equals(playerString))
+                    {
+                        turnVerify--;
+                    }
+                    else if( ((Set) lastMove.get(i)).getValue().toString().contains("SET")
+                           &&((Set) lastMove.get(i)).getValue().toString().contains(playerString))
+                    {
+                        nodeAddName = ((Set) lastMove.get(i)).getKey();
+                    }
+                    else if( ((Set) lastMove.get(i)).getKey().contains("SET")
+                            &&((Set) lastMove.get(i)).getKey().contains(playerString))
+                     {
+                         if(((Set) lastMove.get(i)).getValue().toString().equals(nodeAddName))
+                         {
+                             nodeAddName = "";
+                             nodeAdd--;
+                         }
+                         else
+                         {
+                             unknown--;
+                         }
+                     }
+                    else
+                    {
+                        unknown--;
+                    }
+                    break;
+                case "SetVisibility":
+                    setVisibleList.add(((SetVisibility) lastMove.get(i)).getKey());
+                    break;
+                case "Delete":
+                    if(setVisibleList.contains(((Delete)lastMove.get(i)).getKey()))
+                    {
+                        setVisibleList.remove(((Delete)lastMove.get(i)).getKey());
+                        oldCardVisibleAndDelete--;
+                    }
+                    else
+                    {
+                        unknown--;
+                    }
+                    break;
+                default:
+                    unknown = -1;
+                    break;
+            }
+        }
+        
+        if( setVisibleList.isEmpty() && nodeAddName.equals("") && turnVerify == 0
+                && nodeAdd == 0 && oldCardVisibleAndDelete == 0 && unknown == 0)
+        {
+            status = true;
+        }
+        else
+        {
+            err = "ensureBuyDevelopmentCardMoveCountCorrect failed"
+                + "setVisibleList.isEmpty(): " + setVisibleList.isEmpty() + "\n"
+                + "nodeAddName.equals(\"\"): " + nodeAddName.equals("") + "\n"
+                + "turnVerify: " + turnVerify + "\n"
+                + "nodeAdd: " + nodeAdd + "\n"
+                + "oldCardVisibleAndDelete: " + oldCardVisibleAndDelete + "\n"
+                + "unknown: " + unknown;
+        }
+        
+        return status;
+    }
+    
+    private boolean ensureRoadMoveCountCorrect(List<Operation> lastMove, String playerString)
+    {
+        boolean status = false;
+        
+        int turnVerify = 1;
+        int oldCardVisibleAndDelete = 2;
+        int pathAdd = 1;
+        int unknown = 0;
+        Vector<String> setVisibleList = new Vector<String>();
+        String pathAddName = "";
+        
+        for(int i = 0; i < lastMove.size(); i++)
+        {
+            switch(lastMove.get(i).getClassName())
+            {
+                case "Set":
+                    if( ((Set) lastMove.get(i)).getKey().equals(Constants.TURN)
+                      &&((Set) lastMove.get(i)).getValue().equals(playerString))
+                    {
+                        turnVerify--;
+                    }
+                    else if( ((Set) lastMove.get(i)).getValue().toString().contains("RD")
+                           &&((Set) lastMove.get(i)).getValue().toString().contains(playerString))
+                    {
+                        pathAddName = ((Set) lastMove.get(i)).getKey();
+                    }
+                    else if( ((Set) lastMove.get(i)).getKey().contains("RD")
+                            &&((Set) lastMove.get(i)).getKey().contains(playerString))
+                     {
+                         if(((Set) lastMove.get(i)).getValue().toString().equals(pathAddName))
+                         {
+                             pathAddName = "";
+                             pathAdd--;
+                         }
+                         else
+                         {
+                             unknown--;
+                         }
+                     }
+                    else
+                    {
+                        unknown--;
+                    }
+                    break;
+                case "SetVisibility":
+                    setVisibleList.add(((SetVisibility) lastMove.get(i)).getKey());
+                    break;
+                case "Delete":
+                    if(setVisibleList.contains(((Delete)lastMove.get(i)).getKey()))
+                    {
+                        setVisibleList.remove(((Delete)lastMove.get(i)).getKey());
+                        oldCardVisibleAndDelete--;
+                    }
+                    else
+                    {
+                        unknown--;
+                    }
+                    break;
+                default:
+                    unknown = -1;
+                    break;
+            }
+        }
+        
+        if( setVisibleList.isEmpty() && pathAddName.equals("") && turnVerify == 0
+                && pathAdd == 0 && oldCardVisibleAndDelete == 0 && unknown == 0)
+        {
+            status = true;
+        }
+        else
+        {
+            err = "ensureBuyDevelopmentCardMoveCountCorrect failed"
+                + "setVisibleList.isEmpty(): " + setVisibleList.isEmpty() + "\n"
+                + "pathAddName.equals(\"\"): " + pathAddName.equals("") + "\n"
+                + "turnVerify: " + turnVerify + "\n"
+                + "pathAdd: " + pathAdd + "\n"
+                + "oldCardVisibleAndDelete: " + oldCardVisibleAndDelete + "\n"
+                + "unknown: " + unknown;
+        }
+        
+        return status;
+    }
+
+    private boolean ensureCityMoveCountCorrect(List<Operation> lastMove, Map<String, Object> lastState, String playerString)
+    {
+        boolean status = false;
+        
+        int turnVerify = 1;
+        int oldCardVisibleAndDelete = 5;
+        int cityAdd = 1;
+        int settlementRemove = 1;
+        int unknown = 0;
+        Vector<String> setVisibleList = new Vector<String>();
+        String cityAddName = "";
+        String settlementRemoveName = "";
+        
+        for(int i = 0; i < lastMove.size(); i++)
+        {
+            switch(lastMove.get(i).getClassName())
+            {
+                case "Set":
+                    if( ((Set) lastMove.get(i)).getKey().equals(Constants.TURN)
+                      &&((Set) lastMove.get(i)).getValue().equals(playerString))
+                    {
+                        turnVerify--;
+                    }
+                    else if( ((Set) lastMove.get(i)).getValue().toString().contains("CIT")
+                           &&((Set) lastMove.get(i)).getValue().toString().contains(playerString))
+                    {
+                        cityAddName = ((Set) lastMove.get(i)).getKey();
+                        settlementRemoveName = lastState.get(cityAddName).toString();
+                    }
+                    else if( ((Set) lastMove.get(i)).getKey().contains("CIT")
+                            &&((Set) lastMove.get(i)).getKey().contains(playerString))
+                     {
+                         if(((Set) lastMove.get(i)).getValue().toString().equals(cityAddName))
+                         {
+                             cityAddName = "";
+                             cityAdd--;
+                         }
+                         else
+                         {
+                             unknown--;
+                         }
+                     }
+                    else
+                    {
+                        unknown--;
+                    }
+                    break;
+                case "SetVisibility":
+                    setVisibleList.add(((SetVisibility) lastMove.get(i)).getKey());
+                    break;
+                case "Delete":
+                    if(setVisibleList.contains(((Delete)lastMove.get(i)).getKey()))
+                    {
+                        setVisibleList.remove(((Delete)lastMove.get(i)).getKey());
+                        oldCardVisibleAndDelete--;
+                    }
+                    else if((((Delete)lastMove.get(i)).getKey()).equals(settlementRemoveName))
+                    {
+                        settlementRemoveName = "";
+                        settlementRemove--;
+                    }
+                    else
+                    {
+                        unknown--;
+                    }
+                    break;
+                default:
+                    unknown = -1;
+                    break;
+            }
+        }
+        
+        if( setVisibleList.isEmpty() && cityAddName.equals("") && turnVerify == 0
+                && cityAdd == 0 && oldCardVisibleAndDelete == 0 && settlementRemove == 0
+                && settlementRemoveName.equals("") && unknown == 0)
+        {
+            status = true;
+        }
+        else
+        {
+            err = "ensureBuyDevelopmentCardMoveCountCorrect failed"
+                + "setVisibleList.isEmpty(): " + setVisibleList.isEmpty() + "\n"
+                + "cityAddName.equals(\"\"): " + cityAddName.equals("") + "\n"
+                + "turnVerify: " + turnVerify + "\n"
+                + "cityAdd: " + cityAdd + "\n"
+                + "oldCardVisibleAndDelete: " + oldCardVisibleAndDelete + "\n"
+                + "settlementRemove: " + settlementRemove + "\n"
+                + "settlementRemoveName.equals(\"\"): " + settlementRemoveName.equals("") + "\n"
+                + "unknown: " + unknown;
+        }
+        
+        return status;
+    }
+    
+    private boolean ensureBuyDevelopmentCardMoveCountCorrect(List<Operation> lastMove, String playerString)
+    {
+        boolean status = false;
+        
+        int turnVerify = 1;
+        int newDevelopmentCardVisible = 1;
+        int newDevelopmentCardAssignment = 1;
+        int oldCardVisibleAndDelete = 3;
+        int unknown = 0;
+        Vector<String> setVisibleList = new Vector<String>();
+        
+        for(int i = 0; i < lastMove.size(); i++)
+        {
+            switch(lastMove.get(i).getClassName())
+            {
+                case "Set":
+                    if( ((Set) lastMove.get(i)).getKey().equals(Constants.TURN)
+                      &&((Set) lastMove.get(i)).getValue().equals(playerString))
+                    {
+                        turnVerify--;
+                    }
+                    else if(((Set) lastMove.get(i)).getKey().contains("DEV"))
+                    {
+                        newDevelopmentCardAssignment--;
+                    }
+                    else
+                    {
+                        unknown--;
+                    }
+                    break;
+                case "SetVisibility":
+                    if(((SetVisibility)lastMove.get(i)).getKey().contains("DCT"))
+                    {
+                        newDevelopmentCardVisible--;
+                    }
+                    else
+                    {
+                        setVisibleList.add(((SetVisibility) lastMove.get(i)).getKey());
+                    }
+                    break;
+                case "Delete":
+                    if(setVisibleList.contains(((Delete)lastMove.get(i)).getKey()))
+                    {
+                        setVisibleList.remove(((Delete)lastMove.get(i)).getKey());
+                        oldCardVisibleAndDelete--;
+                    }
+                    else
+                    {
+                        unknown--;
+                    }
+                    break;
+                default:
+                    unknown = -1;
+                    break;
+            }
+        }
+        
+        if( setVisibleList.isEmpty() && turnVerify == 0 && newDevelopmentCardVisible == 0 && 
+                newDevelopmentCardAssignment == 0 && oldCardVisibleAndDelete == 0 && unknown == 0)
+        {
+            status = true;
+        }
+        else
+        {
+            err = "ensureBuyDevelopmentCardMoveCountCorrect failed"
+                + "setVisibleList.isEmpty(): " + setVisibleList.isEmpty() + "\n"
+                + "turnVerify: " + turnVerify + "\n"
+                + "newDevelopmentCardVisible: " + newDevelopmentCardVisible + "\n"
+                + "newDevelopmentCardAssignment: " + newDevelopmentCardAssignment + "\n"
+                + "oldCardVisibleAndDelete: " + oldCardVisibleAndDelete + "\n"
+                + "unknown: " + unknown;
+        }
+        
+        return status;
+    }
+    
+    private boolean ensureTotalTradeMoveCountCorrect(List<Operation> lastMove, String playerString, int count)
     {
         boolean status = false;
         
         int turnVerify = 1;
         int newCardSet = 1;
-        int oldCardVisibleAndDelete = 2;
+        int oldCardVisibleAndDelete = count;
         int unknown = 0;
         Vector<String> setVisibleList = new Vector<String>();
         
@@ -193,6 +915,10 @@ public class SettlersOfCatanLogic {
                     {
                         newCardSet--;
                     }
+                    else
+                    {
+                        unknown--;
+                    }
                     break;
                 case "SetVisibility":
                     setVisibleList.add(((SetVisibility) lastMove.get(i)).getKey());
@@ -203,6 +929,10 @@ public class SettlersOfCatanLogic {
                         setVisibleList.remove(((Delete)lastMove.get(i)).getKey());
                         oldCardVisibleAndDelete--;
                     }
+                    else
+                    {
+                        unknown--;
+                    }
                     break;
                 default:
                     unknown = -1;
@@ -210,14 +940,24 @@ public class SettlersOfCatanLogic {
             }
         }
         
-        if( turnVerify == 0 && newCardSet == 0 && oldCardVisibleAndDelete == 0 && unknown == 0)
+        if( setVisibleList.isEmpty() && turnVerify == 0 && newCardSet == 0 && oldCardVisibleAndDelete == 0 && unknown == 0)
         {
             status = true;
+        }
+        else
+        {
+            err = "ensureTotalTradeMoveCountCorrect failed"
+                + "setVisibleList.isEmpty(): " + setVisibleList.isEmpty() + "\n"
+                + "turnVerify: " + turnVerify + "\n"
+                + "newCardSet: " + newCardSet + "\n"
+                + "oldCardVisibleAndDelete: " + oldCardVisibleAndDelete + "\n"
+                + "unknown: " + unknown;
         }
         
         return status;
     }
     
+
     private boolean ownsTwoToOneHarbor(Map<String, Object> state, String playerString, String resource)
     {
         boolean status = false;
@@ -250,6 +990,7 @@ public class SettlersOfCatanLogic {
         return status;
     }
     
+
     private boolean ownsThreeToOneHarbor(Map<String, Object> state, String playerString)
     {
         boolean status = false;
@@ -264,70 +1005,91 @@ public class SettlersOfCatanLogic {
         return status;
     }
     
+
     private ImmutableList<String> getHarborBonusList(Map<String, Object> state, String playerString)
     {
         ImmutableList<String> harborBonusList = null;
         Builder<String> listBuilder = new Builder<String>();
         
+        String check = (String) state.get(Constants.NODE00);
+        
         // Harbor 00
-        if( ((String) state.get(Constants.NODE00)).contains(playerString)
-         || ((String) state.get(Constants.NODE03)).contains(playerString))
+        if( ((((String) state.get(Constants.NODE00)) != null)
+           && (((String) state.get(Constants.NODE00)).contains(playerString)))
+         || ((((String) state.get(Constants.NODE03)) != null)
+           && (((String) state.get(Constants.NODE03)).contains(playerString))))
         {
             listBuilder.add((String) state.get(Constants.HARBOR00));
         }
 
         // Harbor 01
-        if( ((String) state.get(Constants.NODE01)).contains(playerString)
-         || ((String) state.get(Constants.NODE05)).contains(playerString))
+        if( ((((String) state.get(Constants.NODE01)) != null)
+           && (((String) state.get(Constants.NODE01)).contains(playerString)))
+         || ((((String) state.get(Constants.NODE05)) != null)
+           && (((String) state.get(Constants.NODE05)).contains(playerString))))
         {
             listBuilder.add((String) state.get(Constants.HARBOR01));
         }
 
         // Harbor 02
-        if( ((String) state.get(Constants.NODE10)).contains(playerString)
-         || ((String) state.get(Constants.NODE15)).contains(playerString))
+        if( ((((String) state.get(Constants.NODE10)) != null)
+                && (((String) state.get(Constants.NODE10)).contains(playerString)))
+              || ((((String) state.get(Constants.NODE15)) != null)
+                && (((String) state.get(Constants.NODE15)).contains(playerString))))
         {
             listBuilder.add((String) state.get(Constants.HARBOR02));
         }
 
         // Harbor 03
-        if( ((String) state.get(Constants.NODE26)).contains(playerString)
-         || ((String) state.get(Constants.NODE32)).contains(playerString))
+        if( ((((String) state.get(Constants.NODE26)) != null)
+                && (((String) state.get(Constants.NODE26)).contains(playerString)))
+              || ((((String) state.get(Constants.NODE32)) != null)
+                && (((String) state.get(Constants.NODE32)).contains(playerString))))
         {
             listBuilder.add((String) state.get(Constants.HARBOR03));
         }
 
         // Harbor 04
-        if( ((String) state.get(Constants.NODE42)).contains(playerString)
-         || ((String) state.get(Constants.NODE46)).contains(playerString))
+        if( ((((String) state.get(Constants.NODE42)) != null)
+                && (((String) state.get(Constants.NODE42)).contains(playerString)))
+              || ((((String) state.get(Constants.NODE46)) != null)
+                && (((String) state.get(Constants.NODE46)).contains(playerString))))
         {
             listBuilder.add((String) state.get(Constants.HARBOR04));
         }
 
         // Harbor 05
-        if( ((String) state.get(Constants.NODE49)).contains(playerString)
-         || ((String) state.get(Constants.NODE52)).contains(playerString))
+        if( ((((String) state.get(Constants.NODE49)) != null)
+                && (((String) state.get(Constants.NODE49)).contains(playerString)))
+              || ((((String) state.get(Constants.NODE52)) != null)
+                && (((String) state.get(Constants.NODE52)).contains(playerString))))
         {
             listBuilder.add((String) state.get(Constants.HARBOR05));
         }
 
         // Harbor 06
-        if( ((String) state.get(Constants.NODE47)).contains(playerString)
-         || ((String) state.get(Constants.NODE51)).contains(playerString))
+        if( ((((String) state.get(Constants.NODE47)) != null)
+                && (((String) state.get(Constants.NODE47)).contains(playerString)))
+              || ((((String) state.get(Constants.NODE51)) != null)
+                && (((String) state.get(Constants.NODE51)).contains(playerString))))
         {
             listBuilder.add((String) state.get(Constants.HARBOR06));
         }
 
         // Harbor 07
-        if( ((String) state.get(Constants.NODE33)).contains(playerString)
-         || ((String) state.get(Constants.NODE38)).contains(playerString))
+        if( ((((String) state.get(Constants.NODE33)) != null)
+                && (((String) state.get(Constants.NODE33)).contains(playerString)))
+              || ((((String) state.get(Constants.NODE38)) != null)
+                && (((String) state.get(Constants.NODE38)).contains(playerString))))
         {
             listBuilder.add((String) state.get(Constants.HARBOR07));
         }
 
         // Harbor 08
-        if( ((String) state.get(Constants.NODE11)).contains(playerString)
-         || ((String) state.get(Constants.NODE16)).contains(playerString))
+        if( ((((String) state.get(Constants.NODE11)) != null)
+                && (((String) state.get(Constants.NODE11)).contains(playerString)))
+              || ((((String) state.get(Constants.NODE16)) != null)
+                && (((String) state.get(Constants.NODE16)).contains(playerString))))
         {
             listBuilder.add((String) state.get(Constants.HARBOR08));
         }
@@ -337,6 +1099,7 @@ public class SettlersOfCatanLogic {
         return harborBonusList;
     }
     
+
     private ImmutableList<String> getNodesFromPath(String path)
     {
         ImmutableList<String> nodeList = null;
@@ -707,6 +1470,7 @@ public class SettlersOfCatanLogic {
         return nodeList;
     }
 	
+
 	private ImmutableList<String> getPathsFromNode(String node)
 	{
 	    ImmutableList<String> pathList = null;
