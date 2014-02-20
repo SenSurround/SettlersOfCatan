@@ -315,6 +315,8 @@ public class SettlersOfCatanLogicTest {
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD05PB, Constants.ORE);
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD06PB, Constants.ORE);
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD07PB, Constants.ORE);
+        addRoadState = changeState(addRoadState, Constants.DEVELOPMENTCARD00, Constants.PB);
+        addRoadState = changeState(addRoadState, Constants.ROBBER, Constants.HEX04);
         
         return addRoadState;
     }
@@ -1028,9 +1030,9 @@ public class SettlersOfCatanLogicTest {
     public void testLegalAddCity() {
         ImmutableList<Operation> addCity = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
+                new Delete(Constants.SETTLEMENT00PB),
                 new Set(Constants.NODE23, Constants.CITY00PB),
                 new Set(Constants.CITY00PB, Constants.NODE23),
-                new Delete(Constants.SETTLEMENT00PB),
                 new SetVisibility(Constants.RESOURCECARD03PB),
                 new SetVisibility(Constants.RESOURCECARD04PB),
                 new SetVisibility(Constants.RESOURCECARD05PB),
@@ -1095,9 +1097,9 @@ public class SettlersOfCatanLogicTest {
     public void testIllegalAddCityIncorrectResources() {
         ImmutableList<Operation> addCity = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
+                new Delete(Constants.SETTLEMENT00PB),
                 new Set(Constants.NODE23, Constants.CITY00PB),
                 new Set(Constants.CITY00PB, Constants.NODE23),
-                new Delete(Constants.SETTLEMENT00PB),
                 new SetVisibility(Constants.RESOURCECARD01PB),
                 new SetVisibility(Constants.RESOURCECARD04PB),
                 new SetVisibility(Constants.RESOURCECARD05PB),
@@ -1130,9 +1132,9 @@ public class SettlersOfCatanLogicTest {
     public void testIllegalAddCityNoneLeft() {
         ImmutableList<Operation> addCity = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
+                new Delete(Constants.SETTLEMENT00PB),
                 new Set(Constants.NODE21, Constants.CITY03PB),
                 new Set(Constants.CITY03PB, Constants.NODE21),
-                new Delete(Constants.SETTLEMENT00PB),
                 new SetVisibility(Constants.RESOURCECARD03PB),
                 new SetVisibility(Constants.RESOURCECARD04PB),
                 new SetVisibility(Constants.RESOURCECARD05PB),
@@ -1253,9 +1255,9 @@ public class SettlersOfCatanLogicTest {
     public void testEndGameByBuildingCity() {
         ImmutableList<Operation> addCity = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
+                new Delete(Constants.SETTLEMENT00PB),
                 new Set(Constants.NODE21, Constants.CITY03PB),
                 new Set(Constants.CITY03PB, Constants.NODE21),
-                new Delete(Constants.SETTLEMENT00PB),
                 new SetVisibility(Constants.RESOURCECARD03PB),
                 new SetVisibility(Constants.RESOURCECARD04PB),
                 new SetVisibility(Constants.RESOURCECARD05PB),
