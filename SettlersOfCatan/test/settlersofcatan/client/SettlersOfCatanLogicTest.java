@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 public class SettlersOfCatanLogicTest {
@@ -51,7 +52,7 @@ public class SettlersOfCatanLogicTest {
         
         for (int i = 0; i < move.size(); i++) {
             Operation current = move.get(i);
-            switch(current.getClassName()) {
+            switch(current.getMessageName()) {
                 case "Set":
                     newState.put(((Set) current).getKey(), ((Set) current).getValue());
                     break;
@@ -367,12 +368,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(harborTradeState, harborTrade),
                 harborTradeState,
                 harborTrade,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         assertMoveOk(verifyMove);
     }
@@ -409,12 +410,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(harborTradeState, harborTrade),
                 harborTradeState,
                 harborTrade,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         testName = "testIllegalNormalHarborTradeResourcesNotSame";
         
@@ -449,12 +450,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(harborTradeState, harborTrade),
                 harborTradeState,
                 harborTrade,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalNormalHarborTradeNotEnoughResources";
         
@@ -491,12 +492,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(harborTradeState, harborTrade),
                 harborTradeState,
                 harborTrade,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         assertMoveOk(verifyMove);
     }
@@ -533,12 +534,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(harborTradeState, harborTrade),
                 harborTradeState,
                 harborTrade,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalThreeForOneHarborTradeResourcesNotSame";
         
@@ -573,12 +574,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(harborTradeState, harborTrade),
                 harborTradeState,
                 harborTrade,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalThreeForOneHarborTradeNotEnoughResources";
         
@@ -612,12 +613,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(harborTradeState, harborTrade),
                 harborTradeState,
                 harborTrade,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         assertMoveOk(verifyMove);
     }
@@ -650,12 +651,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(harborTradeState, harborTrade),
                 harborTradeState,
                 harborTrade,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalTwoForOneLumberHarborTradeResourcesNotSame";
         
@@ -686,12 +687,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(harborTradeState, harborTrade),
                 harborTradeState,
                 harborTrade,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalTwoForOneLumberHarborTradeNotEnoughResources";
         
@@ -713,12 +714,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addRoad),
                 createAddAssetState(),
                 addRoad,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         assertMoveOk(verifyMove);
     }
@@ -739,12 +740,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addRoad),
                 createAddAssetState(),
                 addRoad,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddRoadNoAdjacentRoad";
 
@@ -767,12 +768,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addRoad),
                 createAddAssetState(),
                 addRoad,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddRoadIncorrectResources";
 
@@ -795,12 +796,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addRoad),
                 createAddAssetState(),
                 addRoad,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddRoadPathTaken";
 
@@ -823,12 +824,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAllAssetsUsedState(), addRoad),
                 createAllAssetsUsedState(),
                 addRoad,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddRoadNoneLeft";
 
@@ -854,12 +855,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addSettlement),
                 createAddAssetState(),
                 addSettlement,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         assertMoveOk(verifyMove);
     }
@@ -884,12 +885,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addSettlement),
                 createAddAssetState(),
                 addSettlement,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddSettlementNoRoad";
 
@@ -916,12 +917,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addSettlement),
                 createAddAssetState(),
                 addSettlement,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddSettlementTooClose";
 
@@ -948,12 +949,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addSettlement),
                 createAddAssetState(),
                 addSettlement,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddSettlementIncorrectResources";
 
@@ -980,12 +981,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addSettlement),
                 createAddAssetState(),
                 addSettlement,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddSettlementNodeTaken";
 
@@ -1012,12 +1013,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAllAssetsUsedState(), addSettlement),
                 createAllAssetsUsedState(),
                 addSettlement,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddSettlementNoneLeft";
 
@@ -1046,12 +1047,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addCity),
                 createAddAssetState(),
                 addCity,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         assertMoveOk(verifyMove);
     }
@@ -1078,12 +1079,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addCity),
                 createAddAssetState(),
                 addCity,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddCityNoSettlement";
 
@@ -1113,12 +1114,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addCity),
                 createAddAssetState(),
                 addCity,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddCityIncorrectResources";
 
@@ -1148,12 +1149,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAllAssetsUsedState(), addCity),
                 createAllAssetsUsedState(),
                 addCity,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalAddCityNoneLeft";
 
@@ -1177,12 +1178,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addDevelopmentCard),
                 createAddAssetState(),
                 addDevelopmentCard,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         assertMoveOk(verifyMove);
     }
@@ -1205,12 +1206,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createAddAssetState(), addDevelopmentCard),
                 createAddAssetState(),
                 addDevelopmentCard,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
 
         testName = "testIllegalPurchaseDevelopmentCardIncorrectResources";
 
@@ -1238,12 +1239,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createPrepForVictoryState(), addSettlement),
                 createPrepForVictoryState(),
                 addSettlement,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         assertMoveOk(verifyMove);
     }
@@ -1272,12 +1273,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createPrepForVictoryState(), addCity),
                 createPrepForVictoryState(),
                 addCity,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         assertMoveOk(verifyMove);
     }
@@ -1300,12 +1301,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createPrepForVictoryState(), addRoad),
                 createPrepForVictoryState(),
                 addRoad,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         assertMoveOk(verifyMove);
     }
@@ -1326,12 +1327,12 @@ public class SettlersOfCatanLogicTest {
                 );
         
         VerifyMove verifyMove = new VerifyMove(
-                Constants.pbId,
                 Constants.playersInfo,
                 applyMoveToState(createPrepForVictoryState(), playDevelopmentCard),
                 createPrepForVictoryState(),
                 playDevelopmentCard,
-                Constants.pbId);
+                Constants.pbId,
+                ImmutableMap.<Integer, Integer>of());
         
         assertMoveOk(verifyMove);
     }

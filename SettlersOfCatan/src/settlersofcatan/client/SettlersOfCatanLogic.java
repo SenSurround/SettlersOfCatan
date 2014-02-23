@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
@@ -916,7 +915,7 @@ public class SettlersOfCatanLogic {
     {
         boolean status = false;
 
-        if(!move.getClassName().equals("Set"))
+        if(!move.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: moveNum\n"
                 + "BUILDSETTLEMENT expects: SET(TURN, playerString)\n"
@@ -956,7 +955,7 @@ public class SettlersOfCatanLogic {
 
         boolean status = false;
 
-        if(!move1.getClassName().equals("Delete"))
+        if(!move1.getMessageName().equals("Delete"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDCITY expects: DELETE(SETTLEMENTZZ + playerString)\n"
@@ -984,7 +983,7 @@ public class SettlersOfCatanLogic {
         {
             settlementYY = ((Delete)move1).getKey();
             
-            if(!move2.getClassName().equals("Set"))
+            if(!move2.getMessageName().equals("Set"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUILDCITY expects: SET(NODEXX, CITYYY + playerString)\n"
@@ -1013,7 +1012,7 @@ public class SettlersOfCatanLogic {
                 nodeXX = ((Set)move2).getKey();
                 cityZZ = ((Set)move2).getValue().toString();
 
-                if(!move3.getClassName().equals("Set"))
+                if(!move3.getMessageName().equals("Set"))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "BUILDCITY expects: SET(CITYYY + playerString, NODEXX)\n"
@@ -1079,7 +1078,7 @@ public class SettlersOfCatanLogic {
         String resourceCard4 = "";
         String resourceCard5 = "";
         
-        if(!move1.getClassName().equals("SetVisibility"))
+        if(!move1.getMessageName().equals("SetVisibility"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -1101,7 +1100,7 @@ public class SettlersOfCatanLogic {
         {
             resourceCard1 = ((SetVisibility)move1).getKey();
             
-            if(!move2.getClassName().equals("SetVisibility"))
+            if(!move2.getMessageName().equals("SetVisibility"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -1129,7 +1128,7 @@ public class SettlersOfCatanLogic {
             {
                 resourceCard2 = ((SetVisibility)move2).getKey();
                 
-                if(!move3.getClassName().equals("SetVisibility"))
+                if(!move3.getMessageName().equals("SetVisibility"))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
@@ -1163,7 +1162,7 @@ public class SettlersOfCatanLogic {
                 {
                     resourceCard3 = ((SetVisibility)move3).getKey();
                     
-                    if(!move4.getClassName().equals("SetVisibility"))
+                    if(!move4.getMessageName().equals("SetVisibility"))
                     {
                         err = "Incorrect Move Number: " + move4Num + "\n"
                             + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDDD + playerString)\n"
@@ -1203,7 +1202,7 @@ public class SettlersOfCatanLogic {
                     {
                         resourceCard4 = ((SetVisibility)move4).getKey();
                         
-                        if(!move5.getClassName().equals("SetVisibility"))
+                        if(!move5.getMessageName().equals("SetVisibility"))
                         {
                             err = "Incorrect Move Number: " + move5Num + "\n"
                                 + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDEE + playerString)\n"
@@ -1261,7 +1260,7 @@ public class SettlersOfCatanLogic {
         {
             status = false;
             
-            if(!move6.getClassName().equals("Delete"))
+            if(!move6.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move6Num + "\n"
                     + "BUILDCITY expects: DELETE(RESOURCECARDAA + playerString)\n"
@@ -1279,7 +1278,7 @@ public class SettlersOfCatanLogic {
                     + "BUILDCITY expects: DELETE(RESOURCECARDAA + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move7.getClassName().equals("Delete"))
+            else if(!move7.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move7Num + "\n"
                     + "BUILDCITY expects: DELETE(RESOURCECARDBB + playerString)\n"
@@ -1297,7 +1296,7 @@ public class SettlersOfCatanLogic {
                     + "BUILDCITY expects: DELETE(RESOURCECARDBB + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move8.getClassName().equals("Delete"))
+            else if(!move8.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move8Num + "\n"
                     + "BUILDCITY expects: DELETE(RESOURCECARDCC + playerString)\n"
@@ -1315,7 +1314,7 @@ public class SettlersOfCatanLogic {
                     + "BUILDCITY expects: DELETE(RESOURCECARDCC + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move9.getClassName().equals("Delete"))
+            else if(!move9.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move9Num + "\n"
                     + "BUILDCITY expects: DELETE(RESOURCECARDDD + playerString)\n"
@@ -1333,7 +1332,7 @@ public class SettlersOfCatanLogic {
                     + "BUILDCITY expects: DELETE(RESOURCECARDDD + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move10.getClassName().equals("Delete"))
+            else if(!move10.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move10Num + "\n"
                     + "BUILDCITY expects: DELETE(RESOURCECARDEE + playerString)\n"
@@ -1435,7 +1434,7 @@ public class SettlersOfCatanLogic {
 
         boolean status = false;
 
-        if(!move1.getClassName().equals("Set"))
+        if(!move1.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDSETTLEMENT expects: SET(NODEXX, SETTLEMENTYY + playerString)\n"
@@ -1464,7 +1463,7 @@ public class SettlersOfCatanLogic {
             nodeXX = ((Set)move1).getKey();
             settlementYY = ((Set)move1).getValue().toString();
 
-            if(!move2.getClassName().equals("Set"))
+            if(!move2.getMessageName().equals("Set"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUILDSETTLEMENT expects: SET(SETTLEMENTYY + playerString, NODEXX)\n"
@@ -1534,7 +1533,7 @@ public class SettlersOfCatanLogic {
         String resourceCard3 = "";
         String resourceCard4 = "";
         
-        if(!move1.getClassName().equals("SetVisibility"))
+        if(!move1.getMessageName().equals("SetVisibility"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -1556,7 +1555,7 @@ public class SettlersOfCatanLogic {
         {
             resourceCard1 = ((SetVisibility)move1).getKey();
             
-            if(!move2.getClassName().equals("SetVisibility"))
+            if(!move2.getMessageName().equals("SetVisibility"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -1584,7 +1583,7 @@ public class SettlersOfCatanLogic {
             {
                 resourceCard2 = ((SetVisibility)move2).getKey();
                 
-                if(!move3.getClassName().equals("SetVisibility"))
+                if(!move3.getMessageName().equals("SetVisibility"))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
@@ -1618,7 +1617,7 @@ public class SettlersOfCatanLogic {
                 {
                     resourceCard3 = ((SetVisibility)move3).getKey();
                     
-                    if(!move4.getClassName().equals("SetVisibility"))
+                    if(!move4.getMessageName().equals("SetVisibility"))
                     {
                         err = "Incorrect Move Number: " + move4Num + "\n"
                             + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDDD + playerString)\n"
@@ -1669,7 +1668,7 @@ public class SettlersOfCatanLogic {
         {
             status = false;
             
-            if(!move5.getClassName().equals("Delete"))
+            if(!move5.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move5Num + "\n"
                     + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDAA + playerString)\n"
@@ -1687,7 +1686,7 @@ public class SettlersOfCatanLogic {
                     + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDAA + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move6.getClassName().equals("Delete"))
+            else if(!move6.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move6Num + "\n"
                     + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDBB + playerString)\n"
@@ -1705,7 +1704,7 @@ public class SettlersOfCatanLogic {
                     + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDBB + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move7.getClassName().equals("Delete"))
+            else if(!move7.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move7Num + "\n"
                     + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDCC + playerString)\n"
@@ -1723,7 +1722,7 @@ public class SettlersOfCatanLogic {
                     + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDCC + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move8.getClassName().equals("Delete"))
+            else if(!move8.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move8Num + "\n"
                     + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDDD + playerString)\n"
@@ -1849,7 +1848,7 @@ public class SettlersOfCatanLogic {
 
         boolean status = false;
 
-        if(!move1.getClassName().equals("Set"))
+        if(!move1.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDROAD expects: SET(PATHXX, ROADYY + playerString)\n"
@@ -1878,7 +1877,7 @@ public class SettlersOfCatanLogic {
             pathXX = ((Set)move1).getKey();
             roadYY = ((Set)move1).getValue().toString();
 
-            if(!move2.getClassName().equals("Set"))
+            if(!move2.getMessageName().equals("Set"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUILDROAD expects: SET(ROADYY + playerString, PATHXX)\n"
@@ -1940,7 +1939,7 @@ public class SettlersOfCatanLogic {
         String resourceCard1 = "";
         String resourceCard2 = "";
         
-        if(!move1.getClassName().equals("SetVisibility"))
+        if(!move1.getMessageName().equals("SetVisibility"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDROAD expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -1962,7 +1961,7 @@ public class SettlersOfCatanLogic {
         {
             resourceCard1 = ((SetVisibility)move1).getKey();
             
-            if(!move2.getClassName().equals("SetVisibility"))
+            if(!move2.getMessageName().equals("SetVisibility"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUILDROAD expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -1999,7 +1998,7 @@ public class SettlersOfCatanLogic {
         {
             status = false;
             
-            if(!move3.getClassName().equals("Delete"))
+            if(!move3.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move3Num + "\n"
                     + "BUILDROAD expects: DELETE(RESOURCECARDAA + playerString)\n"
@@ -2017,7 +2016,7 @@ public class SettlersOfCatanLogic {
                     + "BUILDROAD expects: DELETE(RESOURCECARDAA + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move4.getClassName().equals("Delete"))
+            else if(!move4.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move4Num + "\n"
                     + "BUILDROAD expects: DELETE(RESOURCECARDBB + playerString)\n"
@@ -2089,7 +2088,7 @@ public class SettlersOfCatanLogic {
 
         boolean status = false;
 
-        if(!move1.getClassName().equals("Set"))
+        if(!move1.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUYDEVELOPMENTCARD expects: SET(DEVELOPMENTCARDXX, playerString)\n"
@@ -2117,7 +2116,7 @@ public class SettlersOfCatanLogic {
         {
             developmentCardXX = ((Set)move1).getKey();
 
-            if(!move2.getClassName().equals("SetVisibility"))
+            if(!move2.getMessageName().equals("SetVisibility"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDTYPEXX, visibleTo + playerString)\n"
@@ -2169,7 +2168,7 @@ public class SettlersOfCatanLogic {
 
         boolean status = false;
 
-        if(!move1.getClassName().equals("Set"))
+        if(!move1.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "PLAYDEVELOPMENTCARD expects: SET(DEVELOPMENTCARDXX, PLAYED)\n"
@@ -2203,7 +2202,7 @@ public class SettlersOfCatanLogic {
         {
             developmentCardXX = ((Set)move1).getKey();
 
-            if(!move2.getClassName().equals("SetVisibility"))
+            if(!move2.getMessageName().equals("SetVisibility"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDTYPEXX)\n"
@@ -2257,7 +2256,7 @@ public class SettlersOfCatanLogic {
         String resourceCard2 = "";
         String resourceCard3 = "";
         
-        if(!move1.getClassName().equals("SetVisibility"))
+        if(!move1.getMessageName().equals("SetVisibility"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -2279,7 +2278,7 @@ public class SettlersOfCatanLogic {
         {
             resourceCard1 = ((SetVisibility)move1).getKey();
             
-            if(!move2.getClassName().equals("SetVisibility"))
+            if(!move2.getMessageName().equals("SetVisibility"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -2307,7 +2306,7 @@ public class SettlersOfCatanLogic {
             {
                 resourceCard2 = ((SetVisibility)move2).getKey();
                 
-                if(!move3.getClassName().equals("SetVisibility"))
+                if(!move3.getMessageName().equals("SetVisibility"))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
@@ -2351,7 +2350,7 @@ public class SettlersOfCatanLogic {
         {
             status = false;
             
-            if(!move4.getClassName().equals("Delete"))
+            if(!move4.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move4Num + "\n"
                     + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDAA + playerString)\n"
@@ -2369,7 +2368,7 @@ public class SettlersOfCatanLogic {
                     + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDAA + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move5.getClassName().equals("Delete"))
+            else if(!move5.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move5Num + "\n"
                     + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDBB + playerString)\n"
@@ -2387,7 +2386,7 @@ public class SettlersOfCatanLogic {
                     + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDBB + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move6.getClassName().equals("Delete"))
+            else if(!move6.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move6Num + "\n"
                     + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDCC + playerString)\n"
@@ -2492,7 +2491,7 @@ public class SettlersOfCatanLogic {
         String resourceCard3 = "";
         String resourceCard4 = "";
         
-        if(!move1.getClassName().equals("SetVisibility"))
+        if(!move1.getMessageName().equals("SetVisibility"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -2514,7 +2513,7 @@ public class SettlersOfCatanLogic {
         {
             resourceCard1 = ((SetVisibility)move1).getKey();
             
-            if(!move2.getClassName().equals("SetVisibility"))
+            if(!move2.getMessageName().equals("SetVisibility"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -2542,7 +2541,7 @@ public class SettlersOfCatanLogic {
             {
                 resourceCard2 = ((SetVisibility)move2).getKey();
                 
-                if(!move3.getClassName().equals("SetVisibility"))
+                if(!move3.getMessageName().equals("SetVisibility"))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
@@ -2576,7 +2575,7 @@ public class SettlersOfCatanLogic {
                 {
                     resourceCard3 = ((SetVisibility)move3).getKey();
                     
-                    if(!move4.getClassName().equals("SetVisibility"))
+                    if(!move4.getMessageName().equals("SetVisibility"))
                     {
                         err = "Incorrect Move Number: " + move4Num + "\n"
                             + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDDD + playerString)\n"
@@ -2627,7 +2626,7 @@ public class SettlersOfCatanLogic {
         {
             status = false;
             
-            if(!move5.getClassName().equals("Delete"))
+            if(!move5.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move5Num + "\n"
                     + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
@@ -2645,7 +2644,7 @@ public class SettlersOfCatanLogic {
                     + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move6.getClassName().equals("Delete"))
+            else if(!move6.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move6Num + "\n"
                     + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
@@ -2663,7 +2662,7 @@ public class SettlersOfCatanLogic {
                     + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move7.getClassName().equals("Delete"))
+            else if(!move7.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move7Num + "\n"
                     + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDCC + playerString)\n"
@@ -2681,7 +2680,7 @@ public class SettlersOfCatanLogic {
                     + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDCC + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move8.getClassName().equals("Delete"))
+            else if(!move8.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move8Num + "\n"
                     + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDDD + playerString)\n"
@@ -2712,7 +2711,7 @@ public class SettlersOfCatanLogic {
                 }
                 else
                 {
-                    if(!move9.getClassName().equals("Set"))
+                    if(!move9.getMessageName().equals("Set"))
                     {
                         err = "Incorrect Move Number: " + move9Num + "\n"
                             + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -2769,7 +2768,7 @@ public class SettlersOfCatanLogic {
         String resourceCard2 = "";
         String resourceCard3 = "";
         
-        if(!move1.getClassName().equals("SetVisibility"))
+        if(!move1.getMessageName().equals("SetVisibility"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "THREETOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -2791,7 +2790,7 @@ public class SettlersOfCatanLogic {
         {
             resourceCard1 = ((SetVisibility)move1).getKey();
             
-            if(!move2.getClassName().equals("SetVisibility"))
+            if(!move2.getMessageName().equals("SetVisibility"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "THREETOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -2819,7 +2818,7 @@ public class SettlersOfCatanLogic {
             {
                 resourceCard2 = ((SetVisibility)move2).getKey();
                 
-                if(!move3.getClassName().equals("SetVisibility"))
+                if(!move3.getMessageName().equals("SetVisibility"))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "THREETOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
@@ -2863,7 +2862,7 @@ public class SettlersOfCatanLogic {
         {
             status = false;
             
-            if(!move4.getClassName().equals("Delete"))
+            if(!move4.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move4Num + "\n"
                     + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
@@ -2881,7 +2880,7 @@ public class SettlersOfCatanLogic {
                     + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move5.getClassName().equals("Delete"))
+            else if(!move5.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move5Num + "\n"
                     + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
@@ -2899,7 +2898,7 @@ public class SettlersOfCatanLogic {
                     + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move6.getClassName().equals("Delete"))
+            else if(!move6.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move6Num + "\n"
                     + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDCC + playerString)\n"
@@ -2929,7 +2928,7 @@ public class SettlersOfCatanLogic {
                 }
                 else
                 {
-                    if(!move7.getClassName().equals("Set"))
+                    if(!move7.getMessageName().equals("Set"))
                     {
                         err = "Incorrect Move Number: " + move7Num + "\n"
                             + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -2988,7 +2987,7 @@ public class SettlersOfCatanLogic {
         String resourceCard1 = "";
         String resourceCard2 = "";
         
-        if(!move1.getClassName().equals("SetVisibility"))
+        if(!move1.getMessageName().equals("SetVisibility"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "TWOTOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -3010,7 +3009,7 @@ public class SettlersOfCatanLogic {
         {
             resourceCard1 = ((SetVisibility)move1).getKey();
             
-            if(!move2.getClassName().equals("SetVisibility"))
+            if(!move2.getMessageName().equals("SetVisibility"))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "TWOTOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -3047,7 +3046,7 @@ public class SettlersOfCatanLogic {
         {
             status = false;
             
-            if(!move3.getClassName().equals("Delete"))
+            if(!move3.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move3Num + "\n"
                     + "TWOTOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
@@ -3065,7 +3064,7 @@ public class SettlersOfCatanLogic {
                     + "TWOTOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
                     + "playerString does not own resource";
             }
-            else if(!move4.getClassName().equals("Delete"))
+            else if(!move4.getMessageName().equals("Delete"))
             {
                 err = "Incorrect Move Number: " + move4Num + "\n"
                     + "TWOTOONEHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
@@ -3094,7 +3093,7 @@ public class SettlersOfCatanLogic {
                 }
                 else
                 {
-                    if(!move5.getClassName().equals("Set"))
+                    if(!move5.getMessageName().equals("Set"))
                     {
                         err = "Incorrect Move Number: " + move5Num + "\n"
                             + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -3147,7 +3146,7 @@ public class SettlersOfCatanLogic {
     {
         boolean status = false;
 
-        if(!move1.getClassName().equals("Set"))
+        if(!move1.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ROBBER expects: SET(ROBBER, HEX)\n"
@@ -3171,7 +3170,7 @@ public class SettlersOfCatanLogic {
                 + "ROBBER expects: SET(ROBBER, HEX)\n"
                 + "ROBBER did not move";
         }
-        else if(!move2.getClassName().equals("Set"))
+        else if(!move2.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move2Num + "\n"
                 + "ROBBER expects: SET(SOLDIERCOUNT + playerId, VAL)\n"
@@ -3219,7 +3218,7 @@ public class SettlersOfCatanLogic {
     {
         boolean status = false;
 
-        if(!move1.getClassName().equals("Set"))
+        if(!move1.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "MONOPOLY expects: SET(MONOPOLYRESOURCE, resource)\n"
@@ -3241,7 +3240,7 @@ public class SettlersOfCatanLogic {
                 + "MONOPOLY expects: SET(MONOPOLYRESOURCE, resource)\n"
                 + "A type of resource value expected";
         }
-        else if(!move2.getClassName().equals("Set"))
+        else if(!move2.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move2Num + "\n"
                 + "MONOPOLY expects: SET(MONOPOLYBENEFACTOR, playerString)\n"
@@ -3275,7 +3274,7 @@ public class SettlersOfCatanLogic {
     {
         boolean status = false;
 
-        if(!move1.getClassName().equals("Set"))
+        if(!move1.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
@@ -3327,7 +3326,7 @@ public class SettlersOfCatanLogic {
     {
         boolean status = false;
 
-        if(!move1.getClassName().equals("EndGame"))
+        if(!move1.getMessageName().equals("EndGame"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ENDGAME expects: ENDGAME(playerId)\n"
@@ -3339,7 +3338,7 @@ public class SettlersOfCatanLogic {
                 + "ENDGAME expects: ENDGAME(playerId)\n"
                 + "Too many winners claimed";
         }
-        else if(!((EndGame)move1).getPlayerIdToScore().containsKey(String.valueOf(playerId)))
+        else if(!((EndGame)move1).getPlayerIdToScore().containsKey(playerId))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ENDGAME expects: ENDGAME(playerId)\n"
@@ -3366,7 +3365,7 @@ public class SettlersOfCatanLogic {
     {
         boolean status = false;
 
-        if(!move1.getClassName().equals("Set"))
+        if(!move1.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "LARGESTARMY expects: SET(LARGESTARMY, playerString)\n"
@@ -3415,7 +3414,7 @@ public class SettlersOfCatanLogic {
     {
         boolean status = false;
         
-        if(!move1.getClassName().equals("Set"))
+        if(!move1.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "LONGESTROAD expects: SET(LONGESTROAD, playerString)\n"
@@ -4965,7 +4964,7 @@ public class SettlersOfCatanLogic {
         
         for(int i = 0; i < lastMove.size(); i++)
         {
-            if(lastMove.get(i).getClassName().equals("Set"))
+            if(lastMove.get(i).getMessageName().equals("Set"))
             {
                 status = status
                       || (((Set)lastMove.get(i)).getKey().contains(containsKeyString)
