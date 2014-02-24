@@ -2,28 +2,60 @@ package settlersofcatan.client;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
+import com.google.common.collect.Lists;
 
 import settlersofcatan.client.GameApi.Delete;
 import settlersofcatan.client.GameApi.EndGame;
 import settlersofcatan.client.GameApi.Operation;
 import settlersofcatan.client.GameApi.Set;
+import settlersofcatan.client.GameApi.SetTurn;
 import settlersofcatan.client.GameApi.SetVisibility;
+import settlersofcatan.client.GameApi.Shuffle;
 import settlersofcatan.client.GameApi.VerifyMove;
 import settlersofcatan.client.GameApi.VerifyMoveDone;
-
-
+import settlersofcatan.client.Hex.Resource;
 
 public class SettlersOfCatanLogic {  
     
     // Global Error String
     // For Debug Purposes
     private String err = "";
+    private int firstOpenDevelopmentCard = 0;
+    
+    List<String> resourceList = Arrays.asList(
+            Constants.ORE,    Constants.ORE,    Constants.ORE,
+            Constants.GRAIN,  Constants.GRAIN,  Constants.GRAIN,  Constants.GRAIN,
+            Constants.LUMBER, Constants.LUMBER, Constants.LUMBER, Constants.LUMBER,
+            Constants.WOOL,   Constants.WOOL,   Constants.WOOL,   Constants.WOOL,
+            Constants.BRICK,  Constants.BRICK,  Constants.BRICK,
+            Constants.DESERT);
+    
+    List<String> developmentCardTypeList = Arrays.asList(
+            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
+            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
+            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
+            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
+            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
+            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
+            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
+            Constants.DEVELOPMENTCARDTYPEDEF01, Constants.DEVELOPMENTCARDTYPEDEF01,
+            Constants.DEVELOPMENTCARDTYPEDEF02, Constants.DEVELOPMENTCARDTYPEDEF02,
+            Constants.DEVELOPMENTCARDTYPEDEF03, Constants.DEVELOPMENTCARDTYPEDEF03,
+            Constants.DEVELOPMENTCARDTYPEDEF04, Constants.DEVELOPMENTCARDTYPEDEF05,
+            Constants.DEVELOPMENTCARDTYPEDEF06, Constants.DEVELOPMENTCARDTYPEDEF07,
+            Constants.DEVELOPMENTCARDTYPEDEF08);
+  
+    List<String> harborTradeTypeList = Arrays.asList(
+            Constants.HARBORTYPE00, Constants.HARBORTYPE00, Constants.HARBORTYPE00,
+            Constants.HARBORTYPE00, Constants.HARBORTYPE01, Constants.HARBORTYPE02,
+            Constants.HARBORTYPE03, Constants.HARBORTYPE04, Constants.HARBORTYPE05);
     
     public VerifyMoveDone verify(VerifyMove verifyMove) {
         try {
@@ -59,6 +91,129 @@ public class SettlersOfCatanLogic {
 	        throw new RuntimeException("We have a hacker!\n" + err);
 	    }
 	}
+	
+	public List<Operation> getMoveInitial(List<Integer> playerIds)
+	{
+	    List<Operation> firstMove = Lists.newArrayList();
+	    
+	    int playerBlueId = playerIds.get(0);
+        int playerRedId = playerIds.get(1);
+        int playerYellowId = -1;
+        int playerGreenId = -1;
+        int desertHex = -1;
+	    
+	    if(playerIds.size() == 3)
+	        playerYellowId = playerIds.get(2);
+	    else if(playerIds.size() == 4)
+	        playerGreenId = playerIds.get(3);
+	    
+	    // Set turn to player
+	    firstMove.add(new SetTurn(playerBlueId));
+	    
+	    firstMove.add(new Shuffle(resourceList));
+	    for(int i = 0; i < resourceList.size(); i++)
+	    {
+	        if(i < 10)
+	            firstMove.add(
+	                    new Set(Constants.HEXTOKEN + "0" + i,
+	                            resourceList.get(i)));
+	        else
+                firstMove.add(
+                        new Set(Constants.HEXTOKEN + i,
+                                resourceList.get(i)));
+	        
+	        if(resourceList.get(i) == Constants.DESERT)
+	            desertHex = i;
+	    }
+	    
+        firstMove.add(new Shuffle(developmentCardTypeList));
+        for(int i = 0; i < developmentCardTypeList.size(); i++)
+        {
+            if(i < 10)
+                firstMove.add(
+                        new Set(Constants.DEVELOPMENTCARDTOKEN + "0" + i,
+                                developmentCardTypeList.get(i)));
+            else
+                firstMove.add(
+                        new Set(Constants.DEVELOPMENTCARDTOKEN + i,
+                                developmentCardTypeList.get(i)));
+        }
+        for(int i = 0; i < developmentCardTypeList.size(); i++)
+        {
+            if(i < 10)
+                firstMove.add(
+                        new SetVisibility(Constants.DEVELOPMENTCARDTOKEN + "0" + i,
+                                          Constants.visibleToNone));
+            else
+                firstMove.add(
+                        new SetVisibility(Constants.DEVELOPMENTCARDTOKEN + i,
+                                          Constants.visibleToNone));
+        }
+
+        firstMove.add(new Shuffle(harborTradeTypeList));
+        for(int i = 0; i < harborTradeTypeList.size(); i++)
+        {
+            firstMove.add(
+                    new Set(Constants.HARBORTRADETOKEN + "0" + i,
+                            harborTradeTypeList.get(i)));
+        }
+        
+        firstMove.add(new Set(Constants.ROBBER, desertHex));
+        
+        firstMove.add(new Set(Constants.SOLDIERCOUNTPB, 0));
+        firstMove.add(new Set(Constants.SOLDIERCOUNTPR, 0));
+        
+        if(playerIds.size() == 3)
+            firstMove.add(new Set(Constants.SOLDIERCOUNTPY, 0));
+        else if(playerIds.size() == 4)
+            firstMove.add(new Set(Constants.SOLDIERCOUNTPG, 0));
+	    
+	    return firstMove;
+	}
+	
+    public List<String> getResourceCardsFromState(
+            Map<String, Object> state)
+    {
+        List<String> resourceCards = new ArrayList<String>();
+        
+        for(int i = 0; i < 30; i++)
+        {
+            String cardToSearchFor = "";
+            if(i < 10)
+                cardToSearchFor = Constants.RESOURCECARDTOKEN + "0" + i;
+            else
+                cardToSearchFor = Constants.RESOURCECARDTOKEN + i;
+            
+            if(state.containsKey(cardToSearchFor))
+            {
+                resourceCards.add(state.get(cardToSearchFor).toString());
+            }
+        }
+        
+        return resourceCards;
+    }
+    
+    public List<String> getDevelopmentCardsFromState(
+            Map<String, Object> state)
+    {
+        List<String> resourceCards = new ArrayList<String>();
+        
+        for(int i = 0; i < 30; i++)
+        {
+            String cardToSearchFor = "";
+            if(i < 10)
+                cardToSearchFor = Constants.DEVELOPMENTCARDTOKEN + "0" + i;
+            else
+                cardToSearchFor = Constants.DEVELOPMENTCARDTOKEN + i;
+            
+            if(state.containsKey(cardToSearchFor))
+            {
+                resourceCards.add(state.get(cardToSearchFor).toString());
+            }
+        }
+        
+        return resourceCards;
+    }
 	
 	// Umbrella function to test all moves
 	// Returns true for moves that meet their criteria
@@ -431,8 +586,7 @@ public class SettlersOfCatanLogic {
     {
         // EXPECTED MOVE FORM
         // SET(TURN, playerString)
-        // SET(DEVELOPMENTCARDXX, playerString)
-        // SETVISIBILITY(DEVELOPMENTCARDTYPEXX, visibleTo + playerId)
+        // SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerId)
         // SETVISIBILITY(RESOURCECARDAA + playerString)
         // SETVISIBILITY(RESOURCECARDBB + playerString)
         // SETVISIBILITY(RESOURCECARDCC + playerString)
@@ -442,14 +596,13 @@ public class SettlersOfCatanLogic {
         
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
-        // Lines 1,2 - DEVELOPMENTCARDXX must map to DEVELOPMENTCARDTYPEXX
-        //             DEVELOPMENTCARDXX must be the first card available
-        //             Must assign the DEVELOPMENTCARDXX to playerString
-        // Lines 3,4,5 - RESOURCECARD must match lines 6,7,8
+        // Line 1 - DEVELOPMENTCARDXX must be the first card available
+        //          Must assign the DEVELOPMENTCARDXX to playerString
+        // Lines 2,3,4 - RESOURCECARD must match lines 6,7,8
         //               AA, BB, CC, must be 1 ore, 1 grain, 1 wool
         
-        // Ensure move is exactly 9 lines
-        boolean status = lastMove.size() == 9;
+        // Ensure move is exactly 8 lines
+        boolean status = lastMove.size() == 8;
         
         if(status)
         {
@@ -459,24 +612,23 @@ public class SettlersOfCatanLogic {
                           lastMove.get(0), 0, 
                           playerString);
             
-            // Lines 1,2
+            // Lines 1
             status = status
                   && matchDevelopmentCardandDevelopmentCardTypePair(
                           lastMove.get(1), 1, 
-                          lastMove.get(2), 2, 
                           lastState, 
                           playerString,
                           playerId);
             
-            // Lines 3,4,5,6,7,8,9,10
+            // Lines 2,3,4,5,6,7
             status = status
                   && matchBuyDevelopmentCardResources(
+                          lastMove.get(2), 2, 
                           lastMove.get(3), 3, 
                           lastMove.get(4), 4, 
                           lastMove.get(5), 5, 
                           lastMove.get(6), 6, 
                           lastMove.get(7), 7, 
-                          lastMove.get(8), 8, 
                           lastState,
                           playerString
                           );
@@ -485,7 +637,7 @@ public class SettlersOfCatanLogic {
         {
             err = "Incorrect Number Of Moves: "
                 + lastMove.size() + "\n"
-                + "BUYDEVELOPMENTCARD expects: 9";
+                + "BUYDEVELOPMENTCARD expects: 8";
         }
         
         return status;
@@ -503,8 +655,7 @@ public class SettlersOfCatanLogic {
 
         // EXPECTED PLAY SOLDIER FORM
         // SET(TURN, playerString)
-        // SET(DEVELOPMENTCARDXX, PLAYED)
-        // SETVISIBILITY(DEVELOPMENTCARDTYPEXX)
+        // SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)
         // SET(ROBBER, HEX)
         // SET(SOLDIERCOUNT + playerId, VAL)
         // OPTIONAL - SET(LARGESTARMY, playerString)
@@ -512,18 +663,17 @@ public class SettlersOfCatanLogic {
         //
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
-        // Lines 1,2 - DEVELOPMENTCARDXX must map to DEVELOPMENTCARDTYPEXX
-        //             DEVELOPMENTCARDXX must be owned by playerString
-        //             Must assign DEVELOPMENTCARDXX to PLAYED
-        // Line 3 - Determine where to move the robber
+        // Line 1 - DEVELOPMENTCARDXX must be owned by playerString
+        //          Must assign DEVELOPMENTCARDXX to visible nobody
+        // Line 2 - Determine where to move the robber
         //          Must be different than the current robber HEX
-        // Line 4 - Update the SOLDIERCOUNT for the current player
+        // Line 3 - Update the SOLDIERCOUNT for the current player
         //          Must increment the previous value
-        // Line 5 - Set the LARGESTARMY to the current player.
+        // Line 4 - Set the LARGESTARMY to the current player.
         //          This line only happens when the SOLDIERCOUNT set
         //          earlier is one greater than the current holder of
         //          LARGESTARMY
-        // Line 6 - Sets the ENDGAME for the current player.
+        // Line 5 - Sets the ENDGAME for the current player.
         //          This line only happens if LARGESTARMY is set
         //          for the current player and it pushes the current player
         //          at or over 10 victory points
@@ -531,53 +681,52 @@ public class SettlersOfCatanLogic {
         boolean status = false;
         
         if( findASetMoveInMoves(lastMove, Constants.ROBBER, "")
-         && ( lastMove.size() == 5
-           || lastMove.size() == 6
-           || lastMove.size() == 7 ) )
+         && ( lastMove.size() == 4
+           || lastMove.size() == 5
+           || lastMove.size() == 6 ) )
         {
             // Line 0
             status = matchTurnMoveForSamePlayer(
                             lastMove.get(0), 0, 
                             playerString);
             
-            // Lines 1,2
+            // Line 1
             status = status
                   && matchDevelopmentCardandDevelopmentCardTypePlayedPair(
-                          lastMove.get(1), 1, 
-                          lastMove.get(2), 2, 
+                          lastMove.get(1), 1,
                           lastState, 
                           playerString,
                           Constants.DEVELOPMENTCARDTYPEDEF00);
               
-              // Lines 3,4
+              // Lines 2,3
               status = status
                     && matchRobber(
+                            lastMove.get(2), 2,
                             lastMove.get(3), 3,
-                            lastMove.get(4), 4,
                             lastState,
                             playerString
                             );
               
-              if(lastMove.size() > 5)
+              if(lastMove.size() > 4)
               {
                   // Create a new state with the path added, to verify longest road claim
                   Map<String, Object> newState = new HashMap<String, Object>(lastState);
-                  newState.put(((Set)lastMove.get(4)).getKey(), ((Set)lastMove.get(4)).getValue());
+                  newState.put(((Set)lastMove.get(3)).getKey(), ((Set)lastMove.get(3)).getValue());
                   
-                  // Line 5
+                  // Line 4
                   status = status
                         && processLargestArmyClaim(
-                                lastMove.get(5), 5, 
+                                lastMove.get(4), 4, 
                                 newState,
                                 playerString,
-                                ((Set)lastMove.get(4)).getKey());
+                                ((Set)lastMove.get(3)).getKey());
                   
-                  if(lastMove.size() == 7)
+                  if(lastMove.size() == 6)
                   {
-                      // Line 6
+                      // Line 5
                       status = status
                             && matchEndGame(
-                                    lastMove.get(6), 6, 
+                                    lastMove.get(5), 5, 
                                     newState,
                                     playerString,
                                     playerId,
@@ -588,34 +737,39 @@ public class SettlersOfCatanLogic {
 
         // EXPECTED YEAR OF PLENTY FORM
         // SET(TURN, playerString)
-        // SET(DEVELOPMENTCARDXX, PLAYED)
-        // SETVISIBILITY(DEVELOPMENTCARDTYPEXX)
+        // SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)
         // SET(RESOURCECARDAA + playerString, resource)
         // SET(RESOURCECARDBB + playerString, resource)
         //
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
-        // Lines 1,2 - DEVELOPMENTCARDXX must map to DEVELOPMENTCARDTYPEXX
-        //             DEVELOPMENTCARDXX must be owned by playerString
-        //             Must assign DEVELOPMENTCARDXX to PLAYED
-        // Lines 3,4 - Two RESOURCE cards for playerString to choose
+        // Line 1 - DEVELOPMENTCARDXX must be owned by playerString
+        //          Must assign DEVELOPMENTCARDXX to visible nobody
+        // Lines 2,3 - Two RESOURCE cards for playerString to choose
 
         else if( findASetMoveInMoves(lastMove, Constants.RESOURCECARDTOKEN, "")
-              && lastMove.size() == 5 )
+              && lastMove.size() == 4 )
          {
              // Line 0
              status = matchTurnMoveForSamePlayer(
                              lastMove.get(0), 0, 
                              playerString);
              
-             // Lines 1,2
+             // Line 1
              status = status
                    && matchDevelopmentCardandDevelopmentCardTypePlayedPair(
                            lastMove.get(1), 1, 
-                           lastMove.get(2), 2, 
                            lastState, 
                            playerString,
                            Constants.DEVELOPMENTCARDTYPEDEF01);
+               
+               // Lines 2
+               status = status
+                     && matchAddResource(
+                             lastMove.get(2), 2,
+                             lastState,
+                             playerString
+                             );
                
                // Lines 3
                status = status
@@ -624,53 +778,42 @@ public class SettlersOfCatanLogic {
                              lastState,
                              playerString
                              );
-               
-               // Lines 4
-               status = status
-                     && matchAddResource(
-                             lastMove.get(4), 4,
-                             lastState,
-                             playerString
-                             );
          }
         
         // EXPECTED MONOPOLY FORM
         // SET(TURN, playerString)
-        // SET(DEVELOPMENTCARDXX, PLAYED)
-        // SETVISIBILITY(DEVELOPMENTCARDTYPEXX)
+        // SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)
         // SET(MONOPOLYRESOURCE, resource)
         // SET(MONOPOLYBENEFACTOR, playerString)
         //
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
-        // Lines 1,2 - DEVELOPMENTCARDXX must map to DEVELOPMENTCARDTYPEXX
-        //             DEVELOPMENTCARDXX must be owned by playerString
-        //             Must assign DEVELOPMENTCARDXX to PLAYED
-        // Lines 3 - Assign the MONOPOLYRESOURCE to a specific resource
-        // Lines 4 - Assign the MONOPOLYBENEFACTOR to playerString
+        // Line 1 - DEVELOPMENTCARDXX must be owned by playerString
+        //          Must assign DEVELOPMENTCARDXX to visible nobody
+        // Line 2 - Assign the MONOPOLYRESOURCE to a specific resource
+        // Line 3 - Assign the MONOPOLYBENEFACTOR to playerString
 
         else if( findASetMoveInMoves(lastMove, Constants.MONOPOLYRESOURCE, "")
-                && lastMove.size() == 5 )
+                && lastMove.size() == 4 )
         {
             // Line 0
             status = matchTurnMoveForSamePlayer(
                             lastMove.get(0), 0, 
                             playerString);
            
-            // Lines 1,2
+            // Line 1
             status = status
                     && matchDevelopmentCardandDevelopmentCardTypePlayedPair(
                             lastMove.get(1), 1, 
-                            lastMove.get(2), 2, 
                             lastState, 
                             playerString,
                             Constants.DEVELOPMENTCARDTYPEDEF02);
              
-            // Lines 3,4
+            // Lines 2,3
             status = status
                     && matchMonopoly(
+                            lastMove.get(2), 2,
                             lastMove.get(3), 3,
-                            lastMove.get(4), 4,
                             lastState,
                             playerString
                             );
@@ -678,8 +821,7 @@ public class SettlersOfCatanLogic {
         
         // EXPECTED ROAD BUILDING
         // SET(TURN, playerString)
-        // SET(DEVELOPMENTCARDXX, PLAYED)
-        // SETVISIBILITY(DEVELOPMENTCARDTYPEXX)
+        // SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)
         // SET(PATHXX, ROADYY + playerString)
         // SET(ROADYY + playerString, PATHXX)
         // SET(PATHZZ, ROADTT + playerString)
@@ -689,84 +831,82 @@ public class SettlersOfCatanLogic {
         //
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
-        // Lines 1,2 - DEVELOPMENTCARDXX must map to DEVELOPMENTCARDTYPEXX
-        //             DEVELOPMENTCARDXX must be owned by playerString
-        //             Must assign DEVELOPMENTCARDXX to PLAYED
-        // Lines 3,4 - PATH and ROAD must be the same
+        // Line 1 - DEVELOPMENTCARDXX must be owned by playerString
+        //          Must assign DEVELOPMENTCARDXX to visible nobody
+        // Lines 2,3 - PATH and ROAD must be the same
         //             PATH must be empty prior
         //             PATH must pass canAddRoadHere
         //             ROAD must not have an attached NODE prior
-        // Lines 5,6 - PATH and ROAD must be the same
+        // Lines 4,5 - PATH and ROAD must be the same
         //             PATH must be empty prior
         //             PATH must pass canAddRoadHere
         //             ROAD must not have an attached NODE prior
-        // Line 7 - Set the LONGESTROAD to the current player.
+        // Line 6 - Set the LONGESTROAD to the current player.
         //          This line only happens when the length of the
         //          current player's longest road is at least
         //          one greater than the current holder of
         //          LONGESTROAD
-        // Line 8 - Sets the ENDGAME for the current player.
+        // Line 7 - Sets the ENDGAME for the current player.
         //          This line only happens if LARGESTARMY is set
         //          for the current player and it pushes the current player
         //          at or over 10 victory points
         
         else if( findASetMoveInMoves(lastMove, Constants.PATHTOKEN, playerString)
-                && ( lastMove.size() == 7
-                  || lastMove.size() == 8
-                  || lastMove.size() == 9 ) )
+                && ( lastMove.size() == 6
+                  || lastMove.size() == 7
+                  || lastMove.size() == 8 ) )
          {
              // Line 0
              status = matchTurnMoveForSamePlayer(
                              lastMove.get(0), 0, 
                              playerString);
              
-             // Lines 1,2
+             // Line 1
              status = status
                    && matchDevelopmentCardandDevelopmentCardTypePlayedPair(
                            lastMove.get(1), 1, 
-                           lastMove.get(2), 2, 
                            lastState, 
                            playerString,
                            Constants.DEVELOPMENTCARDTYPEDEF03);
 
-             // Lines 3,4
+             // Lines 2,3
              status = status
                    && matchRoadAndPathPair(
+                           lastMove.get(2), 2, 
                            lastMove.get(3), 3, 
-                           lastMove.get(4), 4, 
                            lastState, 
                            playerString);
 
-             // Lines 5,6
+             // Lines 4,5
              status = status
                    && matchRoadAndPathPair(
+                           lastMove.get(4), 4, 
                            lastMove.get(5), 5, 
-                           lastMove.get(6), 6, 
                            lastState, 
                            playerString);
                
-               if(lastMove.size() > 7)
+               if(lastMove.size() > 6)
                {
                    // Create a new state with the paths added, to verify longest road claim
                    Map<String, Object> newState = new HashMap<String, Object>(lastState);
+                   newState.put(((Set)lastMove.get(2)).getKey(), ((Set)lastMove.get(2)).getValue());
                    newState.put(((Set)lastMove.get(3)).getKey(), ((Set)lastMove.get(3)).getValue());
                    newState.put(((Set)lastMove.get(4)).getKey(), ((Set)lastMove.get(4)).getValue());
                    newState.put(((Set)lastMove.get(5)).getKey(), ((Set)lastMove.get(5)).getValue());
-                   newState.put(((Set)lastMove.get(6)).getKey(), ((Set)lastMove.get(6)).getValue());
                    
-                   // Line 7
+                   // Line 6
                    status = status
                          && processLongestRoadClaim(
-                                 lastMove.get(7), 7, 
+                                 lastMove.get(6), 6, 
                                  newState,
                                  playerString);
                    
                    if(lastMove.size() == 9)
                    {
-                       // Line 8
+                       // Line 7
                        status = status
                              && matchEndGame(
-                                     lastMove.get(8), 8, 
+                                     lastMove.get(7), 7, 
                                      newState,
                                      playerString,
                                      playerId,
@@ -778,7 +918,7 @@ public class SettlersOfCatanLogic {
         {
             err = "Incorrect Number Of Moves: "
                 + lastMove.size() + "\n"
-                + "BUYDEVELOPMENTCARD expects: 9";
+                + "BUYDEVELOPMENTCARD expects: 8";
         }
         
         return status;
@@ -2079,77 +2219,45 @@ public class SettlersOfCatanLogic {
     // Returns whether the list of moves for a development card and development card type match
     private boolean matchDevelopmentCardandDevelopmentCardTypePair(
             Operation move1, int move1Num,
-            Operation move2, int move2Num,
             Map<String, Object> lastState,
             String playerString,
             int playerId)
     {
-        String developmentCardXX = "";
-
         boolean status = false;
 
-        if(!move1.getMessageName().equals("Set"))
+        if(!move1.getMessageName().equals("SetVisibility"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
-                + "BUYDEVELOPMENTCARD expects: SET(DEVELOPMENTCARDXX, playerString)\n"
+                + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move1).getKey().contains(Constants.DEVELOPMENTCARDTOKEN))
+        else if(!((SetVisibility)move1).getKey().contains(Constants.DEVELOPMENTCARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
-                + "BUYDEVELOPMENTCARD expects: SET(DEVELOPMENTCARDXX, playerString)\n"
-                + "DEVELOPMENTCARD key expected";
+                + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
+                + "DEVELOPMENTCARDTYPE key expected";
         }
-        else if(!((Set)move1).getValue().toString().equals(playerString))
+        else if(((ImmutableList<Integer>)((SetVisibility)move1).getVisibleToPlayerIds()).size() != 1)
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
-                + "BUYDEVELOPMENTCARD expects: SET(DEVELOPMENTCARDXX, playerString)\n"
-                + "playerString value expected";
+                + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
+                + "VisibleTo contains more than one user";
         }
-        else if(!((Set)move1).getKey().equals(findFirstOpenDevelopmentCard(lastState)))
+        else if(!((ImmutableList<Integer>)((SetVisibility)move1).getVisibleToPlayerIds()).contains(playerId))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
-                + "BUYDEVELOPMENTCARD expects: SET(DEVELOPMENTCARDXX, playerString)\n"
-                + "DEVELOPMENTCARD key is not the first available";
+                + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
+                + "VisibleTo does not map to current player";
+        }
+        else if(!((SetVisibility)move1).getKey().equals(findFirstOpenDevelopmentCard()))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
+                + "DEVELOPMENTCARD is not the first available in the state";
         }
         else
         {
-            developmentCardXX = ((Set)move1).getKey();
-
-            if(!move2.getMessageName().equals("SetVisibility"))
-            {
-                err = "Incorrect Move Number: " + move2Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDTYPEXX, visibleTo + playerString)\n"
-                    + "Set move expected";
-            }
-            else if(!((SetVisibility)move2).getKey().contains(Constants.DEVELOPMENTCARDTYPETOKEN))
-            {
-                err = "Incorrect Move Number: " + move2Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDTYPEXX, visibleTo + playerString)\n"
-                    + "DEVELOPMENTCARDTYPE key expected";
-            }
-            else if(((ImmutableList<Integer>)((SetVisibility)move2).getVisibleToPlayerIds()).size() != 1)
-            {
-                err = "Incorrect Move Number: " + move2Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDTYPEXX, visibleTo + playerString)\n"
-                    + "VisibleTo contains more than one user";
-            }
-            else if(!((ImmutableList<Integer>)((SetVisibility)move2).getVisibleToPlayerIds()).contains(playerId))
-            {
-                err = "Incorrect Move Number: " + move2Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDTYPEXX, visibleTo + playerString)\n"
-                    + "VisibleTo does not map to current player";
-            }
-            else if(!developmentCardXX.equals(findDevelopmentCardFromCardType(((SetVisibility)move2).getKey())))
-            {
-                err = "Incorrect Move Number: " + move2Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDTYPEXX, visibleTo + playerString)\n"
-                    + "DEVELOPMENTCARD does not match DEVELOPMENTCARDTYPE";
-            }
-            else
-            {
-                status = true;
-            }
+            status = true;
         }
         
         return status;
@@ -2159,77 +2267,39 @@ public class SettlersOfCatanLogic {
     // for a specific card type
     private boolean matchDevelopmentCardandDevelopmentCardTypePlayedPair(
             Operation move1, int move1Num,
-            Operation move2, int move2Num,
             Map<String, Object> lastState,
             String playerString,
             String developmentCardType)
     {
-        String developmentCardXX = "";
-
         boolean status = false;
 
-        if(!move1.getMessageName().equals("Set"))
+        if(!move1.getMessageName().equals("SetVisibility"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
-                + "PLAYDEVELOPMENTCARD expects: SET(DEVELOPMENTCARDXX, PLAYED)\n"
+                + "PLAYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move1).getKey().contains(Constants.DEVELOPMENTCARDTOKEN))
+        else if(!((SetVisibility)move1).getKey().contains(Constants.DEVELOPMENTCARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
-                + "PLAYDEVELOPMENTCARD expects: SET(DEVELOPMENTCARDXX, PLAYED)\n"
+                + "PLAYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)\n"
                 + "DEVELOPMENTCARD key expected";
         }
-        else if(!((Set)move1).getValue().toString().equals(Constants.PLAYED))
+        else if(((ImmutableList<Integer>)((SetVisibility)move1).getVisibleToPlayerIds()).size() > 0)
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
-                + "PLAYDEVELOPMENTCARD expects: SET(DEVELOPMENTCARDXX, PLAYED)\n"
-                + "PLAYED value expected";
+                + "PLAYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
+                + "VisibleTo is not none";
         }
-        else if(!lastState.containsKey((((Set)move1).getKey())))
+        else if(!(lastState.containsKey(((SetVisibility)move1).getKey())))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
-                + "PLAYDEVELOPMENTCARD expects: SET(DEVELOPMENTCARDXX, PLAYED)\n"
-                + "DEVELOPMENTCARD is not owned";
-        }
-        else if(!lastState.get((((Set)move1).getKey())).toString().contains(playerString))
-        {
-            err = "Incorrect Move Number: " + move1Num + "\n"
-                + "PLAYDEVELOPMENTCARD expects: SET(DEVELOPMENTCARDXX, PLAYED)\n"
-                + "DEVELOPMENTCARD is not owned by player";
+                + "PLAYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)\n"
+                + "DEVELOPMENTCARD is not owned by current player";
         }
         else
         {
-            developmentCardXX = ((Set)move1).getKey();
-
-            if(!move2.getMessageName().equals("SetVisibility"))
-            {
-                err = "Incorrect Move Number: " + move2Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDTYPEXX)\n"
-                    + "Set move expected";
-            }
-            else if(!((SetVisibility)move2).getKey().contains(Constants.DEVELOPMENTCARDTYPETOKEN))
-            {
-                err = "Incorrect Move Number: " + move2Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDTYPEXX)\n"
-                    + "DEVELOPMENTCARDTYPE key expected";
-            }
-            else if(!developmentCardXX.equals(findDevelopmentCardFromCardType(((SetVisibility)move2).getKey())))
-            {
-                err = "Incorrect Move Number: " + move2Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDTYPEXX)\n"
-                    + "DEVELOPMENTCARD does not match DEVELOPMENTCARDTYPE";
-            }
-            else if(!developmentCardType.equals(lastState.get(((SetVisibility)move2).getKey())))
-            {
-                err = "Incorrect Move Number: " + move2Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDTYPEXX)\n"
-                    + "DEVELOPMENTCARDTYPE does not match input developmentCardType";
-            }
-            else
-            {
-                status = true;
-            }
+            status = true;
         }
         
         return status;
@@ -3762,20 +3832,15 @@ public class SettlersOfCatanLogic {
     {
         int count = 0;
         
-        if( lastState.containsKey(findDevelopmentCardFromCardType(Constants.DEVELOPMENTCARDTYPEDEF04))
-         && lastState.get(findDevelopmentCardFromCardType(Constants.DEVELOPMENTCARDTYPEDEF04)).toString().contains(playerString) )
+        if(lastState.containsKey(Constants.DEVELOPMENTCARDTYPEDEF04))
             count++;
-        if( lastState.containsKey(findDevelopmentCardFromCardType(Constants.DEVELOPMENTCARDTYPEDEF05))
-         && lastState.get(findDevelopmentCardFromCardType(Constants.DEVELOPMENTCARDTYPEDEF04)).toString().contains(playerString) )
+        if(lastState.containsKey(Constants.DEVELOPMENTCARDTYPEDEF05))
             count++;
-        if( lastState.containsKey(findDevelopmentCardFromCardType(Constants.DEVELOPMENTCARDTYPEDEF06))
-         && lastState.get(findDevelopmentCardFromCardType(Constants.DEVELOPMENTCARDTYPEDEF04)).toString().contains(playerString) )
+        if(lastState.containsKey(Constants.DEVELOPMENTCARDTYPEDEF06))
             count++;
-        if( lastState.containsKey(findDevelopmentCardFromCardType(Constants.DEVELOPMENTCARDTYPEDEF07))
-         && lastState.get(findDevelopmentCardFromCardType(Constants.DEVELOPMENTCARDTYPEDEF04)).toString().contains(playerString) )
+        if(lastState.containsKey(Constants.DEVELOPMENTCARDTYPEDEF07))
             count++;
-        if( lastState.containsKey(findDevelopmentCardFromCardType(Constants.DEVELOPMENTCARDTYPEDEF08))
-         && lastState.get(findDevelopmentCardFromCardType(Constants.DEVELOPMENTCARDTYPEDEF04)).toString().contains(playerString) )
+        if(lastState.containsKey(Constants.DEVELOPMENTCARDTYPEDEF08))
             count++;
         
         return count;
@@ -4632,6 +4697,7 @@ public class SettlersOfCatanLogic {
     // Gets whether a settlement can be added here for a specific player
 
 	// Returns whether a specific player can add a settlement at a certain node
+
 	private boolean canAddSettlementHere(
             Map<String, Object> lastState,
             String node,
@@ -4685,205 +4751,22 @@ public class SettlersOfCatanLogic {
         
         return status;
     }
-    
     // Returns the Development Card that matches the given Development Card Type
 
     // Matches a development card to a development card type
-    private String findDevelopmentCardFromCardType(
-            String developmentCardType)
-    {
-        String developmentCard = "";
-        
-        switch(developmentCardType)
-        {
-        case Constants.DEVELOPMENTCARDTYPE00:
-            developmentCard = Constants.DEVELOPMENTCARD00;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE01:
-            developmentCard = Constants.DEVELOPMENTCARD01;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE02:
-            developmentCard = Constants.DEVELOPMENTCARD02;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE03:
-            developmentCard = Constants.DEVELOPMENTCARD03;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE04:
-            developmentCard = Constants.DEVELOPMENTCARD04;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE05:
-            developmentCard = Constants.DEVELOPMENTCARD05;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE06:
-            developmentCard = Constants.DEVELOPMENTCARD06;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE07:
-            developmentCard = Constants.DEVELOPMENTCARD07;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE08:
-            developmentCard = Constants.DEVELOPMENTCARD08;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE09:
-            developmentCard = Constants.DEVELOPMENTCARD09;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE10:
-            developmentCard = Constants.DEVELOPMENTCARD10;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE11:
-            developmentCard = Constants.DEVELOPMENTCARD11;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE12:
-            developmentCard = Constants.DEVELOPMENTCARD12;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE13:
-            developmentCard = Constants.DEVELOPMENTCARD13;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE14:
-            developmentCard = Constants.DEVELOPMENTCARD14;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE15:
-            developmentCard = Constants.DEVELOPMENTCARD15;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE16:
-            developmentCard = Constants.DEVELOPMENTCARD16;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE17:
-            developmentCard = Constants.DEVELOPMENTCARD17;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE18:
-            developmentCard = Constants.DEVELOPMENTCARD18;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE19:
-            developmentCard = Constants.DEVELOPMENTCARD19;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE20:
-            developmentCard = Constants.DEVELOPMENTCARD20;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE21:
-            developmentCard = Constants.DEVELOPMENTCARD21;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE22:
-            developmentCard = Constants.DEVELOPMENTCARD22;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE23:
-            developmentCard = Constants.DEVELOPMENTCARD23;
-            break;
-        case Constants.DEVELOPMENTCARDTYPE24:
-            developmentCard = Constants.DEVELOPMENTCARD24;
-            break;
-        }
-        
-        return developmentCard;
-    }
 
     // Finds the first open development card on the stack
 
     // Returns the first available Development Card
-    private String findFirstOpenDevelopmentCard(
-            Map<String, Object> lastState)
+
+    private String findFirstOpenDevelopmentCard()
     {
         String firstOpen = "";
         
-        if(!lastState.containsKey(Constants.DEVELOPMENTCARD00))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD00;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD01))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD01;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD02))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD02;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD03))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD03;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD04))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD04;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD05))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD05;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD06))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD06;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD07))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD07;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD08))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD08;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD09))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD09;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD10))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD10;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD11))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD11;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD12))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD12;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD13))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD13;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD14))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD14;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD15))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD15;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD16))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD16;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD17))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD17;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD18))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD18;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD19))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD19;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD20))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD20;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD21))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD21;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD22))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD22;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD23))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD23;
-        }
-        else if(!lastState.containsKey(Constants.DEVELOPMENTCARD24))
-        {
-            firstOpen = Constants.DEVELOPMENTCARD24;
-        }
+        if(firstOpenDevelopmentCard < 10)
+            firstOpen = Constants.DEVELOPMENTCARDTOKEN + "0" + firstOpenDevelopmentCard;
+        else if(firstOpenDevelopmentCard < 25)
+            firstOpen = Constants.DEVELOPMENTCARDTOKEN + firstOpenDevelopmentCard;
         
         return firstOpen;
     }
@@ -4891,6 +4774,7 @@ public class SettlersOfCatanLogic {
     // Determines what kind of move the player is attempting to make
 
     // Returns the move that is preliminarily expected based on the list of moves
+
     private String findExpectedMove(
             List<Operation> lastMove,
             String playerString,
@@ -4930,8 +4814,9 @@ public class SettlersOfCatanLogic {
         }
         // Move contains a SET Development Card command with the PLAYED tag
         // This is a PLAYDEVELOPMENTCARD move
-        else if ( findASetMoveInMoves(lastMove, Constants.DEVELOPMENTCARDTOKEN, Constants.PLAYED) )
+        else if ( findASetMoveInMoves(lastMove, Constants.DEVELOPMENTCARDTOKEN, "") )
         {
+            FIXMEH;
             expectedMove = Constants.PLAYDEVELOPMENTCARD;
         }
         // Move contains only a turn move and resources

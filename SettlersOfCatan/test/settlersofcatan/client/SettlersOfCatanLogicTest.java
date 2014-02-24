@@ -71,7 +71,7 @@ public class SettlersOfCatanLogicTest {
     
     // Take an initial state and a new String/Object pair
     // return the new state after the new String/Object pair is applied
-    private Map<String, Object> changeState(
+    public static Map<String, Object> changeState(
             Map<String, Object> previousState, String propString, Object propObject) {
         Map<String, Object> newState = previousState;
         
@@ -83,7 +83,7 @@ public class SettlersOfCatanLogicTest {
     // Create an initial empty state for testing
     // The normally randomized elements are defaulted to specific values
     // to allow for testing
-    private Map<String, Object> createEmptyState() {
+    public static Map<String, Object> createEmptyState() {
         Map<String, Object> emptyState = Maps.<String, Object>newHashMap();
         emptyState.put(Constants.TURN, Constants.PB);
         // These will be randomized in real game, set for testing purposes
@@ -118,40 +118,41 @@ public class SettlersOfCatanLogicTest {
         emptyState.put(Constants.HARBOR08, Constants.HARBORTYPE04);
         // These will be randomized in real game, set for testing purposes
         // These will also need to be set to visible to no one pre game start
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE00, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE01, Constants.DEVELOPMENTCARDTYPEDEF03);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE02, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE03, Constants.DEVELOPMENTCARDTYPEDEF05);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE04, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE05, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE06, Constants.DEVELOPMENTCARDTYPEDEF04);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE07, Constants.DEVELOPMENTCARDTYPEDEF02);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE08, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE09, Constants.DEVELOPMENTCARDTYPEDEF07);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE10, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE11, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE12, Constants.DEVELOPMENTCARDTYPEDEF06);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE13, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE14, Constants.DEVELOPMENTCARDTYPEDEF01);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE15, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE16, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE17, Constants.DEVELOPMENTCARDTYPEDEF08);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE18, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE19, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE20, Constants.DEVELOPMENTCARDTYPEDEF03);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE21, Constants.DEVELOPMENTCARDTYPEDEF01);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE22, Constants.DEVELOPMENTCARDTYPEDEF00);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE23, Constants.DEVELOPMENTCARDTYPEDEF02);
-        emptyState.put(Constants.DEVELOPMENTCARDTYPE24, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD00, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD01, Constants.DEVELOPMENTCARDTYPEDEF03);
+        emptyState.put(Constants.DEVELOPMENTCARD02, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD03, Constants.DEVELOPMENTCARDTYPEDEF05);
+        emptyState.put(Constants.DEVELOPMENTCARD04, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD05, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD06, Constants.DEVELOPMENTCARDTYPEDEF04);
+        emptyState.put(Constants.DEVELOPMENTCARD07, Constants.DEVELOPMENTCARDTYPEDEF02);
+        emptyState.put(Constants.DEVELOPMENTCARD08, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD09, Constants.DEVELOPMENTCARDTYPEDEF07);
+        emptyState.put(Constants.DEVELOPMENTCARD10, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD11, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD12, Constants.DEVELOPMENTCARDTYPEDEF06);
+        emptyState.put(Constants.DEVELOPMENTCARD13, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD14, Constants.DEVELOPMENTCARDTYPEDEF01);
+        emptyState.put(Constants.DEVELOPMENTCARD15, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD16, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD17, Constants.DEVELOPMENTCARDTYPEDEF08);
+        emptyState.put(Constants.DEVELOPMENTCARD18, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD19, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD20, Constants.DEVELOPMENTCARDTYPEDEF03);
+        emptyState.put(Constants.DEVELOPMENTCARD21, Constants.DEVELOPMENTCARDTYPEDEF01);
+        emptyState.put(Constants.DEVELOPMENTCARD22, Constants.DEVELOPMENTCARDTYPEDEF00);
+        emptyState.put(Constants.DEVELOPMENTCARD23, Constants.DEVELOPMENTCARDTYPEDEF02);
+        emptyState.put(Constants.DEVELOPMENTCARD24, Constants.DEVELOPMENTCARDTYPEDEF00);
         emptyState.put(Constants.SOLDIERCOUNTPB, 0);
         emptyState.put(Constants.SOLDIERCOUNTPR, 0);
         emptyState.put(Constants.SOLDIERCOUNTPY, 0);
         emptyState.put(Constants.SOLDIERCOUNTPG, 0);
+        emptyState.put(Constants.ROBBER, Constants.HEX02);
         return emptyState;
     }
     
     // A specialized state to test adding assets via resource purchase
-    private Map<String, Object> createAddAssetState() {
+    public static Map<String, Object> createAddAssetState() {
         Map<String, Object> addRoadState = createEmptyState();
         addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
         addRoadState = changeState(addRoadState, Constants.NODE23, Constants.SETTLEMENT00PB);
@@ -174,7 +175,7 @@ public class SettlersOfCatanLogicTest {
 
     // A specialized state to test failures caused by a player having exhausted their
     // allotment of specific assets
-    private Map<String, Object> createAllAssetsUsedState() {
+    public static Map<String, Object> createAllAssetsUsedState() {
         Map<String, Object> addRoadState = createEmptyState();
         addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
         addRoadState = changeState(addRoadState, Constants.NODE21, Constants.SETTLEMENT00PB);
@@ -239,7 +240,7 @@ public class SettlersOfCatanLogicTest {
     
     // a specialized state that allows for a user to claim victory the next move in
     // a variety of ways
-    private Map<String, Object> createPrepForVictoryState() {
+    public static Map<String, Object> createPrepForVictoryState() {
         Map<String, Object> addRoadState = createEmptyState();
         addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
         addRoadState = changeState(addRoadState, Constants.NODE21, Constants.SETTLEMENT00PB);
@@ -317,9 +318,17 @@ public class SettlersOfCatanLogicTest {
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD06PB, Constants.ORE);
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD07PB, Constants.ORE);
         addRoadState = changeState(addRoadState, Constants.DEVELOPMENTCARD00, Constants.PB);
-        addRoadState = changeState(addRoadState, Constants.ROBBER, Constants.HEX04);
         
         return addRoadState;
+    }
+    
+    // a specialized state that allows for a user to test the victory screen
+    public static Map<String, Object> createVictoryState() {
+        Map<String, Object> victoryState = createPrepForVictoryState();
+        victoryState = changeState(victoryState, Constants.NODE37, Constants.SETTLEMENT03PB);
+        victoryState = changeState(victoryState, Constants.SETTLEMENT03PB, Constants.NODE37);
+        
+        return victoryState;
     }
     
     // A Mapping of what parameters VerifyMove is looking for
@@ -1167,8 +1176,7 @@ public class SettlersOfCatanLogicTest {
     public void testLegalPurchaseDevelopmentCard() {
         ImmutableList<Operation> addDevelopmentCard = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
-                new Set(Constants.DEVELOPMENTCARD00, Constants.PB),
-                new SetVisibility(Constants.DEVELOPMENTCARDTYPE00, Constants.visibleToPB),
+                new SetVisibility(Constants.DEVELOPMENTCARD00, Constants.visibleToPB),
                 new SetVisibility(Constants.RESOURCECARD02PB),
                 new SetVisibility(Constants.RESOURCECARD03PB),
                 new SetVisibility(Constants.RESOURCECARD05PB),
@@ -1195,8 +1203,7 @@ public class SettlersOfCatanLogicTest {
     public void testIllegalPurchaseDevelopmentCardIncorrectResources() {
         ImmutableList<Operation> addDevelopmentCard = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
-                new Set(Constants.DEVELOPMENTCARD00, Constants.PB),
-                new SetVisibility(Constants.DEVELOPMENTCARDTYPE00, Constants.visibleToPB),
+                new SetVisibility(Constants.DEVELOPMENTCARD00, Constants.visibleToPB),
                 new SetVisibility(Constants.RESOURCECARD01PB),
                 new SetVisibility(Constants.RESOURCECARD03PB),
                 new SetVisibility(Constants.RESOURCECARD05PB),
@@ -1318,8 +1325,7 @@ public class SettlersOfCatanLogicTest {
     public void testEndGameByGettingLargestArmy() {
         ImmutableList<Operation> playDevelopmentCard = ImmutableList.<Operation>of(
                 new Set(Constants.TURN, Constants.PB),
-                new Set(Constants.DEVELOPMENTCARD00, Constants.PLAYED),
-                new SetVisibility(Constants.DEVELOPMENTCARDTYPE00), //this is a soldier card
+                new SetVisibility(Constants.DEVELOPMENTCARD00, Constants.visibleToNone), //this is a soldier card
                 new Set(Constants.ROBBER, Constants.HEX12),
                 new Set(Constants.SOLDIERCOUNTPB, 7),
                 new Set(Constants.LARGESTARMY, Constants.PB),

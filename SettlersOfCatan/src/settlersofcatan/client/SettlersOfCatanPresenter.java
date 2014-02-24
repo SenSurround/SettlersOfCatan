@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.base.Optional;
 import settlersofcatan.client.GameApi.Container;
+import settlersofcatan.client.GameApi.UpdateUI;
 
 public class SettlersOfCatanPresenter {
     
@@ -33,10 +34,12 @@ public class SettlersOfCatanPresenter {
          * Sets the state for a player (whether the player has the turn or not).
          * The "declare cheater" button should be enabled only for CheaterMessage.IS_OPPONENT_CHEATING.
          */
-        void setPlayerState(int numberOfOpponentCards,
-            int numberOfCardsInMiddlePile,
-            List<Card> myCards,
-            CheaterMessage cheaterMessage);
+        void setPlayerState(
+                List<String> resourceCards,
+                List<String> developmentCards,
+                int victoryPoints,
+                boolean longestRoad,
+                boolean largestArmy);
 
         /**
          * Asks the player to choose the next card or finish his selection.
@@ -72,5 +75,8 @@ public class SettlersOfCatanPresenter {
       this.container = container;
       view.setPresenter(this);
     }
+    
+    public void updateUI(UpdateUI updateUI) {
+      }
 
 }
