@@ -63,7 +63,7 @@ public class SettlersOfCatanPresenter {
         /**
          * Asks the player to choose the cards needed to perform the harbor trade
          */
-        void chooseNextCard(List<String> selectedCards, List<String> remainingCards);
+        void chooseCards(List<String> selectedCards, List<String> remainingCards);
 
 
         /**
@@ -96,6 +96,8 @@ public class SettlersOfCatanPresenter {
     private boolean hasLongestRoad;
     private boolean hasLargestArmy;
     private List<Integer> playerIds;
+    
+    private int currentDevelopmentCard = 0;
 
     public SettlersOfCatanPresenter(View view, Container container) {
       this.view = view;
@@ -167,9 +169,49 @@ public class SettlersOfCatanPresenter {
         container.sendMakeMove(settlersOfCatanLogic.getMoveInitial(playerIds));
     }
     
+    private boolean hasResourcesForUse(String option)
+    {
+        boolean retVal = false;
+        
+        switch(option)
+        {
+        case Constants.BUILDSETTLEMENT:
+            retVal = myResourceCards.contains(Constants.BRICK)
+                  && myResourceCards.contains(Constants.LUMBER)
+                  && myResourceCards.contains(Constants.WOOL)
+                  && myResourceCards.contains(Constants.GRAIN);
+            break;
+        case Constants.BUILDCITY:
+            int ore = 0;
+            int grain = 0;
+            for(int i = 0; i < myResourceCards.size(); i++)
+            {
+                if(myResourceCards.get(i).equals(Constants.ORE))
+                    ore++;
+                else if(myResourceCards.get(i).equals(Constants.GRAIN))
+                    grain++;
+            }
+            
+            retVal = ore > 2 && grain > 1;
+            break;
+        case Constants.BUILDROAD:
+            retVal = myResourceCards.contains(Constants.BRICK)
+                  && myResourceCards.contains(Constants.LUMBER);
+            break;
+        case Constants.BUYDEVELOPMENTCARD:
+            retVal = myResourceCards.contains(Constants.ORE)
+                  && myResourceCards.contains(Constants.WOOL)
+                  && myResourceCards.contains(Constants.GRAIN);
+            break;
+        }
+        
+        return retVal;
+    }
+    
     public void selectSettlement()
     {
-        if(theBoard.hasAvailableSettlements(myPlayer))
+        if( theBoard.hasAvailableSettlements(myPlayer)
+         && hasResourcesForUse(Constants.BUILDSETTLEMENT))
         {
             view.makeMove(Constants.BUILDSETTLEMENT);
         }
@@ -177,7 +219,8 @@ public class SettlersOfCatanPresenter {
     
     public void selectCity()
     {
-        if(theBoard.hasAvailableCities(myPlayer))
+        if( theBoard.hasAvailableCities(myPlayer)
+         && hasResourcesForUse(Constants.BUILDCITY))
         {
             view.makeMove(Constants.BUILDCITY);
         }
@@ -185,9 +228,19 @@ public class SettlersOfCatanPresenter {
     
     public void selectRoad()
     {
-        if(theBoard.hasAvailableRoads(myPlayer))
+        if( theBoard.hasAvailableRoads(myPlayer)
+         && hasResourcesForUse(Constants.BUILDROAD))
         {
             view.makeMove(Constants.BUILDROAD);
+        }
+    }
+    
+    public void selectPurchaseDevelopmentCard()
+    {
+        if( currentDevelopmentCard < 25
+         && hasResourcesForUse(Constants.BUYDEVELOPMENTCARD))
+        {
+            view.makeMove(Constants.BUYDEVELOPMENTCARD);
         }
     }
     

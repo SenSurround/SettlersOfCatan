@@ -232,6 +232,26 @@ public class SettlersOfCatanPresenterTest {
                 settlersOfCatanPresenter.getBoard().getNodeList(),
                 settlersOfCatanPresenter.getBoard().getPathList());
     }
+    
+    @Test
+    public void testBlueDevelopmentCardAddedForBlue() {
+        settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueAddStateForBlue));
+        settlersOfCatanPresenter.selectPurchaseDevelopmentCard();
+        settlersOfCatanPresenter.verifyTwoStep();
+        settlersOfCatanPresenter.endTurn();
+        verify(mockView).setPlayerState(
+                settlersOfCatanPresenter.getBoard().getHexList(),
+                settlersOfCatanPresenter.getBoard().getNodeList(),
+                settlersOfCatanPresenter.getBoard().getPathList(),
+                blueAddStateResources,
+                new ArrayList<String>(),
+                settlersOfCatanLogic.getVictoryPointCount(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLongestRoad(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLargestArmy(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)));
+        verify(mockView).makeMove(Constants.BUYDEVELOPMENTCARD);
+        verify(mockView).twoStepValidation();
+        verify(mockView).endTurn(playerIds.indexOf(Constants.pbId) + 1 % playerIds.size());
+    }
 
     @Test
     public void testGameOverStateForWinner() {
