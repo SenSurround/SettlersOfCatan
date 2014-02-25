@@ -3,14 +3,14 @@ package settlersofcatan.client;
 public class Node {
     private int player;
     private int location;
-    
-    public enum Settlement { NONE, SETTLEMENT, CITY };
-    Settlement settlement;
+    private int settlement;
+    private String harborBonus;
     
     public Node(int location) {
         player = -1;
-        settlement = Settlement.NONE;
+        settlement = 0;
         this.location = location;
+        harborBonus = "";
     }
     
     public int getLocation() {
@@ -21,7 +21,7 @@ public class Node {
         return player;
     }
     
-    public Settlement getSettlement() {
+    public int getSettlement() {
         return settlement;
     }
     
@@ -29,7 +29,17 @@ public class Node {
         this.player = player;
     }
     
-    public void setSettlement(Settlement settlement) {
+    public void setSettlement(int settlement) {
         this.settlement = settlement;
+    }
+    
+    public String getHarborBonus()
+    {
+        return harborBonus;
+    }
+    
+    public void setHarborBonus(String harborBonus)
+    {
+        this.harborBonus = harborBonus;
     }
 }

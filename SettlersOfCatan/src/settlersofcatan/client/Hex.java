@@ -15,13 +15,8 @@ public class Hex {
     // THIS NEEDS TO BE GLOBAL AND NOT SPECIFIC TO THE HEX
     //Path[] paths = {new Path(), new Path(), new Path(), new Path(), new Path(), new Path()};
     
-    // An enum to define all the possible resource types.
-    // ORE, GRAIN, LUMBER, WOOL, BRICK can be collected by the player
-    // DESERT is the absence of usable resources.
-    public enum Resource { ORE, GRAIN, LUMBER, WOOL, BRICK, DESERT };
-    
     // The type of resource produced by this HEX
-    Resource resource;
+    String resource;
     
     // The die roll value to produce a resource by this HEX
     int dieRoll = 0;
@@ -33,7 +28,7 @@ public class Hex {
     public Hex() {
     }
     
-    public Hex(int loc0, int loc1, int loc2, int loc3, int loc4, int loc5, Resource resource)
+    public Hex(int loc0, int loc1, int loc2, int loc3, int loc4, int loc5, String resource)
     {
         // Key the global locations to the nodes attached to this HEX
         locations[0] = loc0;
@@ -53,7 +48,7 @@ public class Hex {
         
         this.resource = resource;
         
-        if (resource == Resource.DESERT) {
+        if (resource == Constants.DESERT) {
             robber = true;
         } else {
             robber = false;
@@ -66,8 +61,18 @@ public class Hex {
     }
     
     // Returns the resource type of the HEX
-    public Resource getResource() {
+    public String getResource() {
         return resource;
+    }
+    
+    public void setRobber(boolean robber)
+    {
+        this.robber = robber;
+    }
+    
+    public boolean getRobber()
+    {
+        return robber;
     }
 
 }

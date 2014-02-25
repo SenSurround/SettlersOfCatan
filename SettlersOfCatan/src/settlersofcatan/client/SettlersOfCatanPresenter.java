@@ -1,9 +1,13 @@
 package settlersofcatan.client;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Optional;
+
 import settlersofcatan.client.GameApi.Container;
+import settlersofcatan.client.GameApi.Operation;
+import settlersofcatan.client.GameApi.SetTurn;
 import settlersofcatan.client.GameApi.UpdateUI;
 
 public class SettlersOfCatanPresenter {
@@ -26,49 +30,72 @@ public class SettlersOfCatanPresenter {
         void setPresenter(SettlersOfCatanPresenter settlersOfCatanPresenter);
 
         /** Sets the state for a viewer, i.e., not one of the players. */
-        void setViewerState(int numberOfWhiteCards, int numberOfBlackCards,
-            int numberOfCardsInMiddlePile,
-            CheaterMessage cheaterMessage);
+        void setViewerState(
+                List<Hex> hexList,
+                List<Node> nodeList,
+                List<Path> pathList);
 
         /**
-         * Sets the state for a player (whether the player has the turn or not).
-         * The "declare cheater" button should be enabled only for CheaterMessage.IS_OPPONENT_CHEATING.
+         * Sets the state for a player
          */
         void setPlayerState(
+                List<Hex> hexList,
+                List<Node> nodeList,
+                List<Path> pathList,
                 List<String> resourceCards,
                 List<String> developmentCards,
                 int victoryPoints,
-                boolean longestRoad,
-                boolean largestArmy);
+                boolean hasLongestRoad,
+                boolean hasLargestArmy);
+        
+        /**
+         * Asks the player to make a move. This involves either choosing a settlement,
+         * city, or road from his cache and placing it on the board where the rules allow
+         * for, trading resources via a harbor trade, purchasing a Development Card from
+         * the available stack, or playing one of the Development Cards in their hand.
+         * A player can do any combination of these things so long as they have enough
+         * Resource Cards to allow for it. When they are finished, they choose EndTurn
+         * to move the turn to the next player
+         */
+        void makeMove(String moveType);
+
 
         /**
-         * Asks the player to choose the next card or finish his selection.
-         * We pass what cards are selected (those cards will be dropped to the
-         * middle pile), and what cards will remain in the player hands.
-         * The user can either select a card (by calling {@link #cardSelected),
-         * or finish selecting
-         * (by calling {@link #finishedSelectingCards}; only allowed if selectedCards.size>1).
-         * If the user selects a card from selectedCards, then it moves that card to remainingCards.
-         * If the user selects a card from remainingCards, then it moves that card to selectedCards.
+         * Asks the player to choose the cards needed to perform the harbor trade
          */
-        void chooseNextCard(List<Card> selectedCards, List<Card> remainingCards);
+        void chooseNextCard(List<String> selectedCards, List<String> remainingCards);
+
 
         /**
-         * After the player finished selecting 1-4 cards, the player needs to choose the rank for his
-         * claim.
-         * The possible ranks depend on the rank Y in the previous claim (possibleRanks is Y-1,Y,Y+1),
-         * or all ranks if there wasn't a previous claim.
+         * Asks the player to choose the developement card to play
          */
-        void chooseRankForClaim(List<Rank> possibleRanks);
+        void chooseDevelopmentCard(String selectedCard);
+        
+        /**
+         * Verifies the player wants to make a specific move
+         */
+        
+        void twoStepValidation();
+        
+        
+        /**
+         * Ends the current player's turn and moves to the next player in the list
+         */
+        void endTurn(int nextPlayer);
       }
     
     private final SettlersOfCatanLogic settlersOfCatanLogic = new SettlersOfCatanLogic();
     private final View view;
     private final Container container;
     /** A viewer doesn't have a color. */
-    private Optional<Color> myColor;
-    private CheatState cheatState;
-    private List<Card> selectedCards;
+    private int myPlayer;
+    private List<String> myResourceCards;
+    private List<String> myDevelopmentCards;
+    private Board theBoard;
+    private int myVictoryPoints;
+    private boolean hasLongestRoad;
+    private boolean hasLargestArmy;
+    private List<Integer> playerIds;
 
     public SettlersOfCatanPresenter(View view, Container container) {
       this.view = view;
@@ -76,7 +103,108 @@ public class SettlersOfCatanPresenter {
       view.setPresenter(this);
     }
     
-    public void updateUI(UpdateUI updateUI) {
-      }
+    public void updateUI(UpdateUI updateUI)
+    {
+        playerIds = updateUI.getPlayerIds();
+        int yourPlayerId = updateUI.getYourPlayerId();
+        myPlayer = updateUI.getPlayerIndex(yourPlayerId);
+        
+        if(updateUI.getState().isEmpty())
+        {
+            // Blue must send the initial move
+            if (myPlayer == 0)
+            {
+                sendInitialMove(playerIds);
+            }
+            
+            return;
+        }
+        
+        int currentPlayer = -1;
+        for(Operation operation: updateUI.getLastMove())
+        {
+            if(operation instanceof SetTurn)
+            {
+                currentPlayer = playerIds.indexOf(((SetTurn)operation).getPlayerId());
+            }
+        }
+        
+        theBoard = new Board(updateUI.getState());
+        
+        if(updateUI.isViewer())
+        {
+            view.setViewerState(
+                    theBoard.getHexList(),
+                    theBoard.getNodeList(),
+                    theBoard.getPathList());
+            
+            return;
+        }
+        if(updateUI.isAiPlayer())
+        {
+            return;
+        }
+        
+        myResourceCards = settlersOfCatanLogic.getResourceCardsFromState(updateUI.getState(), settlersOfCatanLogic.getPlayerId(playerIds,  yourPlayerId));
+        myDevelopmentCards = settlersOfCatanLogic.getDevelopmentCardsFromState(updateUI.getState());
+        myVictoryPoints = settlersOfCatanLogic.getVictoryPointCount(updateUI.getState(), settlersOfCatanLogic.getPlayerId(playerIds,  yourPlayerId));
+        hasLongestRoad = settlersOfCatanLogic.hasLongestRoad(updateUI.getState(), settlersOfCatanLogic.getPlayerId(playerIds,  yourPlayerId));
+        hasLargestArmy = settlersOfCatanLogic.hasLargestArmy(updateUI.getState(), settlersOfCatanLogic.getPlayerId(playerIds,  yourPlayerId));
+        
+        view.setPlayerState(
+                theBoard.getHexList(),
+                theBoard.getNodeList(),
+                theBoard.getPathList(),
+                myResourceCards,
+                myDevelopmentCards,
+                myVictoryPoints,
+                hasLongestRoad,
+                hasLargestArmy);
+    }
 
+    private void sendInitialMove(List<Integer> playerIds)
+    {
+        container.sendMakeMove(settlersOfCatanLogic.getMoveInitial(playerIds));
+    }
+    
+    public void selectSettlement()
+    {
+        if(theBoard.hasAvailableSettlements(myPlayer))
+        {
+            view.makeMove(Constants.BUILDSETTLEMENT);
+        }
+    }
+    
+    public void selectCity()
+    {
+        if(theBoard.hasAvailableCities(myPlayer))
+        {
+            view.makeMove(Constants.BUILDCITY);
+        }
+    }
+    
+    public void selectRoad()
+    {
+        if(theBoard.hasAvailableRoads(myPlayer))
+        {
+            view.makeMove(Constants.BUILDROAD);
+        }
+    }
+    
+    public void verifyTwoStep()
+    {
+        view.twoStepValidation();
+    }
+    
+    public void endTurn()
+    {
+        int nextPlayer = (myPlayer + 1) % playerIds.size();
+        
+        view.endTurn(nextPlayer);
+    }
+    
+    public Board getBoard()
+    {
+        return theBoard;
+    }
 }

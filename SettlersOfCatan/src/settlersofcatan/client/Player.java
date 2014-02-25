@@ -1,3 +1,5 @@
+/* THIS CLASS IS DEPRECATED
+
 package settlersofcatan.client;
 
 import java.util.Vector;
@@ -96,3 +98,4 @@ public class Player {
         return road;
     }
 }
+*/

@@ -1,4 +1,10 @@
-package settlersofcatan.client;
+
+/* THIS CLASS IS DEPRECATED
+
+
+package settlersofcatan.client
+
+
 
 import java.util.Vector;
 
@@ -109,8 +115,6 @@ public class State {
         initPaths();
         initHex();
     }
-
-/*********************************************************************************/
     
     public boolean canPlaceSettlement(int nodeId, int playerId) {
         boolean retVal = true;
@@ -176,8 +180,6 @@ public class State {
         
         return retVal;
     }
-    
-/*********************************************************************************/
     
     private void initNodes() {
         for (int i = 0; i < 54; i++) {
@@ -451,4 +453,4 @@ public class State {
         return retVal;
     }
     
-}
+}*/

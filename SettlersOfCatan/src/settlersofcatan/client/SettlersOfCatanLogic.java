@@ -20,7 +20,6 @@ import settlersofcatan.client.GameApi.SetVisibility;
 import settlersofcatan.client.GameApi.Shuffle;
 import settlersofcatan.client.GameApi.VerifyMove;
 import settlersofcatan.client.GameApi.VerifyMoveDone;
-import settlersofcatan.client.Hex.Resource;
 
 public class SettlersOfCatanLogic {  
     
@@ -172,7 +171,8 @@ public class SettlersOfCatanLogic {
 	}
 	
     public List<String> getResourceCardsFromState(
-            Map<String, Object> state)
+            Map<String, Object> state,
+            String playerString)
     {
         List<String> resourceCards = new ArrayList<String>();
         
@@ -180,9 +180,9 @@ public class SettlersOfCatanLogic {
         {
             String cardToSearchFor = "";
             if(i < 10)
-                cardToSearchFor = Constants.RESOURCECARDTOKEN + "0" + i;
+                cardToSearchFor = Constants.RESOURCECARDTOKEN + "0" + i + playerString;
             else
-                cardToSearchFor = Constants.RESOURCECARDTOKEN + i;
+                cardToSearchFor = Constants.RESOURCECARDTOKEN + i + playerString;
             
             if(state.containsKey(cardToSearchFor))
             {
@@ -213,6 +213,37 @@ public class SettlersOfCatanLogic {
         }
         
         return resourceCards;
+    }
+    
+    public int getVictoryPointCount(
+            Map<String, Object> state,
+            String playerString)
+    {
+        int victoryPoints = 0;
+        
+        victoryPoints = victoryPoints + countPointsFromCities(state, playerString);
+        victoryPoints = victoryPoints + countPointsFromSettlements(state, playerString);
+        victoryPoints = victoryPoints + countPointsfromLongestRoad(state, playerString);
+        victoryPoints = victoryPoints + countPointsfromLargestArmy(state, playerString);
+        victoryPoints = victoryPoints + countPointsfromDevelopmentCards(state, playerString);
+        
+        return victoryPoints;
+    }
+    
+    public boolean hasLongestRoad(
+            Map<String, Object> state,
+            String playerString)
+    {
+        return state.containsKey(Constants.LONGESTROAD)
+            && state.get(Constants.LONGESTROAD).toString().contains(playerString);
+    }
+    
+    public boolean hasLargestArmy(
+            Map<String, Object> state,
+            String playerString)
+    {
+        return state.containsKey(Constants.LARGESTARMY)
+            && state.get(Constants.LARGESTARMY).toString().contains(playerString);
     }
 	
 	// Umbrella function to test all moves
@@ -3801,7 +3832,7 @@ public class SettlersOfCatanLogic {
         int count = 0;
         
         if( lastState.containsKey(Constants.LONGESTROAD)
-         && lastState.get(Constants.LONGESTROAD).toString().contains(playerString) );
+         && lastState.get(Constants.LONGESTROAD).toString().equals(playerString) );
         {
             count = 2;
         }
@@ -3817,7 +3848,7 @@ public class SettlersOfCatanLogic {
         int count = 0;
         
         if( lastState.containsKey(Constants.LARGESTARMY)
-         && lastState.get(Constants.LARGESTARMY).toString().contains(playerString) );
+         && lastState.get(Constants.LARGESTARMY).toString().equals(playerString) );
         {
             count = 2;
         }
@@ -4816,7 +4847,6 @@ public class SettlersOfCatanLogic {
         // This is a PLAYDEVELOPMENTCARD move
         else if ( findASetMoveInMoves(lastMove, Constants.DEVELOPMENTCARDTOKEN, "") )
         {
-            FIXMEH;
             expectedMove = Constants.PLAYDEVELOPMENTCARD;
         }
         // Move contains only a turn move and resources
@@ -4862,7 +4892,7 @@ public class SettlersOfCatanLogic {
     
     // Returns the playerString for the current player
     // Gets the String Name of the player based on ID
-    private String getPlayerId(
+    public String getPlayerId(
             List<Integer> playerIds,
             int lastMovePlayerId) {
         String playerString = "";
@@ -4916,7 +4946,7 @@ public class SettlersOfCatanLogic {
 
     // Checks if String is an integer
     // From http://stackoverflow.com/questions/5439529/determine-if-a-string-is-an-integer-in-java
-    public static boolean isInteger(String s)
+    private static boolean isInteger(String s)
     {
         try
         { 

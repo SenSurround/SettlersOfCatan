@@ -151,6 +151,52 @@ public class SettlersOfCatanLogicTest {
         return emptyState;
     }
     
+    // Create an initial empty state for testing
+    // The normally randomized elements are defaulted to specific values
+    // to allow for testing
+    public static Map<String, Object> createEmptyStateNoDevCards() {
+        Map<String, Object> emptyState = Maps.<String, Object>newHashMap();
+        emptyState.put(Constants.TURN, Constants.PB);
+        // These will be randomized in real game, set for testing purposes
+        emptyState.put(Constants.HEX00, Constants.ORE);
+        emptyState.put(Constants.HEX01, Constants.LUMBER);
+        emptyState.put(Constants.HEX02, Constants.DESERT);
+        emptyState.put(Constants.HEX03, Constants.GRAIN);
+        emptyState.put(Constants.HEX04, Constants.LUMBER);
+        emptyState.put(Constants.HEX05, Constants.WOOL);
+        emptyState.put(Constants.HEX06, Constants.GRAIN);
+        emptyState.put(Constants.HEX07, Constants.WOOL);
+        emptyState.put(Constants.HEX08, Constants.BRICK);
+        emptyState.put(Constants.HEX09, Constants.BRICK);
+        emptyState.put(Constants.HEX10, Constants.WOOL);
+        emptyState.put(Constants.HEX11, Constants.ORE);
+        emptyState.put(Constants.HEX12, Constants.ORE);
+        emptyState.put(Constants.HEX13, Constants.LUMBER);
+        emptyState.put(Constants.HEX14, Constants.GRAIN);
+        emptyState.put(Constants.HEX15, Constants.LUMBER);
+        emptyState.put(Constants.HEX16, Constants.GRAIN);
+        emptyState.put(Constants.HEX17, Constants.BRICK);
+        emptyState.put(Constants.HEX18, Constants.LUMBER);
+        // These will be randomized in real game, set for testing purposes
+        emptyState.put(Constants.HARBOR00, Constants.HARBORTYPE03);
+        emptyState.put(Constants.HARBOR01, Constants.HARBORTYPE00);
+        emptyState.put(Constants.HARBOR02, Constants.HARBORTYPE01);
+        emptyState.put(Constants.HARBOR03, Constants.HARBORTYPE00);
+        emptyState.put(Constants.HARBOR04, Constants.HARBORTYPE05);
+        emptyState.put(Constants.HARBOR05, Constants.HARBORTYPE00);
+        emptyState.put(Constants.HARBOR06, Constants.HARBORTYPE02);
+        emptyState.put(Constants.HARBOR07, Constants.HARBORTYPE00);
+        emptyState.put(Constants.HARBOR08, Constants.HARBORTYPE04);
+        // These will be randomized in real game, set for testing purposes
+        // These will also need to be set to visible to no one pre game start
+        emptyState.put(Constants.SOLDIERCOUNTPB, 0);
+        emptyState.put(Constants.SOLDIERCOUNTPR, 0);
+        emptyState.put(Constants.SOLDIERCOUNTPY, 0);
+        emptyState.put(Constants.SOLDIERCOUNTPG, 0);
+        emptyState.put(Constants.ROBBER, Constants.HEX02);
+        return emptyState;
+    }
+    
     // A specialized state to test adding assets via resource purchase
     public static Map<String, Object> createAddAssetState() {
         Map<String, Object> addRoadState = createEmptyState();
@@ -169,6 +215,42 @@ public class SettlersOfCatanLogicTest {
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD05PB, Constants.ORE);
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD06PB, Constants.ORE);
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD07PB, Constants.ORE);
+        
+        return addRoadState;
+    }
+    
+    // A specialized state to test adding assets via resource purchase
+    public static Map<String, Object> createBlueAddAssetStateForBlue() {
+        Map<String, Object> addRoadState = createEmptyStateNoDevCards();
+        addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
+        addRoadState = changeState(addRoadState, Constants.NODE23, Constants.SETTLEMENT00PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT00PB, Constants.NODE23);
+        addRoadState = changeState(addRoadState, Constants.PATH26, Constants.ROAD00PB);
+        addRoadState = changeState(addRoadState, Constants.PATH19, Constants.ROAD01PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD00PB, Constants.PATH26);
+        addRoadState = changeState(addRoadState, Constants.ROAD01PB, Constants.PATH19);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD01PB, Constants.BRICK);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD02PB, Constants.WOOL);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD03PB, Constants.GRAIN);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD04PB, Constants.GRAIN);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD05PB, Constants.ORE);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD06PB, Constants.ORE);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD07PB, Constants.ORE);
+        
+        return addRoadState;
+    }
+    
+    // A specialized state to test adding assets via resource purchase
+    public static Map<String, Object> createBlueAddAssetStateForNotBlue() {
+        Map<String, Object> addRoadState = createEmptyStateNoDevCards();
+        addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
+        addRoadState = changeState(addRoadState, Constants.NODE23, Constants.SETTLEMENT00PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT00PB, Constants.NODE23);
+        addRoadState = changeState(addRoadState, Constants.PATH26, Constants.ROAD00PB);
+        addRoadState = changeState(addRoadState, Constants.PATH19, Constants.ROAD01PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD00PB, Constants.PATH26);
+        addRoadState = changeState(addRoadState, Constants.ROAD01PB, Constants.PATH19);
         
         return addRoadState;
     }
@@ -323,12 +405,164 @@ public class SettlersOfCatanLogicTest {
     }
     
     // a specialized state that allows for a user to test the victory screen
-    public static Map<String, Object> createVictoryState() {
-        Map<String, Object> victoryState = createPrepForVictoryState();
-        victoryState = changeState(victoryState, Constants.NODE37, Constants.SETTLEMENT03PB);
-        victoryState = changeState(victoryState, Constants.SETTLEMENT03PB, Constants.NODE37);
+    public static Map<String, Object> createBlueVictoryStateForBlue() {
+        Map<String, Object> addRoadState = createEmptyStateNoDevCards();
+        addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
+        addRoadState = changeState(addRoadState, Constants.NODE21, Constants.SETTLEMENT00PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT00PB, Constants.NODE21);
+        addRoadState = changeState(addRoadState, Constants.NODE22, Constants.SETTLEMENT01PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT01PB, Constants.NODE22);
+        addRoadState = changeState(addRoadState, Constants.NODE23, Constants.SETTLEMENT02PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT02PB, Constants.NODE23);
+        addRoadState = changeState(addRoadState, Constants.NODE24, Constants.CITY00PB);
+        addRoadState = changeState(addRoadState, Constants.CITY00PB, Constants.NODE24);
+        addRoadState = changeState(addRoadState, Constants.NODE25, Constants.CITY01PB);
+        addRoadState = changeState(addRoadState, Constants.CITY01PB, Constants.NODE25);
+        addRoadState = changeState(addRoadState, Constants.NODE26, Constants.CITY02PB);
+        addRoadState = changeState(addRoadState, Constants.CITY02PB, Constants.NODE26);
+        addRoadState = changeState(addRoadState, Constants.PATH23, Constants.ROAD00PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD00PB, Constants.PATH23);
+        addRoadState = changeState(addRoadState, Constants.PATH24, Constants.ROAD01PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD01PB, Constants.PATH24);
+        addRoadState = changeState(addRoadState, Constants.PATH25, Constants.ROAD02PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD02PB, Constants.PATH25);
+        addRoadState = changeState(addRoadState, Constants.PATH26, Constants.ROAD03PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD03PB, Constants.PATH26);
+        addRoadState = changeState(addRoadState, Constants.PATH27, Constants.ROAD04PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD04PB, Constants.PATH27);
+        addRoadState = changeState(addRoadState, Constants.PATH28, Constants.ROAD05PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD05PB, Constants.PATH28);
+        addRoadState = changeState(addRoadState, Constants.PATH29, Constants.ROAD06PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD06PB, Constants.PATH29);
+        addRoadState = changeState(addRoadState, Constants.PATH30, Constants.ROAD07PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD07PB, Constants.PATH30);
+        addRoadState = changeState(addRoadState, Constants.PATH31, Constants.ROAD08PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD08PB, Constants.PATH31);
+        addRoadState = changeState(addRoadState, Constants.PATH32, Constants.ROAD09PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD09PB, Constants.PATH32);
+        addRoadState = changeState(addRoadState, Constants.PATH38, Constants.ROAD10PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD10PB, Constants.PATH38);
+        addRoadState = changeState(addRoadState, Constants.PATH48, Constants.ROAD11PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD11PB, Constants.PATH38);
+        addRoadState = changeState(addRoadState, Constants.NODE33, Constants.SETTLEMENT00PR);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT00PR, Constants.NODE33);
+        addRoadState = changeState(addRoadState, Constants.PATH39, Constants.ROAD00PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD00PR, Constants.PATH39);
+        addRoadState = changeState(addRoadState, Constants.PATH40, Constants.ROAD01PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD01PR, Constants.PATH40);
+        addRoadState = changeState(addRoadState, Constants.PATH41, Constants.ROAD02PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD02PR, Constants.PATH41);
+        addRoadState = changeState(addRoadState, Constants.PATH42, Constants.ROAD03PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD03PR, Constants.PATH42);
+        addRoadState = changeState(addRoadState, Constants.PATH43, Constants.ROAD04PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD04PR, Constants.PATH43);
+        addRoadState = changeState(addRoadState, Constants.PATH44, Constants.ROAD05PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD05PR, Constants.PATH44);
+        addRoadState = changeState(addRoadState, Constants.PATH45, Constants.ROAD06PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD06PR, Constants.PATH45);
+        addRoadState = changeState(addRoadState, Constants.PATH46, Constants.ROAD07PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD07PR, Constants.PATH46);
+        addRoadState = changeState(addRoadState, Constants.PATH47, Constants.ROAD08PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD08PR, Constants.PATH47);
+        addRoadState = changeState(addRoadState, Constants.PATH53, Constants.ROAD09PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD09PR, Constants.PATH53);
+        addRoadState = changeState(addRoadState, Constants.PATH61, Constants.ROAD10PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD10PR, Constants.PATH61);
+        addRoadState = changeState(addRoadState, Constants.PATH65, Constants.ROAD11PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD11PR, Constants.PATH65);
+        addRoadState = changeState(addRoadState, Constants.LONGESTROAD, Constants.PR);
+        addRoadState = changeState(addRoadState, Constants.SOLDIERCOUNTPB, 6);
+        addRoadState = changeState(addRoadState, Constants.SOLDIERCOUNTPR, 6);
+        addRoadState = changeState(addRoadState, Constants.LARGESTARMY, Constants.PR);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD01PB, Constants.BRICK);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD02PB, Constants.WOOL);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD03PB, Constants.GRAIN);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD04PB, Constants.GRAIN);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD05PB, Constants.ORE);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD06PB, Constants.ORE);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD07PB, Constants.ORE);
+        addRoadState = changeState(addRoadState, Constants.DEVELOPMENTCARD00, Constants.DEVELOPMENTCARDTYPEDEF00);
+        addRoadState = changeState(addRoadState, Constants.NODE37, Constants.SETTLEMENT03PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT03PB, Constants.NODE37);
         
-        return victoryState;
+        return addRoadState;
+    }
+    
+    // a specialized state that allows for a user to test the victory screen
+    public static Map<String, Object> createBlueVictoryStateForNotBlue() {
+        Map<String, Object> addRoadState = createEmptyStateNoDevCards();
+        addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
+        addRoadState = changeState(addRoadState, Constants.NODE21, Constants.SETTLEMENT00PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT00PB, Constants.NODE21);
+        addRoadState = changeState(addRoadState, Constants.NODE22, Constants.SETTLEMENT01PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT01PB, Constants.NODE22);
+        addRoadState = changeState(addRoadState, Constants.NODE23, Constants.SETTLEMENT02PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT02PB, Constants.NODE23);
+        addRoadState = changeState(addRoadState, Constants.NODE24, Constants.CITY00PB);
+        addRoadState = changeState(addRoadState, Constants.CITY00PB, Constants.NODE24);
+        addRoadState = changeState(addRoadState, Constants.NODE25, Constants.CITY01PB);
+        addRoadState = changeState(addRoadState, Constants.CITY01PB, Constants.NODE25);
+        addRoadState = changeState(addRoadState, Constants.NODE26, Constants.CITY02PB);
+        addRoadState = changeState(addRoadState, Constants.CITY02PB, Constants.NODE26);
+        addRoadState = changeState(addRoadState, Constants.PATH23, Constants.ROAD00PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD00PB, Constants.PATH23);
+        addRoadState = changeState(addRoadState, Constants.PATH24, Constants.ROAD01PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD01PB, Constants.PATH24);
+        addRoadState = changeState(addRoadState, Constants.PATH25, Constants.ROAD02PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD02PB, Constants.PATH25);
+        addRoadState = changeState(addRoadState, Constants.PATH26, Constants.ROAD03PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD03PB, Constants.PATH26);
+        addRoadState = changeState(addRoadState, Constants.PATH27, Constants.ROAD04PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD04PB, Constants.PATH27);
+        addRoadState = changeState(addRoadState, Constants.PATH28, Constants.ROAD05PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD05PB, Constants.PATH28);
+        addRoadState = changeState(addRoadState, Constants.PATH29, Constants.ROAD06PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD06PB, Constants.PATH29);
+        addRoadState = changeState(addRoadState, Constants.PATH30, Constants.ROAD07PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD07PB, Constants.PATH30);
+        addRoadState = changeState(addRoadState, Constants.PATH31, Constants.ROAD08PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD08PB, Constants.PATH31);
+        addRoadState = changeState(addRoadState, Constants.PATH32, Constants.ROAD09PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD09PB, Constants.PATH32);
+        addRoadState = changeState(addRoadState, Constants.PATH38, Constants.ROAD10PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD10PB, Constants.PATH38);
+        addRoadState = changeState(addRoadState, Constants.PATH48, Constants.ROAD11PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD11PB, Constants.PATH38);
+        addRoadState = changeState(addRoadState, Constants.NODE33, Constants.SETTLEMENT00PR);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT00PR, Constants.NODE33);
+        addRoadState = changeState(addRoadState, Constants.PATH39, Constants.ROAD00PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD00PR, Constants.PATH39);
+        addRoadState = changeState(addRoadState, Constants.PATH40, Constants.ROAD01PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD01PR, Constants.PATH40);
+        addRoadState = changeState(addRoadState, Constants.PATH41, Constants.ROAD02PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD02PR, Constants.PATH41);
+        addRoadState = changeState(addRoadState, Constants.PATH42, Constants.ROAD03PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD03PR, Constants.PATH42);
+        addRoadState = changeState(addRoadState, Constants.PATH43, Constants.ROAD04PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD04PR, Constants.PATH43);
+        addRoadState = changeState(addRoadState, Constants.PATH44, Constants.ROAD05PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD05PR, Constants.PATH44);
+        addRoadState = changeState(addRoadState, Constants.PATH45, Constants.ROAD06PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD06PR, Constants.PATH45);
+        addRoadState = changeState(addRoadState, Constants.PATH46, Constants.ROAD07PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD07PR, Constants.PATH46);
+        addRoadState = changeState(addRoadState, Constants.PATH47, Constants.ROAD08PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD08PR, Constants.PATH47);
+        addRoadState = changeState(addRoadState, Constants.PATH53, Constants.ROAD09PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD09PR, Constants.PATH53);
+        addRoadState = changeState(addRoadState, Constants.PATH61, Constants.ROAD10PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD10PR, Constants.PATH61);
+        addRoadState = changeState(addRoadState, Constants.PATH65, Constants.ROAD11PR);
+        addRoadState = changeState(addRoadState, Constants.ROAD11PR, Constants.PATH65);
+        addRoadState = changeState(addRoadState, Constants.LONGESTROAD, Constants.PR);
+        addRoadState = changeState(addRoadState, Constants.SOLDIERCOUNTPB, 6);
+        addRoadState = changeState(addRoadState, Constants.SOLDIERCOUNTPR, 6);
+        addRoadState = changeState(addRoadState, Constants.LARGESTARMY, Constants.PR);
+        addRoadState = changeState(addRoadState, Constants.NODE37, Constants.SETTLEMENT03PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT03PB, Constants.NODE37);
+        
+        return addRoadState;
     }
     
     // A Mapping of what parameters VerifyMove is looking for
