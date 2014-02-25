@@ -344,4 +344,53 @@ public class Board {
         
         return retVal;
     }
+
+    public boolean ownsThreeToOnePort(int playerId)
+    {
+        boolean retVal = false;
+        
+        for(int i = 0; i < 54; i++)
+        {
+            if( nodeList.get(i).getPlayer() == playerId
+             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE00))
+                retVal = true;
+        }
+        
+        return retVal;
+    }
+    
+    public boolean ownsTwoToOnePort(int playerId, String resource)
+    {
+        boolean retVal = false;
+        
+        for(int i = 0; i < 54; i++)
+        {
+            if( nodeList.get(i).getPlayer() == playerId
+             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE01)
+             && resource.equals(Constants.ORE))
+                retVal = true;
+
+            if( nodeList.get(i).getPlayer() == playerId
+             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE02)
+             && resource.equals(Constants.GRAIN))
+                retVal = true;
+
+            if( nodeList.get(i).getPlayer() == playerId
+             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE03)
+             && resource.equals(Constants.LUMBER))
+                retVal = true;
+
+            if( nodeList.get(i).getPlayer() == playerId
+             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE04)
+             && resource.equals(Constants.WOOL))
+                retVal = true;
+
+            if( nodeList.get(i).getPlayer() == playerId
+             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE05)
+             && resource.equals(Constants.BRICK))
+                retVal = true;
+        }
+        
+        return retVal;
+    }
 }

@@ -1,5 +1,6 @@
 package settlersofcatan.client;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -96,6 +97,10 @@ public class SettlersOfCatanPresenter {
     private boolean hasLongestRoad;
     private boolean hasLargestArmy;
     private List<Integer> playerIds;
+    private String selectedDevelopmentCard = "";
+    private List<String> selectedResourceCards = new ArrayList<String>();
+    private List<String> unSelectedResourceCards = new ArrayList<String>();
+    private String harborTradePending = "";
     
     private int currentDevelopmentCard = 0;
 
@@ -122,15 +127,6 @@ public class SettlersOfCatanPresenter {
             return;
         }
         
-        int currentPlayer = -1;
-        for(Operation operation: updateUI.getLastMove())
-        {
-            if(operation instanceof SetTurn)
-            {
-                currentPlayer = playerIds.indexOf(((SetTurn)operation).getPlayerId());
-            }
-        }
-        
         theBoard = new Board(updateUI.getState());
         
         if(updateUI.isViewer())
@@ -148,6 +144,7 @@ public class SettlersOfCatanPresenter {
         }
         
         myResourceCards = settlersOfCatanLogic.getResourceCardsFromState(updateUI.getState(), settlersOfCatanLogic.getPlayerId(playerIds,  yourPlayerId));
+        unSelectedResourceCards = new ArrayList<String>(myResourceCards);
         myDevelopmentCards = settlersOfCatanLogic.getDevelopmentCardsFromState(updateUI.getState());
         myVictoryPoints = settlersOfCatanLogic.getVictoryPointCount(updateUI.getState(), settlersOfCatanLogic.getPlayerId(playerIds,  yourPlayerId));
         hasLongestRoad = settlersOfCatanLogic.hasLongestRoad(updateUI.getState(), settlersOfCatanLogic.getPlayerId(playerIds,  yourPlayerId));
@@ -244,9 +241,119 @@ public class SettlersOfCatanPresenter {
         }
     }
     
+    public void selectPlayDevelopmentCard()
+    {
+        if(myDevelopmentCards.size() > 0)
+        {
+           view.makeMove(Constants.PLAYDEVELOPMENTCARD); 
+           view.chooseDevelopmentCard(selectedDevelopmentCard);
+        }
+    }
+    
+    public void selectDevelopmentCard(int index)
+    {
+        selectedDevelopmentCard = myDevelopmentCards.get(index);
+        view.chooseDevelopmentCard(selectedDevelopmentCard);
+    }
+    
+    public void selectNormalHarborTrade()
+    {
+        harborTradePending = Constants.HARBORTRADE;
+        view.chooseCards(new ArrayList<String>(selectedResourceCards), new ArrayList<String>(unSelectedResourceCards));
+    }
+    
+    public void selectThreeToOneHarborTrade()
+    {
+        if(theBoard.ownsThreeToOnePort(myPlayer))
+        {
+            harborTradePending = Constants.THREETOONEHARBORTRADE;
+            view.chooseCards(new ArrayList<String>(selectedResourceCards), new ArrayList<String>(unSelectedResourceCards));
+        }
+    }
+    
+    public void selectTwoToOneHarborTrade(String resource)
+    {
+        if(theBoard.ownsTwoToOnePort(myPlayer, resource))
+        {
+            harborTradePending = "TWOTOONE" + resource + "HARBORTRADE";
+            view.chooseCards(new ArrayList<String>(selectedResourceCards), new ArrayList<String>(unSelectedResourceCards));
+        }
+    }
+    
+    public void selectResourceCard(int index)
+    {
+        int loc = unSelectedResourceCards.indexOf(myResourceCards.get(0));
+        
+        if( selectedResourceCards.isEmpty()
+         || unSelectedResourceCards.get(loc).equals(selectedResourceCards.get(0)))
+        {
+            selectedResourceCards.add(unSelectedResourceCards.get(loc));
+            unSelectedResourceCards.remove(loc);
+            view.chooseCards(new ArrayList<String>(selectedResourceCards), new ArrayList<String>(unSelectedResourceCards));
+            
+            if( harborTradePending.equals(Constants.HARBORTRADE)
+             && selectedResourceCards.size() == 4)
+                view.makeMove(Constants.HARBORTRADE);
+            else if( harborTradePending.equals(Constants.THREETOONEHARBORTRADE)
+                  && selectedResourceCards.size() == 3)
+                view.makeMove(Constants.THREETOONEHARBORTRADE);
+            else if( harborTradePending.equals(Constants.TWOTOONEOREHARBORTRADE)
+                  && selectedResourceCards.size() == 2)
+                view.makeMove(Constants.TWOTOONEOREHARBORTRADE);
+            else if( harborTradePending.equals(Constants.TWOTOONEGRAHARBORTRADE)
+                  && selectedResourceCards.size() == 2)
+                view.makeMove(Constants.TWOTOONEGRAHARBORTRADE);
+            else if( harborTradePending.equals(Constants.TWOTOONELUMHARBORTRADE)
+                  && selectedResourceCards.size() == 2)
+                view.makeMove(Constants.TWOTOONELUMHARBORTRADE);
+            else if( harborTradePending.equals(Constants.TWOTOONEWOOHARBORTRADE)
+                  && selectedResourceCards.size() == 2)
+                view.makeMove(Constants.TWOTOONEWOOHARBORTRADE);
+            else if( harborTradePending.equals(Constants.TWOTOONEBRIHARBORTRADE)
+                  && selectedResourceCards.size() == 2)
+                view.makeMove(Constants.TWOTOONEBRIHARBORTRADE);
+        }
+    }
+    
     public void verifyTwoStep()
     {
-        view.twoStepValidation();
+        if( harborTradePending.equals("")
+         || (harborTradePending.equals(Constants.HARBORTRADE) && harborTradeCheck(4, ""))
+         || (harborTradePending.equals(Constants.THREETOONEHARBORTRADE) && harborTradeCheck(3, ""))
+         || (harborTradePending.equals(Constants.TWOTOONEOREHARBORTRADE) && harborTradeCheck(2, Constants.ORE))
+         || (harborTradePending.equals(Constants.TWOTOONEGRAHARBORTRADE) && harborTradeCheck(2, Constants.GRAIN))
+         || (harborTradePending.equals(Constants.TWOTOONELUMHARBORTRADE) && harborTradeCheck(2, Constants.LUMBER))
+         || (harborTradePending.equals(Constants.TWOTOONEWOOHARBORTRADE) && harborTradeCheck(2, Constants.WOOL))
+         || (harborTradePending.equals(Constants.TWOTOONEBRIHARBORTRADE) && harborTradeCheck(2, Constants.BRICK)))
+        {
+            view.twoStepValidation();
+        }
+        
+        harborTradePending = "";
+    }
+    
+    private boolean harborTradeCheck(int count, String resource)
+    {
+        boolean retVal = true;
+        
+        String resourceToCheck = "";
+        
+        if(!resource.equals(""))
+            resourceToCheck = resource;
+        else if(!selectedResourceCards.isEmpty())
+            resourceToCheck = selectedResourceCards.get(0);
+        else
+            retVal = false;
+        
+        if(retVal && (count == selectedResourceCards.size()))
+        {
+            for(int i = 0; i < count; i++)
+            {
+                retVal = retVal && selectedResourceCards.get(i).equals(resourceToCheck);
+            }
+        }
+        
+        return retVal;
     }
     
     public void endTurn()

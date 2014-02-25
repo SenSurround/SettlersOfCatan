@@ -13,6 +13,12 @@ public class Constants {
     public static final String BUILDROAD = "BUILDROAD";
     public static final String BUYDEVELOPMENTCARD = "BUYDEVELOPMENTCARD";
     public static final String HARBORTRADE = "HARBORTRADE";
+    public static final String THREETOONEHARBORTRADE = "THREETOONEHARBORTRADE";
+    public static final String TWOTOONEOREHARBORTRADE = "TWOTOONEOREHARBORTRADE";
+    public static final String TWOTOONEGRAHARBORTRADE = "TWOTOONEGRAHARBORTRADE";
+    public static final String TWOTOONELUMHARBORTRADE = "TWOTOONELUMHARBORTRADE";
+    public static final String TWOTOONEWOOHARBORTRADE = "TWOTOONEWOOHARBORTRADE";
+    public static final String TWOTOONEBRIHARBORTRADE = "TWOTOONBRIEHARBORTRADE";
     public static final String PLAYDEVELOPMENTCARD = "PLAYDEVELOPMENTCARD";
 
     public static final String NODETOKEN = "NOD";
