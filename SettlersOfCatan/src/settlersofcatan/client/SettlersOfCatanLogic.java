@@ -73,7 +73,8 @@ public class SettlersOfCatanLogic {
         String nextPlayerString = getNextPlayerId(verifyMove.getPlayerIds(), lastMovePlayerId);
 	    
 	    // Attempt to determine which move is being attempted
-	    String expectedMove = findExpectedMove(lastMove, playerString, nextPlayerString);
+	    String expectedMove = findExpectedMove(
+	            lastState, lastMove, playerString, nextPlayerString);
 	    
 	    // See whether the set of moves matches the expected move
 	    // It also verifies whether the move is legal given the last state
@@ -83,7 +84,8 @@ public class SettlersOfCatanLogic {
 	            lastState,
 	            playerString,
 	            lastMovePlayerId,
-	            nextPlayerString);
+	            nextPlayerString,
+	            verifyMove.getPlayerIds());
 	    
 	    if(!status)
 	    {
@@ -99,7 +101,6 @@ public class SettlersOfCatanLogic {
         int playerRedId = playerIds.get(1);
         int playerYellowId = -1;
         int playerGreenId = -1;
-        int desertHex = -1;
 	    
 	    if(playerIds.size() == 3)
 	        playerYellowId = playerIds.get(2);
@@ -109,7 +110,6 @@ public class SettlersOfCatanLogic {
 	    // Set turn to player
 	    firstMove.add(new SetTurn(playerBlueId));
 	    
-	    firstMove.add(new Shuffle(resourceList));
 	    for(int i = 0; i < resourceList.size(); i++)
 	    {
 	        if(i < 10)
@@ -120,12 +120,12 @@ public class SettlersOfCatanLogic {
                 firstMove.add(
                         new Set(Constants.HEXTOKEN + i,
                                 resourceList.get(i)));
-	        
-	        if(resourceList.get(i) == Constants.DESERT)
-	            desertHex = i;
 	    }
+        firstMove.add(new Shuffle(
+                Lists.newArrayList("HEX00", "HEX01", "HEX02", "HEX03", "HEX04", "HEX05", 
+                                   "HEX06", "HEX07", "HEX08", "HEX09", "HEX10", "HEX11", 
+                                   "HEX12", "HEX13", "HEX14", "HEX15", "HEX16", "HEX17", "HEX18")));
 	    
-        firstMove.add(new Shuffle(developmentCardTypeList));
         for(int i = 0; i < developmentCardTypeList.size(); i++)
         {
             if(i < 10)
@@ -137,6 +137,14 @@ public class SettlersOfCatanLogic {
                         new Set(Constants.DEVELOPMENTCARDTOKEN + i,
                                 developmentCardTypeList.get(i)));
         }
+        firstMove.add(new Shuffle(
+                Lists.newArrayList("DEV00", "DEV01", "DEV02", "DEV03", "DEV04",
+                                   "DEV05", "DEV06", "DEV07", "DEV08", "DEV09",
+                                   "DEV10", "DEV11", "DEV12", "DEV13", "DEV14",
+                                   "DEV15", "DEV16", "DEV17", "DEV18", "DEV19",
+                                   "DEV20", "DEV21", "DEV22", "DEV23", "DEV24")));
+        
+        
         for(int i = 0; i < developmentCardTypeList.size(); i++)
         {
             if(i < 10)
@@ -149,15 +157,15 @@ public class SettlersOfCatanLogic {
                                           Constants.visibleToNone));
         }
 
-        firstMove.add(new Shuffle(harborTradeTypeList));
         for(int i = 0; i < harborTradeTypeList.size(); i++)
         {
             firstMove.add(
                     new Set(Constants.HARBORTRADETOKEN + "0" + i,
                             harborTradeTypeList.get(i)));
         }
-        
-        firstMove.add(new Set(Constants.ROBBER, desertHex));
+        firstMove.add(new Shuffle(
+                Lists.newArrayList("MAR00", "MAR01", "MAR02", "MAR03", "MAR04",
+                                   "MAR05", "MAR06", "MAR07", "MAR08")));
         
         firstMove.add(new Set(Constants.SOLDIERCOUNTPB, 0));
         firstMove.add(new Set(Constants.SOLDIERCOUNTPR, 0));
@@ -198,7 +206,7 @@ public class SettlersOfCatanLogic {
     {
         List<String> resourceCards = new ArrayList<String>();
         
-        for(int i = 0; i < 30; i++)
+        for(int i = 0; i < 25; i++)
         {
             String cardToSearchFor = "";
             if(i < 10)
@@ -208,7 +216,12 @@ public class SettlersOfCatanLogic {
             
             if(state.containsKey(cardToSearchFor))
             {
-                resourceCards.add(state.get(cardToSearchFor).toString());
+                Object lookAtMe = state.get(cardToSearchFor);
+                
+                if(lookAtMe != null)
+                {
+                    resourceCards.add(state.get(cardToSearchFor).toString());
+                }
             }
         }
         
@@ -256,32 +269,36 @@ public class SettlersOfCatanLogic {
 	        Map<String, Object> lastState,
 	        String playerString,
 	        int playerId,
-	        String nextPlayerString)
+	        String nextPlayerString,
+	        List<Integer> playerIds)
 	{
 	    boolean status = false;
 	    
 	    switch(expectedMove)
 	    {
+    	    case Constants.FIRSTMOVE:
+    	        status = isFirstMoveLegal(lastMove, playerString, playerIds);
+    	        break;
     	    case Constants.CHANGETURN:
-                status = isChangeTurnMoveLegal(lastMove, nextPlayerString);
+                status = isChangeTurnMoveLegal(lastMove, nextPlayerString, playerIds);
     	        break;
     	    case Constants.BUILDCITY:
-                status = isBuildCityMoveLegal(lastMove, lastState, playerString, playerId);
+                status = isBuildCityMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
                 break;
             case Constants.BUILDSETTLEMENT:
-                status = isBuildSettlementMoveLegal(lastMove, lastState, playerString, playerId);
+                status = isBuildSettlementMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
                 break;
             case Constants.BUILDROAD:
-                status = isBuildRoadMoveLegal(lastMove, lastState, playerString, playerId);
+                status = isBuildRoadMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
                 break;
             case Constants.BUYDEVELOPMENTCARD:
-                status = isBuyDevelopmentCardMoveLegal(lastMove, lastState, playerString, playerId);
+                status = isBuyDevelopmentCardMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
                 break;
             case Constants.PLAYDEVELOPMENTCARD:
-                status = isPlayDevelopmentCardMoveLegal(lastMove, lastState, playerString, playerId);
+                status = isPlayDevelopmentCardMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
                 break;
             case Constants.HARBORTRADE:
-                status = isHarborTradeMoveLegal(lastMove, lastState, playerString);
+                status = isHarborTradeMoveLegal(lastMove, lastState, playerString, playerIds);
                 break;
             default:
                 err = "No Legal Move Detected";
@@ -292,11 +309,151 @@ public class SettlersOfCatanLogic {
 	}
 	    
 
+    // Parent Function for First Move
+    // Determines if this entire move matches for changing turns
+    private boolean isFirstMoveLegal(
+            List<Operation> lastMove,
+            String playerString,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // SET(TURN, nextPlayerString)
+        // SET(HEX00, resourceList.get(0))
+        // ...
+        // SET(HEX18, resourceList.get(18))
+        // SHUFFLE(HEX00...HEX18)
+        // SET(DEV00, developmentCardTypeList.get(0))
+        // ...
+        // SET(DEV24, developmentCardTypeList.get(24))
+        // SHUFFLE(HEX00...HEX18)
+        // SETVISIBILITY(DEV00, visibleToNone)
+        // ...
+        // SETVISIBILITY(DEV24, visibleToNone)
+        // SET(MAR00, harborTradeTypeList.get(0))
+        // ...
+        // SET(MAR08, harborTradeTypeList.get(8))
+        // SHUFFLE(MAR00...MAR08)
+        // SET(SOLDIERCOUNTPB, 0)
+        // SET(SOLDIERCOUNTPR, 0)
+        // OPTIONAL - SET(SOLDIERCOUNTPY, 0)
+        // OPTIONAL - SET(SOLDIERCOUNTPG, 0)
+        
+        // REQUIREMENTS
+        // Line 0 - Turn must match playerString
+        // Lines 1-19 - SET must match HEXXX to resourceListXX
+        // Line 20 - Shuffle HEX list
+        // Lines 21-45 - SET must match DEVXX to developmentCardTypeListXX
+        // Line 46 - Shuffle DEV list
+        // Lines 47-71 - SETVISIBLE DEV list to visibleToNone
+        // Lines 72-80 - SET must match MARXX to harborTradeTypeListXX
+        // Line 81 - Shuffle MAR list
+        // Line 82-85 - SET soldiercounts for each player
+        
+        // Ensure move is between 83-85 lines
+        boolean status = (lastMove.size() == 84 && playerIds.size() == 2)
+                      || (lastMove.size() == 85 && playerIds.size() == 3)
+                      || (lastMove.size() == 86 && playerIds.size() == 4);
+        
+        if(status)
+        {
+            // Line 0
+            status = status
+                  && matchTurnMoveForSamePlayer(
+                          lastMove.get(0), 0, 
+                          playerString,
+                          playerIds);
+            
+            // Lines 1-19
+            for(int i = 0; i < 19; i++)
+            {
+                status = status
+                        && matchHexToInitialResource(
+                                lastMove.get(i + 1), i);
+            }
+            
+            // Line 20
+            status = status
+                    && matchHexShuffle(
+                            lastMove.get(20),20);
+            
+
+            // Lines 21 - 45
+            for(int i = 0; i < 25; i++)
+            {
+                status = status
+                        && matchDevelopmentCardToInitialType(
+                                lastMove.get(i + 21), i);
+            }
+            
+            // Line 46
+            status = status
+                    && matchDevelopmentCardShuffle(
+                            lastMove.get(46),46);
+
+            // Lines 47 - 71
+            for(int i = 0; i < 25; i++)
+            {
+                status = status
+                        && matchDevelopmentCardSetVisible(
+                                lastMove.get(i + 47), i);
+            }
+            
+
+            // Lines 72-80
+            for(int i = 0; i < 9; i++)
+            {
+                status = status
+                        && matchHarborToInitialType(
+                                lastMove.get(i + 72), i);
+            }
+            
+            // Line 81
+            status = status
+                    && matchHarborShuffle(
+                            lastMove.get(81),81);
+            
+            // Line 82
+            status = status
+                    && matchInitSoldierCount(
+                            lastMove.get(82),82, Constants.SOLDIERCOUNTTOKEN + Constants.PB);
+            
+            // Line 83
+            status = status
+                    && matchInitSoldierCount(
+                            lastMove.get(83),83, Constants.SOLDIERCOUNTTOKEN + Constants.PR);
+            
+            if(lastMove.size() > 84)
+            {
+                // Line 84
+                status = status
+                        && matchInitSoldierCount(
+                                lastMove.get(84),84, Constants.SOLDIERCOUNTTOKEN + Constants.PY);
+            
+                if(lastMove.size() > 85)
+                {
+                    // Line 85
+                    status = status
+                            && matchInitSoldierCount(
+                                    lastMove.get(85),85, Constants.SOLDIERCOUNTTOKEN + Constants.PG);
+                }
+            }
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "CHANGETURN expects: 1";
+        }
+        
+        return status;
+    }
+    
     // Parent Function for Change Turn
     // Determines if this entire move matches for changing turns
     private boolean isChangeTurnMoveLegal(
             List<Operation> lastMove,
-            String nextPlayerString)
+            String nextPlayerString,
+            List<Integer> playerIds)
     {
         // EXPECTED MOVE FORM
         // SET(TURN, nextPlayerString)
@@ -313,7 +470,8 @@ public class SettlersOfCatanLogic {
             status = status
                   && matchTurnMoveForSamePlayer(
                           lastMove.get(0), 0, 
-                          nextPlayerString);
+                          nextPlayerString,
+                          playerIds);
         }
         else
         {
@@ -331,7 +489,8 @@ public class SettlersOfCatanLogic {
             List<Operation> lastMove,
             Map<String, Object> lastState,
             String playerString,
-            int playerId)
+            int playerId,
+            List<Integer> playerIds)
     {
         // EXPECTED MOVE FORM
         // SET(TURN, playerString)
@@ -370,7 +529,8 @@ public class SettlersOfCatanLogic {
             status = status
                   && matchTurnMoveForSamePlayer(
                           lastMove.get(0), 0, 
-                          playerString);
+                          playerString,
+                          playerIds);
             
             // Lines 1,2,3
             status = status
@@ -426,7 +586,8 @@ public class SettlersOfCatanLogic {
             List<Operation> lastMove,
             Map<String, Object> lastState,
             String playerString,
-            int playerId)
+            int playerId,
+            List<Integer> playerIds)
     {
         // EXPECTED MOVE FORM
         // SET(TURN, playerString)
@@ -462,7 +623,8 @@ public class SettlersOfCatanLogic {
             status = status
                   && matchTurnMoveForSamePlayer(
                           lastMove.get(0), 0, 
-                          playerString);
+                          playerString,
+                          playerIds);
             
             // Lines 1,2
             status = status
@@ -515,7 +677,8 @@ public class SettlersOfCatanLogic {
             List<Operation> lastMove,
             Map<String, Object> lastState,
             String playerString,
-            int playerId)
+            int playerId,
+            List<Integer> playerIds)
     {
         // EXPECTED MOVE FORM
         // SET(TURN, playerString)
@@ -549,7 +712,8 @@ public class SettlersOfCatanLogic {
             status = status
                   && matchTurnMoveForSamePlayer(
                           lastMove.get(0), 0, 
-                          playerString);
+                          playerString,
+                          playerIds);
             
             // Lines 1,2
             status = status
@@ -613,7 +777,8 @@ public class SettlersOfCatanLogic {
             List<Operation> lastMove,
             Map<String, Object> lastState,
             String playerString,
-            int playerId)
+            int playerId,
+            List<Integer> playerIds)
     {
         // EXPECTED MOVE FORM
         // SET(TURN, playerString)
@@ -641,7 +806,8 @@ public class SettlersOfCatanLogic {
             status = status
                   && matchTurnMoveForSamePlayer(
                           lastMove.get(0), 0, 
-                          playerString);
+                          playerString,
+                          playerIds);
             
             // Lines 1
             status = status
@@ -680,7 +846,8 @@ public class SettlersOfCatanLogic {
             List<Operation> lastMove,
             Map<String, Object> lastState,
             String playerString,
-            int playerId)
+            int playerId,
+            List<Integer> playerIds)
     {
         // There are 4 types of cards that can be played
 
@@ -719,7 +886,8 @@ public class SettlersOfCatanLogic {
             // Line 0
             status = matchTurnMoveForSamePlayer(
                             lastMove.get(0), 0, 
-                            playerString);
+                            playerString,
+                            playerIds);
             
             // Line 1
             status = status
@@ -784,7 +952,8 @@ public class SettlersOfCatanLogic {
              // Line 0
              status = matchTurnMoveForSamePlayer(
                              lastMove.get(0), 0, 
-                             playerString);
+                             playerString,
+                             playerIds);
              
              // Line 1
              status = status
@@ -830,7 +999,8 @@ public class SettlersOfCatanLogic {
             // Line 0
             status = matchTurnMoveForSamePlayer(
                             lastMove.get(0), 0, 
-                            playerString);
+                            playerString,
+                            playerIds);
            
             // Line 1
             status = status
@@ -890,7 +1060,8 @@ public class SettlersOfCatanLogic {
              // Line 0
              status = matchTurnMoveForSamePlayer(
                              lastMove.get(0), 0, 
-                             playerString);
+                             playerString,
+                             playerIds);
              
              // Line 1
              status = status
@@ -960,7 +1131,8 @@ public class SettlersOfCatanLogic {
     private boolean isHarborTradeMoveLegal(
             List<Operation> lastMove,
             Map<String, Object> lastState,
-            String playerString)
+            String playerString,
+            List<Integer> playerIds)
     {
         // EXPECTED MOVE FORM
         // SET(TURN, playerString)
@@ -1009,7 +1181,8 @@ public class SettlersOfCatanLogic {
             status = status
                   && matchTurnMoveForSamePlayer(
                           lastMove.get(0), 0, 
-                          playerString);
+                          playerString,
+                          playerIds);
             
             // Lines 1,2,3,4,5,6,7,8,9
             status = status
@@ -1033,7 +1206,8 @@ public class SettlersOfCatanLogic {
             status = status
                   && matchTurnMoveForSamePlayer(
                           lastMove.get(0), 0, 
-                          playerString);
+                          playerString,
+                          playerIds);
             
             // Lines 1,2,3,4,5,6,7
             status = status
@@ -1055,7 +1229,8 @@ public class SettlersOfCatanLogic {
             status = status
                   && matchTurnMoveForSamePlayer(
                           lastMove.get(0), 0, 
-                          playerString);
+                          playerString,
+                          playerIds);
             
             // Lines 1,2,3,4,5,6,7,8,9
             status = status
@@ -1079,26 +1254,292 @@ public class SettlersOfCatanLogic {
         return status;
     }
     
-    // Returns whether the list of moves for a turn move match
-    private boolean matchTurnMoveForSamePlayer(
-            Operation move, int moveNum,
-            String playerString)
+    // Returns whether the list of moves for a set hex matches
+    private boolean matchHexToInitialResource(
+            Operation move, int moveNum)
+    {
+        boolean status = false;
+        
+        String moveString = "";
+        if(moveNum < 10)
+            moveString = Constants.HEXTOKEN + "0" + moveNum;
+        else
+            moveString = Constants.HEXTOKEN + moveNum;
+
+        if(!move.getMessageName().equals("Set"))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                + "MATCHHEX expects: SET(HEXXX, resourceList.get(XX))\n"
+                + "Set move expected";
+        }
+        else if(!((Set)move).getKey().equals(moveString))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "MATCHHEX expects: SET(HEXXX, resourceList.get(XX))\n"
+                    + "HEX name does not match";
+        }
+        else if(!((Set)move).getValue().toString().equals(resourceList.get(moveNum)))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "MATCHHEX expects: SET(HEXXX, resourceList.get(XX))\n"
+                    + "HEX value does not match";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves for a set developmentCard matches
+    private boolean matchDevelopmentCardToInitialType(
+            Operation move, int moveNum)
+    {
+        boolean status = false;
+        
+        String moveString = "";
+        if(moveNum < 10)
+            moveString = Constants.DEVELOPMENTCARDTOKEN + "0" + moveNum;
+        else
+            moveString = Constants.DEVELOPMENTCARDTOKEN + moveNum;
+
+        if(!move.getMessageName().equals("Set"))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                + "MATCHDEV expects: SET(DEVXX, developmentCardTypeList.get(XX))\n"
+                + "Set move expected";
+        }
+        else if(!((Set)move).getKey().equals(moveString))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "MATCHDEV expects: SET(DEVXX, developmentCardTypeList.get(XX))\n"
+                    + "DEV name does not match";
+        }
+        else if(!((Set)move).getValue().toString().equals(developmentCardTypeList.get(moveNum)))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "MATCHDEV expects: SET(DEVXX, developmentCardTypeList.get(XX))\n"
+                    + "DEV value does not match";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves for a set harbor matches
+    private boolean matchHarborToInitialType(
+            Operation move, int moveNum)
+    {
+        boolean status = false;
+        
+        String moveString = Constants.HARBORTRADETOKEN + "0" + moveNum;
+
+        if(!move.getMessageName().equals("Set"))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                + "MATCHMAR expects: SET(MARXX, harborTradeTypeList.get(XX))\n"
+                + "Set move expected";
+        }
+        else if(!((Set)move).getKey().equals(moveString))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "MATCHMAR expects: SET(MARXX, harborTradeTypeList.get(XX))\n"
+                    + "MAR name does not match";
+        }
+        else if(!((Set)move).getValue().toString().equals(harborTradeTypeList.get(moveNum)))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "MATCHMAR expects: SET(MARXX, harborTradeTypeList.get(XX))\n"
+                    + "MAR value does not match";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+
+    // Returns whether the list of moves for a shuffle hex matches
+    private boolean matchHexShuffle(
+            Operation move, int moveNum)
+    {
+        boolean status = false;
+
+        if(!move.getMessageName().equals("Shuffle"))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                + "SHUFFLEHEX expects: SHUFFLE(HEX00...HEX18)\n"
+                + "Shuffle move expected";
+        }
+        else if(!((Shuffle)move).getKeys().equals(
+                Lists.newArrayList(
+                        "HEX00", "HEX01", "HEX02", "HEX03", "HEX04", "HEX05", 
+                        "HEX06", "HEX07", "HEX08", "HEX09", "HEX10", "HEX11", 
+                        "HEX12", "HEX13", "HEX14", "HEX15", "HEX16", "HEX17", "HEX18")))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "SHUFFLEHEX expects: SHUFFLE(HEX00...HEX18)\n"
+                    + "SHUFFLEHEX name does not match";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves for a shuffle developmentCard matches
+    private boolean matchDevelopmentCardShuffle(
+            Operation move, int moveNum)
+    {
+        boolean status = false;
+
+        if(!move.getMessageName().equals("Shuffle"))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                + "SHUFFLEDEV expects: SHUFFLE(DEV00...DEV24)\n"
+                + "Shuffle move expected";
+        }
+        else if(!((Shuffle)move).getKeys().equals(
+                Lists.newArrayList(
+                        "DEV00", "DEV01", "DEV02", "DEV03", "DEV04",
+                        "DEV05", "DEV06", "DEV07", "DEV08", "DEV09",
+                        "DEV10", "DEV11", "DEV12", "DEV13", "DEV14",
+                        "DEV15", "DEV16", "DEV17", "DEV18", "DEV19",
+                        "DEV20", "DEV21", "DEV22", "DEV23", "DEV24")))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "SHUFFLEDEV expects: SHUFFLE(DEV00...DEV24)\n"
+                    + "SHUFFLEDEV name does not match";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves for a shuffle harbor matches
+    private boolean matchHarborShuffle(
+            Operation move, int moveNum)
+    {
+        boolean status = false;
+
+        if(!move.getMessageName().equals("Shuffle"))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                + "SHUFFLEMAR expects: SHUFFLE(MAR00...MAR08)\n"
+                + "Shuffle move expected";
+        }
+        else if(!((Shuffle)move).getKeys().equals(
+                Lists.newArrayList(
+                        "MAR00", "MAR01", "MAR02", "MAR03", "MAR04",
+                        "MAR05", "MAR06", "MAR07", "MAR08")))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "SHUFFLEMAR expects: SHUFFLE(MAR00...MAR08)\n"
+                    + "SHUFFLEMAR name does not match";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+
+    // Returns whether the list of moves for a shuffle harbor matches
+    private boolean matchInitSoldierCount(
+            Operation move, int moveNum, String playerSoldier)
     {
         boolean status = false;
 
         if(!move.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: moveNum\n"
-                + "BUILDSETTLEMENT expects: SET(TURN, playerString)\n"
+                + "SETCOLDIERCOUNT expects: SET(SOLDIERCOUNTPX, 0)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move).getKey().equals(Constants.TURN))
+        else if(!((Set)move).getKey().equals(playerSoldier))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "SETCOLDIERCOUNT expects: SET(SOLDIERCOUNTPX, 0)\n"
+                    + "SETCOLDIERCOUNT name does not match";
+        }
+        else if(!((Set)move).getValue().toString().equals("0"))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "SETCOLDIERCOUNT expects: SET(SOLDIERCOUNTPX, 0)\n"
+                    + "SETCOLDIERCOUNT value does not match";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves for a set developmentCard matches
+    private boolean matchDevelopmentCardSetVisible(
+            Operation move, int moveNum)
+    {
+        boolean status = false;
+        
+        String moveString = "";
+        if(moveNum < 10)
+            moveString = Constants.DEVELOPMENTCARDTOKEN + "0" + moveNum;
+        else
+            moveString = Constants.DEVELOPMENTCARDTOKEN + moveNum;
+
+        if(!move.getMessageName().equals("SetVisibility"))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                + "SETVISDEV expects: SETVISIBILITY(DEVXX, visibleToNone))\n"
+                + "SetVisibility move expected";
+        }
+        else if(!((SetVisibility)move).getKey().equals(moveString))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "SETVISDEV expects: SETVISIBILITY(DEVXX, visibleToNone))\n"
+                    + "SETVISDEV name does not match";
+        }
+        else if(!((SetVisibility)move).getVisibleToPlayerIds().equals(Constants.visibleToNone))
+        {
+            err = "Incorrect Move Number: moveNum\n"
+                    + "SETVISDEV expects: SETVISIBILITY(DEVXX, visibleToNone))\n"
+                    + "SETVISDEV value does not match";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves for a turn move match
+    private boolean matchTurnMoveForSamePlayer(
+            Operation move, int moveNum,
+            String playerString,
+            List<Integer> playerIds)
+    {
+        boolean status = false;
+
+        if(!move.getMessageName().equals("SetTurn"))
         {
             err = "Incorrect Move Number: moveNum\n"
                 + "BUILDSETTLEMENT expects: SET(TURN, playerString)\n"
-                + "TURN key expected";
+                + "SetTurn move expected";
         }
-        else if(!((Set)move).getValue().toString().contains(playerString))
+        else if(!getPlayerId(playerIds, (((SetTurn)move).getPlayerId())).equals(playerString))
         {
             err = "Incorrect Move Number: moveNum\n"
                 + "BUILDSETTLEMENT expects: SET(TURN, playerString)\n"
@@ -3878,7 +4319,6 @@ public class SettlersOfCatanLogic {
     }
     
     // Returns whether a specific player owns a 2 to 1 harbor for a specific resource
-
     // Identifies whether a specific player owns a 2-1 harbor for a specific resource
     private boolean ownsTwoToOneHarbor(
             Map<String, Object> state,
@@ -4726,9 +5166,7 @@ public class SettlersOfCatanLogic {
 	}
 	
     // Gets whether a settlement can be added here for a specific player
-
 	// Returns whether a specific player can add a settlement at a certain node
-
 	private boolean canAddSettlementHere(
             Map<String, Object> lastState,
             String node,
@@ -4782,14 +5220,11 @@ public class SettlersOfCatanLogic {
         
         return status;
     }
+    
     // Returns the Development Card that matches the given Development Card Type
-
     // Matches a development card to a development card type
-
     // Finds the first open development card on the stack
-
     // Returns the first available Development Card
-
     private String findFirstOpenDevelopmentCard()
     {
         String firstOpen = "";
@@ -4803,19 +5238,23 @@ public class SettlersOfCatanLogic {
     }
 
     // Determines what kind of move the player is attempting to make
-
     // Returns the move that is preliminarily expected based on the list of moves
-
     private String findExpectedMove(
+            Map<String, Object> lastState,
             List<Operation> lastMove,
             String playerString,
             String nextPlayerString)
     {
         String expectedMove = "";
         
+        // Expects the first move from an empty state
+        if ( lastState.isEmpty() )
+        {
+            expectedMove = Constants.FIRSTMOVE;
+        }
         // Move contains a SET Turn command with the next player string
         // This is a CHANGETURN move
-        if ( findASetMoveInMoves(lastMove, Constants.TURN, nextPlayerString) )
+        else if ( findASetMoveInMoves(lastMove, Constants.TURN, nextPlayerString) )
         {
             expectedMove = Constants.CHANGETURN;
         }

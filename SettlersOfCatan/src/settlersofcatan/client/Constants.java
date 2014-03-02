@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableMap;
 
 public class Constants {
     
+    public static final String FIRSTMOVE = "FIRSTMOVE";
     public static final String CHANGETURN = "CHANGETURN";
     public static final String BUILDCITY = "BUILDCITY";
     public static final String BUILDSETTLEMENT = "BUILDSETTLEMENT";

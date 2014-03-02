@@ -13,6 +13,7 @@ public class Board {
     List<Path> pathList;
 
     int[] dieList = {5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11 };
+    int[] dieHexList = {16, 17, 18, 15, 11, 6, 2, 1, 0, 3, 7, 12, 13, 14, 10, 5, 4, 8, 9 };
     
     public Board(Map<String, Object> state)
     {
@@ -23,6 +24,7 @@ public class Board {
     
     private void prepHexList(Map<String, Object> state)
     {
+        int desert = -1;
         hexList = Arrays.asList(
         new Hex(0 , 4 , 8 , 12, 7 , 3 , state.get(Constants.HEX00).toString()),
         new Hex(1 , 5 , 9 , 13, 8 , 4 , state.get(Constants.HEX01).toString()),
@@ -51,14 +53,18 @@ public class Board {
         int adjust = 0;
         
         for (int i = 0; i < 19; i++) {
-            if (!hexList.get(i).getResource().equals(Constants.DESERT)) {
-                hexList.get(i).setDieRoll(dieList[i - adjust]);
+            if (!hexList.get(dieHexList[i]).getResource().equals(Constants.DESERT)) {
+                hexList.get(dieHexList[i]).setDieRoll(dieList[i - adjust]);
             } else {
+                desert = dieHexList[i];
                 adjust++;
             }
         }
-        
-        hexList.get(Integer.parseInt(state.get(Constants.ROBBER).toString().substring(3))).setRobber(true);
+        if(state.containsKey(Constants.ROBBER))
+            hexList.get(Integer.parseInt(state.get(Constants.ROBBER).toString().substring(3))).setRobber(true);
+        else
+            hexList.get(desert).setRobber(true);
+            
     }
     
     private void prepNodeList(Map<String, Object> state)

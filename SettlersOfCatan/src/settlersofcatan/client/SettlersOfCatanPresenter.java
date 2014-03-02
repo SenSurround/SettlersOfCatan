@@ -13,7 +13,7 @@ import settlersofcatan.client.GameApi.UpdateUI;
 
 public class SettlersOfCatanPresenter {
     
-    interface View {
+    public interface View {
         /**
          * Sets the presenter. The viewer will call certain methods on the presenter, e.g.,
          * when a card is selected ({@link #cardSelected}),
@@ -366,5 +366,15 @@ public class SettlersOfCatanPresenter {
     public Board getBoard()
     {
         return theBoard;
+    }
+    
+    public void setPathToBuild(int path)
+    {
+        
+    }
+    
+    public void setNodeToBuild(int path)
+    {
+        
     }
 }

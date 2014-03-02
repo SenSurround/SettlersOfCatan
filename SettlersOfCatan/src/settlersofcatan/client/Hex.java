@@ -47,12 +47,6 @@ public class Hex {
         //paths[5].setNodes(locations[5], locations[0]);
         
         this.resource = resource;
-        
-        if (resource == Constants.DESERT) {
-            robber = true;
-        } else {
-            robber = false;
-        }
     }
     
     // Sets the die roll value of the HEX to provide resources
@@ -73,6 +67,11 @@ public class Hex {
     public boolean getRobber()
     {
         return robber;
+    }
+    
+    public int getDieRoll()
+    {
+        return dieRoll;
     }
 
 }
