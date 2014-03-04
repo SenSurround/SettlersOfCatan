@@ -1,10 +1,9 @@
 package settlersofcatan.client;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.base.Optional;
 
 public class Board {
     
@@ -33,7 +32,7 @@ public class Board {
         new Hex(7 , 12, 17, 22, 16, 11, state.get(Constants.HEX03).toString()),
         new Hex(8 , 13, 18, 23, 17, 12, state.get(Constants.HEX04).toString()),
         new Hex(9 , 14, 19, 24, 18, 13, state.get(Constants.HEX05).toString()),
-        new Hex(10, 15, 20, 25, 29, 14, state.get(Constants.HEX06).toString()),
+        new Hex(10, 15, 20, 25, 19, 14, state.get(Constants.HEX06).toString()),
                 
         new Hex(16, 22, 28, 33, 27, 21, state.get(Constants.HEX07).toString()),
         new Hex(17, 23, 29, 34, 28, 22, state.get(Constants.HEX08).toString()),
@@ -309,6 +308,22 @@ public class Board {
         
         return retVal;
     }
+
+    public boolean hasOneSettlementOut(int playerId)
+    {
+        boolean retVal = false;
+        
+        for(int i = 0; i < 54; i++)
+        {
+            if( nodeList.get(i).getPlayer() == playerId
+             && nodeList.get(i).getSettlement() == 1)
+            {
+                retVal = true;
+            }
+        }
+        
+        return retVal;
+    }
     
     public boolean hasAvailableCities(int playerId)
     {
@@ -399,4 +414,66 @@ public class Board {
         
         return retVal;
     }
+    
+    public List<String> getResoucesForNode(int node)
+    {
+        List<String> resources = new ArrayList<String>();
+        
+        for(int i = 0; i < 19; i++)
+        {
+            for(int j = 0; j < 6; j++)
+            {
+                if(hexList.get(i).getLocation(j) == node)
+                {
+                    if(hexList.get(i).getResource() != Constants.DESERT)
+                        resources.add(hexList.get(i).getResource());
+                }
+            }
+        }
+        
+        return resources;
+    }
+    
+    public List<Integer> getNodesPerDieRoll(int dieRoll)
+    {
+        List<Integer> nodes = new ArrayList<Integer>();
+        
+        for(int i = 0; i < 19; i++)
+        {
+            if(hexList.get(i).getDieRoll() == dieRoll
+           && !hexList.get(i).getRobber())
+            {
+                nodes.add(hexList.get(i).locations[0]);
+                nodes.add(hexList.get(i).locations[1]);
+                nodes.add(hexList.get(i).locations[2]);
+                nodes.add(hexList.get(i).locations[3]);
+                nodes.add(hexList.get(i).locations[4]);
+                nodes.add(hexList.get(i).locations[5]);
+            }
+        }
+        
+        return nodes;
+    }
+    
+    public List<String> getResourcesPerDieRoll(int dieRoll)
+    {
+        List<String> nodes = new ArrayList<String>();
+        
+        for(int i = 0; i < 19; i++)
+        {
+            if(hexList.get(i).getDieRoll() == dieRoll
+            && !hexList.get(i).getRobber())
+            {
+                nodes.add(hexList.get(i).getResource());
+                nodes.add(hexList.get(i).getResource());
+                nodes.add(hexList.get(i).getResource());
+                nodes.add(hexList.get(i).getResource());
+                nodes.add(hexList.get(i).getResource());
+                nodes.add(hexList.get(i).getResource());
+            }
+        }
+        
+        return nodes;
+    }
+    
 }

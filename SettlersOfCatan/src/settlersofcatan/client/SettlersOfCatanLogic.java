@@ -15,6 +15,7 @@ import settlersofcatan.client.GameApi.Delete;
 import settlersofcatan.client.GameApi.EndGame;
 import settlersofcatan.client.GameApi.Operation;
 import settlersofcatan.client.GameApi.Set;
+import settlersofcatan.client.GameApi.SetRandomInteger;
 import settlersofcatan.client.GameApi.SetTurn;
 import settlersofcatan.client.GameApi.SetVisibility;
 import settlersofcatan.client.GameApi.Shuffle;
@@ -27,6 +28,18 @@ public class SettlersOfCatanLogic {
     // For Debug Purposes
     private String err = "";
     private int firstOpenDevelopmentCard = 0;
+    private int verifyCount = 0;
+    public boolean firstFreeMove = false;
+    public boolean secondFreeMove = false;
+    private boolean settlementTurn = false;
+    private boolean finishRoadBuild = false;
+    private boolean finishSettlementBuild = false;
+    private boolean finishCityBuild = false;
+    private boolean finishBuyingDevelopmentCard = false;
+    private boolean finishHarborTrade = false;
+    public boolean initial = true;
+    
+    private List<Integer> playerIds;
     
     List<String> resourceList = Arrays.asList(
             Constants.ORE,    Constants.ORE,    Constants.ORE,
@@ -74,7 +87,7 @@ public class SettlersOfCatanLogic {
 	    
 	    // Attempt to determine which move is being attempted
 	    String expectedMove = findExpectedMove(
-	            lastState, lastMove, playerString, nextPlayerString);
+	            lastState, lastMove, playerString, nextPlayerString, lastMovePlayerId);
 	    
 	    // See whether the set of moves matches the expected move
 	    // It also verifies whether the move is legal given the last state
@@ -98,14 +111,6 @@ public class SettlersOfCatanLogic {
 	    List<Operation> firstMove = Lists.newArrayList();
 	    
 	    int playerBlueId = playerIds.get(0);
-        int playerRedId = playerIds.get(1);
-        int playerYellowId = -1;
-        int playerGreenId = -1;
-	    
-	    if(playerIds.size() == 3)
-	        playerYellowId = playerIds.get(2);
-	    else if(playerIds.size() == 4)
-	        playerGreenId = playerIds.get(3);
 	    
 	    // Set turn to player
 	    firstMove.add(new SetTurn(playerBlueId));
@@ -171,9 +176,14 @@ public class SettlersOfCatanLogic {
         firstMove.add(new Set(Constants.SOLDIERCOUNTPR, 0));
         
         if(playerIds.size() == 3)
+        {
             firstMove.add(new Set(Constants.SOLDIERCOUNTPY, 0));
+        }
         else if(playerIds.size() == 4)
+        {
+            firstMove.add(new Set(Constants.SOLDIERCOUNTPY, 0));
             firstMove.add(new Set(Constants.SOLDIERCOUNTPG, 0));
+        }
 	    
 	    return firstMove;
 	}
@@ -279,26 +289,126 @@ public class SettlersOfCatanLogic {
     	    case Constants.FIRSTMOVE:
     	        status = isFirstMoveLegal(lastMove, playerString, playerIds);
     	        break;
+            case Constants.FIRSTROUNDSETTLEMENT:
+                status = isFirstRoundSettlementLegal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    settlementTurn = false;
+                }
+                break;
+            case Constants.FIRSTROUNDROAD:
+                status = isFirstRoundRoadLegal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    if(playerId == playerIds.get(playerIds.size() - 1))
+                    {
+                        firstFreeMove = false;
+                        secondFreeMove = true;
+                    }
+                    settlementTurn = true;
+                }
+                break;
+            case Constants.SECONDROUNDSETTLEMENT:
+                status = isSecondRoundSettlementLegal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    settlementTurn = false;
+                }
+                break;
+            case Constants.SECONDROUNDROAD:
+                status = isSecondRoundRoadLegal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    settlementTurn = true;
+                    if(playerId == playerIds.get(0))
+                    {
+                        firstFreeMove = false;
+                        secondFreeMove = false;
+                        settlementTurn = false;
+                    }
+                }
+                break;
+            case Constants.ROLLDICE:
+                status = isRollDiceLegal(lastMove, playerString);
+                break;
+            case Constants.CLEARROLL:
+                status = isDiceClearLegal(lastMove, lastState, playerString);
+                break;
     	    case Constants.CHANGETURN:
                 status = isChangeTurnMoveLegal(lastMove, nextPlayerString, playerIds);
     	        break;
-    	    case Constants.BUILDCITY:
-                status = isBuildCityMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
+    	    case Constants.BUILDCITYPT1:
+                status = isBuildCityMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishCityBuild = true;
+                }
                 break;
-            case Constants.BUILDSETTLEMENT:
-                status = isBuildSettlementMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
+            case Constants.BUILDCITYPT2:
+                status = isBuildCityMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishCityBuild = true;
+                }
                 break;
-            case Constants.BUILDROAD:
-                status = isBuildRoadMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
+            case Constants.BUILDSETTLEMENTPT1:
+                status = isBuildSettlementMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishSettlementBuild = true;
+                }
                 break;
-            case Constants.BUYDEVELOPMENTCARD:
-                status = isBuyDevelopmentCardMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
+            case Constants.BUILDSETTLEMENTPT2:
+                status = isBuildSettlementMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishSettlementBuild = false;
+                }
+                break;
+            case Constants.BUILDROADPT1:
+                status = isBuildRoadMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishRoadBuild = true;
+                }
+                break;
+            case Constants.BUILDROADPT2:
+                status = isBuildRoadMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishRoadBuild = false;
+                }
+                break;
+            case Constants.BUYDEVELOPMENTCARDPT1:
+                status = isBuyDevelopmentCardMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishBuyingDevelopmentCard = true;
+                }
+                break;
+            case Constants.BUYDEVELOPMENTCARDPT2:
+                status = isBuyDevelopmentCardMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishBuyingDevelopmentCard = false;
+                }
                 break;
             case Constants.PLAYDEVELOPMENTCARD:
                 status = isPlayDevelopmentCardMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
                 break;
-            case Constants.HARBORTRADE:
-                status = isHarborTradeMoveLegal(lastMove, lastState, playerString, playerIds);
+            case Constants.HARBORTRADEPT1:
+                status = isHarborTradeMovePt1Legal(lastMove, lastState, playerString, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishHarborTrade = true;
+                }
+                break;
+            case Constants.HARBORTRADEPT2:
+                status = isHarborTradeMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishHarborTrade = false;
+                }
                 break;
             default:
                 err = "No Legal Move Detected";
@@ -437,6 +547,369 @@ public class SettlersOfCatanLogic {
                                     lastMove.get(85),85, Constants.SOLDIERCOUNTTOKEN + Constants.PG);
                 }
             }
+            
+            if(status)
+            {
+                this.playerIds = playerIds;
+            }
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "CHANGETURN expects: 1";
+        }
+        
+        return status;
+    }
+    
+    private boolean isFirstRoundSettlementLegal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // SETTURN(playerId)
+        // SET(NODEXX, SETTLEMENTYY + playerString)
+        // SET(SETTLEMENTYY + playerString, NODEXX)
+        
+        // REQUIREMENTS
+        // Line 0 - Turn must match playerString
+        // Lines 1,2 - NODE and SETTLEMENT must be the same
+        //             NODE must be empty prior
+        
+        // Ensure move is exactly 3 lines
+        boolean status = lastMove.size() == 3;
+        
+        if(status)
+        {
+            // Line 0
+            status = status
+                  && matchTurnMoveForSamePlayer(
+                          lastMove.get(0), 0, 
+                          playerString,
+                          playerIds);
+            
+            // Lines 1,2
+            status = status
+                  && matchSettlementAndNodePairFree(
+                          lastMove.get(1), 1, 
+                          lastMove.get(2), 2, 
+                          lastState, 
+                          playerString);
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "BUILDSETTLEMENT expects: 3";
+        }
+        
+        return status;
+        
+    }
+    
+    private boolean isFirstRoundRoadLegal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // SETTURN(playerId)
+        // SET(PATHXX, ROADYY + playerString)
+        // SET(ROADYY + playerString, PATHXX)
+        
+        // REQUIREMENTS
+        // Line 0 - Turn must match playerString
+        // Lines 1,2 - PATH and ROAD must be the same
+        //             PATH must be empty prior
+        
+        // Ensure move is exactly 3 lines
+        boolean status = lastMove.size() == 3;
+        
+        if(status)
+        {
+            // Line 0
+            status = status
+                  && matchTurnMoveForSamePlayer(
+                          lastMove.get(0), 0, 
+                          playerString,
+                          playerIds);
+            
+            // Lines 1,2
+            status = status
+                  && matchRoadAndPathPair(
+                          lastMove.get(1), 1, 
+                          lastMove.get(2), 2, 
+                          lastState, 
+                          playerString);
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "BUILDROADFIRST expects: 3";
+        }
+        
+        return status;
+        
+    }
+    
+    private boolean isSecondRoundSettlementLegal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // SETTURN(playerId)
+        // SET(NODEXX, SETTLEMENTYY + playerString)
+        // SET(SETTLEMENTYY + playerString, NODEXX)
+        // OPTIONAL - SET(RESOURCECARDXX, RESOURCE)
+        // OPTIONAL - SETVISIBILITY(RESOURCECARDXX, playerId)
+        // UP TO 3 pairs of those
+        
+        // REQUIREMENTS
+        // Line 0 - Turn must match playerString
+        // Lines 1,2 - NODE and SETTLEMENT must be the same
+        //             NODE must be empty prior
+        // Lines 3,4,5,6,7,8 - Optional set pairs for resources
+        
+        // Ensure move is exactly 3,5,7,9 lines
+        boolean status = lastMove.size() == 3
+                      || lastMove.size() == 5
+                      || lastMove.size() == 7
+                      || lastMove.size() == 9;
+        
+        if(status)
+        {
+            // Line 0
+            status = status
+                  && matchTurnMoveForSamePlayer(
+                          lastMove.get(0), 0, 
+                          playerString,
+                          playerIds);
+            
+            // Lines 1,2
+            status = status
+                  && matchSettlementAndNodePairFree(
+                          lastMove.get(1), 1, 
+                          lastMove.get(2), 2, 
+                          lastState, 
+                          playerString);
+            
+            List<String> expectedResources = getExpectedResourcesFromNode(
+                    lastState,
+                    ((Set)lastMove.get(1)).getKey());
+            
+            // Line 3
+            if(expectedResources.size() > 0)
+            {
+                status = status
+                      && matchResourceCardAdd(
+                              lastMove.get(3), 3,
+                              lastMove.get(4), 4,
+                              lastState, 
+                              playerString,
+                              playerId,
+                              expectedResources.get(0));
+
+                // Line 4
+                if(expectedResources.size() > 1)
+                {
+                    status = status
+                          && matchResourceCardAdd(
+                                  lastMove.get(5), 5,
+                                  lastMove.get(6), 6,
+                                  lastState, 
+                                  playerString,
+                                  playerId,
+                                  expectedResources.get(1));
+
+                    // Line 5
+                    if(expectedResources.size() > 2)
+                    {
+                        status = status && expectedResources.size() > 2
+                              && matchResourceCardAdd(
+                                      lastMove.get(7), 7,
+                                      lastMove.get(8), 8,
+                                      lastState, 
+                                      playerString,
+                                      playerId,
+                                      expectedResources.get(2));
+                    }
+                }
+            }
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "BUILDSETTLEMENT expects: 3";
+        }
+        
+        return status;
+        
+    }
+    
+    private boolean isSecondRoundRoadLegal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // SETTURN(playerId)
+        // SET(PATHXX, ROADYY + playerString)
+        // SET(ROADYY + playerString, PATHXX)
+        
+        // REQUIREMENTS
+        // Line 0 - Turn must match playerString
+        // Lines 1,2 - PATH and ROAD must be the same
+        //             PATH must be empty prior
+        
+        // Ensure move is exactly 3 lines
+        boolean status = lastMove.size() == 3;
+        
+        if(status)
+        {
+            // Line 0
+            status = status
+                  && matchTurnMoveForSamePlayer(
+                          lastMove.get(0), 0, 
+                          playerString,
+                          playerIds);
+            
+            // Lines 1,2
+            status = status
+                  && matchRoadAndPathPair(
+                          lastMove.get(1), 1, 
+                          lastMove.get(2), 2, 
+                          lastState, 
+                          playerString);
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "BUILDROADFIRST expects: 3";
+        }
+        
+        return status;
+        
+    }
+    
+    // Parent Function for Roll Dice
+    // Determines if this entire move matches for rolling dice
+    private boolean isRollDiceLegal(
+            List<Operation> lastMove,
+            String playerString)
+    {
+        // EXPECTED MOVE FORM
+        // SETTURN(TURN, playerString)
+        // SETRANDOMINTEGER(DIE0, 1, 6)
+        // SETRANDOMINTEGER(DIE1, 1, 6)
+        
+        // REQUIREMENTS
+        // Line 0 - Turn must match nextPlayerString
+        // Line 1 - Sets Die 0 to a random int 1-6
+        // Line 2 - Sets Die 1 to a random int 1-6
+        
+        // Ensure move is exactly 3 lines
+        boolean status = lastMove.size() == 3;
+        
+        if(status)
+        {
+            // Line 0
+            status = status
+                  && matchTurnMoveForSamePlayer(
+                          lastMove.get(0), 0, 
+                          playerString,
+                          playerIds);
+
+            // Line 1
+            status = status
+                  && matchDieRoll(
+                          lastMove.get(1), 1, 
+                          Constants.DIE0);
+
+            // Line 2
+            status = status
+                  && matchDieRoll(
+                          lastMove.get(2), 2, 
+                          Constants.DIE1);
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "CHANGETURN expects: 1";
+        }
+        
+        return status;
+    }
+    
+    // Parent Function for Dice Clear
+    // Determines if this entire move matches for clearing dice roll
+    private boolean isDiceClearLegal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString)
+    {
+        // EXPECTED MOVE FORM
+        // SETTURN(TURN, playerString)
+        // DELETE(DIE0)
+        // DELETE(DIE1)
+        // OPTIONAL - SET(RESOURCECARDXX, RESOURCE)
+        // OPTIONAL - SETVISIBILITY(RESOURCECARDXX, playerId)
+        
+        // REQUIREMENTS
+        // Line 0 - Turn must match nextPlayerString
+        // Line 1 - Deletes Die0
+        // Line 2 - Deletes Die1
+        // Lines 3+ - Adds resources based on die roll
+        
+        // Ensure move is at least 3 lines
+        boolean status = lastMove.size() >= 3;
+        
+        if(status)
+        {
+            // Line 0
+            status = status
+                  && matchTurnMoveForSamePlayer(
+                          lastMove.get(0), 0, 
+                          playerString,
+                          playerIds);
+
+            // Line 1
+            status = status
+                  && matchDieClear(
+                          lastMove.get(1), 1,
+                          lastState,
+                          Constants.DIE0);
+
+            // Line 2
+            status = status
+                  && matchDieClear(
+                          lastMove.get(2), 2,
+                          lastState,
+                          Constants.DIE1);
+            
+            for(int i = 3; (i+1) < lastMove.size(); i = i + 2 )
+            {
+                // Lines i, i+1
+                status = status
+                      && matchResourceCardAddIgnoreExpected(
+                              lastMove.get(i), i,
+                              lastMove.get(i+1), i+1,
+                              lastState);
+            }
         }
         else
         {
@@ -456,7 +929,7 @@ public class SettlersOfCatanLogic {
             List<Integer> playerIds)
     {
         // EXPECTED MOVE FORM
-        // SET(TURN, nextPlayerString)
+        // SET(TURN, nextPlayerId)
         
         // REQUIREMENTS
         // Line 0 - Turn must match nextPlayerString
@@ -485,7 +958,7 @@ public class SettlersOfCatanLogic {
 
     // Parent Function for Building City
     // Determines if this entire move matches for building a city
-    private boolean isBuildCityMoveLegal(
+    private boolean isBuildCityMovePt1Legal(
             List<Operation> lastMove,
             Map<String, Object> lastState,
             String playerString,
@@ -502,12 +975,6 @@ public class SettlersOfCatanLogic {
         // SETVISIBILITY(RESOURCECARDCC + playerString)
         // SETVISIBILITY(RESOURCECARDDD + playerString)
         // SETVISIBILITY(RESOURCECARDEE + playerString)
-        // DELETE(RESOURCECARDAA + playerString)
-        // DELETE(RESOURCECARDBB + playerString)
-        // DELETE(RESOURCECARDCC + playerString)
-        // DELETE(RESOURCECARDDD + playerString)
-        // DELETE(RESOURCECARDEE + playerString)
-        // OPTIONAL ENDGAME(playerId)
         
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
@@ -515,13 +982,10 @@ public class SettlersOfCatanLogic {
         //               NODE must contain SETTLEMENT
         //               CITY must not have an attached different NODE prior
         //               SETTLEMENT must have an attached this NODE prior
-        // Lines 4,5,6,7,8 - RESOURCECARD must match lines 9,10,11,12,13
-        //                   AA, BB, CC, DD, EE must be 3 ore, 2 grain
-        // Line 14 - Asserts the game has ended for playerId
+        // Lines 4,5,6,7,8 - AA, BB, CC, DD, EE must be 3 ore, 2 grain
         
-        // Ensure move is exactly 14 or 15 lines
-        boolean status = lastMove.size() == 14
-                      || lastMove.size() == 15;
+        // Ensure move is exactly 9 lines
+        boolean status = lastMove.size() == 9;
         
         if(status)
         {
@@ -543,32 +1007,15 @@ public class SettlersOfCatanLogic {
             
             // Lines 4,5,6,7,8,9,10,11,12,13
             status = status
-                  && matchCityResources(
+                  && matchCityResourcesPt1(
                           lastMove.get(4), 4, 
                           lastMove.get(5), 5, 
                           lastMove.get(6), 6, 
                           lastMove.get(7), 7, 
                           lastMove.get(8), 8, 
-                          lastMove.get(9), 9, 
-                          lastMove.get(10), 10, 
-                          lastMove.get(11), 11, 
-                          lastMove.get(12), 12, 
-                          lastMove.get(13), 13, 
                           lastState,
                           playerString
                           );
-            
-            if(lastMove.size() == 15)
-            {
-                // Line 14
-                status = status
-                      && matchEndGame(
-                              lastMove.get(14), 14, 
-                              lastState,
-                              playerString,
-                              playerId,
-                              Constants.ADDCITY);
-            }
         }
         else
         {
@@ -579,10 +1026,72 @@ public class SettlersOfCatanLogic {
         
         return status;
     }
+    
+    // Parent Function for Building City
+    // Determines if this entire move matches for building a city
+    private boolean isBuildCityMovePt2Legal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // DELETE(RESOURCECARDAA + playerString)
+        // DELETE(RESOURCECARDBB + playerString)
+        // DELETE(RESOURCECARDCC + playerString)
+        // DELETE(RESOURCECARDDD + playerString)
+        // DELETE(RESOURCECARDEE + playerString)
+        // OPTIONAL ENDGAME(playerId)
+        
+        // REQUIREMENTS
+        // Lines 0,1,2,3,4 - AA, BB, CC, DD, EE must be 3 ore, 2 grain
+        // Line 5 - Asserts the game has ended for playerId
+        
+        // Ensure move is exactly 5 or 6 lines
+        boolean status = lastMove.size() == 5
+                      || lastMove.size() == 6;
+        
+        if(status)
+        {
+            
+            // Lines 0,1,2,3,4
+            status = status
+                  && matchCityResourcesPt2(
+                          lastMove.get(0), 0, 
+                          lastMove.get(1), 1, 
+                          lastMove.get(2), 2, 
+                          lastMove.get(3), 3, 
+                          lastMove.get(4), 4, 
+                          lastState,
+                          playerString
+                          );
+            
+            if(lastMove.size() == 6)
+            {
+                // Line 14
+                status = status
+                      && matchEndGame(
+                              lastMove.get(5), 5, 
+                              lastState,
+                              playerString,
+                              playerId,
+                              Constants.ADDCITY);
+            }
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "BUILDCITY expects: 5";
+        }
+        
+        return status;
+    }
 
     // Parent Function for Building Settlements
     // Determines if this entire move matches for building a settlement
-    private boolean isBuildSettlementMoveLegal(
+    private boolean isBuildSettlementMovePt1Legal(
             List<Operation> lastMove,
             Map<String, Object> lastState,
             String playerString,
@@ -597,11 +1106,6 @@ public class SettlersOfCatanLogic {
         // SETVISIBILITY(RESOURCECARDBB + playerString)
         // SETVISIBILITY(RESOURCECARDCC + playerString)
         // SETVISIBILITY(RESOURCECARDDD + playerString)
-        // DELETE(RESOURCECARDAA + playerString)
-        // DELETE(RESOURCECARDBB + playerString)
-        // DELETE(RESOURCECARDCC + playerString)
-        // DELETE(RESOURCECARDDD + playerString)
-        // OPTIONAL ENDGAME(playerId)
         
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
@@ -609,9 +1113,7 @@ public class SettlersOfCatanLogic {
         //             NODE must be empty prior
         //             NODE must pass canAddNodeHere
         //             SETTLEMENT must not have an attached NODE prior
-        // Lines 3,4,5,6 - RESOURCECARD must match lines 7,8,9,10
-        //                 AA, BB, CC, DD must be 1 brick, 1 lumber, 1 wool, 1 grain
-        // Line 11 - Asserts the game has ended for playerId
+        // Lines 3,4,5,6 - AA, BB, CC, DD must be 1 brick, 1 lumber, 1 wool, 1 grain
         
         // Ensure move is exactly 11 or 12 lines
         boolean status = lastMove.size() == 11
@@ -634,27 +1136,70 @@ public class SettlersOfCatanLogic {
                           lastState, 
                           playerString);
             
-            // Lines 3,4,5,6,7,8,9,10
+            // Lines 3,4,5,6
             status = status
-                  && matchSettlementResources(
+                  && matchSettlementResourcesPt1(
                           lastMove.get(3), 3, 
                           lastMove.get(4), 4, 
                           lastMove.get(5), 5, 
                           lastMove.get(6), 6, 
-                          lastMove.get(7), 7, 
-                          lastMove.get(8), 8, 
-                          lastMove.get(9), 9, 
-                          lastMove.get(10), 10, 
+                          lastState,
+                          playerString
+                          );
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "BUILDSETTLEMENT expects: 11";
+        }
+        
+        return status;
+    }
+    
+ // Parent Function for Building Settlements
+    // Determines if this entire move matches for building a settlement
+    private boolean isBuildSettlementMovePt2Legal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // DELETE(RESOURCECARDAA + playerString)
+        // DELETE(RESOURCECARDBB + playerString)
+        // DELETE(RESOURCECARDCC + playerString)
+        // DELETE(RESOURCECARDDD + playerString)
+        // OPTIONAL ENDGAME(playerId)
+        
+        // REQUIREMENTS
+        // Lines 0,1,2,3 - AA, BB, CC, DD must be 1 brick, 1 lumber, 1 wool, 1 grain
+        // Line 4 - Asserts the game has ended for playerId
+        
+        // Ensure move is exactly 11 or 12 lines
+        boolean status = lastMove.size() == 4
+                      || lastMove.size() == 5;
+        
+        if(status)
+        {
+            // Lines 0,1,2,3
+            status = status
+                  && matchSettlementResourcesPt2(
+                          lastMove.get(0), 0, 
+                          lastMove.get(1), 1, 
+                          lastMove.get(2), 2, 
+                          lastMove.get(3), 3, 
                           lastState,
                           playerString
                           );
             
-            if(lastMove.size() == 12)
+            if(lastMove.size() == 5)
             {
-                // Line 11
+                // Line 4
                 status = status
                       && matchEndGame(
-                              lastMove.get(11), 11, 
+                              lastMove.get(4), 4, 
                               lastState,
                               playerString,
                               playerId,
@@ -673,7 +1218,7 @@ public class SettlersOfCatanLogic {
 
     // Parent Function for Building Roads
     // Determines if this entire move matches for building a road
-    private boolean isBuildRoadMoveLegal(
+    private boolean isBuildRoadMovePt1Legal(
             List<Operation> lastMove,
             Map<String, Object> lastState,
             String playerString,
@@ -686,10 +1231,6 @@ public class SettlersOfCatanLogic {
         // SET(ROADYY + playerString, PATHXX)
         // SETVISIBILITY(RESOURCECARDAA + playerString)
         // SETVISIBILITY(RESOURCECARDBB + playerString)
-        // DELETE(RESOURCECARDAA + playerString)
-        // DELETE(RESOURCECARDBB + playerString)
-        // OPTIONAL - SET(LONGESTROAD, playerString)
-        // OPTIONAL - ENDGAME(playerId)
         
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
@@ -697,14 +1238,10 @@ public class SettlersOfCatanLogic {
         //             PATH must be empty prior
         //             PATH must pass canAddRoadHere
         //             ROAD must not have an attached NODE prior
-        // Lines 3,4 - RESOURCECARD must match lines 5,6
-        //             AA, BB, must be 1 brick, 1 lumber
-        // Line 8 - Asserts the game has ended for playerId
+        // Lines 3,4 - AA, BB, must be 1 brick, 1 lumber
         
-        // Ensure move is exactly 7,8,9 lines
-        boolean status = lastMove.size() == 7
-                      || lastMove.size() == 8
-                      || lastMove.size() == 9;
+        // Ensure move is exactly 5 lines
+        boolean status = lastMove.size() == 5;
         
         if(status)
         {
@@ -725,36 +1262,74 @@ public class SettlersOfCatanLogic {
             
             // Lines 3,4,5,6
             status = status
-                  && matchRoadResources(
+                  && matchRoadResourcesPt1(
                           lastMove.get(3), 3, 
                           lastMove.get(4), 4, 
-                          lastMove.get(5), 5, 
-                          lastMove.get(6), 6, 
+                          lastState,
+                          playerString
+                          );
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "BUILDROAD expects: 5";
+        }
+        
+        return status;
+    }
+    
+    // Parent Function for Building Roads
+    // Determines if this entire move matches for building a road
+    private boolean isBuildRoadMovePt2Legal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // DELETE(RESOURCECARDAA + playerString)
+        // DELETE(RESOURCECARDBB + playerString)
+        // OPTIONAL - SET(LONGESTROAD, playerString)
+        // OPTIONAL - ENDGAME(playerId)
+        
+        // REQUIREMENTS
+        // Lines 1,2 - AA, BB, must be 1 brick, 1 lumber
+        // Line 3 - Asserts the game has ended for playerId
+        
+        // Ensure move is exactly 2,3,4 lines
+        boolean status = lastMove.size() == 2
+                      || lastMove.size() == 3
+                      || lastMove.size() == 4;
+        
+        if(status)
+        {
+            // Lines 0,1
+            status = status
+                  && matchRoadResourcesPt2(
+                          lastMove.get(0), 0, 
+                          lastMove.get(1), 1, 
                           lastState,
                           playerString
                           );
             
-            if(lastMove.size() > 7)
-            {
-                // Create a new state with the path added, to verify longest road claim
-                Map<String, Object> newState = new HashMap<String, Object>(lastState);
-                newState.put(((Set)lastMove.get(1)).getKey(), ((Set)lastMove.get(1)).getValue());
-                newState.put(((Set)lastMove.get(2)).getKey(), ((Set)lastMove.get(2)).getValue());
-                
-                // Line 7
+            if(lastMove.size() > 2)
+            {                
+                // Line 2
                 status = status
                       && processLongestRoadClaim(
-                              lastMove.get(7), 7, 
-                              newState,
+                              lastMove.get(2), 2, 
+                              lastState,
                               playerString);
                 
-                if(lastMove.size() == 9)
+                if(lastMove.size() == 4)
                 {
-                    // Line 8
+                    // Line 3
                     status = status
                           && matchEndGame(
-                                  lastMove.get(8), 8, 
-                                  newState,
+                                  lastMove.get(3), 3, 
+                                  lastState,
                                   playerString,
                                   playerId,
                                   Constants.ADDLONGESTROAD);
@@ -765,7 +1340,7 @@ public class SettlersOfCatanLogic {
         {
             err = "Incorrect Number Of Moves: "
                 + lastMove.size() + "\n"
-                + "BUILDROAD expects: 7";
+                + "BUILDROAD expects: 2";
         }
         
         return status;
@@ -773,7 +1348,7 @@ public class SettlersOfCatanLogic {
 
     // Parent Function for Buying Development Cards
     // Determines if this entire move matches for buying development cards
-    private boolean isBuyDevelopmentCardMoveLegal(
+    private boolean isBuyDevelopmentCardMovePt1Legal(
             List<Operation> lastMove,
             Map<String, Object> lastState,
             String playerString,
@@ -786,19 +1361,15 @@ public class SettlersOfCatanLogic {
         // SETVISIBILITY(RESOURCECARDAA + playerString)
         // SETVISIBILITY(RESOURCECARDBB + playerString)
         // SETVISIBILITY(RESOURCECARDCC + playerString)
-        // DELETE(RESOURCECARDAA + playerString)
-        // DELETE(RESOURCECARDBB + playerString)
-        // DELETE(RESOURCECARDCC + playerString)
         
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
         // Line 1 - DEVELOPMENTCARDXX must be the first card available
         //          Must assign the DEVELOPMENTCARDXX to playerString
-        // Lines 2,3,4 - RESOURCECARD must match lines 6,7,8
-        //               AA, BB, CC, must be 1 ore, 1 grain, 1 wool
+        // Lines 2,3,4 - AA, BB, CC, must be 1 ore, 1 grain, 1 wool
         
         // Ensure move is exactly 8 lines
-        boolean status = lastMove.size() == 8;
+        boolean status = lastMove.size() == 5;
         
         if(status)
         {
@@ -817,15 +1388,12 @@ public class SettlersOfCatanLogic {
                           playerString,
                           playerId);
             
-            // Lines 2,3,4,5,6,7
+            // Lines 2,3,4
             status = status
-                  && matchBuyDevelopmentCardResources(
+                  && matchBuyDevelopmentCardResourcesPt1(
                           lastMove.get(2), 2, 
                           lastMove.get(3), 3, 
                           lastMove.get(4), 4, 
-                          lastMove.get(5), 5, 
-                          lastMove.get(6), 6, 
-                          lastMove.get(7), 7, 
                           lastState,
                           playerString
                           );
@@ -834,7 +1402,49 @@ public class SettlersOfCatanLogic {
         {
             err = "Incorrect Number Of Moves: "
                 + lastMove.size() + "\n"
-                + "BUYDEVELOPMENTCARD expects: 8";
+                + "BUYDEVELOPMENTCARD expects: 5";
+        }
+        
+        return status;
+    }
+    
+   // Parent Function for Buying Development Cards
+    // Determines if this entire move matches for buying development cards
+    private boolean isBuyDevelopmentCardMovePt2Legal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // DELETE(RESOURCECARDAA + playerString)
+        // DELETE(RESOURCECARDBB + playerString)
+        // DELETE(RESOURCECARDCC + playerString)
+        
+        // REQUIREMENTS
+        // Lines 0,1,2 - AA, BB, CC, must be 1 ore, 1 grain, 1 wool
+        
+        // Ensure move is exactly 3 lines
+        boolean status = lastMove.size() == 3;
+        
+        if(status)
+        {
+            // Lines 0,1,2
+            status = status
+                  && matchBuyDevelopmentCardResourcesPt2(
+                          lastMove.get(0), 0, 
+                          lastMove.get(1), 1, 
+                          lastMove.get(2), 2, 
+                          lastState,
+                          playerString
+                          );
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "BUYDEVELOPMENTCARD expects: 3";
         }
         
         return status;
@@ -1128,7 +1738,7 @@ public class SettlersOfCatanLogic {
     
     // Parent Function for Harbor Trades
     // Determines if this entire move matches for a harbor trade
-    private boolean isHarborTradeMoveLegal(
+    private boolean isHarborTradeMovePt1Legal(
             List<Operation> lastMove,
             Map<String, Object> lastState,
             String playerString,
@@ -1139,10 +1749,6 @@ public class SettlersOfCatanLogic {
         // SETVISIBILITY(RESOURCECARDAA + playerString)
         // SETVISIBILITY(RESOURCECARDBB + playerString)
         // ***
-        // DELETE(RESOURCECARDAA + playerString)
-        // DELETE(RESOURCECARDBB + playerString)
-        // ***
-        // SET(RESOURCECARDAA+ playerString, resource)
         
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
@@ -1150,32 +1756,26 @@ public class SettlersOfCatanLogic {
         // DIFFERING BRANCHES
         //
         // Normal Harbor trade
-        // Lines 1,2,3,4 - RESOURCECARD must match lines 5,6,7,8
-        //                 AA, BB, CC, DD must be the same resource
-        // Line 9 - New resource requested
+        // Lines 1,2,3,4 - AA, BB, CC, DD must be the same resource
         // 
         // Three to One Harbor trade
-        // Lines 1,2,3 - RESOURCECARD must match lines 4,5,6
-        //               AA, BB, CC, must be the same resource
+        // Lines 1,2,3 - AA, BB, CC, must be the same resource
         //               playerString must own a city or settlement
         //               on a harbor allowing 3-1 trading
-        // Line 7 - New resource requested
         // 
         // Two to One Specific Resource Harbor trade
-        // Lines 1,2 - RESOURCECARD must match lines 3,4
-        //             AA, BB, must be the same resource
+        // Lines 1,2 - AA, BB, must be the same resource
         //             playerString must own a city or settlement
         //             on a harbor allowing 2-1 trading
         //             That harbor must be specifically catered
         //             to the resources being traded
-        // Line 5 - New resource requested
         
-        // Ensure move is exactly 6,8,10 lines
-        boolean status = lastMove.size() == 6
-                      || lastMove.size() == 8
-                      || lastMove.size() == 10;
+        // Ensure move is exactly 3,4,5 lines
+        boolean status = lastMove.size() == 3
+                      || lastMove.size() == 4
+                      || lastMove.size() == 5;
         
-        if(status && lastMove.size() == 10)
+        if(status && lastMove.size() == 5)
         {
             // Line 0
             status = status
@@ -1184,23 +1784,18 @@ public class SettlersOfCatanLogic {
                           playerString,
                           playerIds);
             
-            // Lines 1,2,3,4,5,6,7,8,9
+            // Lines 1,2,3,4
             status = status
-                  && matchNormalHarborTradeResources(
+                  && matchNormalHarborTradeResourcesPt1(
                           lastMove.get(1), 1, 
                           lastMove.get(2), 2, 
                           lastMove.get(3), 3, 
                           lastMove.get(4), 4, 
-                          lastMove.get(5), 5, 
-                          lastMove.get(6), 6, 
-                          lastMove.get(7), 7, 
-                          lastMove.get(8), 8, 
-                          lastMove.get(9), 9, 
                           lastState,
                           playerString
                           );
         }
-        else if(status && lastMove.size() == 8)
+        else if(status && lastMove.size() == 4)
         {
             // Line 0
             status = status
@@ -1209,21 +1804,17 @@ public class SettlersOfCatanLogic {
                           playerString,
                           playerIds);
             
-            // Lines 1,2,3,4,5,6,7
+            // Lines 1,2,3
             status = status
-                  && matchThreeToOneHarborTradeResources(
+                  && matchThreeToOneHarborTradeResourcesPt1(
                           lastMove.get(1), 1, 
                           lastMove.get(2), 2, 
                           lastMove.get(3), 3, 
-                          lastMove.get(4), 4, 
-                          lastMove.get(5), 5, 
-                          lastMove.get(6), 6, 
-                          lastMove.get(7), 7, 
                           lastState,
                           playerString
                           );
         }
-        else if(status && lastMove.size() == 6)
+        else if(status && lastMove.size() == 3)
         {
             // Line 0
             status = status
@@ -1232,14 +1823,11 @@ public class SettlersOfCatanLogic {
                           playerString,
                           playerIds);
             
-            // Lines 1,2,3,4,5,6,7,8,9
+            // Lines 1,2
             status = status
-                  && matchTwoToOneHarborTradeResources(
+                  && matchTwoToOneHarborTradeResourcesPt1(
                           lastMove.get(1), 1, 
-                          lastMove.get(2), 2, 
-                          lastMove.get(3), 3, 
-                          lastMove.get(4), 4, 
-                          lastMove.get(5), 5, 
+                          lastMove.get(2), 2,
                           lastState,
                           playerString
                           );
@@ -1248,7 +1836,103 @@ public class SettlersOfCatanLogic {
         {
             err = "Incorrect Number Of Moves: "
                 + lastMove.size() + "\n"
-                + "HARBORTRADE expects: 6,8,10";
+                + "HARBORTRADE expects: 3,4,5";
+        }
+        
+        return status;
+    }
+    
+ // Parent Function for Harbor Trades
+    // Determines if this entire move matches for a harbor trade
+    private boolean isHarborTradeMovePt2Legal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // DELETE(RESOURCECARDAA + playerString)
+        // DELETE(RESOURCECARDBB + playerString)
+        // ***
+        // SET(RESOURCECARDAA+ playerString, resource)
+        // SETVISIBLE(RESOURCECARDAA+ playerString, list only player)
+        
+        // REQUIREMENTS
+        //
+        // Normal Harbor trade
+        // Lines 0,1,2,3 - AA, BB, CC, DD must be the same resource
+        // Line 4,5 - New resource requested
+        // 
+        // Three to One Harbor trade
+        // Lines 0,1,2 - AA, BB, CC, must be the same resource
+        //               playerString must own a city or settlement
+        //               on a harbor allowing 3-1 trading
+        // Line 3,4 - New resource requested
+        // 
+        // Two to One Specific Resource Harbor trade
+        // Lines 0,1 - AA, BB, must be the same resource
+        //             playerString must own a city or settlement
+        //             on a harbor allowing 2-1 trading
+        //             That harbor must be specifically catered
+        //             to the resources being traded
+        // Line 2,3 - New resource requested
+        
+        // Ensure move is exactly 3,4,5 lines
+        boolean status = lastMove.size() == 4
+                      || lastMove.size() == 5
+                      || lastMove.size() == 6;
+        
+        if(status && lastMove.size() == 6)
+        {
+            // Lines 0,1,2,3,4
+            status = status
+                  && matchNormalHarborTradeResourcesPt2(
+                          lastMove.get(0), 0, 
+                          lastMove.get(1), 1, 
+                          lastMove.get(2), 2, 
+                          lastMove.get(3), 3, 
+                          lastMove.get(4), 4,
+                          lastMove.get(5), 5,
+                          lastState,
+                          playerString,
+                          playerId
+                          );
+        }
+        else if(status && lastMove.size() == 5)
+        {
+            // Lines 0,1,2,3
+            status = status
+                  && matchThreeToOneHarborTradeResourcesPt2(
+                          lastMove.get(0), 0, 
+                          lastMove.get(1), 1, 
+                          lastMove.get(2), 2, 
+                          lastMove.get(3), 3, 
+                          lastMove.get(4), 4,
+                          lastState,
+                          playerString,
+                          playerId
+                          );
+        }
+        else if(status && lastMove.size() == 4)
+        {
+            // Lines 0,1,2
+            status = status
+                  && matchTwoToOneHarborTradeResourcesPt2(
+                          lastMove.get(0), 0, 
+                          lastMove.get(1), 1, 
+                          lastMove.get(2), 2, 
+                          lastMove.get(3), 3,
+                          lastState,
+                          playerString,
+                          playerId
+                          );
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "HARBORTRADE expects: 3,4,5";
         }
         
         return status;
@@ -1665,30 +2349,21 @@ public class SettlersOfCatanLogic {
     }
     
     // Returns whether the list of resources matches for a build city move
-    private boolean matchCityResources(
+    private boolean matchCityResourcesPt1(
             Operation move1, int move1Num,
             Operation move2, int move2Num,
             Operation move3, int move3Num,
             Operation move4, int move4Num,
             Operation move5, int move5Num,
-            Operation move6, int move6Num,
-            Operation move7, int move7Num,
-            Operation move8, int move8Num,
-            Operation move9, int move9Num,
-            Operation move10, int move10Num,
             Map<String, Object> lastState,
             String playerString)
     {
         boolean status = false;
         
-        int ore = 3;
-        int grain = 2;
-        
         String resourceCard1 = "";
         String resourceCard2 = "";
         String resourceCard3 = "";
         String resourceCard4 = "";
-        String resourceCard5 = "";
         
         if(!move1.getMessageName().equals("SetVisibility"))
         {
@@ -1858,7 +2533,6 @@ public class SettlersOfCatanLogic {
                         }
                         else
                         {
-                            resourceCard5 = ((SetVisibility)move5).getKey();
                             status = true;
                         }
                     }
@@ -1866,168 +2540,127 @@ public class SettlersOfCatanLogic {
             }
         }
         
+        return status;
+    }
+    
+ // Returns whether the list of resources matches for a build city move
+    private boolean matchCityResourcesPt2(
+            Operation move1, int move1Num,
+            Operation move2, int move2Num,
+            Operation move3, int move3Num,
+            Operation move4, int move4Num,
+            Operation move5, int move5Num,
+            Map<String, Object> lastState,
+            String playerString)
+    {
+        boolean status = false;
+        
+        int ore = 3;
+        int grain = 2;
+        
         // Starting a new tree to increase visibility
         // All 5 resource cards are different and correctly formed
-        if(status)
-        {
-            status = false;
             
-            if(!move6.getMessageName().equals("Delete"))
+        if(!move1.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "BUILDCITY expects: DELETE(RESOURCECARDAA + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move2.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move2Num + "\n"
+                + "BUILDCITY expects: DELETE(RESOURCECARDBB + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move3.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move3Num + "\n"
+                + "BUILDCITY expects: DELETE(RESOURCECARDCC + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move4.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move4Num + "\n"
+                + "BUILDCITY expects: DELETE(RESOURCECARDDD + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move5.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move5Num + "\n"
+                + "BUILDCITY expects: DELETE(RESOURCECARDEE + playerString)\n"
+                + "Delete move expected";
+        }
+        else
+        {
+            String resourceCard1 = ((Delete)move1).getKey();
+            String resourceCard2 = ((Delete)move2).getKey();
+            String resourceCard3 = ((Delete)move3).getKey();
+            String resourceCard4 = ((Delete)move4).getKey();
+            String resourceCard5 = ((Delete)move5).getKey();
+            switch(lastState.get(resourceCard1).toString())
             {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "Delete move expected";
+                case Constants.ORE:
+                    ore--;
+                    break;
+                case Constants.GRAIN:
+                    grain--;
+                    break;
             }
-            else if(!((Delete)move6).getKey().equals(resourceCard1))
+
+            switch(lastState.get(resourceCard2).toString())
             {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
+                case Constants.ORE:
+                    ore--;
+                    break;
+                case Constants.GRAIN:
+                    grain--;
+                    break;
             }
-            else if(!lastState.containsKey(resourceCard1))
+
+            switch(lastState.get(resourceCard3).toString())
             {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "playerString does not own resource";
+                case Constants.ORE:
+                    ore--;
+                    break;
+                case Constants.GRAIN:
+                    grain--;
+                    break;
             }
-            else if(!move7.getMessageName().equals("Delete"))
+
+            switch(lastState.get(resourceCard4).toString())
             {
-                err = "Incorrect Move Number: " + move7Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "Delete move expected";
+                case Constants.ORE:
+                    ore--;
+                    break;
+                case Constants.GRAIN:
+                    grain--;
+                    break;
             }
-            else if(!((Delete)move7).getKey().equals(resourceCard2))
+
+            switch(lastState.get(resourceCard5).toString())
             {
-                err = "Incorrect Move Number: " + move7Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
+                case Constants.ORE:
+                    ore--;
+                    break;
+                case Constants.GRAIN:
+                    grain--;
+                    break;
             }
-            else if(!lastState.containsKey(resourceCard2))
+            
+            if(ore != 0)
             {
-                err = "Incorrect Move Number: " + move7Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "playerString does not own resource";
+                err = "Incorrect BUILDCITY Resources\n"
+                        + "Incorrect number of ore";
             }
-            else if(!move8.getMessageName().equals("Delete"))
+            else if(grain != 0)
             {
-                err = "Incorrect Move Number: " + move8Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move8).getKey().equals(resourceCard3))
-            {
-                err = "Incorrect Move Number: " + move8Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard3))
-            {
-                err = "Incorrect Move Number: " + move8Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else if(!move9.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move9Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDDD + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move9).getKey().equals(resourceCard4))
-            {
-                err = "Incorrect Move Number: " + move9Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDDD + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard4))
-            {
-                err = "Incorrect Move Number: " + move9Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDDD + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else if(!move10.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move10Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDEE + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move10).getKey().equals(resourceCard5))
-            {
-                err = "Incorrect Move Number: " + move10Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDEE + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard5))
-            {
-                err = "Incorrect Move Number: " + move10Num + "\n"
-                    + "BUILDCITY expects: DELETE(RESOURCECARDEE + playerString)\n"
-                    + "playerString does not own resource";
+                err = "Incorrect BUILDCITY Resources\n"
+                        + "Incorrect number of grain";
             }
             else
             {
-                switch(lastState.get(resourceCard1).toString())
-                {
-                    case Constants.ORE:
-                        ore--;
-                        break;
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                }
-
-                switch(lastState.get(resourceCard2).toString())
-                {
-                    case Constants.ORE:
-                        ore--;
-                        break;
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                }
-
-                switch(lastState.get(resourceCard3).toString())
-                {
-                    case Constants.ORE:
-                        ore--;
-                        break;
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                }
-
-                switch(lastState.get(resourceCard4).toString())
-                {
-                    case Constants.ORE:
-                        ore--;
-                        break;
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                }
-
-                switch(lastState.get(resourceCard5).toString())
-                {
-                    case Constants.ORE:
-                        ore--;
-                        break;
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                }
-                
-                if(ore != 0)
-                {
-                    err = "Incorrect BUILDCITY Resources\n"
-                            + "Incorrect number of ore";
-                }
-                else if(grain != 0)
-                {
-                    err = "Incorrect BUILDCITY Resources\n"
-                            + "Incorrect number of grain";
-                }
-                else
-                {
-                    status = true;
-                }
+                status = true;
             }
         }
         
@@ -2120,30 +2753,99 @@ public class SettlersOfCatanLogic {
         return status;
     }
     
+    // Returns whether the list of moves for a settlement and node match
+    private boolean matchSettlementAndNodePairFree(
+            Operation move1, int move1Num,
+            Operation move2, int move2Num,
+            Map<String, Object> lastState,
+            String playerString)
+    {
+        String nodeXX = "";
+        String settlementYY = "";
+
+        boolean status = false;
+
+        if(!move1.getMessageName().equals("Set"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "BUILDSETTLEMENTFREE expects: SET(NODEXX, SETTLEMENTYY + playerString)\n"
+                + "Set move expected";
+        }
+        else if(!((Set)move1).getKey().contains(Constants.NODETOKEN))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "BUILDSETTLEMENTFREE expects: SET(NODEXX, SETTLEMENTYY + playerString)\n"
+                + "NODE key expected";
+        }
+        else if(!((Set)move1).getValue().toString().contains(Constants.SETTLEMENTTOKEN))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "BUILDSETTLEMENTFREE expects: SET(NODEXX, SETTLEMENTYY + playerString)\n"
+                + "SETTLEMENT value expected";
+        }
+        else if(!((Set)move1).getValue().toString().contains(playerString))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "BUILDSETTLEMENTFREE expects: SET(NODEXX, SETTLEMENTYY + playerString)\n"
+                + "playerString value expected";
+        }
+        else
+        {
+            nodeXX = ((Set)move1).getKey();
+            settlementYY = ((Set)move1).getValue().toString();
+
+            if(!move2.getMessageName().equals("Set"))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                    + "BUILDSETTLEMENTFREE expects: SET(SETTLEMENTYY + playerString, NODEXX)\n"
+                    + "Set move expected";
+            }
+            else if(!((Set)move2).getKey().equals(settlementYY))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                    + "BUILDSETTLEMENTFREE expects: SET(SETTLEMENTYY + playerString, NODEXX)\n"
+                    + "SETTLEMENT key doesn't match last line";
+            }
+            else if(!((Set)move2).getValue().toString().contains(nodeXX))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                    + "BUILDSETTLEMENTFREE expects: SET(SETTLEMENTYY + playerString, NODEXX)\n"
+                    + "NODE value doesn't match last line";
+            }
+            else if(lastState.containsKey(nodeXX))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                        + "BUILDSETTLEMENTFREE expects: SET(SETTLEMENTYY + playerString, NODEXX)\n"
+                        + "NODE is not empty";
+            }
+            else if(lastState.containsKey(settlementYY))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                        + "BUILDSETTLEMENTFREE expects: SET(SETTLEMENTYY + playerString, NODEXX)\n"
+                        + "SETTLEMENT is already assigned a NODE";
+            }
+            else
+            {
+                status = true;
+            }
+        }
+        
+        return status;
+    }
+    
     // Returns whether the list of resources matches for a build settlement move
-    private boolean matchSettlementResources(
+    private boolean matchSettlementResourcesPt1(
             Operation move1, int move1Num,
             Operation move2, int move2Num,
             Operation move3, int move3Num,
             Operation move4, int move4Num,
-            Operation move5, int move5Num,
-            Operation move6, int move6Num,
-            Operation move7, int move7Num,
-            Operation move8, int move8Num,
             Map<String, Object> lastState,
             String playerString)
     {
         boolean status = false;
-        
-        int grain = 1;
-        int lumber = 1;
-        int wool = 1;
-        int brick = 1;
-        
         String resourceCard1 = "";
         String resourceCard2 = "";
         String resourceCard3 = "";
-        String resourceCard4 = "";
         
         if(!move1.getMessageName().equals("SetVisibility"))
         {
@@ -2267,181 +2969,152 @@ public class SettlersOfCatanLogic {
                     }
                     else
                     {
-                        resourceCard4 = ((SetVisibility)move4).getKey();
                         status = true;
                     }
                 }
             }
         }
         
+        return status;
+    }
+    
+    // Returns whether the list of resources matches for a build settlement move
+    private boolean matchSettlementResourcesPt2(
+            Operation move1, int move1Num,
+            Operation move2, int move2Num,
+            Operation move3, int move3Num,
+            Operation move4, int move4Num,
+            Map<String, Object> lastState,
+            String playerString)
+    {
+        boolean status = false;
+        
+        int grain = 1;
+        int lumber = 1;
+        int wool = 1;
+        int brick = 1;
+        
         // Starting a new tree to increase visibility
         // All 4 resource cards are different and correctly formed
-        if(status)
-        {
-            status = false;
             
-            if(!move5.getMessageName().equals("Delete"))
+        if(!move1.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDAA + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move2.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move2Num + "\n"
+                + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDBB + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move3.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move3Num + "\n"
+                + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDCC + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move4.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move4Num + "\n"
+                + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDDD + playerString)\n"
+                + "Delete move expected";
+        }
+        else
+        {
+            String resourceCard1 = ((Delete)move1).getKey();
+            String resourceCard2 = ((Delete)move2).getKey();
+            String resourceCard3 = ((Delete)move3).getKey();
+            String resourceCard4 = ((Delete)move4).getKey();
+            
+            switch(lastState.get(resourceCard1).toString())
             {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "Delete move expected";
+                case Constants.GRAIN:
+                    grain--;
+                    break;
+                case Constants.LUMBER:
+                    lumber--;
+                    break;
+                case Constants.WOOL:
+                    wool--;
+                    break;
+                case Constants.BRICK:
+                    brick--;
+                    break;
             }
-            else if(!((Delete)move5).getKey().equals(resourceCard1))
+
+            switch(lastState.get(resourceCard2).toString())
             {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
+                case Constants.GRAIN:
+                    grain--;
+                    break;
+                case Constants.LUMBER:
+                    lumber--;
+                    break;
+                case Constants.WOOL:
+                    wool--;
+                    break;
+                case Constants.BRICK:
+                    brick--;
+                    break;
             }
-            else if(!lastState.containsKey(resourceCard1))
+
+            switch(lastState.get(resourceCard3).toString())
             {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "playerString does not own resource";
+                case Constants.GRAIN:
+                    grain--;
+                    break;
+                case Constants.LUMBER:
+                    lumber--;
+                    break;
+                case Constants.WOOL:
+                    wool--;
+                    break;
+                case Constants.BRICK:
+                    brick--;
+                    break;
             }
-            else if(!move6.getMessageName().equals("Delete"))
+
+            switch(lastState.get(resourceCard4).toString())
             {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "Delete move expected";
+                case Constants.GRAIN:
+                    grain--;
+                    break;
+                case Constants.LUMBER:
+                    lumber--;
+                    break;
+                case Constants.WOOL:
+                    wool--;
+                    break;
+                case Constants.BRICK:
+                    brick--;
+                    break;
             }
-            else if(!((Delete)move6).getKey().equals(resourceCard2))
+            
+            if(grain != 0)
             {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
+                err = "Incorrect BUILDSETTLEMENT Resources\n"
+                        + "Incorrect number of grain";
             }
-            else if(!lastState.containsKey(resourceCard2))
+            else if(lumber != 0)
             {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "playerString does not own resource";
+                err = "Incorrect BUILDSETTLEMENT Resources\n"
+                        + "Incorrect number of lumber";
             }
-            else if(!move7.getMessageName().equals("Delete"))
+            else if(wool != 0)
             {
-                err = "Incorrect Move Number: " + move7Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "Delete move expected";
+                err = "Incorrect BUILDSETTLEMENT Resources\n"
+                        + "Incorrect number of wool";
             }
-            else if(!((Delete)move7).getKey().equals(resourceCard3))
+            else if(brick != 0)
             {
-                err = "Incorrect Move Number: " + move7Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard3))
-            {
-                err = "Incorrect Move Number: " + move7Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else if(!move8.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move8Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDDD + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move8).getKey().equals(resourceCard4))
-            {
-                err = "Incorrect Move Number: " + move8Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDDD + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard4))
-            {
-                err = "Incorrect Move Number: " + move8Num + "\n"
-                    + "BUILDSETTLEMENT expects: DELETE(RESOURCECARDDD + playerString)\n"
-                    + "playerString does not own resource";
+                err = "Incorrect BUILDSETTLEMENT Resources\n"
+                        + "Incorrect number of brick";
             }
             else
             {
-                switch(lastState.get(resourceCard1).toString())
-                {
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                    case Constants.LUMBER:
-                        lumber--;
-                        break;
-                    case Constants.WOOL:
-                        wool--;
-                        break;
-                    case Constants.BRICK:
-                        brick--;
-                        break;
-                }
-
-                switch(lastState.get(resourceCard2).toString())
-                {
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                    case Constants.LUMBER:
-                        lumber--;
-                        break;
-                    case Constants.WOOL:
-                        wool--;
-                        break;
-                    case Constants.BRICK:
-                        brick--;
-                        break;
-                }
-
-                switch(lastState.get(resourceCard3).toString())
-                {
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                    case Constants.LUMBER:
-                        lumber--;
-                        break;
-                    case Constants.WOOL:
-                        wool--;
-                        break;
-                    case Constants.BRICK:
-                        brick--;
-                        break;
-                }
-
-                switch(lastState.get(resourceCard4).toString())
-                {
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                    case Constants.LUMBER:
-                        lumber--;
-                        break;
-                    case Constants.WOOL:
-                        wool--;
-                        break;
-                    case Constants.BRICK:
-                        brick--;
-                        break;
-                }
-                
-                if(grain != 0)
-                {
-                    err = "Incorrect BUILDSETTLEMENT Resources\n"
-                            + "Incorrect number of grain";
-                }
-                else if(lumber != 0)
-                {
-                    err = "Incorrect BUILDSETTLEMENT Resources\n"
-                            + "Incorrect number of lumber";
-                }
-                else if(wool != 0)
-                {
-                    err = "Incorrect BUILDSETTLEMENT Resources\n"
-                            + "Incorrect number of wool";
-                }
-                else if(brick != 0)
-                {
-                    err = "Incorrect BUILDSETTLEMENT Resources\n"
-                            + "Incorrect number of brick";
-                }
-                else
-                {
-                    status = true;
-                }
+                status = true;
             }
         }
         
@@ -2535,21 +3208,15 @@ public class SettlersOfCatanLogic {
     }
 
     // Returns whether the list of resources matches for a build road move
-    private boolean matchRoadResources(
+    private boolean matchRoadResourcesPt1(
             Operation move1, int move1Num,
             Operation move2, int move2Num,
-            Operation move3, int move3Num,
-            Operation move4, int move4Num,
             Map<String, Object> lastState,
             String playerString)
     {
         boolean status = false;
         
-        int lumber = 1;
-        int brick = 1;
-        
         String resourceCard1 = "";
-        String resourceCard2 = "";
         
         if(!move1.getMessageName().equals("SetVisibility"))
         {
@@ -2599,89 +3266,77 @@ public class SettlersOfCatanLogic {
             }
             else
             {
-                resourceCard2 = ((SetVisibility)move2).getKey();
                 status = true;
             }
         }
         
+        return status;
+    }
+
+    // Returns whether the list of resources matches for a build road move
+    private boolean matchRoadResourcesPt2(
+            Operation move1, int move1Num,
+            Operation move2, int move2Num,
+            Map<String, Object> lastState,
+            String playerString)
+    {
+        boolean status = false;
+        
+        int lumber = 1;
+        int brick = 1;
+        
         // Starting a new tree to increase visibility
         // All 4 resource cards are different and correctly formed
-        if(status)
+        if(!move1.getMessageName().equals("Delete"))
         {
-            status = false;
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "BUILDROAD expects: DELETE(RESOURCECARDAA + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move2.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move2Num + "\n"
+                + "BUILDROAD expects: DELETE(RESOURCECARDBB + playerString)\n"
+                + "Delete move expected";
+        }
+        else
+        {
+            String resourceCard1 = ((Delete)move1).getKey();
+            String resourceCard2 = ((Delete)move2).getKey();
             
-            if(!move3.getMessageName().equals("Delete"))
+            switch(lastState.get(resourceCard1).toString())
             {
-                err = "Incorrect Move Number: " + move3Num + "\n"
-                    + "BUILDROAD expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "Delete move expected";
+                case Constants.LUMBER:
+                    lumber--;
+                    break;
+                case Constants.BRICK:
+                    brick--;
+                    break;
             }
-            else if(!((Delete)move3).getKey().equals(resourceCard1))
+
+            switch(lastState.get(resourceCard2).toString())
             {
-                err = "Incorrect Move Number: " + move3Num + "\n"
-                    + "BUILDROAD expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
+                case Constants.LUMBER:
+                    lumber--;
+                    break;
+                case Constants.BRICK:
+                    brick--;
+                    break;
             }
-            else if(!lastState.containsKey(resourceCard1))
+            
+            if(lumber != 0)
             {
-                err = "Incorrect Move Number: " + move3Num + "\n"
-                    + "BUILDROAD expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "playerString does not own resource";
+                err = "Incorrect BUILDROAD Resources\n"
+                        + "Incorrect number of lumber";
             }
-            else if(!move4.getMessageName().equals("Delete"))
+            else if(brick != 0)
             {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "BUILDROAD expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move4).getKey().equals(resourceCard2))
-            {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "BUILDROAD expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard2))
-            {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "BUILDROAD expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "playerString does not own resource";
+                err = "Incorrect BUILDROAD Resources\n"
+                        + "Incorrect number of brick";
             }
             else
             {
-                switch(lastState.get(resourceCard1).toString())
-                {
-                    case Constants.LUMBER:
-                        lumber--;
-                        break;
-                    case Constants.BRICK:
-                        brick--;
-                        break;
-                }
-
-                switch(lastState.get(resourceCard2).toString())
-                {
-                    case Constants.LUMBER:
-                        lumber--;
-                        break;
-                    case Constants.BRICK:
-                        brick--;
-                        break;
-                }
-                
-                if(lumber != 0)
-                {
-                    err = "Incorrect BUILDROAD Resources\n"
-                            + "Incorrect number of lumber";
-                }
-                else if(brick != 0)
-                {
-                    err = "Incorrect BUILDROAD Resources\n"
-                            + "Incorrect number of brick";
-                }
-                else
-                {
-                    status = true;
-                }
+                status = true;
             }
         }
         
@@ -2689,6 +3344,7 @@ public class SettlersOfCatanLogic {
     }
 
     // Returns whether the list of moves for a development card and development card type match
+    @SuppressWarnings("unchecked")
     private boolean matchDevelopmentCardandDevelopmentCardTypePair(
             Operation move1, int move1Num,
             Map<String, Object> lastState,
@@ -2709,13 +3365,13 @@ public class SettlersOfCatanLogic {
                 + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
                 + "DEVELOPMENTCARDTYPE key expected";
         }
-        else if(((ImmutableList<Integer>)((SetVisibility)move1).getVisibleToPlayerIds()).size() != 1)
+        else if(((List<Integer>)((SetVisibility)move1).getVisibleToPlayerIds()).size() != 1)
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
                 + "VisibleTo contains more than one user";
         }
-        else if(!((ImmutableList<Integer>)((SetVisibility)move1).getVisibleToPlayerIds()).contains(playerId))
+        else if(!((List<Integer>)((SetVisibility)move1).getVisibleToPlayerIds()).contains(playerId))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
@@ -2737,6 +3393,7 @@ public class SettlersOfCatanLogic {
 
     // Returns whether the list of moves for a development card and development card type match
     // for a specific card type
+    @SuppressWarnings("unchecked")
     private boolean matchDevelopmentCardandDevelopmentCardTypePlayedPair(
             Operation move1, int move1Num,
             Map<String, Object> lastState,
@@ -2778,25 +3435,17 @@ public class SettlersOfCatanLogic {
     }
     
     // Returns whether the list of resources matches for a buy development card move
-    private boolean matchBuyDevelopmentCardResources(
+    private boolean matchBuyDevelopmentCardResourcesPt1(
             Operation move1, int move1Num,
             Operation move2, int move2Num,
             Operation move3, int move3Num,
-            Operation move4, int move4Num,
-            Operation move5, int move5Num,
-            Operation move6, int move6Num,
             Map<String, Object> lastState,
             String playerString)
     {
         boolean status = false;
         
-        int ore = 1;
-        int grain = 1;
-        int wool = 1;
-        
         String resourceCard1 = "";
         String resourceCard2 = "";
-        String resourceCard3 = "";
         
         if(!move1.getMessageName().equals("SetVisibility"))
         {
@@ -2880,130 +3529,6 @@ public class SettlersOfCatanLogic {
                 }
                 else
                 {
-                    resourceCard3 = ((SetVisibility)move3).getKey();
-                    status = true;
-                }
-            }
-        }
-        
-        // Starting a new tree to increase visibility
-        // All 3 resource cards are different and correctly formed
-        if(status)
-        {
-            status = false;
-            
-            if(!move4.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move4).getKey().equals(resourceCard1))
-            {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard1))
-            {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else if(!move5.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move5).getKey().equals(resourceCard2))
-            {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard2))
-            {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else if(!move6.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move6).getKey().equals(resourceCard3))
-            {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard3))
-            {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else
-            {
-                switch(lastState.get(resourceCard1).toString())
-                {
-                    case Constants.ORE:
-                        ore--;
-                        break;
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                    case Constants.WOOL:
-                        wool--;
-                        break;
-                }
-
-                switch(lastState.get(resourceCard2).toString())
-                {
-                    case Constants.ORE:
-                        ore--;
-                        break;
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                    case Constants.WOOL:
-                        wool--;
-                        break;
-                }
-
-                switch(lastState.get(resourceCard3).toString())
-                {
-                    case Constants.ORE:
-                        ore--;
-                        break;
-                    case Constants.GRAIN:
-                        grain--;
-                        break;
-                    case Constants.WOOL:
-                        wool--;
-                        break;
-                }
-                
-                if(ore != 0)
-                {
-                    err = "Incorrect BUYDEVELOPMENTCARD Resources\n"
-                        + "Incorrect number of ore";
-                }
-                else if(grain != 0)
-                {
-                    err = "Incorrect BUYDEVELOPMENTCARD Resources\n"
-                        + "Incorrect number of grain";
-                }
-                else if(wool != 0)
-                {
-                    err = "Incorrect BUYDEVELOPMENTCARD Resources\n"
-                        + "Incorrect number of wool";
-                }
-                else
-                {
                     status = true;
                 }
             }
@@ -3012,17 +3537,116 @@ public class SettlersOfCatanLogic {
         return status;
     }
     
+    // Returns whether the list of resources matches for a buy development card move
+    private boolean matchBuyDevelopmentCardResourcesPt2(
+            Operation move1, int move1Num,
+            Operation move2, int move2Num,
+            Operation move3, int move3Num,
+            Map<String, Object> lastState,
+            String playerString)
+    {
+        boolean status = false;
+        
+        int ore = 1;
+        int grain = 1;
+        int wool = 1;
+        
+        // Starting a new tree to increase visibility
+        // All 3 resource cards are different and correctly formed
+
+        if(!move1.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDAA + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move2.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move2Num + "\n"
+                + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDBB + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move3.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move3Num + "\n"
+                + "BUYDEVELOPMENTCARD expects: DELETE(RESOURCECARDCC + playerString)\n"
+                + "Delete move expected";
+        }
+        else
+        {
+            String resourceCard1 = ((Delete)move1).getKey();
+            String resourceCard2 = ((Delete)move2).getKey();
+            String resourceCard3 = ((Delete)move3).getKey();
+            
+            switch(lastState.get(resourceCard1).toString())
+            {
+                case Constants.ORE:
+                    ore--;
+                    break;
+                case Constants.GRAIN:
+                    grain--;
+                    break;
+                case Constants.WOOL:
+                    wool--;
+                    break;
+            }
+
+            switch(lastState.get(resourceCard2).toString())
+            {
+                case Constants.ORE:
+                    ore--;
+                    break;
+                case Constants.GRAIN:
+                    grain--;
+                    break;
+                case Constants.WOOL:
+                    wool--;
+                    break;
+            }
+
+            switch(lastState.get(resourceCard3).toString())
+            {
+                case Constants.ORE:
+                    ore--;
+                    break;
+                case Constants.GRAIN:
+                    grain--;
+                    break;
+                case Constants.WOOL:
+                    wool--;
+                    break;
+            }
+            
+            if(ore != 0)
+            {
+                err = "Incorrect BUYDEVELOPMENTCARD Resources\n"
+                    + "Incorrect number of ore";
+            }
+            else if(grain != 0)
+            {
+                err = "Incorrect BUYDEVELOPMENTCARD Resources\n"
+                    + "Incorrect number of grain";
+            }
+            else if(wool != 0)
+            {
+                err = "Incorrect BUYDEVELOPMENTCARD Resources\n"
+                    + "Incorrect number of wool";
+            }
+            else
+            {
+                status = true;
+            }
+        }
+        
+        return status;
+    }
+    
     // Returns whether the list of resources matches for a normal harbor trade
-    private boolean matchNormalHarborTradeResources(
+    private boolean matchNormalHarborTradeResourcesPt1(
             Operation move1, int move1Num,
             Operation move2, int move2Num,
             Operation move3, int move3Num,
             Operation move4, int move4Num,
-            Operation move5, int move5Num,
-            Operation move6, int move6Num,
-            Operation move7, int move7Num,
-            Operation move8, int move8Num,
-            Operation move9, int move9Num,
             Map<String, Object> lastState,
             String playerString)
     {
@@ -3031,7 +3655,6 @@ public class SettlersOfCatanLogic {
         String resourceCard1 = "";
         String resourceCard2 = "";
         String resourceCard3 = "";
-        String resourceCard4 = "";
         
         if(!move1.getMessageName().equals("SetVisibility"))
         {
@@ -3155,134 +3778,6 @@ public class SettlersOfCatanLogic {
                     }
                     else
                     {
-                        resourceCard4 = ((SetVisibility)move4).getKey();
-                        status = true;
-                    }
-                }
-            }
-        }
-        
-        // Starting a new tree to increase visibility
-        // All 4 resource cards are different and correctly formed
-        if(status)
-        {
-            status = false;
-            
-            if(!move5.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move5).getKey().equals(resourceCard1))
-            {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard1))
-            {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else if(!move6.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move6).getKey().equals(resourceCard2))
-            {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard2))
-            {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else if(!move7.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move7Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move7).getKey().equals(resourceCard3))
-            {
-                err = "Incorrect Move Number: " + move7Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard3))
-            {
-                err = "Incorrect Move Number: " + move7Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else if(!move8.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move8Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDDD + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move8).getKey().equals(resourceCard4))
-            {
-                err = "Incorrect Move Number: " + move8Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDDD + playerString)\n"
-                    + "RESOURCECARD does not match 4 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard4))
-            {
-                err = "Incorrect Move Number: " + move8Num + "\n"
-                    + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDDD + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else
-            {
-                String resource = lastState.get(resourceCard1).toString();
-                
-                if ( !( resource.equals(lastState.get(resourceCard2).toString())
-                     && resource.equals(lastState.get(resourceCard3).toString())
-                     && resource.equals(lastState.get(resourceCard4).toString()) ) )
-                {
-                    err = "Incorrect NORMALHARBORTRADE Resources\n"
-                        + "Resources are not all the same";
-                }
-                else
-                {
-                    if(!move9.getMessageName().equals("Set"))
-                    {
-                        err = "Incorrect Move Number: " + move9Num + "\n"
-                            + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
-                            + "SetVisibility move expected";
-                    }
-                    else if(!((Set)move9).getKey().contains(Constants.RESOURCECARDTOKEN))
-                    {
-                        err = "Incorrect Move Number: " + move9Num + "\n"
-                            + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
-                            + "RESOURCECARD key expected";
-                    }
-                    else if(!((Set)move9).getKey().contains(playerString))
-                    {
-                        err = "Incorrect Move Number: " + move9Num + "\n"
-                            + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
-                            + "playerString key expected";
-                    }
-                    else if(!( ((Set)move9).getValue().toString().contains(Constants.ORE)
-                             ||((Set)move9).getValue().toString().contains(Constants.GRAIN)
-                             ||((Set)move9).getValue().toString().contains(Constants.LUMBER)
-                             ||((Set)move9).getValue().toString().contains(Constants.WOOL)
-                             ||((Set)move9).getValue().toString().contains(Constants.BRICK) ) )
-                    {
-                        err = "Incorrect Move Number: " + move9Num + "\n"
-                            + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
-                            + "A type of resource value expected";
-                    }
-                    else
-                    {
                         status = true;
                     }
                 }
@@ -3292,15 +3787,148 @@ public class SettlersOfCatanLogic {
         return status;
     }
     
-    // Returns whether the list of resources matches for a 3 to 1 harbor trade
-    private boolean matchThreeToOneHarborTradeResources(
+    // Returns whether the list of resources matches for a normal harbor trade
+    @SuppressWarnings("unchecked")
+    private boolean matchNormalHarborTradeResourcesPt2(
             Operation move1, int move1Num,
             Operation move2, int move2Num,
             Operation move3, int move3Num,
             Operation move4, int move4Num,
             Operation move5, int move5Num,
             Operation move6, int move6Num,
-            Operation move7, int move7Num,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId)
+    {
+        boolean status = false;
+        
+        // Starting a new tree to increase visibility
+        // All 4 resource cards are different and correctly formed
+            
+        if(!move1.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move2.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move2Num + "\n"
+                + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move3.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move3Num + "\n"
+                + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDCC + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move4.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move4Num + "\n"
+                + "NORMALHARBORTRADE expects: DELETE(RESOURCECARDDD + playerString)\n"
+                + "Delete move expected";
+        }
+        else
+        {
+            String resourceCard1 = ((Delete)move1).getKey();
+            String resourceCard2 = ((Delete)move2).getKey();
+            String resourceCard3 = ((Delete)move3).getKey();
+            String resourceCard4 = ((Delete)move4).getKey();
+            
+            String resource = lastState.get(resourceCard1).toString();
+            
+            if ( !( resource.equals(lastState.get(resourceCard2).toString())
+                 && resource.equals(lastState.get(resourceCard3).toString())
+                 && resource.equals(lastState.get(resourceCard4).toString()) ) )
+            {
+                err = "Incorrect NORMALHARBORTRADE Resources\n"
+                    + "Resources are not all the same";
+            }
+            else
+            {
+                if(!move5.getMessageName().equals("Set"))
+                {
+                    err = "Incorrect Move Number: " + move5Num + "\n"
+                        + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "SetVisibility move expected";
+                }
+                else if(!((Set)move5).getKey().contains(Constants.RESOURCECARDTOKEN))
+                {
+                    err = "Incorrect Move Number: " + move5Num + "\n"
+                        + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "RESOURCECARD key expected";
+                }
+                else if(!((Set)move5).getKey().contains(playerString))
+                {
+                    err = "Incorrect Move Number: " + move5Num + "\n"
+                        + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "playerString key expected";
+                }
+                else if(!( ((Set)move5).getValue().toString().contains(Constants.ORE)
+                         ||((Set)move5).getValue().toString().contains(Constants.GRAIN)
+                         ||((Set)move5).getValue().toString().contains(Constants.LUMBER)
+                         ||((Set)move5).getValue().toString().contains(Constants.WOOL)
+                         ||((Set)move5).getValue().toString().contains(Constants.BRICK) ) )
+                {
+                    err = "Incorrect Move Number: " + move5Num + "\n"
+                        + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "A type of resource value expected";
+                }
+                else
+                {
+                    String resourceString = ((Set)move5).getKey();
+                
+                    if(!move6.getMessageName().equals("SetVisibility"))
+                    {
+                        err = "Incorrect Move Number: " + move6Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Set move expected";
+                    }
+                    else if(!((SetVisibility) move6).getKey().contains(Constants.RESOURCECARDTOKEN))
+                    {
+                        err = "Incorrect Move Number: " + move6Num + "\n"
+                                + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "ResourceCard key expected";
+                    }
+                    else if(!((SetVisibility) move6).getKey().contains(playerString))
+                    {
+                        err = "Incorrect Move Number: " + move6Num + "\n"
+                                + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "playerString key expected";
+                    }
+                    else if(!((SetVisibility) move6).getKey().equals(resourceString))
+                    {
+                        err = "Incorrect Move Number: " + move6Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Resource pairs don't match";
+                    }
+                    else if(((List<Integer>)((SetVisibility) move6).getVisibleToPlayerIds()).size() != 1)
+                    {
+                        err = "Incorrect Move Number: " + move6Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Visible to not just user";
+                    }
+                    else if(!((List<Integer>)((SetVisibility) move6).getVisibleToPlayerIds()).equals(Arrays.asList(playerId)))
+                    {
+                        err = "Incorrect Move Number: " + move6Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Visible to not just user";
+                    }
+                    
+                    status = true;
+                }
+            }
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of resources matches for a 3 to 1 harbor trade
+    private boolean matchThreeToOneHarborTradeResourcesPt1(
+            Operation move1, int move1Num,
+            Operation move2, int move2Num,
+            Operation move3, int move3Num,
             Map<String, Object> lastState,
             String playerString)
     {
@@ -3308,7 +3936,6 @@ public class SettlersOfCatanLogic {
         
         String resourceCard1 = "";
         String resourceCard2 = "";
-        String resourceCard3 = "";
         
         if(!move1.getMessageName().equals("SetVisibility"))
         {
@@ -3392,121 +4019,138 @@ public class SettlersOfCatanLogic {
                 }
                 else
                 {
-                    resourceCard3 = ((SetVisibility)move3).getKey();
                     status = true;
                 }
             }
         }
         
+        return status;
+    }
+    
+    // Returns whether the list of resources matches for a 3 to 1 harbor trade
+    @SuppressWarnings("unchecked")
+    private boolean matchThreeToOneHarborTradeResourcesPt2(
+            Operation move1, int move1Num,
+            Operation move2, int move2Num,
+            Operation move3, int move3Num,
+            Operation move4, int move4Num,
+            Operation move5, int move5Num,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId)
+    {
+        boolean status = false;
         // Starting a new tree to increase visibility
         // All 4 resource cards are different and correctly formed
-        if(status)
-        {
-            status = false;
             
-            if(!move4.getMessageName().equals("Delete"))
+        if(!move1.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move2.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move2Num + "\n"
+                + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move3.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move3Num + "\n"
+                + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDCC + playerString)\n"
+                + "Delete move expected";
+        }
+        else
+        {
+            String resourceCard1 = ((Delete)move1).getKey();
+            String resourceCard2 = ((Delete)move2).getKey();
+            String resourceCard3 = ((Delete)move3).getKey();
+            String resource = lastState.get(resourceCard1).toString();
+            
+            if ( !( resource.equals(lastState.get(resourceCard2).toString())
+                 && resource.equals(lastState.get(resourceCard3).toString()) ) )
             {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move4).getKey().equals(resourceCard1))
-            {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "RESOURCECARD does not match 3 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard1))
-            {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else if(!move5.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move5).getKey().equals(resourceCard2))
-            {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "RESOURCECARD does not match 3 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard2))
-            {
-                err = "Incorrect Move Number: " + move5Num + "\n"
-                    + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else if(!move6.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move6).getKey().equals(resourceCard3))
-            {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "RESOURCECARD does not match 3 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard3))
-            {
-                err = "Incorrect Move Number: " + move6Num + "\n"
-                    + "THREETOONEHARBORTRADE expects: DELETE(RESOURCECARDCC + playerString)\n"
-                    + "playerString does not own resource";
+                err = "Incorrect THREETOONEHARBORTRADE Resources\n"
+                    + "Resources are not all the same";
             }
             else
             {
-                String resource = lastState.get(resourceCard1).toString();
-                
-                if ( !( resource.equals(lastState.get(resourceCard2).toString())
-                     && resource.equals(lastState.get(resourceCard3).toString()) ) )
+                if(!move4.getMessageName().equals("Set"))
+                {
+                    err = "Incorrect Move Number: " + move4Num + "\n"
+                        + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "SetVisibility move expected";
+                }
+                else if(!((Set)move4).getKey().contains(Constants.RESOURCECARDTOKEN))
+                {
+                    err = "Incorrect Move Number: " + move4Num + "\n"
+                        + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "RESOURCECARD key expected";
+                }
+                else if(!((Set)move4).getKey().contains(playerString))
+                {
+                    err = "Incorrect Move Number: " + move4Num + "\n"
+                        + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "playerString key expected";
+                }
+                else if(!( ((Set)move4).getValue().toString().contains(Constants.ORE)
+                         ||((Set)move4).getValue().toString().contains(Constants.GRAIN)
+                         ||((Set)move4).getValue().toString().contains(Constants.LUMBER)
+                         ||((Set)move4).getValue().toString().contains(Constants.WOOL)
+                         ||((Set)move4).getValue().toString().contains(Constants.BRICK) ) )
+                {
+                    err = "Incorrect Move Number: " + move4Num + "\n"
+                        + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "A type of resource value expected";
+                }
+                else if(!ownsThreeToOneHarbor(lastState, playerString))
                 {
                     err = "Incorrect THREETOONEHARBORTRADE Resources\n"
-                        + "Resources are not all the same";
+                        + "playerString does not own a 3 to 1 port";
                 }
                 else
                 {
-                    if(!move7.getMessageName().equals("Set"))
+                    String resourceString = ((Set)move4).getKey();
+                    
+                    if(!move5.getMessageName().equals("SetVisibility"))
                     {
-                        err = "Incorrect Move Number: " + move7Num + "\n"
-                            + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
-                            + "SetVisibility move expected";
+                        err = "Incorrect Move Number: " + move5Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Set move expected";
                     }
-                    else if(!((Set)move7).getKey().contains(Constants.RESOURCECARDTOKEN))
+                    else if(!((SetVisibility) move5).getKey().contains(Constants.RESOURCECARDTOKEN))
                     {
-                        err = "Incorrect Move Number: " + move7Num + "\n"
-                            + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
-                            + "RESOURCECARD key expected";
+                        err = "Incorrect Move Number: " + move5Num + "\n"
+                                + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "ResourceCard key expected";
                     }
-                    else if(!((Set)move7).getKey().contains(playerString))
+                    else if(!((SetVisibility) move5).getKey().contains(playerString))
                     {
-                        err = "Incorrect Move Number: " + move7Num + "\n"
-                            + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        err = "Incorrect Move Number: " + move5Num + "\n"
+                                + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
                             + "playerString key expected";
                     }
-                    else if(!( ((Set)move7).getValue().toString().contains(Constants.ORE)
-                             ||((Set)move7).getValue().toString().contains(Constants.GRAIN)
-                             ||((Set)move7).getValue().toString().contains(Constants.LUMBER)
-                             ||((Set)move7).getValue().toString().contains(Constants.WOOL)
-                             ||((Set)move7).getValue().toString().contains(Constants.BRICK) ) )
+                    else if(!((SetVisibility) move5).getKey().equals(resourceString))
                     {
-                        err = "Incorrect Move Number: " + move7Num + "\n"
-                            + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
-                            + "A type of resource value expected";
+                        err = "Incorrect Move Number: " + move5Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Resource pairs don't match";
                     }
-                    else if(!ownsThreeToOneHarbor(lastState, playerString))
+                    else if(((List<Integer>)((SetVisibility) move5).getVisibleToPlayerIds()).size() != 1)
                     {
-                        err = "Incorrect THREETOONEHARBORTRADE Resources\n"
-                            + "playerString does not own a 3 to 1 port";
+                        err = "Incorrect Move Number: " + move5Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Visible to not just user";
                     }
-                    else
+                    else if(!((List<Integer>)((SetVisibility) move5).getVisibleToPlayerIds()).equals(Arrays.asList(playerId)))
                     {
-                        status = true;
+                        err = "Incorrect Move Number: " + move5Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Visible to not just user";
                     }
+                    
+                    status = true;
                 }
             }
         }
@@ -3515,19 +4159,15 @@ public class SettlersOfCatanLogic {
     }
     
     // Returns whether the list of resources matches for a 2 to 1 harbor trade
-    private boolean matchTwoToOneHarborTradeResources(
+    private boolean matchTwoToOneHarborTradeResourcesPt1(
             Operation move1, int move1Num,
             Operation move2, int move2Num,
-            Operation move3, int move3Num,
-            Operation move4, int move4Num,
-            Operation move5, int move5Num,
             Map<String, Object> lastState,
             String playerString)
     {
         boolean status = false;
         
         String resourceCard1 = "";
-        String resourceCard2 = "";
         
         if(!move1.getMessageName().equals("SetVisibility"))
         {
@@ -3577,101 +4217,129 @@ public class SettlersOfCatanLogic {
             }
             else
             {
-                resourceCard2 = ((SetVisibility)move2).getKey();
                 status = true;
             }
         }
         
+        return status;
+    }
+    
+    // Returns whether the list of resources matches for a 2 to 1 harbor trade
+    @SuppressWarnings("unchecked")
+    private boolean matchTwoToOneHarborTradeResourcesPt2(
+            Operation move1, int move1Num,
+            Operation move2, int move2Num,
+            Operation move3, int move3Num,
+            Operation move4, int move4Num,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId)
+    {
+        boolean status = false;
+        
         // Starting a new tree to increase visibility
         // All 4 resource cards are different and correctly formed
-        if(status)
+        
+        if(!move1.getMessageName().equals("Delete"))
         {
-            status = false;
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "TWOTOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
+                + "Delete move expected";
+        }
+        else if(!move2.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move2Num + "\n"
+                + "TWOTOONEHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
+                + "Delete move expected";
+        }
+        else
+        {
+            String resourceCard1 = ((Delete)move1).getKey();
+            String resourceCard2 = ((Delete)move2).getKey();
+            String resource = lastState.get(resourceCard1).toString();
             
-            if(!move3.getMessageName().equals("Delete"))
+            if ( !resource.equals(lastState.get(resourceCard2).toString()) )
             {
-                err = "Incorrect Move Number: " + move3Num + "\n"
-                    + "TWOTOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move3).getKey().equals(resourceCard1))
-            {
-                err = "Incorrect Move Number: " + move3Num + "\n"
-                    + "TWOTOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "RESOURCECARD does not match 2 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard1))
-            {
-                err = "Incorrect Move Number: " + move3Num + "\n"
-                    + "TWOTOONEHARBORTRADE expects: DELETE(RESOURCECARDAA + playerString)\n"
-                    + "playerString does not own resource";
-            }
-            else if(!move4.getMessageName().equals("Delete"))
-            {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "TWOTOONEHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "Delete move expected";
-            }
-            else if(!((Delete)move4).getKey().equals(resourceCard2))
-            {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "TWOTOONEHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "RESOURCECARD does not match 2 lines ago";
-            }
-            else if(!lastState.containsKey(resourceCard2))
-            {
-                err = "Incorrect Move Number: " + move4Num + "\n"
-                    + "TWOTOONEHARBORTRADE expects: DELETE(RESOURCECARDBB + playerString)\n"
-                    + "playerString does not own resource";
+                err = "Incorrect TWOTOONEHARBORTRADE Resources\n"
+                    + "Resources are not all the same";
             }
             else
             {
-                String resource = lastState.get(resourceCard1).toString();
-                
-                if ( !resource.equals(lastState.get(resourceCard2).toString()) )
+                if(!move3.getMessageName().equals("Set"))
+                {
+                    err = "Incorrect Move Number: " + move3Num + "\n"
+                        + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "SetVisibility move expected";
+                }
+                else if(!((Set)move3).getKey().contains(Constants.RESOURCECARDTOKEN))
+                {
+                    err = "Incorrect Move Number: " + move3Num + "\n"
+                        + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "RESOURCECARD key expected";
+                }
+                else if(!((Set)move3).getKey().contains(playerString))
+                {
+                    err = "Incorrect Move Number: " + move3Num + "\n"
+                        + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "playerString key expected";
+                }
+                else if(!( ((Set)move3).getValue().toString().contains(Constants.ORE)
+                         ||((Set)move3).getValue().toString().contains(Constants.GRAIN)
+                         ||((Set)move3).getValue().toString().contains(Constants.LUMBER)
+                         ||((Set)move3).getValue().toString().contains(Constants.WOOL)
+                         ||((Set)move3).getValue().toString().contains(Constants.BRICK) ) )
+                {
+                    err = "Incorrect Move Number: " + move3Num + "\n"
+                        + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        + "A type of resource value expected";
+                }
+                else if(!ownsTwoToOneHarbor(lastState, playerString, resource))
                 {
                     err = "Incorrect TWOTOONEHARBORTRADE Resources\n"
-                        + "Resources are not all the same";
+                        + "playerString does not own a 2 to 1 port";
                 }
                 else
                 {
-                    if(!move5.getMessageName().equals("Set"))
+                    String resourceString = ((Set)move3).getKey();
+                    
+                    if(!move4.getMessageName().equals("SetVisibility"))
                     {
-                        err = "Incorrect Move Number: " + move5Num + "\n"
-                            + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
-                            + "SetVisibility move expected";
+                        err = "Incorrect Move Number: " + move4Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Set move expected";
                     }
-                    else if(!((Set)move5).getKey().contains(Constants.RESOURCECARDTOKEN))
+                    else if(!((SetVisibility) move4).getKey().contains(Constants.RESOURCECARDTOKEN))
                     {
-                        err = "Incorrect Move Number: " + move5Num + "\n"
-                            + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
-                            + "RESOURCECARD key expected";
+                        err = "Incorrect Move Number: " + move4Num + "\n"
+                                + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "ResourceCard key expected";
                     }
-                    else if(!((Set)move5).getKey().contains(playerString))
+                    else if(!((SetVisibility) move4).getKey().contains(playerString))
                     {
-                        err = "Incorrect Move Number: " + move5Num + "\n"
-                            + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                        err = "Incorrect Move Number: " + move4Num + "\n"
+                                + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
                             + "playerString key expected";
                     }
-                    else if(!( ((Set)move5).getValue().toString().contains(Constants.ORE)
-                             ||((Set)move5).getValue().toString().contains(Constants.GRAIN)
-                             ||((Set)move5).getValue().toString().contains(Constants.LUMBER)
-                             ||((Set)move5).getValue().toString().contains(Constants.WOOL)
-                             ||((Set)move5).getValue().toString().contains(Constants.BRICK) ) )
+                    else if(!((SetVisibility) move4).getKey().equals(resourceString))
                     {
-                        err = "Incorrect Move Number: " + move5Num + "\n"
-                            + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
-                            + "A type of resource value expected";
+                        err = "Incorrect Move Number: " + move4Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Resource pairs don't match";
                     }
-                    else if(!ownsTwoToOneHarbor(lastState, playerString, resource))
+                    else if(((List<Integer>)((SetVisibility) move4).getVisibleToPlayerIds()).size() != 1)
                     {
-                        err = "Incorrect TWOTOONEHARBORTRADE Resources\n"
-                            + "playerString does not own a 2 to 1 port";
+                        err = "Incorrect Move Number: " + move4Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Visible to not just user";
                     }
-                    else
+                    else if(!((List<Integer>)((SetVisibility) move4).getVisibleToPlayerIds()).equals(Arrays.asList(playerId)))
                     {
-                        status = true;
+                        err = "Incorrect Move Number: " + move4Num + "\n"
+                            + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                            + "Visible to not just user";
                     }
+                    
+                    status = true;
                 }
             }
         }
@@ -3858,6 +4526,294 @@ public class SettlersOfCatanLogic {
         return status;
     }
     
+    // Returns whether the list of moves matches for a single add resource
+    private boolean matchDieRoll(
+            Operation move1, int move1Num,
+            String expectedDie)
+    {
+        boolean status = false;
+
+        if(!move1.getMessageName().equals("SetRandomInteger"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "MATCHDIEROLL expects: SETRANDOMINTEGER(DIEX, 1, 6)\n"
+                + "Set move expected";
+        }
+        else if(!((SetRandomInteger) move1).getKey().equals(expectedDie))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "MATCHDIEROLL expects: SETRANDOMINTEGER(DIEX, 1, 6)\n"
+                + "expectedDie key expected";
+        }
+        else if(((SetRandomInteger) move1).getFrom() != 1)
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "MATCHDIEROLL expects: SETRANDOMINTEGER(DIEX, 1, 6)\n"
+                + "From 1 expected";
+        }
+        else if(((SetRandomInteger) move1).getTo() != 6)
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "MATCHDIEROLL expects: SETRANDOMINTEGER(DIEX, 1, 6)\n"
+                + "To 6 expected";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves matches for a die clear
+    private boolean matchDieClear(
+            Operation move1, int move1Num,
+            Map<String, Object> lastState,
+            String expectedDie)
+    {
+        boolean status = false;
+
+        if(!move1.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "CLEARDIEROLL expects: DELETE(DIEX)\n"
+                + "Delete move expected";
+        }
+        else if(!((Delete) move1).getKey().equals(expectedDie))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "CLEARDIEROLL expects: DELETE(DIEX)\n"
+                + "expectedDie key expected";
+        }
+        else if(!lastState.containsKey(((Delete) move1).getKey()))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "CLEARDIEROLL expects: DELETE(DIEX)\n"
+                + "DIEX doesn't exist in state";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves matches for a single add resource
+    @SuppressWarnings("unchecked")
+    private boolean matchResourceCardAdd(
+            Operation move1, int move1Num,
+            Operation move2, int move2Num,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            String expectedResource)
+    {
+        boolean status = false;
+        
+        String resourceString = "";
+
+        if(!move1.getMessageName().equals("Set"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "Set move expected";
+        }
+        else if(!((Set) move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "ResourceCard key expected";
+        }
+        else if(!((Set) move1).getKey().contains(playerString))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "playerString key expected";
+        }
+        else if(lastState.containsKey(((Set) move1).getKey()))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "ResourceCard already assigned";
+        }
+        else if(!( ((Set)move1).getValue().toString().contains(Constants.ORE)
+                 ||((Set)move1).getValue().toString().contains(Constants.GRAIN)
+                 ||((Set)move1).getValue().toString().contains(Constants.LUMBER)
+                 ||((Set)move1).getValue().toString().contains(Constants.WOOL)
+                 ||((Set)move1).getValue().toString().contains(Constants.BRICK) ) )
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                + "A type of resource value expected";
+        }
+        else if(!(((Set)move1).getValue().equals(expectedResource)))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                + "Not the expected resource";
+        }
+        else
+        {
+            resourceString = ((Set)move1).getKey();
+            
+            if(!move2.getMessageName().equals("SetVisibility"))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                    + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "Set move expected";
+            }
+            else if(!((SetVisibility) move2).getKey().contains(Constants.RESOURCECARDTOKEN))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                        + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "ResourceCard key expected";
+            }
+            else if(!((SetVisibility) move2).getKey().contains(playerString))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                        + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "playerString key expected";
+            }
+            else if(!((SetVisibility) move2).getKey().equals(resourceString))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                    + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "Resource pairs don't match";
+            }
+            else if(((List<Integer>)((SetVisibility) move2).getVisibleToPlayerIds()).size() != 1)
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                    + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "Visible to not just user";
+            }
+            else if(!((List<Integer>)((SetVisibility) move2).getVisibleToPlayerIds()).equals(Arrays.asList(playerId)))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                    + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "Visible to not just user";
+            }
+            
+            status = true;
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves matches for a single add resource
+    @SuppressWarnings("unchecked")
+    private boolean matchResourceCardAddIgnoreExpected(
+            Operation move1, int move1Num,
+            Operation move2, int move2Num,
+            Map<String, Object> lastState)
+    {
+        boolean status = false;
+        
+        String resourceString = "";
+        int playerId = -1;
+        String playerString = "";
+        if(((Set) move1).getKey().contains(Constants.PB))
+        {
+            playerId = playerIds.get(0);
+            playerString = Constants.PB;
+        }
+        else if(((Set) move1).getKey().contains(Constants.PR))
+        {
+            playerId = playerIds.get(1);
+            playerString = Constants.PR;
+        }
+        else if(((Set) move1).getKey().contains(Constants.PY))
+        {
+            playerId = playerIds.get(2);
+            playerString = Constants.PY;
+        }
+        else if(((Set) move1).getKey().contains(Constants.PG))
+        {
+            playerId = playerIds.get(3);
+            playerString = Constants.PG;
+        }
+
+        if(!move1.getMessageName().equals("Set"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "Set move expected";
+        }
+        else if(!((Set) move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "ResourceCard key expected";
+        }
+        else if(!((Set) move1).getKey().contains(playerString))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "playerString key expected";
+        }
+        else if(lastState.containsKey(((Set) move1).getKey()))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "ResourceCard already assigned";
+        }
+        else if(!( ((Set)move1).getValue().toString().contains(Constants.ORE)
+                 ||((Set)move1).getValue().toString().contains(Constants.GRAIN)
+                 ||((Set)move1).getValue().toString().contains(Constants.LUMBER)
+                 ||((Set)move1).getValue().toString().contains(Constants.WOOL)
+                 ||((Set)move1).getValue().toString().contains(Constants.BRICK) ) )
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
+                + "A type of resource value expected";
+        }
+        else
+        {
+            resourceString = ((Set)move1).getKey();
+            
+            if(!move2.getMessageName().equals("SetVisibility"))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                    + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "Set move expected";
+            }
+            else if(!((SetVisibility) move2).getKey().contains(Constants.RESOURCECARDTOKEN))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                        + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "ResourceCard key expected";
+            }
+            else if(!((SetVisibility) move2).getKey().contains(playerString))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                        + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "playerString key expected";
+            }
+            else if(!((SetVisibility) move2).getKey().equals(resourceString))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                    + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "Resource pairs don't match";
+            }
+            else if(((List<Integer>)((SetVisibility) move2).getVisibleToPlayerIds()).size() != 1)
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                    + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "Visible to not just user";
+            }
+            else if(!((List<Integer>)((SetVisibility) move2).getVisibleToPlayerIds()).equals(Arrays.asList(playerId)))
+            {
+                err = "Incorrect Move Number: " + move2Num + "\n"
+                    + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
+                    + "Visible to not just user";
+            }
+            
+            status = true;
+        }
+        
+        return status;
+    }
+    
     // Returns whether the list of moves matches for an End Game
     private boolean matchEndGame(
             Operation move1, int move1Num,
@@ -3979,7 +4935,7 @@ public class SettlersOfCatanLogic {
             List<String> longestPath = null;
             String startingRoad = "";
             
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 15; i++)
             {
                 List<String> pathToCheck = new ArrayList<String>();
                 
@@ -4273,7 +5229,7 @@ public class SettlersOfCatanLogic {
         int count = 0;
         
         if( lastState.containsKey(Constants.LONGESTROAD)
-         && lastState.get(Constants.LONGESTROAD).toString().equals(playerString) );
+         && lastState.get(Constants.LONGESTROAD).toString().equals(playerString) )
         {
             count = 2;
         }
@@ -4289,7 +5245,7 @@ public class SettlersOfCatanLogic {
         int count = 0;
         
         if( lastState.containsKey(Constants.LARGESTARMY)
-         && lastState.get(Constants.LARGESTARMY).toString().equals(playerString) );
+         && lastState.get(Constants.LARGESTARMY).toString().equals(playerString) )
         {
             count = 2;
         }
@@ -5167,7 +6123,7 @@ public class SettlersOfCatanLogic {
 	
     // Gets whether a settlement can be added here for a specific player
 	// Returns whether a specific player can add a settlement at a certain node
-	private boolean canAddSettlementHere(
+	public boolean canAddSettlementHere(
             Map<String, Object> lastState,
             String node,
             String playerString)
@@ -5193,9 +6149,34 @@ public class SettlersOfCatanLogic {
         return noAdjacentNodeStatus && roadPresetStatus;
     }
     
+    // Gets whether a settlement can be added here for a specific player
+    // Returns whether a specific player can add a settlement at a certain node
+    public boolean canAddSettlementHereFirstMove(
+            Map<String, Object> lastState,
+            String node,
+            String playerString)
+    {
+        boolean noAdjacentNodeStatus = true;
+        
+        ImmutableList<String> pathsFromNode = getPathsFromNode(node);
+        
+        for(int i = 0; i < pathsFromNode.size(); i++)
+        {
+            ImmutableList<String> nodes = getNodesFromPath(pathsFromNode.get(i));
+            
+            for(int j = 0; j < nodes.size(); j++)
+            {
+                noAdjacentNodeStatus = noAdjacentNodeStatus && !lastState.containsKey(nodes.get(j));
+            }
+        }
+        
+        return noAdjacentNodeStatus;
+    }
+    
 	// Returns whether a specific player can add a road at a certain path
     // Gets whether a road can be added here for a specific player
-    private boolean canAddRoadHere(
+
+    public boolean canAddRoadHere(
             Map<String, Object> lastState,
             String path,
             String playerString)
@@ -5225,6 +6206,7 @@ public class SettlersOfCatanLogic {
     // Matches a development card to a development card type
     // Finds the first open development card on the stack
     // Returns the first available Development Card
+
     private String findFirstOpenDevelopmentCard()
     {
         String firstOpen = "";
@@ -5243,18 +6225,72 @@ public class SettlersOfCatanLogic {
             Map<String, Object> lastState,
             List<Operation> lastMove,
             String playerString,
-            String nextPlayerString)
+            String nextPlayerString,
+            int playerId)
     {
         String expectedMove = "";
         
         // Expects the first move from an empty state
         if ( lastState.isEmpty() )
         {
+            initial = false;
             expectedMove = Constants.FIRSTMOVE;
+            firstFreeMove = true;
+            settlementTurn = true;
+        }
+        else if(firstFreeMove)
+        {
+            if(settlementTurn)
+            {
+                expectedMove = Constants.FIRSTROUNDSETTLEMENT;
+            }
+            else
+            {
+                expectedMove = Constants.FIRSTROUNDROAD;
+            }
+        }
+        else if(secondFreeMove)
+        {
+            if(settlementTurn)
+            {
+                expectedMove = Constants.SECONDROUNDSETTLEMENT;
+            }
+            else
+            {
+                expectedMove = Constants.SECONDROUNDROAD;
+            }
+        }
+        else if (finishRoadBuild)
+        {
+            expectedMove = Constants.BUILDROADPT2;
+        }
+        else if (finishSettlementBuild)
+        {
+            expectedMove = Constants.BUILDSETTLEMENTPT2;
+        }
+        else if (finishCityBuild)
+        {
+            expectedMove = Constants.BUILDCITYPT2;
+        }
+        else if (finishBuyingDevelopmentCard)
+        {
+            expectedMove = Constants.BUYDEVELOPMENTCARDPT2;
+        }
+        else if(finishHarborTrade)
+        {
+            expectedMove = Constants.HARBORTRADEPT2;
+        }
+        else if( findASetRandomIntegerInMoves(lastMove) )
+        {
+            expectedMove = Constants.ROLLDICE;
+        }
+        else if( findADeleteDieInMoves(lastMove) )
+        {
+            expectedMove = Constants.CLEARROLL;
         }
         // Move contains a SET Turn command with the next player string
         // This is a CHANGETURN move
-        else if ( findASetMoveInMoves(lastMove, Constants.TURN, nextPlayerString) )
+        else if ( findASetTurnMoveInMoves(lastMove, Constants.TURN) )
         {
             expectedMove = Constants.CHANGETURN;
         }
@@ -5262,25 +6298,25 @@ public class SettlersOfCatanLogic {
         // This is a BUILDCITY move
         else if ( findASetMoveInMoves(lastMove, Constants.CITYTOKEN, "") )
         {
-            expectedMove = Constants.BUILDCITY;
+            expectedMove = Constants.BUILDCITYPT1;
         }
         // Move contains a SET Settlement command
         // This is a BUILDSETTLEMENT move
         else if ( findASetMoveInMoves(lastMove, Constants.SETTLEMENTTOKEN, "") )
         {
-            expectedMove = Constants.BUILDSETTLEMENT;
+            expectedMove = Constants.BUILDSETTLEMENTPT1;
         }
         // Move contains a SET Road command
         // This is a BUILDROAD move
         else if ( findASetMoveInMoves(lastMove, Constants.ROADTOKEN, "") )
         {
-            expectedMove = Constants.BUILDROAD;
+            expectedMove = Constants.BUILDROADPT1;
         }
         // Move contains a SET Development Card command with the current playerString
         // This is a BUYDEVELOPMENTCARD move
-        else if ( findASetMoveInMoves(lastMove, Constants.DEVELOPMENTCARDTOKEN, playerString) )
+        else if ( findASetVisibleMoveInMoves(lastMove, Constants.DEVELOPMENTCARDTOKEN) )
         {
-            expectedMove = Constants.BUYDEVELOPMENTCARD;
+            expectedMove = Constants.BUYDEVELOPMENTCARDPT1;
         }
         // Move contains a SET Development Card command with the PLAYED tag
         // This is a PLAYDEVELOPMENTCARD move
@@ -5290,13 +6326,13 @@ public class SettlersOfCatanLogic {
         }
         // Move contains only a turn move and resources
         // This is a HARBORTRADE move
-        else if ( findASetMoveInMoves(lastMove, Constants.TURN, playerString)
+        else if ( findASetTurnMoveInMoves(lastMove, Constants.TURN)
                && !findASetMoveInMoves(lastMove, Constants.CITYTOKEN, "")
                && !findASetMoveInMoves(lastMove, Constants.SETTLEMENTTOKEN, "")
                && !findASetMoveInMoves(lastMove, Constants.ROADTOKEN, "")
                && !findASetMoveInMoves(lastMove, Constants.DEVELOPMENTCARDTOKEN, ""))
         {
-            expectedMove = Constants.HARBORTRADE;
+            expectedMove = Constants.HARBORTRADEPT1;
         }
         else
         {
@@ -5304,6 +6340,28 @@ public class SettlersOfCatanLogic {
         }
         
         return expectedMove;
+    }
+    
+    // Returns whether the list of moves contains a Set move with the given Key and Value
+    // Searches all the SET moves in a move list and returns true if it finds
+    // at least one move that has a key and value that contain the two input searches
+    private boolean findASetTurnMoveInMoves(
+            List<Operation> lastMove,
+            String containsKeyString)
+    {
+        boolean status = false;
+        
+        for(int i = 0; i < lastMove.size(); i++)
+        {
+            if(lastMove.get(i).getMessageName().equals("SetTurn"))
+            {
+                status = status
+                      || ( lastMove.get(i).getMessageName().equals("SetTurn")
+                      && lastMove.size() == 1);
+            }
+        }
+        
+        return status;
     }
     
     // Returns whether the list of moves contains a Set move with the given Key and Value
@@ -5329,8 +6387,65 @@ public class SettlersOfCatanLogic {
         return status;
     }
     
+ // Returns whether the list of moves contains a Set move with the given Key and Value
+    // Searches all the SET moves in a move list and returns true if it finds
+    // at least one move that has a key and value that contain the two input searches
+    private boolean findASetVisibleMoveInMoves(
+            List<Operation> lastMove,
+            String containsKeyString)
+    {
+        boolean status = false;
+        
+        for(int i = 0; i < lastMove.size(); i++)
+        {
+            if(lastMove.get(i).getMessageName().equals("SetVisibility"))
+            {
+                status = status
+                      || ((SetVisibility)lastMove.get(i)).getKey().contains(containsKeyString);
+            }
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves contains a SetRandomInteger move
+    private boolean findASetRandomIntegerInMoves(
+            List<Operation> lastMove)
+    {
+        boolean status = false;
+        
+        for(int i = 0; i < lastMove.size(); i++)
+        {
+            if(lastMove.get(i).getMessageName().equals("SetRandomInteger"))
+            {
+                status = true;
+            }
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves contains a Delete move for DIE0
+    private boolean findADeleteDieInMoves(
+            List<Operation> lastMove)
+    {
+        boolean status = false;
+        
+        for(int i = 0; i < lastMove.size(); i++)
+        {
+            if( lastMove.get(i).getMessageName().equals("Delete")
+             && ((Delete)lastMove.get(i)).getKey().equals(Constants.DIE0))
+            {
+                status = true;
+            }
+        }
+        
+        return status;
+    }
+    
     // Returns the playerString for the current player
     // Gets the String Name of the player based on ID
+
     public String getPlayerId(
             List<Integer> playerIds,
             int lastMovePlayerId) {
@@ -5358,6 +6473,7 @@ public class SettlersOfCatanLogic {
     
     // Returns the playerString for the next player
     // Gets the String Name of the next player based on ID
+
     private String getNextPlayerId(
             List<Integer> playerIds,
             int lastMovePlayerId) {
@@ -5382,7 +6498,242 @@ public class SettlersOfCatanLogic {
         
         return playerString;
     }
-
+    
+    private List<String> getExpectedResourcesFromNode(Map<String, Object> state, String node)
+    {
+        List<String> expectedResources = new ArrayList<String>();
+        
+        switch(node)
+        {
+            case Constants.NODE00:
+                expectedResources.add(state.get(Constants.HEX00).toString());
+                break;
+            case Constants.NODE01:
+                expectedResources.add(state.get(Constants.HEX01).toString());
+                break;
+            case Constants.NODE02:
+                expectedResources.add(state.get(Constants.HEX02).toString());
+                break;
+            case Constants.NODE03:
+                expectedResources.add(state.get(Constants.HEX00).toString());
+                break;
+            case Constants.NODE04:
+                expectedResources.add(state.get(Constants.HEX00).toString());
+                expectedResources.add(state.get(Constants.HEX01).toString());
+                break;
+            case Constants.NODE05:
+                expectedResources.add(state.get(Constants.HEX01).toString());
+                expectedResources.add(state.get(Constants.HEX02).toString());
+                break;
+            case Constants.NODE06:
+                expectedResources.add(state.get(Constants.HEX02).toString());
+                break;
+            case Constants.NODE07:
+                expectedResources.add(state.get(Constants.HEX00).toString());
+                expectedResources.add(state.get(Constants.HEX03).toString());
+                break;
+            case Constants.NODE08:
+                expectedResources.add(state.get(Constants.HEX00).toString());
+                expectedResources.add(state.get(Constants.HEX01).toString());
+                expectedResources.add(state.get(Constants.HEX04).toString());
+                break;
+            case Constants.NODE09:
+                expectedResources.add(state.get(Constants.HEX01).toString());
+                expectedResources.add(state.get(Constants.HEX02).toString());
+                expectedResources.add(state.get(Constants.HEX05).toString());
+                break;
+            case Constants.NODE10:
+                expectedResources.add(state.get(Constants.HEX02).toString());
+                expectedResources.add(state.get(Constants.HEX06).toString());
+                break;
+            case Constants.NODE11:
+                expectedResources.add(state.get(Constants.HEX03).toString());
+                break;
+            case Constants.NODE12:
+                expectedResources.add(state.get(Constants.HEX00).toString());
+                expectedResources.add(state.get(Constants.HEX03).toString());
+                expectedResources.add(state.get(Constants.HEX04).toString());
+                break;
+            case Constants.NODE13:
+                expectedResources.add(state.get(Constants.HEX01).toString());
+                expectedResources.add(state.get(Constants.HEX04).toString());
+                expectedResources.add(state.get(Constants.HEX05).toString());
+                break;
+            case Constants.NODE14:
+                expectedResources.add(state.get(Constants.HEX02).toString());
+                expectedResources.add(state.get(Constants.HEX05).toString());
+                expectedResources.add(state.get(Constants.HEX06).toString());
+                break;
+            case Constants.NODE15:
+                expectedResources.add(state.get(Constants.HEX06).toString());
+                break;
+            case Constants.NODE16:
+                expectedResources.add(state.get(Constants.HEX03).toString());
+                expectedResources.add(state.get(Constants.HEX07).toString());
+                break;
+            case Constants.NODE17:
+                expectedResources.add(state.get(Constants.HEX03).toString());
+                expectedResources.add(state.get(Constants.HEX04).toString());
+                expectedResources.add(state.get(Constants.HEX08).toString());
+                break;
+            case Constants.NODE18:
+                expectedResources.add(state.get(Constants.HEX04).toString());
+                expectedResources.add(state.get(Constants.HEX05).toString());
+                expectedResources.add(state.get(Constants.HEX09).toString());
+                break;
+            case Constants.NODE19:
+                expectedResources.add(state.get(Constants.HEX05).toString());
+                expectedResources.add(state.get(Constants.HEX06).toString());
+                expectedResources.add(state.get(Constants.HEX10).toString());
+                break;
+            case Constants.NODE20:
+                expectedResources.add(state.get(Constants.HEX06).toString());
+                expectedResources.add(state.get(Constants.HEX11).toString());
+                break;
+            case Constants.NODE21:
+                expectedResources.add(state.get(Constants.HEX07).toString());
+                break;
+            case Constants.NODE22:
+                expectedResources.add(state.get(Constants.HEX03).toString());
+                expectedResources.add(state.get(Constants.HEX07).toString());
+                expectedResources.add(state.get(Constants.HEX08).toString());
+                break;
+            case Constants.NODE23:
+                expectedResources.add(state.get(Constants.HEX04).toString());
+                expectedResources.add(state.get(Constants.HEX08).toString());
+                expectedResources.add(state.get(Constants.HEX09).toString());
+                break;
+            case Constants.NODE24:
+                expectedResources.add(state.get(Constants.HEX05).toString());
+                expectedResources.add(state.get(Constants.HEX09).toString());
+                expectedResources.add(state.get(Constants.HEX10).toString());
+                break;
+            case Constants.NODE25:
+                expectedResources.add(state.get(Constants.HEX06).toString());
+                expectedResources.add(state.get(Constants.HEX10).toString());
+                expectedResources.add(state.get(Constants.HEX11).toString());
+                break;
+            case Constants.NODE26:
+                expectedResources.add(state.get(Constants.HEX11).toString());
+                break;
+            case Constants.NODE27:
+                expectedResources.add(state.get(Constants.HEX07).toString());
+                break;
+            case Constants.NODE28:
+                expectedResources.add(state.get(Constants.HEX07).toString());
+                expectedResources.add(state.get(Constants.HEX08).toString());
+                expectedResources.add(state.get(Constants.HEX12).toString());
+                break;
+            case Constants.NODE29:
+                expectedResources.add(state.get(Constants.HEX08).toString());
+                expectedResources.add(state.get(Constants.HEX09).toString());
+                expectedResources.add(state.get(Constants.HEX13).toString());
+                break;
+            case Constants.NODE30:
+                expectedResources.add(state.get(Constants.HEX09).toString());
+                expectedResources.add(state.get(Constants.HEX10).toString());
+                expectedResources.add(state.get(Constants.HEX14).toString());
+                break;
+            case Constants.NODE31:
+                expectedResources.add(state.get(Constants.HEX10).toString());
+                expectedResources.add(state.get(Constants.HEX11).toString());
+                expectedResources.add(state.get(Constants.HEX15).toString());
+                break;
+            case Constants.NODE32:
+                expectedResources.add(state.get(Constants.HEX11).toString());
+                break;
+            case Constants.NODE33:
+                expectedResources.add(state.get(Constants.HEX07).toString());
+                expectedResources.add(state.get(Constants.HEX12).toString());
+                break;
+            case Constants.NODE34:
+                expectedResources.add(state.get(Constants.HEX08).toString());
+                expectedResources.add(state.get(Constants.HEX12).toString());
+                expectedResources.add(state.get(Constants.HEX13).toString());
+                break;
+            case Constants.NODE35:
+                expectedResources.add(state.get(Constants.HEX09).toString());
+                expectedResources.add(state.get(Constants.HEX13).toString());
+                expectedResources.add(state.get(Constants.HEX14).toString());
+                break;
+            case Constants.NODE36:
+                expectedResources.add(state.get(Constants.HEX10).toString());
+                expectedResources.add(state.get(Constants.HEX14).toString());
+                expectedResources.add(state.get(Constants.HEX15).toString());
+                break;
+            case Constants.NODE37:
+                expectedResources.add(state.get(Constants.HEX11).toString());
+                expectedResources.add(state.get(Constants.HEX15).toString());
+                break;
+            case Constants.NODE38:
+                expectedResources.add(state.get(Constants.HEX12).toString());
+                break;
+            case Constants.NODE39:
+                expectedResources.add(state.get(Constants.HEX12).toString());
+                expectedResources.add(state.get(Constants.HEX13).toString());
+                expectedResources.add(state.get(Constants.HEX16).toString());
+                break;
+            case Constants.NODE40:
+                expectedResources.add(state.get(Constants.HEX13).toString());
+                expectedResources.add(state.get(Constants.HEX14).toString());
+                expectedResources.add(state.get(Constants.HEX17).toString());
+                break;
+            case Constants.NODE41:
+                expectedResources.add(state.get(Constants.HEX14).toString());
+                expectedResources.add(state.get(Constants.HEX15).toString());
+                expectedResources.add(state.get(Constants.HEX18).toString());
+                break;
+            case Constants.NODE42:
+                expectedResources.add(state.get(Constants.HEX15).toString());
+                break;
+            case Constants.NODE43:
+                expectedResources.add(state.get(Constants.HEX12).toString());
+                expectedResources.add(state.get(Constants.HEX16).toString());
+                break;
+            case Constants.NODE44:
+                expectedResources.add(state.get(Constants.HEX13).toString());
+                expectedResources.add(state.get(Constants.HEX16).toString());
+                expectedResources.add(state.get(Constants.HEX17).toString());
+                break;
+            case Constants.NODE45:
+                expectedResources.add(state.get(Constants.HEX14).toString());
+                expectedResources.add(state.get(Constants.HEX17).toString());
+                expectedResources.add(state.get(Constants.HEX18).toString());
+                break;
+            case Constants.NODE46:
+                expectedResources.add(state.get(Constants.HEX15).toString());
+                expectedResources.add(state.get(Constants.HEX18).toString());
+                break;
+            case Constants.NODE47:
+                expectedResources.add(state.get(Constants.HEX16).toString());
+                break;
+            case Constants.NODE48:
+                expectedResources.add(state.get(Constants.HEX16).toString());
+                expectedResources.add(state.get(Constants.HEX17).toString());
+                break;
+            case Constants.NODE49:
+                expectedResources.add(state.get(Constants.HEX17).toString());
+                expectedResources.add(state.get(Constants.HEX18).toString());
+                break;
+            case Constants.NODE50:
+                expectedResources.add(state.get(Constants.HEX18).toString());
+                break;
+            case Constants.NODE51:
+                expectedResources.add(state.get(Constants.HEX16).toString());
+                break;
+            case Constants.NODE52:
+                expectedResources.add(state.get(Constants.HEX17).toString());
+                break;
+            case Constants.NODE53:
+                expectedResources.add(state.get(Constants.HEX18).toString());
+                break;
+        }
+        
+        expectedResources.remove(Constants.DESERT);
+        
+        return expectedResources;
+    }
+    
     // Checks if String is an integer
     // From http://stackoverflow.com/questions/5439529/determine-if-a-string-is-an-integer-in-java
     private static boolean isInteger(String s)
@@ -5397,5 +6748,80 @@ public class SettlersOfCatanLogic {
         }
         // only got here if we didn't return false
         return true;
+    }
+    
+    public boolean checkLongestRoadClaim(String playerString, Map<String, Object> lastState)
+    {
+        boolean status = false;
+        List<String> longestPath = null;
+        String startingRoad = "";
+        
+        for (int i = 0; i < 15; i++)
+        {
+            List<String> pathToCheck = new ArrayList<String>();
+            
+            if(i < 10)
+                startingRoad = Constants.ROADTOKEN + "0" + i + playerString;
+            else
+                startingRoad = Constants.ROADTOKEN + i + playerString;
+            
+            if(lastState.containsKey(startingRoad))
+            {
+                pathToCheck = checkNextPath(
+                        lastState,
+                        pathToCheck,
+                        lastState.get(startingRoad).toString(),
+                        playerString);
+            }
+            
+            if( longestPath == null
+             || pathToCheck.size() > longestPath.size())
+            {
+                longestPath = pathToCheck;
+            }
+        }
+        
+        if(!lastState.containsKey(Constants.LONGESTROAD)
+         && longestPath.size() > 4)
+        {
+            status = true;
+        }
+        else
+        {
+            String currentLongestPathHolder = lastState.get(Constants.LONGESTROAD).toString();
+            List<String> longestPathHolder = null;
+            
+            for (int i = 0; i < 10; i++)
+            {
+                List<String> pathToCheck = new ArrayList<String>();
+                
+                if(i < 10)
+                    startingRoad = Constants.ROADTOKEN + "0" + i + currentLongestPathHolder;
+                else
+                    startingRoad = Constants.ROADTOKEN + i + currentLongestPathHolder;
+                
+                if(lastState.containsKey(startingRoad))
+                {
+                    pathToCheck = checkNextPath(
+                            lastState,
+                            pathToCheck,
+                            lastState.get(startingRoad).toString(),
+                            currentLongestPathHolder);
+                }
+                
+                if( longestPathHolder == null
+                 || pathToCheck.size() > longestPathHolder.size())
+                {
+                    longestPathHolder = pathToCheck;
+                }
+            }
+            
+            if(longestPath.size() > longestPathHolder.size())
+            {
+                status = true;
+            }
+        }
+        
+        return status;
     }
 }

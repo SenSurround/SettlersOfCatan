@@ -10,12 +10,9 @@ import settlersofcatan.client.GameApi.EndGame;
 import settlersofcatan.client.GameApi.Operation;
 import settlersofcatan.client.GameApi.Set;
 import settlersofcatan.client.GameApi.SetVisibility;
-import settlersofcatan.client.GameApi.Shuffle;
 import settlersofcatan.client.GameApi.VerifyMove;
 import settlersofcatan.client.GameApi.VerifyMoveDone;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -222,7 +219,6 @@ public class SettlersOfCatanLogicTest {
     // A specialized state to test adding assets via resource purchase
     public static Map<String, Object> createBlueAddAssetStateForBlue() {
         Map<String, Object> addRoadState = createEmptyStateNoDevCards();
-        addRoadState = changeState(addRoadState, Constants.TURN, Constants.PB);
         addRoadState = changeState(addRoadState, Constants.NODE23, Constants.SETTLEMENT00PB);
         addRoadState = changeState(addRoadState, Constants.SETTLEMENT00PB, Constants.NODE23);
         addRoadState = changeState(addRoadState, Constants.PATH26, Constants.ROAD00PB);
@@ -231,6 +227,81 @@ public class SettlersOfCatanLogicTest {
         addRoadState = changeState(addRoadState, Constants.ROAD01PB, Constants.PATH19);
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD00PB, Constants.LUMBER);
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD01PB, Constants.BRICK);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD02PB, Constants.WOOL);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD03PB, Constants.GRAIN);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD04PB, Constants.GRAIN);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD05PB, Constants.ORE);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD06PB, Constants.ORE);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD07PB, Constants.ORE);
+        
+        return addRoadState;
+    }
+    
+    // A specialized state to test adding assets via resource purchase
+    public static Map<String, Object> createBlueAddAssetStatePlusDevelopmentCardForBlue() {
+        Map<String, Object> addRoadState = createEmptyStateNoDevCards();
+        addRoadState = changeState(addRoadState, Constants.NODE23, Constants.SETTLEMENT00PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT00PB, Constants.NODE23);
+        addRoadState = changeState(addRoadState, Constants.PATH26, Constants.ROAD00PB);
+        addRoadState = changeState(addRoadState, Constants.PATH19, Constants.ROAD01PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD00PB, Constants.PATH26);
+        addRoadState = changeState(addRoadState, Constants.ROAD01PB, Constants.PATH19);
+        addRoadState = changeState(addRoadState, Constants.DEVELOPMENTCARD00, Constants.DEVELOPMENTCARDTYPEDEF00);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD01PB, Constants.BRICK);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD04PB, Constants.GRAIN);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD06PB, Constants.ORE);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD07PB, Constants.ORE);
+        
+        return addRoadState;
+    }
+    
+    // A specialized state to test adding assets via resource purchase
+    public static Map<String, Object> createBlueAddAssetStatePlusCityForBlue() {
+        Map<String, Object> addRoadState = createEmptyStateNoDevCards();
+        addRoadState = changeState(addRoadState, Constants.NODE23, Constants.CITY00PB);
+        addRoadState = changeState(addRoadState, Constants.CITY00PB, Constants.NODE23);
+        addRoadState = changeState(addRoadState, Constants.PATH26, Constants.ROAD00PB);
+        addRoadState = changeState(addRoadState, Constants.PATH19, Constants.ROAD01PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD00PB, Constants.PATH26);
+        addRoadState = changeState(addRoadState, Constants.ROAD01PB, Constants.PATH19);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD00PB, Constants.LUMBER);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD01PB, Constants.BRICK);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD02PB, Constants.WOOL);
+        
+        return addRoadState;
+    }
+    
+    // A specialized state to test adding assets via resource purchase
+    public static Map<String, Object> createBlueAddAssetStatePlusSettlementForBlue() {
+        Map<String, Object> addRoadState = createEmptyStateNoDevCards();
+        addRoadState = changeState(addRoadState, Constants.NODE23, Constants.SETTLEMENT00PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT00PB, Constants.NODE23);
+        addRoadState = changeState(addRoadState, Constants.NODE12, Constants.SETTLEMENT01PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT01PB, Constants.NODE12);
+        addRoadState = changeState(addRoadState, Constants.PATH26, Constants.ROAD00PB);
+        addRoadState = changeState(addRoadState, Constants.PATH19, Constants.ROAD01PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD00PB, Constants.PATH26);
+        addRoadState = changeState(addRoadState, Constants.ROAD01PB, Constants.PATH19);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD04PB, Constants.GRAIN);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD05PB, Constants.ORE);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD06PB, Constants.ORE);
+        addRoadState = changeState(addRoadState, Constants.RESOURCECARD07PB, Constants.ORE);
+        
+        return addRoadState;
+    }
+    
+    // A specialized state to test adding assets via resource purchase
+    public static Map<String, Object> createBlueAddAssetStatePlusRoadForBlue() {
+        Map<String, Object> addRoadState = createEmptyStateNoDevCards();
+        addRoadState = changeState(addRoadState, Constants.NODE23, Constants.SETTLEMENT00PB);
+        addRoadState = changeState(addRoadState, Constants.SETTLEMENT00PB, Constants.NODE23);
+        addRoadState = changeState(addRoadState, Constants.PATH26, Constants.ROAD00PB);
+        addRoadState = changeState(addRoadState, Constants.PATH19, Constants.ROAD01PB);
+        addRoadState = changeState(addRoadState, Constants.PATH12, Constants.ROAD02PB);
+        addRoadState = changeState(addRoadState, Constants.ROAD00PB, Constants.PATH26);
+        addRoadState = changeState(addRoadState, Constants.ROAD01PB, Constants.PATH19);
+        addRoadState = changeState(addRoadState, Constants.ROAD02PB, Constants.PATH12);
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD02PB, Constants.WOOL);
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD03PB, Constants.GRAIN);
         addRoadState = changeState(addRoadState, Constants.RESOURCECARD04PB, Constants.GRAIN);
@@ -254,6 +325,17 @@ public class SettlersOfCatanLogicTest {
                 harborTradeState, Constants.RESOURCECARD02PB, Constants.LUMBER);
         harborTradeState = changeState(
                 harborTradeState, Constants.RESOURCECARD03PB, Constants.LUMBER);
+        
+        return harborTradeState;
+    }
+    
+    // A specialized state to test adding assets via resource purchase
+    public static Map<String, Object> createBluePostAnyHarborTradeStateForBlue() {
+        Map<String, Object> harborTradeState = createEmptyStateNoDevCards();
+        harborTradeState = changeState(
+                harborTradeState, Constants.TURN, Constants.PB);
+        harborTradeState = changeState(
+                harborTradeState, Constants.RESOURCECARD00PB, Constants.ORE);
         
         return harborTradeState;
     }

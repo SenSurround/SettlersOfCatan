@@ -7,19 +7,58 @@ import com.google.common.collect.ImmutableMap;
 
 public class Constants {
     
+    public static final String MAKEFIRSTFREEMOVESETTLEMENT = "MAKEFIRSTFREEMOVESETTLEMENT";
+    public static final String MAKEFIRSTFREEMOVEROAD = "MAKEFIRSTFREEMOVEROAD";
+    public static final String MAKESECONDFREEMOVESETTLEMENT = "MAKESECONDFREEMOVESETTLEMENT";
+    public static final String MAKESECONDFREEMOVEROAD = "MAKESECONDFREEMOVEROAD";
+    public static final String ROLLDICE = "ROLLDICE";
+    public static final String ROLLEDTOK = "ROLLED";
+    public static final String ROLLED2 = "ROLLED2";
+    public static final String ROLLED3 = "ROLLED3";
+    public static final String ROLLED4 = "ROLLED4";
+    public static final String ROLLED5 = "ROLLED5";
+    public static final String ROLLED6 = "ROLLED6";
+    public static final String ROLLED8 = "ROLLED8";
+    public static final String ROLLED9 = "ROLLED9";
+    public static final String ROLLED10 = "ROLLED10";
+    public static final String ROLLED11 = "ROLLED11";
+    public static final String ROLLED12 = "ROLLED12";
+    public static final String CLEARROLL = "CLEARROLL";
+    public static final String MAKEMOVE = "MAKEMOVE";
+    public static final String CLICKNODE = "CLICKNODE";
+    public static final String CLICKPATH = "CLICKPATH";
+    public static final String CLICKRESOURCECARDS = "CLICKRESOURCECARDS";
+    public static final String ENDGAME = "ENDGAME";
+    
     public static final String FIRSTMOVE = "FIRSTMOVE";
+    public static final String FIRSTROUNDSETTLEMENT = "FIRSTROUNDSETTLEMENT";
+    public static final String FIRSTROUNDROAD = "FIRSTROUNDROAD";
+    public static final String SECONDROUNDSETTLEMENT = "SECONDROUNDSETTLEMENT";
+    public static final String SECONDROUNDROAD = "SECONDROUNDROAD";
+    public static final String MOVEROBBER = "MOVEROBBER";
     public static final String CHANGETURN = "CHANGETURN";
-    public static final String BUILDCITY = "BUILDCITY";
-    public static final String BUILDSETTLEMENT = "BUILDSETTLEMENT";
-    public static final String BUILDROAD = "BUILDROAD";
-    public static final String BUYDEVELOPMENTCARD = "BUYDEVELOPMENTCARD";
-    public static final String HARBORTRADE = "HARBORTRADE";
-    public static final String THREETOONEHARBORTRADE = "THREETOONEHARBORTRADE";
-    public static final String TWOTOONEOREHARBORTRADE = "TWOTOONEOREHARBORTRADE";
-    public static final String TWOTOONEGRAHARBORTRADE = "TWOTOONEGRAHARBORTRADE";
-    public static final String TWOTOONELUMHARBORTRADE = "TWOTOONELUMHARBORTRADE";
-    public static final String TWOTOONEWOOHARBORTRADE = "TWOTOONEWOOHARBORTRADE";
-    public static final String TWOTOONEBRIHARBORTRADE = "TWOTOONBRIEHARBORTRADE";
+    public static final String BUILDCITYPT1 = "BUILDCITYPT1";
+    public static final String BUILDCITYPT2 = "BUILDCITYPT2";
+    public static final String BUILDSETTLEMENTPT1 = "BUILDSETTLEMENTPT1";
+    public static final String BUILDSETTLEMENTPT2 = "BUILDSETTLEMENTPT2";
+    public static final String BUILDROADPT1 = "BUILDROADPT1";
+    public static final String BUILDROADPT2 = "BUILDROADPT2";
+    public static final String BUYDEVELOPMENTCARDPT1 = "BUYDEVELOPMENTCARDPT1";
+    public static final String BUYDEVELOPMENTCARDPT2 = "BUYDEVELOPMENTCARDPT2";
+    public static final String HARBORTRADEPT1 = "HARBORTRADEPT1";
+    public static final String HARBORTRADEPT2 = "HARBORTRADEPT2";
+    public static final String THREETOONEHARBORTRADEPT1 = "THREETOONEHARBORTRADEPT1";
+    public static final String THREETOONEHARBORTRADEPT2 = "THREETOONEHARBORTRADEPT2";
+    public static final String TWOTOONEOREHARBORTRADEPT1 = "TWOTOONEOREHARBORTRADEPT1";
+    public static final String TWOTOONEOREHARBORTRADEPT2 = "TWOTOONEOREHARBORTRADEPT2";
+    public static final String TWOTOONEGRAHARBORTRADEPT1 = "TWOTOONEGRAHARBORTRADEPT1";
+    public static final String TWOTOONEGRAHARBORTRADEPT2 = "TWOTOONEGRAHARBORTRADEPT2";
+    public static final String TWOTOONELUMHARBORTRADEPT1 = "TWOTOONELUMHARBORTRADEPT1";
+    public static final String TWOTOONELUMHARBORTRADEPT2 = "TWOTOONELUMHARBORTRADEPT2";
+    public static final String TWOTOONEWOOHARBORTRADEPT1 = "TWOTOONEWOOHARBORTRADEPT1";
+    public static final String TWOTOONEWOOHARBORTRADEPT2 = "TWOTOONEWOOHARBORTRADEPT2";
+    public static final String TWOTOONEBRIHARBORTRADEPT1 = "TWOTOONBRIEHARBORTRADEPT1";
+    public static final String TWOTOONEBRIHARBORTRADEPT2 = "TWOTOONBRIEHARBORTRADEPT2";
     public static final String PLAYDEVELOPMENTCARD = "PLAYDEVELOPMENTCARD";
 
     public static final String NODETOKEN = "NOD";
@@ -1701,57 +1740,10 @@ public class Constants {
             ImmutableMap.<String, Object>of(RESOURCECARD_PG_ID, resourceCard29PGId);
     public static final ImmutableList<Map<String, Object>> playersInfo =
             ImmutableList.<Map<String, Object>>of(pbInfo, prInfo, pyInfo, pgInfo);
-    public static final ImmutableList<Map<String, Object>> hexInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    hex00Info, hex01Info, hex02Info, hex03Info, hex04Info,
-                    hex05Info, hex06Info, hex07Info, hex08Info, hex09Info, 
-                    hex10Info, hex11Info, hex12Info, hex13Info, hex14Info,
-                    hex15Info, hex16Info, hex17Info, hex18Info);
-    public static final ImmutableList<Map<String, Object>> nodeInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    node00Info, node01Info, node02Info, node03Info, node04Info,
-                    node05Info, node06Info, node07Info, node08Info, node09Info,
-                    node10Info, node11Info, node12Info, node13Info, node14Info,
-                    node15Info, node16Info, node17Info, node18Info, node19Info,
-                    node20Info, node21Info, node22Info, node23Info, node24Info,
-                    node25Info, node26Info, node27Info, node28Info, node29Info,
-                    node30Info, node31Info, node32Info, node33Info, node34Info,
-                    node35Info, node36Info, node37Info, node38Info, node39Info,
-                    node40Info, node41Info, node42Info, node43Info, node44Info,
-                    node45Info, node46Info, node47Info, node48Info, node49Info,
-                    node50Info, node51Info, node52Info, node53Info);
-    public static final ImmutableList<Map<String, Object>> pathInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    path00Info, path01Info, path02Info, path03Info, path04Info,
-                    path05Info, path06Info, path07Info, path08Info, path09Info,
-                    path10Info, path11Info, path12Info, path13Info, path14Info,
-                    path15Info, path16Info, path17Info, path18Info, path19Info,
-                    path20Info, path21Info, path22Info, path23Info, path24Info,
-                    path25Info, path26Info, path27Info, path28Info, path29Info,
-                    path30Info, path31Info, path32Info, path33Info, path34Info,
-                    path35Info, path36Info, path37Info, path38Info, path39Info,
-                    path40Info, path41Info, path42Info, path43Info, path44Info,
-                    path45Info, path46Info, path47Info, path48Info, path49Info,
-                    path50Info, path51Info, path52Info, path53Info, path54Info,
-                    path55Info, path56Info, path57Info, path58Info, path59Info,
-                    path60Info, path61Info, path62Info, path63Info, path64Info,
-                    path65Info, path66Info, path67Info, path68Info, path69Info,
-                    path70Info, path71Info);
     public static final ImmutableList<Map<String, Object>> harborInfo =
             ImmutableList.<Map<String, Object>>of(
                     harbor00Info, harbor01Info, harbor02Info, harbor03Info, harbor04Info,
                     harbor05Info, harbor06Info, harbor07Info, harbor08Info);
-    public static final ImmutableList<Map<String, Object>> developmentCardInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    developmentCard00Info, developmentCard01Info, developmentCard02Info,
-                    developmentCard03Info, developmentCard04Info, developmentCard05Info,
-                    developmentCard06Info, developmentCard07Info, developmentCard08Info,
-                    developmentCard09Info, developmentCard10Info, developmentCard11Info,
-                    developmentCard12Info, developmentCard13Info, developmentCard14Info,
-                    developmentCard15Info, developmentCard16Info, developmentCard17Info,
-                    developmentCard18Info, developmentCard19Info, developmentCard20Info,
-                    developmentCard21Info, developmentCard22Info, developmentCard23Info,
-                    developmentCard24Info);
     public static final ImmutableList<Map<String, Object>> cityPBInfo =
             ImmutableList.<Map<String, Object>>of(
                     city00PBInfo, city01PBInfo, city02PBInfo, city03PBInfo);
@@ -1780,73 +1772,5 @@ public class Constants {
             ImmutableList.<Map<String, Object>>of(
                     settlement00PGInfo, settlement01PGInfo, settlement02PGInfo,
                     settlement03PGInfo, settlement04PGInfo);
-    public static final ImmutableList<Map<String, Object>> roadPBInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    road00PBInfo, road01PBInfo, road02PBInfo, road03PBInfo, road04PBInfo,
-                    road05PBInfo, road06PBInfo, road07PBInfo, road08PBInfo, road09PBInfo,
-                    road10PBInfo, road11PBInfo, road12PBInfo, road13PBInfo, road14PBInfo);
-    public static final ImmutableList<Map<String, Object>> roadPRInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    road00PRInfo, road01PRInfo, road02PRInfo, road03PRInfo, road04PRInfo,
-                    road05PRInfo, road06PRInfo, road07PRInfo, road08PRInfo, road09PRInfo,
-                    road10PRInfo, road11PRInfo, road12PRInfo, road13PRInfo, road14PRInfo);
-    public static final ImmutableList<Map<String, Object>> roadPYInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    road00PYInfo, road01PYInfo, road02PYInfo, road03PYInfo, road04PYInfo,
-                    road05PYInfo, road06PYInfo, road07PYInfo, road08PYInfo, road09PYInfo,
-                    road10PYInfo, road11PYInfo, road12PYInfo, road13PYInfo, road14PYInfo);
-    public static final ImmutableList<Map<String, Object>> roadPGInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    road00PGInfo, road01PGInfo, road02PGInfo, road03PGInfo, road04PGInfo,
-                    road05PGInfo, road06PGInfo, road07PGInfo, road08PGInfo, road09PGInfo,
-                    road10PGInfo, road11PGInfo, road12PGInfo, road13PGInfo, road14PGInfo);
-    public static final ImmutableList<Map<String, Object>> resourceCardPBInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    resourceCard00PBInfo, resourceCard01PBInfo, resourceCard02PBInfo,
-                    resourceCard03PBInfo, resourceCard04PBInfo, resourceCard05PBInfo,
-                    resourceCard06PBInfo, resourceCard07PBInfo, resourceCard08PBInfo,
-                    resourceCard09PBInfo, resourceCard10PBInfo, resourceCard11PBInfo,
-                    resourceCard12PBInfo, resourceCard13PBInfo, resourceCard14PBInfo,
-                    resourceCard15PBInfo, resourceCard16PBInfo, resourceCard17PBInfo,
-                    resourceCard18PBInfo, resourceCard19PBInfo, resourceCard20PBInfo,
-                    resourceCard21PBInfo, resourceCard22PBInfo, resourceCard23PBInfo,
-                    resourceCard24PBInfo, resourceCard25PBInfo, resourceCard26PBInfo,
-                    resourceCard27PBInfo, resourceCard28PBInfo, resourceCard29PBInfo);
-    public static final ImmutableList<Map<String, Object>> resourceCardPRInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    resourceCard00PRInfo, resourceCard01PRInfo, resourceCard02PRInfo,
-                    resourceCard03PRInfo, resourceCard04PRInfo, resourceCard05PRInfo,
-                    resourceCard06PRInfo, resourceCard07PRInfo, resourceCard08PRInfo,
-                    resourceCard09PRInfo, resourceCard10PRInfo, resourceCard11PRInfo,
-                    resourceCard12PRInfo, resourceCard13PRInfo, resourceCard14PRInfo,
-                    resourceCard15PRInfo, resourceCard16PRInfo, resourceCard17PRInfo,
-                    resourceCard18PRInfo, resourceCard19PRInfo, resourceCard20PRInfo,
-                    resourceCard21PRInfo, resourceCard22PRInfo, resourceCard23PRInfo,
-                    resourceCard24PRInfo, resourceCard25PRInfo, resourceCard26PRInfo,
-                    resourceCard27PRInfo, resourceCard28PRInfo, resourceCard29PRInfo);
-    public static final ImmutableList<Map<String, Object>> resourceCardPYInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    resourceCard00PYInfo, resourceCard01PYInfo, resourceCard02PYInfo,
-                    resourceCard03PYInfo, resourceCard04PYInfo, resourceCard05PYInfo,
-                    resourceCard06PYInfo, resourceCard07PYInfo, resourceCard08PYInfo,
-                    resourceCard09PYInfo, resourceCard10PYInfo, resourceCard11PYInfo,
-                    resourceCard12PYInfo, resourceCard13PYInfo, resourceCard14PYInfo,
-                    resourceCard15PYInfo, resourceCard16PYInfo, resourceCard17PYInfo,
-                    resourceCard18PYInfo, resourceCard19PYInfo, resourceCard20PYInfo,
-                    resourceCard21PYInfo, resourceCard22PYInfo, resourceCard23PYInfo,
-                    resourceCard24PYInfo, resourceCard25PYInfo, resourceCard26PYInfo,
-                    resourceCard27PYInfo, resourceCard28PYInfo, resourceCard29PYInfo);
-    public static final ImmutableList<Map<String, Object>> resourceCardPGInfo =
-            ImmutableList.<Map<String, Object>>of(
-                    resourceCard00PGInfo, resourceCard01PGInfo, resourceCard02PGInfo,
-                    resourceCard03PGInfo, resourceCard04PGInfo, resourceCard05PGInfo,
-                    resourceCard06PGInfo, resourceCard07PGInfo, resourceCard08PGInfo,
-                    resourceCard09PGInfo, resourceCard10PGInfo, resourceCard11PGInfo,
-                    resourceCard12PGInfo, resourceCard13PGInfo, resourceCard14PGInfo,
-                    resourceCard15PGInfo, resourceCard16PGInfo, resourceCard17PGInfo,
-                    resourceCard18PGInfo, resourceCard19PGInfo, resourceCard20PGInfo,
-                    resourceCard21PGInfo, resourceCard22PGInfo, resourceCard23PGInfo,
-                    resourceCard24PGInfo, resourceCard25PGInfo, resourceCard26PGInfo,
-                    resourceCard27PGInfo, resourceCard28PGInfo, resourceCard29PGInfo);
 
 }

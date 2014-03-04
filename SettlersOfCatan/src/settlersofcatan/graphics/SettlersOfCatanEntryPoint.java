@@ -21,13 +21,15 @@ import com.google.gwt.user.client.ui.RootPanel;
 public class SettlersOfCatanEntryPoint implements EntryPoint {
   IteratingPlayerContainer container;
   SettlersOfCatanPresenter settlersOfCatanPresenter;
+  SettlersOfCatanLogic settlersOfCatanLogic;
 
   @Override
   public void onModuleLoad() {
+      settlersOfCatanLogic = new SettlersOfCatanLogic();
     Game game = new Game() {
       @Override
       public void sendVerifyMove(VerifyMove verifyMove) {
-        container.sendVerifyMoveDone(new SettlersOfCatanLogic().verify(verifyMove));
+        container.sendVerifyMoveDone(settlersOfCatanLogic.verify(verifyMove));
       }
 
       @Override
@@ -35,7 +37,7 @@ public class SettlersOfCatanEntryPoint implements EntryPoint {
         settlersOfCatanPresenter.updateUI(updateUI);
       }
     };
-    container = new IteratingPlayerContainer(game, 2);
+    container = new IteratingPlayerContainer(game, 4);
     SettlersOfCatanGraphics settlersOfCatanGraphics = new SettlersOfCatanGraphics();
     settlersOfCatanPresenter =
         new SettlersOfCatanPresenter(settlersOfCatanGraphics, container);
@@ -49,11 +51,12 @@ public class SettlersOfCatanEntryPoint implements EntryPoint {
       @Override
       public void onChange(ChangeEvent event) {
         int selectedIndex = playerSelect.getSelectedIndex();
-        int playerId = selectedIndex == 2 ? GameApi.VIEWER_ID
+        int playerId = selectedIndex == 4 ? GameApi.VIEWER_ID
             : container.getPlayerIds().get(selectedIndex);
         container.updateUi(playerId);
       }
     });
+    
     FlowPanel flowPanel = new FlowPanel();
     flowPanel.add(settlersOfCatanGraphics);
     flowPanel.add(playerSelect);

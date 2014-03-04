@@ -174,4 +174,52 @@ public interface BoardImages extends ClientBundle {
   
   @Source("images/emptyDownLeftUpRightRoad.png")
   ImageResource emptyDownLeftUpRightRoad();
+  
+  @Source("images/brickCard.png")
+  ImageResource brickCard();
+  
+  @Source("images/oreCard.png")
+  ImageResource oreCard();
+  
+  @Source("images/lumberCard.png")
+  ImageResource lumberCard();
+  
+  @Source("images/grainCard.png")
+  ImageResource grainCard();
+  
+  @Source("images/woolCard.png")
+  ImageResource woolCard();
+  
+  @Source("images/soldierDevelopmentCard.png")
+  ImageResource soldierDevelopmentCard();
+  
+  @Source("images/yearOfPlentyDevelopmentCard.png")
+  ImageResource yearOfPlentyDevelopmentCard();
+  
+  @Source("images/monopolyDevelopmentCard.png")
+  ImageResource monopolyDevelopmentCard();
+  
+  @Source("images/roadBuildingDevelopmentCard.png")
+  ImageResource roadBuildingDevelopmentCard();
+  
+  @Source("images/governorsHouseDevelopmentCard.png")
+  ImageResource governorsHouseDevelopmentCard();
+  
+  @Source("images/chapelDevelopmentCard.png")
+  ImageResource chapelDevelopmentCard();
+  
+  @Source("images/universityOfCatanDevelopmentCard.png")
+  ImageResource universityOfCatanDevelopmentCard();
+  
+  @Source("images/marketDevelopmentCard.png")
+  ImageResource marketDevelopmentCard();
+  
+  @Source("images/libraryDevelopmentCard.png")
+  ImageResource libraryDevelopmentCard();
+  
+  @Source("images/longestRoad.png")
+  ImageResource longestRoad();
+  
+  @Source("images/largestArmy.png")
+  ImageResource largestArmy();
 }

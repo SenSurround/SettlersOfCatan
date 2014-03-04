@@ -19,8 +19,11 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import settlersofcatan.client.GameApi.Container;
+import settlersofcatan.client.GameApi.Delete;
 import settlersofcatan.client.GameApi.Operation;
+import settlersofcatan.client.GameApi.Set;
 import settlersofcatan.client.GameApi.SetTurn;
+import settlersofcatan.client.GameApi.SetVisibility;
 import settlersofcatan.client.GameApi.UpdateUI;
 import settlersofcatan.client.SettlersOfCatanPresenter.View;
 
@@ -44,18 +47,24 @@ public class SettlersOfCatanPresenterTest {
     private final ImmutableMap<String, Object> emptyState = ImmutableMap.<String, Object>of();
     private final Map<String, Object> blueAddStateForBlue =
             SettlersOfCatanLogicTest.createBlueAddAssetStateForBlue();
-    private final Map<String, Object> blueAddPlusDevCardStateForBlue =
-            SettlersOfCatanLogicTest.createBlueAddAssetPlusDevCardStateForBlue();
+    private final Map<String, Object> blueAddStatePlusRoadForBlue =
+            SettlersOfCatanLogicTest.createBlueAddAssetStatePlusRoadForBlue();
+    private final Map<String, Object> blueAddStatePlusCityForBlue =
+            SettlersOfCatanLogicTest.createBlueAddAssetStatePlusCityForBlue();
+    private final Map<String, Object> blueAddStatePlusSettlementForBlue =
+            SettlersOfCatanLogicTest.createBlueAddAssetStatePlusSettlementForBlue();
+    private final Map<String, Object> blueAddStatePlusDevelopmentCardForBlue =
+            SettlersOfCatanLogicTest.createBlueAddAssetStatePlusDevelopmentCardForBlue();
     private final Map<String, Object> blueNormalHarborTradeStateForBlue =
             SettlersOfCatanLogicTest.createBlueNormalHarborTradeStateForBlue();
+    private final Map<String, Object> bluePostAnyHarborTradeStateForBlue =
+            SettlersOfCatanLogicTest.createBluePostAnyHarborTradeStateForBlue();
     private final Map<String, Object> blueThreeToOneHarborTradeStateForBlue =
             SettlersOfCatanLogicTest.createBlueThreeToOneHarborTradeStateForBlue();
     private final Map<String, Object> blueTwoToOneLumberHarborTradeStateForBlue =
             SettlersOfCatanLogicTest.createBlueTwoToOneLumberHarborTradeStateForBlue();
     private final Map<String, Object> blueAddStateForNotBlue =
             SettlersOfCatanLogicTest.createBlueAddAssetStateForNotBlue();
-    private final Map<String, Object> blueVictoryStateForBlue =
-            SettlersOfCatanLogicTest.createBlueVictoryStateForBlue();
     private final Map<String, Object> blueVictoryStateForNotBlue =
             SettlersOfCatanLogicTest.createBlueVictoryStateForNotBlue();
     
@@ -67,6 +76,50 @@ public class SettlersOfCatanPresenterTest {
             Constants.GRAIN,
             Constants.ORE,
             Constants.ORE,
+            Constants.ORE);
+    
+    private List<String> blueAddStateResourcesMinusRoad = Arrays.asList(
+            Constants.WOOL,
+            Constants.GRAIN,
+            Constants.GRAIN,
+            Constants.ORE,
+            Constants.ORE,
+            Constants.ORE);
+
+    private List<String> blueAddStateResourcesMinusCity = Arrays.asList(
+            Constants.LUMBER,
+            Constants.BRICK,
+            Constants.WOOL);
+    
+    private List<String> blueAddStateResourcesMinusSettlement = Arrays.asList(
+            Constants.GRAIN,
+            Constants.ORE,
+            Constants.ORE,
+            Constants.ORE);
+    
+    private List<String> blueAddStateResourcesMinusDevelopmentCard = Arrays.asList(
+            Constants.LUMBER,
+            Constants.BRICK,
+            Constants.GRAIN,
+            Constants.ORE,
+            Constants.ORE);
+    
+    private List<String> blueNormalHarborTradeResources = Arrays.asList(
+            Constants.LUMBER,
+            Constants.LUMBER,
+            Constants.LUMBER,
+            Constants.LUMBER);
+    
+    private List<String> blueThreetoOneHarborTradeResources = Arrays.asList(
+            Constants.LUMBER,
+            Constants.LUMBER,
+            Constants.LUMBER);
+    
+    private List<String> blueTwotoOneLumberHarborTradeResources = Arrays.asList(
+            Constants.LUMBER,
+            Constants.LUMBER);
+    
+    private List<String> bluePostHarborTradeResources = Arrays.asList(
             Constants.ORE);
     
     @Before
@@ -110,11 +163,10 @@ public class SettlersOfCatanPresenterTest {
     }
     
     @Test
-    public void testBlueAddSettlementStateForBlue() {
+    public void testBlueAddRoadStateForBlue() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueAddStateForBlue));
-        settlersOfCatanPresenter.selectSettlement();
-        settlersOfCatanPresenter.verifyTwoStep();
-        settlersOfCatanPresenter.endTurn();
         verify(mockView).setPlayerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
                 settlersOfCatanPresenter.getBoard().getNodeList(),
@@ -123,16 +175,42 @@ public class SettlersOfCatanPresenterTest {
                 new ArrayList<String>(),
                 settlersOfCatanLogic.getVictoryPointCount(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
                 settlersOfCatanLogic.hasLongestRoad(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
-                settlersOfCatanLogic.hasLargestArmy(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)));
-        verify(mockView).makeMove(Constants.BUILDSETTLEMENT);
-        verify(mockView).twoStepValidation();
-        verify(mockView).endTurn(playerIds.indexOf(Constants.pbId) + 1 % playerIds.size());
-                
-                
+                settlersOfCatanLogic.hasLargestArmy(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.MAKEMOVE);
+        settlersOfCatanPresenter.setPathToBuild(12);
+        List<Operation> addRoad = new ArrayList<Operation>();
+            addRoad.add(new SetTurn(playerIds.get(0)));
+            addRoad.add(new Set(Constants.PATH12, Constants.ROAD02PB));
+            addRoad.add(new Set(Constants.ROAD02PB, Constants.PATH12));
+            addRoad.add(new SetVisibility(Constants.RESOURCECARD01PB));
+            addRoad.add(new SetVisibility(Constants.RESOURCECARD00PB));
+        verify(mockContainer).sendMakeMove(addRoad);
+
+        settlersOfCatanPresenter.finishRoadBuild();
+        addRoad.clear();
+            addRoad.add(new Delete(Constants.RESOURCECARD01PB));
+            addRoad.add(new Delete(Constants.RESOURCECARD00PB));
+            verify(mockContainer).sendMakeMove(addRoad);
+            
+        settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueAddStatePlusRoadForBlue));
+        verify(mockView).setPlayerState(
+                settlersOfCatanPresenter.getBoard().getHexList(),
+                settlersOfCatanPresenter.getBoard().getNodeList(),
+                settlersOfCatanPresenter.getBoard().getPathList(),
+                blueAddStateResourcesMinusRoad,
+                new ArrayList<String>(),
+                settlersOfCatanLogic.getVictoryPointCount(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLongestRoad(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLargestArmy(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.BUILDROADPT2);
     }
     
     @Test
     public void testBlueSettlementAddedStateForRed() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.prId, Constants.pbId, blueAddStateForNotBlue));
         verify(mockView).setPlayerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
@@ -142,11 +220,15 @@ public class SettlersOfCatanPresenterTest {
                 new ArrayList<String>(),
                 settlersOfCatanLogic.getVictoryPointCount(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
                 settlersOfCatanLogic.hasLongestRoad(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
-                settlersOfCatanLogic.hasLargestArmy(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)));
+                settlersOfCatanLogic.hasLargestArmy(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
+                false,
+                Constants.MAKEMOVE);
     }
     
     @Test
     public void testBlueSettlementAddedStateForViewer() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(GameApi.VIEWER_ID, Constants.pbId, blueAddStateForNotBlue));
         verify(mockView).setViewerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
@@ -156,10 +238,10 @@ public class SettlersOfCatanPresenterTest {
     
     @Test
     public void testBlueCityAddedStateForBlue() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
+        settlersOfCatanPresenter.lookingForCity = true;
         settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueAddStateForBlue));
-        settlersOfCatanPresenter.selectCity();
-        settlersOfCatanPresenter.verifyTwoStep();
-        settlersOfCatanPresenter.endTurn();
         verify(mockView).setPlayerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
                 settlersOfCatanPresenter.getBoard().getNodeList(),
@@ -168,14 +250,49 @@ public class SettlersOfCatanPresenterTest {
                 new ArrayList<String>(),
                 settlersOfCatanLogic.getVictoryPointCount(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
                 settlersOfCatanLogic.hasLongestRoad(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
-                settlersOfCatanLogic.hasLargestArmy(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)));
-        verify(mockView).makeMove(Constants.BUILDCITY);
-        verify(mockView).twoStepValidation();
-        verify(mockView).endTurn(playerIds.indexOf(Constants.pbId) + 1 % playerIds.size());
+                settlersOfCatanLogic.hasLargestArmy(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.MAKEMOVE);
+        settlersOfCatanPresenter.setNodeToBuild(23);
+        List<Operation> addCity = new ArrayList<Operation>();
+            addCity.add(new SetTurn(playerIds.get(0)));
+            addCity.add(new Set(Constants.NODE23, Constants.CITY00PB));
+            addCity.add(new Set(Constants.CITY00PB, Constants.NODE23));
+            addCity.add(new Delete(Constants.SETTLEMENT00PB));
+            addCity.add(new SetVisibility(Constants.RESOURCECARD05PB));
+            addCity.add(new SetVisibility(Constants.RESOURCECARD06PB));
+            addCity.add(new SetVisibility(Constants.RESOURCECARD07PB));
+            addCity.add(new SetVisibility(Constants.RESOURCECARD03PB));
+            addCity.add(new SetVisibility(Constants.RESOURCECARD04PB));
+        verify(mockContainer).sendMakeMove(addCity);
+
+        settlersOfCatanPresenter.finishCityBuild();
+        addCity.clear();
+            addCity.add(new Delete(Constants.RESOURCECARD05PB));
+            addCity.add(new Delete(Constants.RESOURCECARD06PB));
+            addCity.add(new Delete(Constants.RESOURCECARD07PB));
+            addCity.add(new Delete(Constants.RESOURCECARD03PB));
+            addCity.add(new Delete(Constants.RESOURCECARD04PB));
+            verify(mockContainer).sendMakeMove(addCity);
+            
+        settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueAddStatePlusCityForBlue));
+        verify(mockView).setPlayerState(
+                settlersOfCatanPresenter.getBoard().getHexList(),
+                settlersOfCatanPresenter.getBoard().getNodeList(),
+                settlersOfCatanPresenter.getBoard().getPathList(),
+                blueAddStateResourcesMinusCity,
+                new ArrayList<String>(),
+                settlersOfCatanLogic.getVictoryPointCount(blueAddStatePlusCityForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLongestRoad(blueAddStatePlusCityForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLargestArmy(blueAddStatePlusCityForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.BUILDCITYPT2);
     }
     
     @Test
     public void testBlueCityAddedStateForRed() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.prId, Constants.pbId, blueAddStateForNotBlue));
         verify(mockView).setPlayerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
@@ -185,11 +302,15 @@ public class SettlersOfCatanPresenterTest {
                 new ArrayList<String>(),
                 settlersOfCatanLogic.getVictoryPointCount(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
                 settlersOfCatanLogic.hasLongestRoad(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
-                settlersOfCatanLogic.hasLargestArmy(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)));
+                settlersOfCatanLogic.hasLargestArmy(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
+                false,
+                Constants.MAKEMOVE);
     }
     
     @Test
     public void testBlueCityAddedStateForViewer() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(GameApi.VIEWER_ID, Constants.pbId, blueAddStateForNotBlue));
         verify(mockView).setViewerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
@@ -198,11 +319,10 @@ public class SettlersOfCatanPresenterTest {
     }
     
     @Test
-    public void testBlueCityAddedRoadForBlue() {
+    public void testBlueCityAddedSettlementForBlue() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueAddStateForBlue));
-        settlersOfCatanPresenter.selectRoad();
-        settlersOfCatanPresenter.verifyTwoStep();
-        settlersOfCatanPresenter.endTurn();
         verify(mockView).setPlayerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
                 settlersOfCatanPresenter.getBoard().getNodeList(),
@@ -211,14 +331,46 @@ public class SettlersOfCatanPresenterTest {
                 new ArrayList<String>(),
                 settlersOfCatanLogic.getVictoryPointCount(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
                 settlersOfCatanLogic.hasLongestRoad(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
-                settlersOfCatanLogic.hasLargestArmy(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)));
-        verify(mockView).makeMove(Constants.BUILDROAD);
-        verify(mockView).twoStepValidation();
-        verify(mockView).endTurn(playerIds.indexOf(Constants.pbId) + 1 % playerIds.size());
+                settlersOfCatanLogic.hasLargestArmy(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.MAKEMOVE);
+        settlersOfCatanPresenter.setNodeToBuild(12);
+        List<Operation> addSettlement = new ArrayList<Operation>();
+            addSettlement.add(new SetTurn(playerIds.get(0)));
+            addSettlement.add(new Set(Constants.NODE12, Constants.SETTLEMENT01PB));
+            addSettlement.add(new Set(Constants.SETTLEMENT01PB, Constants.NODE12));
+            addSettlement.add(new SetVisibility(Constants.RESOURCECARD01PB));
+            addSettlement.add(new SetVisibility(Constants.RESOURCECARD00PB));
+            addSettlement.add(new SetVisibility(Constants.RESOURCECARD02PB));
+            addSettlement.add(new SetVisibility(Constants.RESOURCECARD03PB));
+        verify(mockContainer).sendMakeMove(addSettlement);
+
+        settlersOfCatanPresenter.finishSettlementBuild();
+        addSettlement.clear();
+            addSettlement.add(new Delete(Constants.RESOURCECARD01PB));
+            addSettlement.add(new Delete(Constants.RESOURCECARD00PB));
+            addSettlement.add(new Delete(Constants.RESOURCECARD02PB));
+            addSettlement.add(new Delete(Constants.RESOURCECARD03PB));
+            verify(mockContainer).sendMakeMove(addSettlement);
+            
+        settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueAddStatePlusSettlementForBlue));
+        verify(mockView).setPlayerState(
+                settlersOfCatanPresenter.getBoard().getHexList(),
+                settlersOfCatanPresenter.getBoard().getNodeList(),
+                settlersOfCatanPresenter.getBoard().getPathList(),
+                blueAddStateResourcesMinusSettlement,
+                new ArrayList<String>(),
+                settlersOfCatanLogic.getVictoryPointCount(blueAddStatePlusSettlementForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLongestRoad(blueAddStatePlusSettlementForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLargestArmy(blueAddStatePlusSettlementForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.BUILDSETTLEMENTPT2);
     }
     
     @Test
     public void testBlueCityAddedRoadForRed() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.prId, Constants.pbId, blueAddStateForNotBlue));
         verify(mockView).setPlayerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
@@ -228,11 +380,15 @@ public class SettlersOfCatanPresenterTest {
                 new ArrayList<String>(),
                 settlersOfCatanLogic.getVictoryPointCount(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
                 settlersOfCatanLogic.hasLongestRoad(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
-                settlersOfCatanLogic.hasLargestArmy(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)));
+                settlersOfCatanLogic.hasLargestArmy(blueAddStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
+                false,
+                Constants.MAKEMOVE);
     }
     
     @Test
     public void testBlueCityAddedRoadForViewer() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(GameApi.VIEWER_ID, Constants.pbId, blueAddStateForNotBlue));
         verify(mockView).setViewerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
@@ -242,10 +398,9 @@ public class SettlersOfCatanPresenterTest {
     
     @Test
     public void testBlueDevelopmentCardAddedForBlue() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueAddStateForBlue));
-        settlersOfCatanPresenter.selectPurchaseDevelopmentCard();
-        settlersOfCatanPresenter.verifyTwoStep();
-        settlersOfCatanPresenter.endTurn();
         verify(mockView).setPlayerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
                 settlersOfCatanPresenter.getBoard().getNodeList(),
@@ -254,116 +409,180 @@ public class SettlersOfCatanPresenterTest {
                 new ArrayList<String>(),
                 settlersOfCatanLogic.getVictoryPointCount(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
                 settlersOfCatanLogic.hasLongestRoad(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
-                settlersOfCatanLogic.hasLargestArmy(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)));
-        verify(mockView).makeMove(Constants.BUYDEVELOPMENTCARD);
-        verify(mockView).twoStepValidation();
-        verify(mockView).endTurn(playerIds.indexOf(Constants.pbId) + 1 % playerIds.size());
+                settlersOfCatanLogic.hasLargestArmy(blueAddStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.MAKEMOVE);
+        settlersOfCatanPresenter.buyDevelopmentCard();
+        List<Operation> buyDevelopmentCard = new ArrayList<Operation>();
+        buyDevelopmentCard.add(new SetTurn(playerIds.get(0)));
+            buyDevelopmentCard.add(new SetVisibility(Constants.DEVELOPMENTCARD00, Arrays.asList(playerIds.get(0))));
+            buyDevelopmentCard.add(new SetVisibility(Constants.RESOURCECARD05PB));
+            buyDevelopmentCard.add(new SetVisibility(Constants.RESOURCECARD02PB));
+            buyDevelopmentCard.add(new SetVisibility(Constants.RESOURCECARD03PB));
+        verify(mockContainer).sendMakeMove(buyDevelopmentCard);
+
+        settlersOfCatanPresenter.finishBuyingDevelopmentCard();
+        buyDevelopmentCard.clear();
+            buyDevelopmentCard.add(new Delete(Constants.RESOURCECARD05PB));
+            buyDevelopmentCard.add(new Delete(Constants.RESOURCECARD02PB));
+            buyDevelopmentCard.add(new Delete(Constants.RESOURCECARD03PB));
+            verify(mockContainer).sendMakeMove(buyDevelopmentCard);
+            
+        settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueAddStatePlusDevelopmentCardForBlue));
+        verify(mockView).setPlayerState(
+                settlersOfCatanPresenter.getBoard().getHexList(),
+                settlersOfCatanPresenter.getBoard().getNodeList(),
+                settlersOfCatanPresenter.getBoard().getPathList(),
+                blueAddStateResourcesMinusDevelopmentCard,
+                Arrays.asList(Constants.DEVELOPMENTCARDTYPEDEF00),
+                settlersOfCatanLogic.getVictoryPointCount(blueAddStatePlusDevelopmentCardForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLongestRoad(blueAddStatePlusDevelopmentCardForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLargestArmy(blueAddStatePlusDevelopmentCardForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.BUYDEVELOPMENTCARDPT2);
     }
     
     @Test
     public void testBlueNormalHarborTradeForBlue() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueNormalHarborTradeStateForBlue));
-        settlersOfCatanPresenter.selectNormalHarborTrade();
-        settlersOfCatanPresenter.selectResourceCard(0);
-        settlersOfCatanPresenter.selectResourceCard(1);
-        settlersOfCatanPresenter.selectResourceCard(2);
-        settlersOfCatanPresenter.selectResourceCard(3);
-        settlersOfCatanPresenter.verifyTwoStep();
-        settlersOfCatanPresenter.endTurn();
         verify(mockView).setPlayerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
                 settlersOfCatanPresenter.getBoard().getNodeList(),
                 settlersOfCatanPresenter.getBoard().getPathList(),
-                Arrays.asList(Constants.LUMBER, Constants.LUMBER, Constants.LUMBER, Constants.LUMBER),
+                blueNormalHarborTradeResources,
                 new ArrayList<String>(),
                 settlersOfCatanLogic.getVictoryPointCount(blueNormalHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
                 settlersOfCatanLogic.hasLongestRoad(blueNormalHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
-                settlersOfCatanLogic.hasLargestArmy(blueNormalHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)));
-        verify(mockView).chooseCards(new ArrayList<String>(), Arrays.asList(Constants.LUMBER, Constants.LUMBER, Constants.LUMBER, Constants.LUMBER));
-        verify(mockView).chooseCards(Arrays.asList(Constants.LUMBER), Arrays.asList(Constants.LUMBER, Constants.LUMBER, Constants.LUMBER));
-        verify(mockView).chooseCards(Arrays.asList(Constants.LUMBER, Constants.LUMBER), Arrays.asList(Constants.LUMBER, Constants.LUMBER));
-        verify(mockView).chooseCards(Arrays.asList(Constants.LUMBER, Constants.LUMBER, Constants.LUMBER), Arrays.asList(Constants.LUMBER));
-        verify(mockView).chooseCards(Arrays.asList(Constants.LUMBER, Constants.LUMBER, Constants.LUMBER, Constants.LUMBER), new ArrayList<String>());
-        verify(mockView).makeMove(Constants.HARBORTRADE);
-        verify(mockView).twoStepValidation();
-        verify(mockView).endTurn(playerIds.indexOf(Constants.pbId) + 1 % playerIds.size());
+                settlersOfCatanLogic.hasLargestArmy(blueNormalHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.MAKEMOVE);
+        settlersOfCatanPresenter.doHarborTrade(Constants.LUMBER, Constants.ORE);
+        List<Operation> harborTrade = new ArrayList<Operation>();
+            harborTrade.add(new SetTurn(playerIds.get(0)));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD00PB));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD01PB));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD02PB));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD03PB));
+        verify(mockContainer).sendMakeMove(harborTrade);
+
+        settlersOfCatanPresenter.finishHarborTrade();
+        harborTrade.clear();
+            harborTrade.add(new Delete(Constants.RESOURCECARD00PB));
+            harborTrade.add(new Delete(Constants.RESOURCECARD01PB));
+            harborTrade.add(new Delete(Constants.RESOURCECARD02PB));
+            harborTrade.add(new Delete(Constants.RESOURCECARD03PB));
+            harborTrade.add(new Set(Constants.RESOURCECARD00PB, Constants.ORE));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD00PB, Arrays.asList(playerIds.get(0))));
+            verify(mockContainer).sendMakeMove(harborTrade);
+            
+        settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, bluePostAnyHarborTradeStateForBlue));
+        verify(mockView).setPlayerState(
+                settlersOfCatanPresenter.getBoard().getHexList(),
+                settlersOfCatanPresenter.getBoard().getNodeList(),
+                settlersOfCatanPresenter.getBoard().getPathList(),
+                bluePostHarborTradeResources,
+                new ArrayList<String>(),
+                settlersOfCatanLogic.getVictoryPointCount(bluePostAnyHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLongestRoad(bluePostAnyHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLargestArmy(bluePostAnyHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.HARBORTRADEPT2);
     }
     
     @Test
     public void testBlueThreeToOneHarborTradeForBlue() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueThreeToOneHarborTradeStateForBlue));
-        settlersOfCatanPresenter.selectThreeToOneHarborTrade();
-        settlersOfCatanPresenter.selectResourceCard(0);
-        settlersOfCatanPresenter.selectResourceCard(1);
-        settlersOfCatanPresenter.selectResourceCard(2);
-        settlersOfCatanPresenter.verifyTwoStep();
-        settlersOfCatanPresenter.endTurn();
         verify(mockView).setPlayerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
                 settlersOfCatanPresenter.getBoard().getNodeList(),
                 settlersOfCatanPresenter.getBoard().getPathList(),
-                Arrays.asList(Constants.LUMBER, Constants.LUMBER, Constants.LUMBER),
+                blueThreetoOneHarborTradeResources,
                 new ArrayList<String>(),
                 settlersOfCatanLogic.getVictoryPointCount(blueThreeToOneHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
                 settlersOfCatanLogic.hasLongestRoad(blueThreeToOneHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
-                settlersOfCatanLogic.hasLargestArmy(blueThreeToOneHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)));
-        verify(mockView).chooseCards(new ArrayList<String>(), Arrays.asList(Constants.LUMBER, Constants.LUMBER, Constants.LUMBER));
-        verify(mockView).chooseCards(Arrays.asList(Constants.LUMBER), Arrays.asList(Constants.LUMBER, Constants.LUMBER));
-        verify(mockView).chooseCards(Arrays.asList(Constants.LUMBER, Constants.LUMBER), Arrays.asList(Constants.LUMBER));
-        verify(mockView).chooseCards(Arrays.asList(Constants.LUMBER, Constants.LUMBER, Constants.LUMBER), new ArrayList<String>());
-        verify(mockView).makeMove(Constants.THREETOONEHARBORTRADE);
-        verify(mockView).twoStepValidation();
-        verify(mockView).endTurn(playerIds.indexOf(Constants.pbId) + 1 % playerIds.size());
+                settlersOfCatanLogic.hasLargestArmy(blueThreeToOneHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.MAKEMOVE);
+        settlersOfCatanPresenter.doHarborTrade(Constants.LUMBER, Constants.ORE);
+        List<Operation> harborTrade = new ArrayList<Operation>();
+            harborTrade.add(new SetTurn(playerIds.get(0)));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD00PB));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD01PB));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD02PB));
+        verify(mockContainer).sendMakeMove(harborTrade);
+
+        settlersOfCatanPresenter.finishHarborTrade();
+        harborTrade.clear();
+            harborTrade.add(new Delete(Constants.RESOURCECARD00PB));
+            harborTrade.add(new Delete(Constants.RESOURCECARD01PB));
+            harborTrade.add(new Delete(Constants.RESOURCECARD02PB));
+            harborTrade.add(new Set(Constants.RESOURCECARD00PB, Constants.ORE));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD00PB, Arrays.asList(playerIds.get(0))));
+            verify(mockContainer).sendMakeMove(harborTrade);
+            
+        settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, bluePostAnyHarborTradeStateForBlue));
+        verify(mockView).setPlayerState(
+                settlersOfCatanPresenter.getBoard().getHexList(),
+                settlersOfCatanPresenter.getBoard().getNodeList(),
+                settlersOfCatanPresenter.getBoard().getPathList(),
+                bluePostHarborTradeResources,
+                new ArrayList<String>(),
+                settlersOfCatanLogic.getVictoryPointCount(bluePostAnyHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLongestRoad(bluePostAnyHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLargestArmy(bluePostAnyHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.THREETOONEHARBORTRADEPT2);
     }
     
     @Test
     public void testBlueTwoToOneLumberHarborTradeForBlue() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueTwoToOneLumberHarborTradeStateForBlue));
-        settlersOfCatanPresenter.selectTwoToOneHarborTrade(Constants.LUMBER);
-        settlersOfCatanPresenter.selectResourceCard(0);
-        settlersOfCatanPresenter.selectResourceCard(1);
-        settlersOfCatanPresenter.verifyTwoStep();
-        settlersOfCatanPresenter.endTurn();
         verify(mockView).setPlayerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
                 settlersOfCatanPresenter.getBoard().getNodeList(),
                 settlersOfCatanPresenter.getBoard().getPathList(),
-                Arrays.asList(Constants.LUMBER, Constants.LUMBER),
+                blueTwotoOneLumberHarborTradeResources,
                 new ArrayList<String>(),
                 settlersOfCatanLogic.getVictoryPointCount(blueTwoToOneLumberHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
                 settlersOfCatanLogic.hasLongestRoad(blueTwoToOneLumberHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
-                settlersOfCatanLogic.hasLargestArmy(blueTwoToOneLumberHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)));
-        verify(mockView).chooseCards(new ArrayList<String>(), Arrays.asList(Constants.LUMBER, Constants.LUMBER));
-        verify(mockView).chooseCards(Arrays.asList(Constants.LUMBER), Arrays.asList(Constants.LUMBER));
-        verify(mockView).chooseCards(Arrays.asList(Constants.LUMBER, Constants.LUMBER), new ArrayList<String>());
-        verify(mockView).makeMove(Constants.TWOTOONELUMHARBORTRADE);
-        verify(mockView).twoStepValidation();
-        verify(mockView).endTurn(playerIds.indexOf(Constants.pbId) + 1 % playerIds.size());
-    }
-    
-    @Test
-    public void testBlueDevelopmentCardPlayedForBlue() {
-        settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, blueAddPlusDevCardStateForBlue));
-        settlersOfCatanPresenter.selectPlayDevelopmentCard();
-        settlersOfCatanPresenter.selectDevelopmentCard(0);
-        settlersOfCatanPresenter.verifyTwoStep();
-        settlersOfCatanPresenter.endTurn();
+                settlersOfCatanLogic.hasLargestArmy(blueTwoToOneLumberHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.MAKEMOVE);
+        settlersOfCatanPresenter.doHarborTrade(Constants.LUMBER, Constants.ORE);
+        List<Operation> harborTrade = new ArrayList<Operation>();
+            harborTrade.add(new SetTurn(playerIds.get(0)));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD00PB));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD01PB));
+        verify(mockContainer).sendMakeMove(harborTrade);
+
+        settlersOfCatanPresenter.finishHarborTrade();
+        harborTrade.clear();
+            harborTrade.add(new Delete(Constants.RESOURCECARD00PB));
+            harborTrade.add(new Delete(Constants.RESOURCECARD01PB));
+            harborTrade.add(new Set(Constants.RESOURCECARD00PB, Constants.ORE));
+            harborTrade.add(new SetVisibility(Constants.RESOURCECARD00PB, Arrays.asList(playerIds.get(0))));
+            verify(mockContainer).sendMakeMove(harborTrade);
+            
+        settlersOfCatanPresenter.updateUI(createUpdateUI(Constants.pbId, Constants.pbId, bluePostAnyHarborTradeStateForBlue));
         verify(mockView).setPlayerState(
                 settlersOfCatanPresenter.getBoard().getHexList(),
                 settlersOfCatanPresenter.getBoard().getNodeList(),
                 settlersOfCatanPresenter.getBoard().getPathList(),
-                blueAddStateResources,
-                Arrays.asList(Constants.DEVELOPMENTCARDTYPEDEF00),
-                settlersOfCatanLogic.getVictoryPointCount(blueAddPlusDevCardStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
-                settlersOfCatanLogic.hasLongestRoad(blueAddPlusDevCardStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
-                settlersOfCatanLogic.hasLargestArmy(blueAddPlusDevCardStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)));
-        verify(mockView).makeMove(Constants.PLAYDEVELOPMENTCARD);
-        verify(mockView).chooseDevelopmentCard("");
-        verify(mockView).chooseDevelopmentCard(Constants.DEVELOPMENTCARDTYPEDEF00);
-        verify(mockView).twoStepValidation();
-        verify(mockView).endTurn(playerIds.indexOf(Constants.pbId) + 1 % playerIds.size());
+                bluePostHarborTradeResources,
+                new ArrayList<String>(),
+                settlersOfCatanLogic.getVictoryPointCount(bluePostAnyHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLongestRoad(bluePostAnyHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                settlersOfCatanLogic.hasLargestArmy(bluePostAnyHarborTradeStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
+                true,
+                Constants.TWOTOONELUMHARBORTRADEPT2);
     }
-
+    /*
     @Test
     public void testGameOverStateForWinner() {
         settlersOfCatanPresenter.updateUI(
@@ -377,10 +596,12 @@ public class SettlersOfCatanPresenterTest {
                 settlersOfCatanLogic.getVictoryPointCount(blueVictoryStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
                 settlersOfCatanLogic.hasLongestRoad(blueVictoryStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)),
                 settlersOfCatanLogic.hasLargestArmy(blueVictoryStateForBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.pbId)));
-    }
+    }*/
 
     @Test
     public void testGameOverStateForLoser() {
+        settlersOfCatanPresenter.currentPlayer = 0;
+        settlersOfCatanPresenter.infoMessage = Constants.MAKEMOVE;
         settlersOfCatanPresenter.updateUI(
                 createUpdateUI(Constants.prId, Constants.pbId, blueVictoryStateForNotBlue));
         verify(mockView).setPlayerState(
@@ -391,7 +612,9 @@ public class SettlersOfCatanPresenterTest {
                 new ArrayList<String>(),
                 settlersOfCatanLogic.getVictoryPointCount(blueVictoryStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
                 settlersOfCatanLogic.hasLongestRoad(blueVictoryStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
-                settlersOfCatanLogic.hasLargestArmy(blueVictoryStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)));
+                settlersOfCatanLogic.hasLargestArmy(blueVictoryStateForNotBlue, settlersOfCatanLogic.getPlayerId(playerIds, Constants.prId)),
+                false,
+                Constants.MAKEMOVE);
     }
 
     @Test

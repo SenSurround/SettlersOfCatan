@@ -73,5 +73,10 @@ public class Hex {
     {
         return dieRoll;
     }
+    
+    public int getLocation(int loc)
+    {
+        return locations[loc];
+    }
 
 }
