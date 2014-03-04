@@ -37,6 +37,7 @@ public class SettlersOfCatanLogic {
     private boolean finishCityBuild = false;
     private boolean finishBuyingDevelopmentCard = false;
     private boolean finishHarborTrade = false;
+    private boolean finishRobberMove = false;
     public boolean initial = true;
     
     private List<Integer> playerIds;
@@ -337,6 +338,20 @@ public class SettlersOfCatanLogic {
     	    case Constants.CHANGETURN:
                 status = isChangeTurnMoveLegal(lastMove, nextPlayerString, playerIds);
     	        break;
+            case Constants.MOVEROBBERPT3:
+                status = isMoveRobberMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishRobberMove = true;
+                }
+                break;
+            case Constants.MOVEROBBERPT4:
+                status = isMoveRobberMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishRobberMove = true;
+                }
+                break;
     	    case Constants.BUILDCITYPT1:
                 status = isBuildCityMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status && ++verifyCount % playerIds.size() == 0)
@@ -956,6 +971,118 @@ public class SettlersOfCatanLogic {
         return status;
     }
 
+    // Parent Function for Moving Robber
+    // Determines if this entire move matches for moving a robber
+    private boolean isMoveRobberMovePt1Legal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // SET(TURN, playerString)
+        // SET(ROBBER, HEX)
+        // OPTIONAL - SETVISIBILITY(RESOURCECARDAA + playerString)
+        
+        // REQUIREMENTS
+        // Line 0 - Turn must match playerString
+        // Line 1 - Move Robber
+        // Line 2 - AA, BB, CC, DD, EE must be 3 ore, 2 grain
+        
+        // Ensure move is exactly 2 lines
+        boolean status = lastMove.size() == 2
+                      || lastMove.size() == 3;
+        
+        if(status)
+        {
+            // Line 0
+            status = status
+                  && matchTurnMoveForSamePlayer(
+                          lastMove.get(0), 0, 
+                          playerString,
+                          playerIds);
+            
+            // Line 1
+            status = status
+                  && matchRobberSolo(
+                          lastMove.get(1), 1,
+                          lastState, 
+                          playerString);
+            
+            if(lastMove.size() == 3)
+            {
+                
+                // Lines 2
+                status = status
+                      && matchAHiddenResource(
+                              lastMove.get(2), 2,
+                              lastState, 
+                              playerString);
+            }
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "MOVEROBBER expects: 2";
+        }
+        
+        return status;
+    }
+    
+ // Parent Function for Moving Robber
+    // Determines if this entire move matches for moving a robber
+    private boolean isMoveRobberMovePt2Legal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            int playerId,
+            List<Integer> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // OPTIONAL - DELETE(RESOURCECARD not yours)
+        // OPTIONAL - SET(RESOURCECARDXX, RESOURCE)
+        // OPTIONAL - SETVISIBILITY(RESOURCECARDXX, playerId)
+        
+        // REQUIREMENTS
+        // Line 0 - Must not be owned by player
+        // Lines 2,3 - ResourceCard pair
+        
+        // Ensure move is exactly 0 lines
+        boolean status = lastMove.size() == 0
+                      || lastMove.size() == 3;
+        
+        if(status && lastMove.size() == 3)
+        {
+            // Line 0
+            status = status
+                  && matchASingleDelete(
+                          lastMove.get(0), 0, 
+                          lastState,
+                          playerString);
+            
+            // Line 1
+            status = status
+                  && matchResourceCardAddIgnoreExpected(
+                          lastMove.get(1), 1,
+                          lastMove.get(2), 2,
+                          lastState);
+        }
+        else if (status)
+        {
+            // Do nothing and like it
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "MOVEROBBER expects: 2";
+        }
+        
+        return status;
+    }
+    
     // Parent Function for Building City
     // Determines if this entire move matches for building a city
     private boolean isBuildCityMovePt1Legal(
@@ -4419,6 +4546,42 @@ public class SettlersOfCatanLogic {
         return status;
     }
     
+    // Returns whether the robber moves match
+    private boolean matchRobberSolo(
+            Operation move1, int move1Num,
+            Map<String, Object> lastState,
+            String playerString)
+    {
+        boolean status = false;
+        
+        
+
+        if(!move1.getMessageName().equals("Set"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ROBBER expects: SET(ROBBER, HEX)\n"
+                + "Set move expected";
+        }
+        else if(!((Set)move1).getKey().contains(Constants.ROBBER))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ROBBER expects: SET(ROBBER, HEX)\n"
+                + "MONOPOLYRESOURCE key expected";
+        }
+        else if(!((Set)move1).getValue().toString().contains(Constants.HEXTOKEN))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ROBBER expects: SET(ROBBER, HEX)\n"
+                + "HEX value expected";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+    
     // Returns whether the monopoly moves match
     private boolean matchMonopoly(
             Operation move1, int move1Num,
@@ -4517,6 +4680,80 @@ public class SettlersOfCatanLogic {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
                 + "A type of resource value expected";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves matches for a single add resource
+    private boolean matchAHiddenResource(
+            Operation move1, int move1Num,
+            Map<String, Object> lastState,
+            String playerString)
+    {
+        boolean status = false;
+
+        if(!move1.getMessageName().equals("SetVisibility"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "Set move expected";
+        }
+        else if(!((SetVisibility) move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "ResourceCard key expected";
+        }
+        else if(!lastState.containsKey(((SetVisibility) move1).getKey()))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "ResourceCard already assigned";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
+    
+    // Returns whether the list of moves matches for a single add resource
+    private boolean matchASingleDelete(
+            Operation move1, int move1Num,
+            Map<String, Object> lastState,
+            String playerString)
+    {
+        boolean status = false;
+
+        if(!move1.getMessageName().equals("Delete"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "Set move expected";
+        }
+        else if(!((Delete) move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "ResourceCard key expected";
+        }
+        else if(((Delete) move1).getKey().contains(playerString))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "playerString key not expected";
+        }
+        else if(!lastState.containsKey(((Delete) move1).getKey()))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
+                + "ResourceCard doesn't exist";
         }
         else
         {
@@ -6280,6 +6517,10 @@ public class SettlersOfCatanLogic {
         {
             expectedMove = Constants.HARBORTRADEPT2;
         }
+        else if(finishRobberMove)
+        {
+            expectedMove = Constants.MOVEROBBERPT4;
+        }
         else if( findASetRandomIntegerInMoves(lastMove) )
         {
             expectedMove = Constants.ROLLDICE;
@@ -6323,6 +6564,12 @@ public class SettlersOfCatanLogic {
         else if ( findASetMoveInMoves(lastMove, Constants.DEVELOPMENTCARDTOKEN, "") )
         {
             expectedMove = Constants.PLAYDEVELOPMENTCARD;
+        }
+        // Move contains a SET Robber Card
+        // This is a PLAYDEVELOPMENTCARD move
+        else if ( findASetMoveInMoves(lastMove, Constants.ROBBER, "") )
+        {
+            expectedMove = Constants.MOVEROBBERPT3;
         }
         // Move contains only a turn move and resources
         // This is a HARBORTRADE move

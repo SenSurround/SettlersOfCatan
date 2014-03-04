@@ -109,9 +109,12 @@ public class SettlersOfCatanPresenter {
     private String storedResourceIn = "";
     public boolean lookingForCity = false;
     private String pathAdding = "";
+    private String savedRandomCard;
     
     public int currentPlayer = -1;
     public String infoMessage = "";
+    
+    private int robberDestination;
     
     private int currentDevelopmentCard = 0;
 
@@ -301,7 +304,7 @@ public class SettlersOfCatanPresenter {
             }
         }
         
-        if(count == 4)
+        if(count >= 4)
         {
             status = true;
         }
@@ -350,6 +353,13 @@ public class SettlersOfCatanPresenter {
     public Board getBoard()
     {
         return theBoard;
+    }
+    
+    public String setRobber(int hex)
+    {
+        robberDestination = hex;
+        infoMessage = Constants.MOVEROBBERPT2;
+        return Constants.MOVEROBBERPT2 + theBoard.addWhoToRob(hex, myPlayer, theState);
     }
     
     public void setPathToBuild(int path)
@@ -866,7 +876,6 @@ public class SettlersOfCatanPresenter {
         return status;
     }
     
-    
     public boolean canPlaceRoad(int path)
     {
         boolean status = false;
@@ -1062,7 +1071,16 @@ public class SettlersOfCatanPresenter {
         infoMessage = Constants.ROLLEDTOK + rollTotal;
         container.sendMakeMove(dispenseResourcesMove);
     }
-    
+
+    public void clearRollAndMoveRobber()
+    {
+        List<Operation> clearRoll = new ArrayList<Operation>();
+        clearRoll.add(new SetTurn(playerIds.get(currentPlayer)));
+        clearRoll.add(new Delete(Constants.DIE0));
+        clearRoll.add(new Delete(Constants.DIE1));
+        infoMessage = Constants.MOVEROBBERPT1;
+        container.sendMakeMove(clearRoll);
+    }
     
     private String getOpenResourceCardSlot(String playerString, int skip)
     {
@@ -1102,7 +1120,6 @@ public class SettlersOfCatanPresenter {
         infoMessage = Constants.ROLLDICE;
         container.sendMakeMove(dispenseResourcesMove);
     }
-    
     
     private String getFirstAvailableSettlement()
     {
@@ -1274,5 +1291,73 @@ public class SettlersOfCatanPresenter {
         status = settlersOfCatanLogic.checkLongestRoadClaim(playerString, theState);
         
         return status;
+    }
+
+    public void finishRobber(String victim)
+    {
+        String hex = "";
+        if(robberDestination < 10)
+            hex = Constants.HEXTOKEN + "0" + robberDestination;
+        else
+            hex = Constants.HEXTOKEN + robberDestination;
+        
+        String randomCard = "";
+        
+        if(!victim.equals(""))
+            randomCard = getRandomCard(victim);
+        
+        if(infoMessage.equals(Constants.MOVEROBBERPT2))
+        {
+            List<Operation> setRobber = new ArrayList<Operation>();
+            setRobber.add(new SetTurn(playerIds.get(currentPlayer)));
+            setRobber.add(new Set(Constants.ROBBER, hex));
+            if(!randomCard.equals(""))
+            {
+                setRobber.add(new SetVisibility(randomCard));
+                savedRandomCard = randomCard;
+            }
+            infoMessage = Constants.MOVEROBBERPT3;
+            container.sendMakeMove(setRobber);
+        }
+    }
+    
+    public void finishMoveRobber()
+    {
+        if(infoMessage.equals(Constants.MOVEROBBERPT3))
+        {
+            if(!savedRandomCard.equals(""))
+            {
+                String resource = theState.get(savedRandomCard).toString();
+                List<Operation> setRobber = new ArrayList<Operation>();
+                setRobber.add(new Delete(savedRandomCard));
+                setRobber.add(new Set(getOpenResourceCardSlot(resource, 0), resource));
+                setRobber.add(new SetVisibility(getOpenResourceCardSlot(resource, 0), Arrays.asList(playerIds.get(myPlayer))));
+                infoMessage = Constants.MOVEROBBERPT4;
+                container.sendMakeMove(setRobber);
+            }
+            
+            savedRandomCard = "";
+        }
+    }
+    
+    private String getRandomCard(String victim)
+    {
+        String cardToSearch = "";
+        List<String> knownCards = new ArrayList<String>();
+        
+        for(int i = 0; i < 30; i++)
+        {
+            if(i < 10)
+                cardToSearch = Constants.RESOURCECARDTOKEN + "0" + i + victim;
+            else
+                cardToSearch = Constants.RESOURCECARDTOKEN + i + victim;
+            
+            if(theState.containsKey(cardToSearch))
+            {
+                knownCards.add(cardToSearch);
+            }
+        }
+        
+        return knownCards.get((int)((Math.random()*knownCards.size())));
     }
 }

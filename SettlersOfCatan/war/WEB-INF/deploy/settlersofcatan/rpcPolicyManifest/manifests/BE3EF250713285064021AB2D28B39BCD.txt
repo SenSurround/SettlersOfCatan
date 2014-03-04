@@ -1,2 +1,0 @@
-serviceClass: settlersofcatan.client.GreetingService
-path: C03F7F4A6E591629F588CAB448DF186A.gwt.rpc

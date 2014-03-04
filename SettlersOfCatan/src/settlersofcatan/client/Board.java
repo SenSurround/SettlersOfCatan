@@ -476,4 +476,84 @@ public class Board {
         return nodes;
     }
     
+    public String addWhoToRob(int hex, int playerId, Map<String, Object> lastState)
+    {
+        String output = "";
+        
+        boolean canStealFromBlue = false;
+        boolean canStealFromRed = false;
+        boolean canStealFromYellow = false;
+        boolean canStealFromGreen = false;
+
+        String blueString = "";
+        String redString = "";
+        String yellowString = "";
+        String greenString = "";
+        
+        for(int i = 0; i < 30; i++)
+        {
+            if(i < 10)
+            {
+                blueString = Constants.RESOURCECARDTOKEN + "0" + i + Constants.PB;
+                redString = Constants.RESOURCECARDTOKEN + "0" + i + Constants.PR;
+                yellowString = Constants.RESOURCECARDTOKEN + "0" + i + Constants.PY;
+                greenString = Constants.RESOURCECARDTOKEN + "0" + i + Constants.PG;
+            }
+            else
+            {
+                blueString = Constants.RESOURCECARDTOKEN + i + Constants.PB;
+                redString = Constants.RESOURCECARDTOKEN + i + Constants.PR;
+                yellowString = Constants.RESOURCECARDTOKEN + i + Constants.PY;
+                greenString = Constants.RESOURCECARDTOKEN + i + Constants.PG;
+            }
+            
+            if(lastState.containsKey(blueString))
+            {
+                canStealFromBlue = true;
+            }
+            if(lastState.containsKey(redString))
+            {
+                canStealFromRed = true;
+            }
+            if(lastState.containsKey(yellowString))
+            {
+                canStealFromYellow = true;
+            }
+            if(lastState.containsKey(greenString))
+            {
+                canStealFromGreen = true;
+            }
+        }
+        
+        for(int i = 0; i < 6; i++)
+        {
+            if( nodeList.get(hexList.get(hex).locations[i]).getPlayer() == 0
+             && nodeList.get(hexList.get(hex).locations[i]).getPlayer() != playerId
+             && canStealFromBlue)
+            {
+                output = output + Constants.PB;
+            }
+            else if( nodeList.get(hexList.get(hex).locations[i]).getPlayer() == 1
+                  && nodeList.get(hexList.get(hex).locations[i]).getPlayer() != playerId
+                  && canStealFromRed)
+            {
+                output = output + Constants.PR;
+            }
+            else if( nodeList.get(hexList.get(hex).locations[i]).getPlayer() == 2
+                  && nodeList.get(hexList.get(hex).locations[i]).getPlayer() != playerId
+                  && canStealFromYellow)
+            {
+                output = output + Constants.PY;
+            }
+            else if( nodeList.get(hexList.get(hex).locations[i]).getPlayer() == 3
+                  && nodeList.get(hexList.get(hex).locations[i]).getPlayer() != playerId
+                  && canStealFromBlue)
+            {
+                output = output + Constants.PG;
+            }
+        }
+        
+        return output;
+    }
+    
 }

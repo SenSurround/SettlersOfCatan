@@ -35,7 +35,10 @@ public class Constants {
     public static final String FIRSTROUNDROAD = "FIRSTROUNDROAD";
     public static final String SECONDROUNDSETTLEMENT = "SECONDROUNDSETTLEMENT";
     public static final String SECONDROUNDROAD = "SECONDROUNDROAD";
-    public static final String MOVEROBBER = "MOVEROBBER";
+    public static final String MOVEROBBERPT1 = "MOVEROBBERPT1";
+    public static final String MOVEROBBERPT2 = "MOVEROBBERPT2";
+    public static final String MOVEROBBERPT3 = "MOVEROBBERPT3";
+    public static final String MOVEROBBERPT4 = "MOVEROBBERPT4";
     public static final String CHANGETURN = "CHANGETURN";
     public static final String BUILDCITYPT1 = "BUILDCITYPT1";
     public static final String BUILDCITYPT2 = "BUILDCITYPT2";

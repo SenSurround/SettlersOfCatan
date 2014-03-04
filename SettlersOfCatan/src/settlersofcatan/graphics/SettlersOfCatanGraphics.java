@@ -43,6 +43,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
 
     private final BoardImageSupplier boardImageSupplier;
     private SettlersOfCatanPresenter presenter;
+    private boolean chooseHexEnabled;
     private boolean choosePathEnabled;
     private boolean chooseNodeEnabled;
     private boolean chooseResourceCardEnabled;
@@ -98,63 +99,235 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
     // These are non interactive
     private AbsolutePanel createHexImage(List<Hex> hexList, AbsolutePanel ap)
     {
+        final List<Hex> hexCheck = new ArrayList<Hex>(hexList); 
         
-        Image hexImage0 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(0).getResource()));
-        ap.add(hexImage0, 200, 100);
+        Image hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(0).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(0).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(0));
+              }
+            }
+          });
+        ap.add(hexImage, 200, 100);
         
-        Image hexImage1 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(1).getResource()));
-        ap.add(hexImage1, 350, 100);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(1).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(1).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(1));
+              }
+            }
+          });
+        ap.add(hexImage, 350, 100);
         
-        Image hexImage2 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(2).getResource()));
-        ap.add(hexImage2, 500, 100);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(2).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(2).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(2));
+              }
+            }
+          });
+        ap.add(hexImage, 500, 100);
         
-        Image hexImage3 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(3).getResource()));
-        ap.add(hexImage3, 125, 211);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(3).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(3).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(3));
+              }
+            }
+          });
+        ap.add(hexImage, 125, 211);
         
-        Image hexImage4 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(4).getResource()));
-        ap.add(hexImage4, 275, 211);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(4).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(4).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(4));
+              }
+            }
+          });
+        ap.add(hexImage, 275, 211);
         
-        Image hexImage5 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(5).getResource()));
-        ap.add(hexImage5, 425, 211);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(5).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(5).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(5));
+              }
+            }
+          });
+        ap.add(hexImage, 425, 211);
         
-        Image hexImage6 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(6).getResource()));
-        ap.add(hexImage6, 575, 211);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(6).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(6).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(6));
+              }
+            }
+          });
+        ap.add(hexImage, 575, 211);
         
-        Image hexImage7 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(7).getResource()));
-        ap.add(hexImage7, 50, 322);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(7).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(7).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(7));
+              }
+            }
+          });
+        ap.add(hexImage, 50, 322);
         
-        Image hexImage8 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(8).getResource()));
-        ap.add(hexImage8, 200, 322);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(8).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(8).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(8));
+              }
+            }
+          });
+        ap.add(hexImage, 200, 322);
         
-        Image hexImage9 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(9).getResource()));
-        ap.add(hexImage9, 350, 322);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(9).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(9).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(9));
+              }
+            }
+          });
+        ap.add(hexImage, 350, 322);
         
-        Image hexImage10 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(10).getResource()));
-        ap.add(hexImage10, 500, 322);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(10).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(10).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(10));
+              }
+            }
+          });
+        ap.add(hexImage, 500, 322);
         
-        Image hexImage11 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(11).getResource()));
-        ap.add(hexImage11, 650, 322);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(11).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(11).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(11));
+              }
+            }
+          });
+        ap.add(hexImage, 650, 322);
         
-        Image hexImage12 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(12).getResource()));
-        ap.add(hexImage12, 125, 433);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(12).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(12).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(12));
+              }
+            }
+          });
+        ap.add(hexImage, 125, 433);
         
-        Image hexImage13 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(13).getResource()));
-        ap.add(hexImage13, 275, 433);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(13).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(13).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(13));
+              }
+            }
+          });
+        ap.add(hexImage, 275, 433);
         
-        Image hexImage14 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(14).getResource()));
-        ap.add(hexImage14, 425, 433);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(14).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(14).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(14));
+              }
+            }
+          });
+        ap.add(hexImage, 425, 433);
         
-        Image hexImage15 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(15).getResource()));
-        ap.add(hexImage15, 575, 433);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(15).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(15).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(15));
+              }
+            }
+          });
+        ap.add(hexImage, 575, 433);
         
-        Image hexImage16 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(16).getResource()));
-        ap.add(hexImage16, 200, 544);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(16).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(16).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(16));
+              }
+            }
+          });
+        ap.add(hexImage, 200, 544);
         
-        Image hexImage17 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(17).getResource()));
-        ap.add(hexImage17, 350, 544);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(17).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(17).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(17));
+              }
+            }
+          });
+        ap.add(hexImage, 350, 544);
         
-        Image hexImage18 = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(18).getResource()));
-        ap.add(hexImage18, 500, 544);
+        hexImage = new Image(boardImageSupplier.getResourceBoardToken(hexList.get(18).getResource()));
+        hexImage.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+              if (chooseHexEnabled && !hexCheck.get(18).getRobber()) {
+                  chooseHexEnabled = false;
+                  createInfoArea(presenter.setRobber(18));
+              }
+            }
+          });
+        ap.add(hexImage, 500, 544);
         
         if(hexList.get(0).getRobber())
         {
@@ -2690,6 +2863,15 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         
         Label message;
         
+        String secondary = "";
+        
+        if(  info.contains(Constants.MOVEROBBERPT2)
+          && info.length() > 13)
+        {
+            secondary = info.substring(13);
+            info = Constants.MOVEROBBERPT2;
+        }
+        
         if(info.equals("VIEWER"))
         {
             message = new Label("ENJOY WATCHING");
@@ -2735,6 +2917,89 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        }
                     });
                     ap.add(rollDiceButton, 100, 5);
+                    break;
+                case Constants.MOVEROBBERPT1:
+                    message = new Label("You rolled a 7! Choose a new location for the robber");
+                    fp.add(message);
+                    chooseHexEnabled = true;
+                    infoArea.add(fp);
+                    break;
+                case Constants.MOVEROBBERPT2:
+                    if(!secondary.equals(""))
+                    {
+                        message = new Label("Who do you want to steal from?");
+                        fp.add(message);
+                        
+                        if(secondary.contains(Constants.PB))
+                        {
+                            Button player = new Button("Blue");
+                            player.addClickHandler(new ClickHandler() {
+                                @Override
+                                public void onClick(ClickEvent event) {
+                                    presenter.finishRobber(Constants.PB);
+                                }
+                             });
+                            fp.add(player);
+                        }
+                        
+                        if(secondary.contains(Constants.PR))
+                        {
+                            Button player = new Button("Red");
+                            player.addClickHandler(new ClickHandler() {
+                                @Override
+                                public void onClick(ClickEvent event) {
+                                    presenter.finishRobber(Constants.PR);
+                                }
+                             });
+                            fp.add(player);
+                        }
+                        
+                        if(secondary.contains(Constants.PY))
+                        {
+                            Button player = new Button("Yellow");
+                            player.addClickHandler(new ClickHandler() {
+                                @Override
+                                public void onClick(ClickEvent event) {
+                                    presenter.finishRobber(Constants.PY);
+                                }
+                             });
+                            fp.add(player);
+                        }
+                        
+                        if(secondary.contains(Constants.PG))
+                        {
+                            Button player = new Button("Green");
+                            player.addClickHandler(new ClickHandler() {
+                                @Override
+                                public void onClick(ClickEvent event) {
+                                    presenter.finishRobber(Constants.PG);
+                                }
+                             });
+                            fp.add(player);
+                        }
+                        infoArea.add(fp);
+                    }
+                    else
+                    {
+                        presenter.finishRobber("");
+                    }
+                    break;
+                case Constants.MOVEROBBERPT3:
+                    presenter.finishMoveRobber();
+                    break;
+                case Constants.MOVEROBBERPT4:
+                    message = new Label("You moved the robber! Good for you!");
+                    fp.add(message);
+                    Button robberDone = new Button("Make another move!");
+                    robberDone.addClickHandler(new ClickHandler() {
+                       @Override
+                       public void onClick(ClickEvent event) {
+                           presenter.makeMove();
+                           createInfoArea(Constants.MAKEMOVE);
+                       }
+                    });
+                    fp.add(robberDone);
+                    infoArea.add(fp);
                     break;
                 case Constants.ROLLED2:
                     message = new Label("You Rolled a 2! Dispersing Resources!");
@@ -2804,20 +3069,6 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        }
                     });
                     fp.add(makeAMove6);
-                    infoArea.add(fp);
-                    break;
-                case Constants.ROLLEDTOK + "7":
-                    message = new Label("You Rolled a 7! Nothing happens right now!");
-                    fp.add(message);
-                    Button makeAMove7 = new Button("Make a move!");
-                    makeAMove7.addClickHandler(new ClickHandler() {
-                       @Override
-                       public void onClick(ClickEvent event) {
-                           presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
-                       }
-                    });
-                    fp.add(makeAMove7);
                     infoArea.add(fp);
                     break;
                 case Constants.ROLLED8:
@@ -3582,8 +3833,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         switch(roll0 + roll1)
         {
         case 7:
-            //createInfoArea(Constants.MOVEROBBER);
-            //break;
+            presenter.clearRollAndMoveRobber();
+            break;
         case 2:
         case 3:
         case 4:
@@ -3598,6 +3849,5 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             break;
         }
     }
-
 
 }
