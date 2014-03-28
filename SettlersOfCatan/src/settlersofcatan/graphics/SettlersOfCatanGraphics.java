@@ -74,6 +74,28 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         ap = createNodeImage(nodeList, ap);
         ap = createPathImage(pathList, ap);
         
+        // Draw road/city/settlement cache
+        if(presenter.myPlayer > -1 || presenter.myPlayer < 4)
+        {
+            Image settlementImage = new Image(boardImageSupplier.getNodeToken(
+                    presenter.myPlayer,
+                    1));
+            
+            settlementImage.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                          if (chooseNodeEnabled) {
+                              // animation plus drag and drop
+                          }
+                        }
+                      });
+            
+            Label sc = new Label(" x " + presenter.getBoard().numAvailableSettlements(presenter.myPlayer));
+            
+            ap.add(settlementImage, 20,40);
+            ap.add(sc, 70, 52);
+        }
+        
         if(victoryPoints != -1)
         {
             Label vp = new Label("Victory Points = " + victoryPoints);

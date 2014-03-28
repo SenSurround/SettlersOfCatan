@@ -309,6 +309,22 @@ public class Board {
         return retVal;
     }
 
+    public int numAvailableSettlements(int playerId)
+    {
+        int settlementCount = 5;
+        
+        for(int i = 0; i < 54; i++)
+        {
+            if( nodeList.get(i).getPlayer() == playerId
+             && nodeList.get(i).getSettlement() == 1)
+            {
+                settlementCount--;
+            }
+        }
+        
+        return settlementCount;
+    }
+
     public boolean hasOneSettlementOut(int playerId)
     {
         boolean retVal = false;
@@ -346,6 +362,22 @@ public class Board {
         return retVal;
     }
     
+    public int numAvailableCities(int playerId)
+    {
+        int cityCount = 4;
+        
+        for(int i = 0; i < 54; i++)
+        {
+            if( nodeList.get(i).getPlayer() == playerId
+             && nodeList.get(i).getSettlement() == 2)
+            {
+                cityCount--;
+            }
+        }
+        
+        return cityCount;
+    }
+    
     public boolean hasAvailableRoads(int playerId)
     {
         boolean retVal = false;
@@ -364,6 +396,21 @@ public class Board {
             retVal = true;
         
         return retVal;
+    }
+    
+    public int numAvailableRoads(int playerId)
+    {
+        int roadCount = 15;
+        
+        for(int i = 0; i < 72; i++)
+        {
+            if( pathList.get(i).getPlayer() == playerId)
+            {
+                roadCount--;
+            }
+        }
+        
+        return roadCount;
     }
 
     public boolean ownsThreeToOnePort(int playerId)

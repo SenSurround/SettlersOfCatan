@@ -94,7 +94,7 @@ public class SettlersOfCatanPresenter {
     private final View view;
     private final Container container;
     /** A viewer doesn't have a color. */
-    private int myPlayer;
+    public int myPlayer;
     private List<String> myResourceCards;
     private List<String> myDevelopmentCards;
     private Board theBoard;
