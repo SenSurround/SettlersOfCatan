@@ -67,11 +67,23 @@ public interface BoardImages extends ClientBundle {
   @Source("images/blueCity.png")
   ImageResource blueCity();
   
+  @Source("images/blueSettlementSolo.png")
+  ImageResource blueSettlementSolo();
+  
+  @Source("images/blueCitySolo.png")
+  ImageResource blueCitySolo();
+  
   @Source("images/redSettlement.png")
   ImageResource redSettlement();
   
   @Source("images/redCity.png")
   ImageResource redCity();
+  
+  @Source("images/redSettlementSolo.png")
+  ImageResource redSettlementSolo();
+  
+  @Source("images/redCitySolo.png")
+  ImageResource redCitySolo();
   
   @Source("images/yellowSettlement.png")
   ImageResource yellowSettlement();
@@ -79,11 +91,23 @@ public interface BoardImages extends ClientBundle {
   @Source("images/yellowCity.png")
   ImageResource yellowCity();
   
+  @Source("images/yellowSettlementSolo.png")
+  ImageResource yellowSettlementSolo();
+  
+  @Source("images/yellowCitySolo.png")
+  ImageResource yellowCitySolo();
+  
   @Source("images/greenSettlement.png")
   ImageResource greenSettlement();
   
   @Source("images/greenCity.png")
   ImageResource greenCity();
+  
+  @Source("images/greenSettlementSolo.png")
+  ImageResource greenSettlementSolo();
+  
+  @Source("images/greenCitySolo.png")
+  ImageResource greenCitySolo();
   
   @Source("images/harbor00lines.png")
   ImageResource harbor00Lines();

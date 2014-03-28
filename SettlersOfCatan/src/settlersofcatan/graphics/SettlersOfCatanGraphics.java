@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -45,10 +46,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
     private SettlersOfCatanPresenter presenter;
     private boolean chooseHexEnabled;
     private boolean choosePathEnabled;
-    private boolean chooseNodeEnabled;
+    private boolean chooseNodeEnabledBegin;
+    private boolean chooseNodeEnabledEnd;
     private boolean chooseResourceCardEnabled;
     private boolean chooseDevelopmentCardEnabled;
     private boolean myTurn;
+    
+    private BoardPieceMovingAnimation currentAnimation;
 
     public SettlersOfCatanGraphics() {
         choosePathEnabled = false;
@@ -75,17 +79,19 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         ap = createPathImage(pathList, ap);
         
         // Draw road/city/settlement cache
-        if(presenter.myPlayer > -1 || presenter.myPlayer < 4)
+        if(presenter.myPlayer > -1 && presenter.myPlayer < 4)
         {
-            Image settlementImage = new Image(boardImageSupplier.getNodeToken(
+            final Image settlementImage = new Image(boardImageSupplier.getNodeTokenSolo(
                     presenter.myPlayer,
                     1));
             
             settlementImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              // animation plus drag and drop
+                          if (chooseNodeEnabledBegin) {
+                              currentAnimation = new BoardPieceMovingAnimation(settlementImage.getElement());
+                              currentAnimation.setStartPoint(20,40);
+                              chooseNodeEnabledEnd = true;
                           }
                         }
                       });
@@ -94,6 +100,42 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             
             ap.add(settlementImage, 20,40);
             ap.add(sc, 70, 52);
+
+            final Image cityImage = new Image(boardImageSupplier.getNodeTokenSolo(
+                    presenter.myPlayer,
+                    2));
+            
+            cityImage.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                          if (chooseNodeEnabledBegin) {
+                              // animation plus drag and drop
+                          }
+                        }
+                      });
+            
+            sc = new Label(" x " + presenter.getBoard().numAvailableCities(presenter.myPlayer));
+            
+            ap.add(cityImage, 20,90);
+            ap.add(sc, 70, 102);
+
+            final Image roadImage = new Image(boardImageSupplier.getRoadToken(
+                    presenter.myPlayer,
+                    6));
+            
+            roadImage.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                          if (chooseNodeEnabledBegin) {
+                              // animation plus drag and drop
+                          }
+                        }
+                      });
+            
+            sc = new Label(" x " + presenter.getBoard().numAvailableRoads(presenter.myPlayer));
+            
+            ap.add(roadImage, 35,145);
+            ap.add(sc, 70, 152);
         }
         
         if(victoryPoints != -1)
@@ -604,10 +646,11 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
-                            presenter.setNodeToBuild(0);
-                          }
+                            if (chooseNodeEnabledEnd) {
+                                chooseNodeEnabledEnd = false;
+                                currentAnimation.runAnimation(255, 80);
+                                presenter.setNodeToBuild(0);
+                            }
                         }
                       });
         }
@@ -621,8 +664,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(1);
                           }
                         }
@@ -638,8 +681,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(2);
                           }
                         }
@@ -657,8 +700,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(3);
                           }
                         }
@@ -674,8 +717,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(4);
                           }
                         }
@@ -691,8 +734,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(5);
                           }
                         }
@@ -708,8 +751,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(6);
                           }
                         }
@@ -727,8 +770,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(7);
                           }
                         }
@@ -744,8 +787,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(8);
                           }
                         }
@@ -761,8 +804,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(9);
                           }
                         }
@@ -778,8 +821,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(10);
                           }
                         }
@@ -797,8 +840,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(11);
                           }
                         }
@@ -814,8 +857,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(12);
                           }
                         }
@@ -831,8 +874,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(13);
                           }
                         }
@@ -848,8 +891,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(14);
                           }
                         }
@@ -865,8 +908,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(15);
                           }
                         }
@@ -884,8 +927,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(16);
                           }
                         }
@@ -901,8 +944,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(17);
                           }
                         }
@@ -918,7 +961,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
+                          if (chooseNodeEnabledEnd) {
                             presenter.setNodeToBuild(18);
                           }
                         }
@@ -934,7 +977,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
+                          if (chooseNodeEnabledEnd) {
                             presenter.setNodeToBuild(19);
                           }
                         }
@@ -950,8 +993,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(20);
                           }
                         }
@@ -969,8 +1012,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(21);
                           }
                         }
@@ -986,8 +1029,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(22);
                           }
                         }
@@ -1003,8 +1046,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(23);
                           }
                         }
@@ -1020,8 +1063,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(24);
                           }
                         }
@@ -1037,8 +1080,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(25);
                           }
                         }
@@ -1054,8 +1097,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(26);
                           }
                         }
@@ -1073,8 +1116,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(27);
                           }
                         }
@@ -1090,8 +1133,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(28);
                           }
                         }
@@ -1107,8 +1150,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(29);
                           }
                         }
@@ -1124,8 +1167,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(30);
                           }
                         }
@@ -1141,8 +1184,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(31);
                           }
                         }
@@ -1158,8 +1201,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(32);
                           }
                         }
@@ -1177,8 +1220,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(33);
                           }
                         }
@@ -1194,8 +1237,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(34);
                           }
                         }
@@ -1211,8 +1254,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(35);
                           }
                         }
@@ -1228,8 +1271,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(36);
                           }
                         }
@@ -1245,8 +1288,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(37);
                           }
                         }
@@ -1264,8 +1307,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(38);
                           }
                         }
@@ -1281,8 +1324,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(39);
                           }
                         }
@@ -1298,8 +1341,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(40);
                           }
                         }
@@ -1315,8 +1358,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(41);
                           }
                         }
@@ -1332,8 +1375,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(42);
                           }
                         }
@@ -1351,8 +1394,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(43);
                           }
                         }
@@ -1368,8 +1411,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(44);
                           }
                         }
@@ -1385,8 +1428,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(45);
                           }
                         }
@@ -1402,8 +1445,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(46);
                           }
                         }
@@ -1421,8 +1464,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(47);
                           }
                         }
@@ -1438,8 +1481,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(48);
                           }
                         }
@@ -1455,8 +1498,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(49);
                           }
                         }
@@ -1472,8 +1515,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(50);
                           }
                         }
@@ -1491,8 +1534,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(51);
                           }
                         }
@@ -1508,8 +1551,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                             presenter.setNodeToBuild(52);
                           }
                         }
@@ -1525,8 +1568,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
-                          if (chooseNodeEnabled) {
-                              chooseNodeEnabled = false;
+                          if (chooseNodeEnabledEnd) {
+                              chooseNodeEnabledEnd = false;
                               presenter.setNodeToBuild(53);
                           }
                         }
@@ -1690,7 +1733,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 190, 160);
+        ap.add(pathImage, 194, 160);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(7).getPlayer(),
@@ -1707,7 +1750,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 340, 160);
+        ap.add(pathImage, 344, 160);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(8).getPlayer(),
@@ -1724,7 +1767,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 490, 160);
+        ap.add(pathImage, 494, 160);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(9).getPlayer(),
@@ -1741,7 +1784,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 640, 160);
+        ap.add(pathImage, 644, 160);
         
 
 
@@ -1898,7 +1941,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 115, 271);
+        ap.add(pathImage, 119, 271);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(19).getPlayer(),
@@ -1915,7 +1958,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 265, 271);
+        ap.add(pathImage, 269, 271);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(20).getPlayer(),
@@ -1932,7 +1975,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 415, 271);
+        ap.add(pathImage, 419, 271);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(21).getPlayer(),
@@ -1949,7 +1992,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 565, 271);
+        ap.add(pathImage, 569, 271);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(22).getPlayer(),
@@ -1966,7 +2009,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 715, 271);
+        ap.add(pathImage, 719, 271);
         
 
 
@@ -2157,7 +2200,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 40, 382);
+        ap.add(pathImage, 44, 382);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(34).getPlayer(),
@@ -2174,7 +2217,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 190, 382);
+        ap.add(pathImage, 194, 382);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(35).getPlayer(),
@@ -2191,7 +2234,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 340, 382);
+        ap.add(pathImage, 344, 382);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(36).getPlayer(),
@@ -2208,7 +2251,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 490, 382);
+        ap.add(pathImage, 494, 382);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(37).getPlayer(),
@@ -2225,7 +2268,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 640, 382);
+        ap.add(pathImage, 644, 382);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(38).getPlayer(),
@@ -2242,7 +2285,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 790, 382);
+        ap.add(pathImage, 794, 382);
         
 
 
@@ -2433,7 +2476,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 115, 493);
+        ap.add(pathImage, 119, 493);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(50).getPlayer(),
@@ -2450,7 +2493,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 265, 493);
+        ap.add(pathImage, 269, 493);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(51).getPlayer(),
@@ -2467,7 +2510,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 415, 493);
+        ap.add(pathImage, 419, 493);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(52).getPlayer(),
@@ -2484,7 +2527,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 565, 493);
+        ap.add(pathImage, 569, 493);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(53).getPlayer(),
@@ -2501,7 +2544,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 715, 493);
+        ap.add(pathImage, 719, 493);
         
 
 
@@ -2658,7 +2701,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 190, 604);
+        ap.add(pathImage, 194, 604);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(63).getPlayer(),
@@ -2675,7 +2718,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 340, 604);
+        ap.add(pathImage, 344, 604);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(64).getPlayer(),
@@ -2692,7 +2735,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 490, 604);
+        ap.add(pathImage, 494, 604);
         
         pathImage = new Image(boardImageSupplier.getRoadToken(
                 pathList.get(65).getPlayer(),
@@ -2709,7 +2752,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         }
                       });
         }
-        ap.add(pathImage, 640, 604);
+        ap.add(pathImage, 644, 604);
         
         
 
@@ -2897,7 +2940,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         if(info.equals("VIEWER"))
         {
             message = new Label("ENJOY WATCHING");
-            chooseNodeEnabled = false;
+            chooseNodeEnabledEnd = false;
             choosePathEnabled = false;
             chooseResourceCardEnabled = false;
             ap.add(message, 5, 5);
@@ -2908,7 +2951,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                 case Constants.MAKEFIRSTFREEMOVESETTLEMENT:
                     message = new Label("Place one free settlement: Please choose a node");
                     ap.add(message, 5, 5);
-                    chooseNodeEnabled = true;
+                    chooseNodeEnabledBegin = true;
                     break;
                 case Constants.MAKEFIRSTFREEMOVEROAD:
                     message = new Label("Place one free road: Please choose a path");
@@ -2919,7 +2962,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message = new Label("Place one free settlement: Please choose a node. "
                                       + "You will receive resource cards for the adjoining nodes");
                     ap.add(message, 5, 5);
-                    chooseNodeEnabled = true;
+                    chooseNodeEnabledBegin = true;
                     break;
                 case Constants.MAKESECONDFREEMOVEROAD:
                     message = new Label("Place one free road: Please choose a path");
@@ -3278,7 +3321,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         buildSettlement.addClickHandler(new ClickHandler() {
                            @Override
                            public void onClick(ClickEvent event) {
-                              chooseNodeEnabled = true;
+                              chooseNodeEnabledBegin = true;
                               infoArea.clear();
                               
                               FlowPanel fp2 = new FlowPanel();
@@ -3288,7 +3331,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                               cancel.addClickHandler(new ClickHandler() {
                                   @Override
                                   public void onClick(ClickEvent event) {
-                                      chooseNodeEnabled = false;
+                                      chooseNodeEnabledBegin = false;
                                       presenter.makeMove();
                                       createInfoArea(Constants.MAKEMOVE);
                                   }
@@ -3311,7 +3354,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                             @Override
                             public void onClick(ClickEvent event) {
                                 presenter.lookingForCity = true;
-                                chooseNodeEnabled = true;
+                                chooseNodeEnabledBegin = true;
                                 infoArea.clear();
                                 
                                 FlowPanel fp2 = new FlowPanel();
@@ -3322,7 +3365,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                     @Override
                                     public void onClick(ClickEvent event) {
                                         presenter.lookingForCity = false;
-                                        chooseNodeEnabled = false;
+                                        chooseNodeEnabledBegin = false;
                                         presenter.makeMove();
                                         createInfoArea(Constants.MAKEMOVE);
                                     }
@@ -3787,7 +3830,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         else
         {
             message = new Label("NOT YOUR TURN.");
-            chooseNodeEnabled = false;
+            chooseNodeEnabledEnd = false;
             choosePathEnabled = false;
             chooseResourceCardEnabled = false;
             ap.add(message, 5, 5);

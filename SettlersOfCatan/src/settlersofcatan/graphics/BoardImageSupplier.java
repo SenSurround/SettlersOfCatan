@@ -108,6 +108,36 @@ public class BoardImageSupplier {
         }
     }
   
+    public ImageResource getNodeTokenSolo(int color, int type)
+    {
+        switch (color) {
+            case -1:
+                return boardImages.emptyNode();
+            case 0:
+                if(type == 2)
+                    return boardImages.blueCitySolo();
+                else
+                    return boardImages.blueSettlementSolo();
+            case 1:
+                if(type == 2)
+                    return boardImages.redCitySolo();
+                else
+                    return boardImages.redSettlementSolo();
+            case 2:
+                if(type == 2)
+                    return boardImages.yellowCitySolo();
+                else
+                    return boardImages.yellowSettlementSolo();
+            case 3:
+                if(type == 2)
+                    return boardImages.greenCitySolo();
+                else
+                    return boardImages.greenSettlementSolo();
+            default:
+                throw new RuntimeException("Forgot kind=" + color);
+        }
+    }
+  
     public ImageResource getHarborLines(int harbor)
     {
         switch (harbor) {
