@@ -58,12 +58,19 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
     private boolean choosePathEnabledBegin;
     private boolean choosePathEnabledEnd;
     private boolean choosePathEnabledDND;
-    private boolean chooseNodeEnabledBegin;
-    private boolean chooseNodeEnabledEnd;
-    private boolean chooseNodeEnabledDND;
+    private boolean chooseSettlementEnabledBegin;
+    private boolean chooseSettlementEnabledEnd;
+    private boolean chooseSettlementEnabledDND;
+    private boolean chooseCityEnabledBegin;
+    private boolean chooseCityEnabledEnd;
+    private boolean chooseCityEnabledDND;
     private boolean chooseResourceCardEnabled;
     private boolean chooseDevelopmentCardEnabled;
     private boolean myTurn;
+    
+    private Image settlementImage;
+    private Image cityImage;
+    private Image roadImage;
     
     
     private BoardPieceMovingAnimation currentAnimation;
@@ -87,7 +94,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         boardArea.clear();
         final AbsolutePanel preAp = new AbsolutePanel();
         preAp.setHeight("800px");
-        preAp.setWidth("1200px");
+        preAp.setWidth("950px");
         
         dragController = new PickupDragController(preAp, false);
         dragController.setBehaviorDragStartSensitivity(3);
@@ -96,23 +103,21 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         // Draw road/city/settlement cache
         if(presenter.myPlayer > -1 && presenter.myPlayer < 4)
         {
-            final Image settlementImage = new Image(boardImageSupplier.getNodeTokenSolo(
+            settlementImage = new Image(boardImageSupplier.getNodeTokenSolo(
                     presenter.myPlayer,
                     1));
             
             if(myTurn)
             {
-                dragController.makeDraggable(settlementImage);
-                
                 settlementImage.addClickHandler(new ClickHandler() {
                             @Override
                             public void onClick(ClickEvent event) {
-                              if (chooseNodeEnabledBegin) {
-                                  chooseNodeEnabledBegin = false;
+                              if (chooseSettlementEnabledBegin) {
+                                  chooseSettlementEnabledBegin = false;
                                   currentAnimation = new BoardPieceMovingAnimation(
                                           boardArea, preAp, presenter, true, settlementImage);
                                   currentAnimation.setStartPoint(20,40);
-                                  chooseNodeEnabledEnd = true;
+                                  chooseSettlementEnabledEnd = true;
                               }
                             }
                           });
@@ -123,19 +128,24 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             preAp.add(settlementImage, 20,40);
             preAp.add(sc, 70, 52);
 
-            final Image cityImage = new Image(boardImageSupplier.getNodeTokenSolo(
+            cityImage = new Image(boardImageSupplier.getNodeTokenSolo(
                     presenter.myPlayer,
                     2));
 
             if(myTurn)
             {
-                dragController.makeDraggable(cityImage);
+                if(chooseCityEnabledDND)
+                    dragController.makeDraggable(cityImage);
                 
                 cityImage.addClickHandler(new ClickHandler() {
                             @Override
                             public void onClick(ClickEvent event) {
-                              if (chooseNodeEnabledBegin) {
-                                  // animation plus drag and drop
+                              if (chooseCityEnabledBegin) {
+                                  chooseCityEnabledBegin = false;
+                                  currentAnimation = new BoardPieceMovingAnimation(
+                                          boardArea, preAp, presenter, true, cityImage);
+                                  currentAnimation.setStartPoint(20,90);
+                                  chooseCityEnabledEnd = true;
                               }
                             }
                           });
@@ -146,15 +156,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             preAp.add(cityImage, 20,90);
             preAp.add(sc, 70, 102);
 
-            final Image roadImage = new Image(boardImageSupplier.getRoadToken(
+            roadImage = new Image(boardImageSupplier.getRoadToken(
                     presenter.myPlayer,
                     6));
             
 
             if(myTurn)
             {
-                dragController.makeDraggable(roadImage);
-                
                 roadImage.addClickHandler(new ClickHandler() {
                             @Override
                             public void onClick(ClickEvent event) {
@@ -182,20 +190,20 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         if(victoryPoints != -1)
         {
             Label vp = new Label("Victory Points = " + victoryPoints);
-            ap.add(vp, 1020, 5);
+            ap.add(vp, 5, 5);
         }
         
-        if(hasLongestRoad)
-        {
+        //if(hasLongestRoad)
+        //{
             Image lr = new Image(boardImageSupplier.getLongestRoad());
-            ap.add(lr, 1020, 105);
-        }
+            ap.add(lr, 785, 100);
+        //}
         
-        if(hasLargestArmy)
-        {
+        //if(hasLargestArmy)
+        //{
             Image la = new Image(boardImageSupplier.getLargestArmy());
-            ap.add(la, 1020, 405);
-        }
+            ap.add(la, 785, 500);
+        //}
         
         boardArea.add(ap);
     }
@@ -261,8 +269,9 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                 {
                     @Override
                     public void onDrop(DragContext context) {
-                        if (chooseNodeEnabledDND) {
-                            chooseNodeEnabledDND = false;
+                        if (chooseSettlementEnabledDND) {
+                            chooseSettlementEnabledDND = false;
+                            dragController.makeNotDraggable(settlementImage);
                             presenter.setNodeToBuild(num);
                         }
                     }
@@ -273,8 +282,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                 nodeImage.addClickHandler(new ClickHandler() {
                             @Override
                             public void onClick(ClickEvent event) {
-                                if (chooseNodeEnabledEnd) {
-                                    chooseNodeEnabledEnd = false;
+                                if (chooseSettlementEnabledEnd) {
+                                    chooseSettlementEnabledEnd = false;
                                     currentAnimation.runAnimation(Constants.NODE_XY[2*num], Constants.NODE_XY[(2*num)+1], num);
                                 }
                             }
@@ -313,6 +322,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     public void onDrop(DragContext context) {
                         if (choosePathEnabledDND) {
                             choosePathEnabledDND = false;
+                            dragController.makeNotDraggable(roadImage);
                             presenter.setPathToBuild(num);
                         }
                     }
@@ -342,7 +352,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         
         AbsolutePanel ap = new AbsolutePanel();
         ap.setHeight("110px");
-        ap.setWidth("1000px");
+        ap.setWidth("950px");
         for (int i = 0; i < resourceCards.size(); i++) {
             final int j = i;
             Image resourceCardImage = new Image(
@@ -370,7 +380,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         
         AbsolutePanel ap = new AbsolutePanel();
         ap.setHeight("210px");
-        ap.setWidth("1000px");
+        ap.setWidth("950px");
         for (int i = 0; i < developmentCards.size(); i++) {
             final int j = i;
             Image resourceCardImage = new Image(
@@ -396,10 +406,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         
         AbsolutePanel ap = new AbsolutePanel();
         ap.setHeight("40px");
-        ap.setWidth("1200px");
+        ap.setWidth("950px");
         FlowPanel fp = new FlowPanel();
         fp.setHeight("40px");
-        fp.setWidth("1200px");
+        fp.setWidth("950px");
         
         Label message;
         
@@ -415,12 +425,15 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         if(info.equals("VIEWER"))
         {
             message = new Label("ENJOY WATCHING");
-            chooseNodeEnabledBegin = false;
+            chooseSettlementEnabledBegin = false;
             choosePathEnabledBegin = false;
-            chooseNodeEnabledEnd = false;
+            chooseCityEnabledBegin = false;
+            chooseSettlementEnabledEnd = false;
             choosePathEnabledEnd = false;
-            chooseNodeEnabledDND = false;
+            chooseCityEnabledEnd = false;
+            chooseSettlementEnabledDND = false;
             choosePathEnabledDND = false;
+            chooseCityEnabledDND = false;
             chooseResourceCardEnabled = false;
             ap.add(message, 5, 5);
         }
@@ -430,27 +443,31 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                 case Constants.MAKEFIRSTFREEMOVESETTLEMENT:
                     message = new Label("Place one free settlement: Please choose a node");
                     ap.add(message, 5, 5);
-                    chooseNodeEnabledBegin = true;
-                    chooseNodeEnabledDND = true;
+                    chooseSettlementEnabledBegin = true;
+                    chooseSettlementEnabledDND = true;
+                    dragController.makeDraggable(settlementImage);
                     break;
                 case Constants.MAKEFIRSTFREEMOVEROAD:
                     message = new Label("Place one free road: Please choose a path");
                     ap.add(message, 5, 5);
                     choosePathEnabledBegin = true;
                     choosePathEnabledDND = true;
+                    dragController.makeDraggable(roadImage);
                     break;
                 case Constants.MAKESECONDFREEMOVESETTLEMENT:
                     message = new Label("Place one free settlement: Please choose a node. "
                                       + "You will receive resource cards for the adjoining nodes");
                     ap.add(message, 5, 5);
-                    chooseNodeEnabledBegin = true;
-                    chooseNodeEnabledDND = true;
+                    chooseSettlementEnabledBegin = true;
+                    chooseSettlementEnabledDND = true;
+                    dragController.makeDraggable(settlementImage);
                     break;
                 case Constants.MAKESECONDFREEMOVEROAD:
                     message = new Label("Place one free road: Please choose a path");
                     ap.add(message, 5, 5);
                     choosePathEnabledBegin = true;
                     choosePathEnabledDND = true;
+                    dragController.makeDraggable(roadImage);
                     break;
                 case Constants.ROLLDICE:
                     message = new Label("Roll the Dice!");
@@ -809,8 +826,9 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         buildSettlement.addClickHandler(new ClickHandler() {
                            @Override
                            public void onClick(ClickEvent event) {
-                              chooseNodeEnabledBegin = true;
-                              chooseNodeEnabledDND = true;
+                              chooseSettlementEnabledBegin = true;
+                              chooseSettlementEnabledDND = true;
+                              dragController.makeDraggable(settlementImage);
                               infoArea.clear();
                               
                               FlowPanel fp2 = new FlowPanel();
@@ -820,8 +838,9 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                               cancel.addClickHandler(new ClickHandler() {
                                   @Override
                                   public void onClick(ClickEvent event) {
-                                      chooseNodeEnabledBegin = false;
-                                      chooseNodeEnabledDND = false;
+                                      chooseSettlementEnabledBegin = false;
+                                      chooseSettlementEnabledDND = false;
+                                      dragController.makeNotDraggable(settlementImage);
                                       presenter.makeMove();
                                       createInfoArea(Constants.MAKEMOVE);
                                   }
@@ -844,8 +863,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                             @Override
                             public void onClick(ClickEvent event) {
                                 presenter.lookingForCity = true;
-                                chooseNodeEnabledBegin = true;
-                                chooseNodeEnabledDND = true;
+                                chooseCityEnabledBegin = true;
+                                chooseCityEnabledDND = true;
                                 infoArea.clear();
                                 
                                 FlowPanel fp2 = new FlowPanel();
@@ -856,8 +875,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                     @Override
                                     public void onClick(ClickEvent event) {
                                         presenter.lookingForCity = false;
-                                        chooseNodeEnabledBegin = false;
-                                        chooseNodeEnabledDND = false;
+                                        chooseCityEnabledBegin = false;
+                                        chooseCityEnabledDND = false;
                                         presenter.makeMove();
                                         createInfoArea(Constants.MAKEMOVE);
                                     }
@@ -881,6 +900,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                             public void onClick(ClickEvent event) {
                                choosePathEnabledBegin = true;
                                choosePathEnabledDND = true;
+                               dragController.makeDraggable(roadImage);
                                infoArea.clear();
                                
                                FlowPanel fp2 = new FlowPanel();
@@ -892,6 +912,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                    public void onClick(ClickEvent event) {
                                        choosePathEnabledBegin = false;
                                        choosePathEnabledDND = false;
+                                       dragController.makeNotDraggable(roadImage);
                                        createInfoArea(Constants.MAKEMOVE);
                                    }
                                });
@@ -1332,12 +1353,15 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         else
         {
             message = new Label("NOT YOUR TURN.");
-            chooseNodeEnabledBegin = false;
+            chooseSettlementEnabledBegin = false;
             choosePathEnabledBegin = false;
-            chooseNodeEnabledEnd = false;
+            chooseCityEnabledBegin = false;
+            chooseSettlementEnabledEnd = false;
             choosePathEnabledEnd = false;
-            chooseNodeEnabledDND = false;
+            chooseCityEnabledEnd = false;
+            chooseSettlementEnabledDND = false;
             choosePathEnabledDND = false;
+            chooseCityEnabledDND = false;
             chooseResourceCardEnabled = false;
             ap.add(message, 5, 5);
         }

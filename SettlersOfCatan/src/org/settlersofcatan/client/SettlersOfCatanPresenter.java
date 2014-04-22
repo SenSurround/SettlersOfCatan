@@ -125,7 +125,9 @@ public class SettlersOfCatanPresenter {
     
     private int currentDevelopmentCard = 0;
     
-    private Audio buildSound;
+    private Audio buildRoadSound;
+    private Audio buildHouseSound;
+    private Audio moveRobberSound;
 
     public SettlersOfCatanPresenter(View view, Container container) {
       this.view = view;
@@ -134,9 +136,17 @@ public class SettlersOfCatanPresenter {
       
       BoardSounds bs = GWT.create(BoardSounds.class);
       
-      buildSound = Audio.createIfSupported();
-      buildSound.addSource(bs.jackhammerMp3().getSafeUri().asString(), AudioElement.TYPE_MP3);
-      buildSound.addSource(bs.jackhammerWav().getSafeUri().asString(), AudioElement.TYPE_WAV);
+      buildRoadSound = Audio.createIfSupported();
+      buildRoadSound.addSource(bs.jackhammerMp3().getSafeUri().asString(), AudioElement.TYPE_MP3);
+      buildRoadSound.addSource(bs.jackhammerWav().getSafeUri().asString(), AudioElement.TYPE_WAV);
+
+      buildHouseSound = Audio.createIfSupported();
+      buildHouseSound.addSource(bs.hammerMp3().getSafeUri().asString(), AudioElement.TYPE_MP3);
+      buildHouseSound.addSource(bs.hammerWav().getSafeUri().asString(), AudioElement.TYPE_WAV);
+
+      moveRobberSound = Audio.createIfSupported();
+      moveRobberSound.addSource(bs.laughMp3().getSafeUri().asString(), AudioElement.TYPE_MP3);
+      moveRobberSound.addSource(bs.laughWav().getSafeUri().asString(), AudioElement.TYPE_WAV);
     }
     
     public void updateUI(UpdateUI updateUI)
@@ -422,7 +432,7 @@ public class SettlersOfCatanPresenter {
                 addSettlementFirstMove.add(new SetTurn(playerIds.get(player)));
                 addSettlementFirstMove.add(new Set(pathString, Constants.ROADTOKEN + "00" + playerString));
                 addSettlementFirstMove.add(new Set(Constants.ROADTOKEN + "00" + playerString, pathString));
-                buildSound.play();
+                buildRoadSound.play();
                 container.sendMakeMove(addSettlementFirstMove);
             }
         }
@@ -445,7 +455,7 @@ public class SettlersOfCatanPresenter {
                 addSettlementFirstMove.add(new SetTurn(playerIds.get(player)));
                 addSettlementFirstMove.add(new Set(pathString, Constants.ROADTOKEN + "01" + playerString));
                 addSettlementFirstMove.add(new Set(Constants.ROADTOKEN + "01" + playerString, pathString));
-                buildSound.play();
+                buildRoadSound.play();
                 container.sendMakeMove(addSettlementFirstMove);
             }
         }
@@ -497,7 +507,7 @@ public class SettlersOfCatanPresenter {
             }
         }*/
         
-        buildSound.play();
+        buildRoadSound.play();
         container.sendMakeMove(addRoad);
     }
     
@@ -529,7 +539,7 @@ public class SettlersOfCatanPresenter {
                 addSettlementFirstMove.add(new Set(nodeString, Constants.SETTLEMENTTOKEN + "00" + playerString));
                 addSettlementFirstMove.add(new Set(Constants.SETTLEMENTTOKEN + "00" + playerString, nodeString));
                 infoMessage = Constants.MAKEFIRSTFREEMOVEROAD;
-                buildSound.play();
+                buildHouseSound.play();
                 container.sendMakeMove(addSettlementFirstMove);
             }
         }
@@ -557,7 +567,7 @@ public class SettlersOfCatanPresenter {
                 }
                 
                 infoMessage = Constants.MAKESECONDFREEMOVEROAD;
-                buildSound.play();
+                buildHouseSound.play();
                 container.sendMakeMove(addSettlementSecondMode);
             }
         }
@@ -614,7 +624,7 @@ public class SettlersOfCatanPresenter {
             addSettlement.add(new EndGame(playerIds.get(myPlayer)));
             infoMessage = Constants.ENDGAME;
         }
-        buildSound.play();
+        buildHouseSound.play();
         container.sendMakeMove(addSettlement);
     }
     
@@ -634,7 +644,7 @@ public class SettlersOfCatanPresenter {
             addCity.add(new EndGame(playerIds.get(myPlayer)));
             infoMessage = Constants.ENDGAME;
         }
-        buildSound.play();
+        buildHouseSound.play();
         container.sendMakeMove(addCity);
     }
     
@@ -1371,6 +1381,8 @@ public class SettlersOfCatanPresenter {
             }
             
             savedRandomCard = "";
+            
+            moveRobberSound.play();
         }
     }
     
