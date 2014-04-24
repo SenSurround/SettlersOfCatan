@@ -193,17 +193,17 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             ap.add(vp, 5, 5);
         }
         
-        //if(hasLongestRoad)
-        //{
+        if(hasLongestRoad)
+        {
             Image lr = new Image(boardImageSupplier.getLongestRoad());
             ap.add(lr, 785, 100);
-        //}
+        }
         
-        //if(hasLargestArmy)
-        //{
+        if(hasLargestArmy)
+        {
             Image la = new Image(boardImageSupplier.getLargestArmy());
             ap.add(la, 785, 500);
-        //}
+        }
         
         boardArea.add(ap);
     }

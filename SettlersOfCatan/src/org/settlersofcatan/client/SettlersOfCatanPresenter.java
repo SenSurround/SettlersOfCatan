@@ -116,7 +116,7 @@ public class SettlersOfCatanPresenter {
     private String storedResourceIn = "";
     public boolean lookingForCity = false;
     private String pathAdding = "";
-    private String savedRandomCard;
+    private String savedRandomCard = "";
     
     public int currentPlayer = -1;
     public String infoMessage = "";
@@ -421,12 +421,14 @@ public class SettlersOfCatanPresenter {
                 if(currentPlayer != playerIds.size() - 1)
                 {
                     player = (currentPlayer + 1) % playerIds.size();
+                    infoMessage = Constants.MAKEFIRSTFREEMOVESETTLEMENT;
                 }
                 else
                 {
                     player = currentPlayer;
+                    infoMessage = Constants.MAKESECONDFREEMOVESETTLEMENT;
                 }
-                infoMessage = Constants.MAKESECONDFREEMOVESETTLEMENT;
+                //infoMessage = Constants.MAKESECONDFREEMOVESETTLEMENT;
                 
                 List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
                 addSettlementFirstMove.add(new SetTurn(playerIds.get(player)));
@@ -444,12 +446,14 @@ public class SettlersOfCatanPresenter {
                 if(currentPlayer != 0)
                 {
                     player = (currentPlayer - 1) % playerIds.size();
+                    infoMessage = Constants.MAKESECONDFREEMOVESETTLEMENT;
                 }
                 else
                 {
                     player = currentPlayer;
+                    infoMessage = Constants.ROLLDICE;
                 }
-                infoMessage = Constants.ROLLDICE;
+                //infoMessage = Constants.ROLLDICE;
                 
                 List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
                 addSettlementFirstMove.add(new SetTurn(playerIds.get(player)));
@@ -485,7 +489,7 @@ public class SettlersOfCatanPresenter {
         
         infoMessage = Constants.BUILDROADPT2;
         
-        /*if(takesLongestRoad(pathAdding))
+        if(takesLongestRoad(pathAdding))
         {
             String playerString = "";
             
@@ -505,7 +509,7 @@ public class SettlersOfCatanPresenter {
                 addRoad.add(new EndGame(playerIds.get(myPlayer)));
                 infoMessage = Constants.ENDGAME;
             }
-        }*/
+        }
         
         buildRoadSound.play();
         container.sendMakeMove(addRoad);
@@ -1369,16 +1373,17 @@ public class SettlersOfCatanPresenter {
     {
         if(infoMessage.equals(Constants.MOVEROBBERPT3))
         {
+            List<Operation> setRobber = new ArrayList<Operation>();
             if(!savedRandomCard.equals(""))
             {
                 String resource = theState.get(savedRandomCard).toString();
-                List<Operation> setRobber = new ArrayList<Operation>();
                 setRobber.add(new Delete(savedRandomCard));
                 setRobber.add(new Set(getOpenResourceCardSlot(resource, 0), resource));
                 setRobber.add(new SetVisibility(getOpenResourceCardSlot(resource, 0), Arrays.asList(playerIds.get(myPlayer))));
-                infoMessage = Constants.MOVEROBBERPT4;
-                container.sendMakeMove(setRobber);
             }
+            
+            infoMessage = Constants.MOVEROBBERPT4;
+            container.sendMakeMove(setRobber);
             
             savedRandomCard = "";
             
