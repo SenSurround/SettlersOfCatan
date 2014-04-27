@@ -3,7 +3,7 @@ package org.settlersofcatan.graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.settlersofcatan.client.Constants;
+import org.settlersofcatan.client.SettlersOfCatanConstants;
 import org.game_api.GameApi.Operation;
 import org.settlersofcatan.client.Hex;
 import org.settlersofcatan.client.Node;
@@ -227,17 +227,17 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                   }
                 }
               });
-            ap.add(hexImage, Constants.HEX_XY[2*i], Constants.HEX_XY[(2*i)+1]);
+            ap.add(hexImage, SettlersOfCatanConstants.HEX_XY[2*i], SettlersOfCatanConstants.HEX_XY[(2*i)+1]);
 
             if(hexList.get(i).getRobber())
             {
                 Image dieRollImage = new Image(boardImageSupplier.getDieRollToken(0));
-                ap.add(dieRollImage, Constants.ROBBER_XY[2*i], Constants.ROBBER_XY[(2*i)+1]);
+                ap.add(dieRollImage, SettlersOfCatanConstants.ROBBER_XY[2*i], SettlersOfCatanConstants.ROBBER_XY[(2*i)+1]);
             }
-            else if(!hexList.get(i).getResource().equals(Constants.DESERT))
+            else if(!hexList.get(i).getResource().equals(SettlersOfCatanConstants.DESERT))
             {
                 Image dieRollImage = new Image(boardImageSupplier.getDieRollToken(hexList.get(i).getDieRoll()));
-                ap.add(dieRollImage, Constants.ROBBER_XY[2*i], Constants.ROBBER_XY[(2*i)+1]);
+                ap.add(dieRollImage, SettlersOfCatanConstants.ROBBER_XY[2*i], SettlersOfCatanConstants.ROBBER_XY[(2*i)+1]);
             }
         }
         
@@ -246,7 +246,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         for(int i = 0; i < 9; i++)
         {
             harborLines = new Image(boardImageSupplier.getHarborLines(i));
-            ap.add(harborLines, Constants.HARBOR_LINES_XY[2*i], Constants.HARBOR_LINES_XY[(2*i) + 1]);
+            ap.add(harborLines, SettlersOfCatanConstants.HARBOR_LINES_XY[2*i], SettlersOfCatanConstants.HARBOR_LINES_XY[(2*i) + 1]);
         }
         
         return ap;
@@ -284,20 +284,20 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                             public void onClick(ClickEvent event) {
                                 if (chooseSettlementEnabledEnd) {
                                     chooseSettlementEnabledEnd = false;
-                                    currentAnimation.runAnimation(Constants.NODE_XY[2*num], Constants.NODE_XY[(2*num)+1], num);
+                                    currentAnimation.runAnimation(SettlersOfCatanConstants.NODE_XY[2*num], SettlersOfCatanConstants.NODE_XY[(2*num)+1], num);
                                 }
                             }
                           });
             }
-            ap.add(nodeImage, Constants.NODE_XY[2*i], Constants.NODE_XY[(2*i)+1]);
+            ap.add(nodeImage, SettlersOfCatanConstants.NODE_XY[2*i], SettlersOfCatanConstants.NODE_XY[(2*i)+1]);
         }
         
         Image harbor;
         
         for(int i = 0; i < 9; i++)
         {
-            harbor = new Image(boardImageSupplier.getHarbor(nodeList.get(Constants.HARBOR_NODE[i]).getHarborBonus()));
-            ap.add(harbor,  Constants.HARBOR_XY[2*i], Constants.HARBOR_XY[(2*i) + 1]);
+            harbor = new Image(boardImageSupplier.getHarbor(nodeList.get(SettlersOfCatanConstants.HARBOR_NODE[i]).getHarborBonus()));
+            ap.add(harbor,  SettlersOfCatanConstants.HARBOR_XY[2*i], SettlersOfCatanConstants.HARBOR_XY[(2*i) + 1]);
         }
         
         return ap;
@@ -335,12 +335,12 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                             public void onClick(ClickEvent event) {
                                 if (choosePathEnabledEnd) {
                                     choosePathEnabledEnd = false;
-                                    currentAnimation.runAnimation(Constants.PATH_XY[2*num], Constants.PATH_XY[(2*num)+1], num);
+                                    currentAnimation.runAnimation(SettlersOfCatanConstants.PATH_XY[2*num], SettlersOfCatanConstants.PATH_XY[(2*num)+1], num);
                                 }
                             }
                           });
             }
-            ap.add(pathImage, Constants.PATH_XY[2*i], Constants.PATH_XY[(2*i)+1]);
+            ap.add(pathImage, SettlersOfCatanConstants.PATH_XY[2*i], SettlersOfCatanConstants.PATH_XY[(2*i)+1]);
         }
         
         return ap;
@@ -348,7 +348,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
     
     private void createResourceCardImages(List<String> resourceCards) {
         playerResourceCardArea.clear();
-        //resourceCards = Arrays.asList(Constants.ORE, Constants.BRICK, Constants.LUMBER);
+        //resourceCards = Arrays.asList(SettlersOfCatanConstants.ORE, SettlersOfCatanConstants.BRICK, SettlersOfCatanConstants.LUMBER);
         
         AbsolutePanel ap = new AbsolutePanel();
         ap.setHeight("110px");
@@ -376,7 +376,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         playerDevelopmentCardArea.clear();
         
         //developmentCards = Arrays.asList(
-        //        Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF06, Constants.DEVELOPMENTCARDTYPEDEF05);
+        //        SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF06, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF05);
         
         AbsolutePanel ap = new AbsolutePanel();
         ap.setHeight("210px");
@@ -415,11 +415,11 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         
         String secondary = "";
         
-        if(  info.contains(Constants.MOVEROBBERPT2)
+        if(  info.contains(SettlersOfCatanConstants.MOVEROBBERPT2)
           && info.length() > 13)
         {
             secondary = info.substring(13);
-            info = Constants.MOVEROBBERPT2;
+            info = SettlersOfCatanConstants.MOVEROBBERPT2;
         }
         
         if(info.equals("VIEWER"))
@@ -440,21 +440,21 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         else if(myTurn)
         {
             switch(info) {
-                case Constants.MAKEFIRSTFREEMOVESETTLEMENT:
+                case SettlersOfCatanConstants.MAKEFIRSTFREEMOVESETTLEMENT:
                     message = new Label("Place one free settlement: Please choose a node");
                     ap.add(message, 5, 5);
                     chooseSettlementEnabledBegin = true;
                     chooseSettlementEnabledDND = true;
                     dragController.makeDraggable(settlementImage);
                     break;
-                case Constants.MAKEFIRSTFREEMOVEROAD:
+                case SettlersOfCatanConstants.MAKEFIRSTFREEMOVEROAD:
                     message = new Label("Place one free road: Please choose a path");
                     ap.add(message, 5, 5);
                     choosePathEnabledBegin = true;
                     choosePathEnabledDND = true;
                     dragController.makeDraggable(roadImage);
                     break;
-                case Constants.MAKESECONDFREEMOVESETTLEMENT:
+                case SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT:
                     message = new Label("Place one free settlement: Please choose a node. "
                                       + "You will receive resource cards for the adjoining nodes");
                     ap.add(message, 5, 5);
@@ -462,14 +462,14 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     chooseSettlementEnabledDND = true;
                     dragController.makeDraggable(settlementImage);
                     break;
-                case Constants.MAKESECONDFREEMOVEROAD:
+                case SettlersOfCatanConstants.MAKESECONDFREEMOVEROAD:
                     message = new Label("Place one free road: Please choose a path");
                     ap.add(message, 5, 5);
                     choosePathEnabledBegin = true;
                     choosePathEnabledDND = true;
                     dragController.makeDraggable(roadImage);
                     break;
-                case Constants.ROLLDICE:
+                case SettlersOfCatanConstants.ROLLDICE:
                     message = new Label("Roll the Dice!");
                     ap.add(message, 5, 5);
                     Button rollDiceButton = new Button("Roll Dice");
@@ -483,61 +483,61 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     });
                     ap.add(rollDiceButton, 100, 5);
                     break;
-                case Constants.MOVEROBBERPT1:
+                case SettlersOfCatanConstants.MOVEROBBERPT1:
                     message = new Label("You rolled a 7! Choose a new location for the robber");
                     fp.add(message);
                     chooseHexEnabled = true;
                     infoArea.add(fp);
                     break;
-                case Constants.MOVEROBBERPT2:
+                case SettlersOfCatanConstants.MOVEROBBERPT2:
                     if(!secondary.equals(""))
                     {
                         message = new Label("Who do you want to steal from?");
                         fp.add(message);
                         
-                        if(secondary.contains(Constants.PB))
+                        if(secondary.contains(SettlersOfCatanConstants.PB))
                         {
                             Button player = new Button("Blue");
                             player.addClickHandler(new ClickHandler() {
                                 @Override
                                 public void onClick(ClickEvent event) {
-                                    presenter.finishRobber(Constants.PB);
+                                    presenter.finishRobber(SettlersOfCatanConstants.PB);
                                 }
                              });
                             fp.add(player);
                         }
                         
-                        if(secondary.contains(Constants.PR))
+                        if(secondary.contains(SettlersOfCatanConstants.PR))
                         {
                             Button player = new Button("Red");
                             player.addClickHandler(new ClickHandler() {
                                 @Override
                                 public void onClick(ClickEvent event) {
-                                    presenter.finishRobber(Constants.PR);
+                                    presenter.finishRobber(SettlersOfCatanConstants.PR);
                                 }
                              });
                             fp.add(player);
                         }
                         
-                        if(secondary.contains(Constants.PY))
+                        if(secondary.contains(SettlersOfCatanConstants.PY))
                         {
                             Button player = new Button("Yellow");
                             player.addClickHandler(new ClickHandler() {
                                 @Override
                                 public void onClick(ClickEvent event) {
-                                    presenter.finishRobber(Constants.PY);
+                                    presenter.finishRobber(SettlersOfCatanConstants.PY);
                                 }
                              });
                             fp.add(player);
                         }
                         
-                        if(secondary.contains(Constants.PG))
+                        if(secondary.contains(SettlersOfCatanConstants.PG))
                         {
                             Button player = new Button("Green");
                             player.addClickHandler(new ClickHandler() {
                                 @Override
                                 public void onClick(ClickEvent event) {
-                                    presenter.finishRobber(Constants.PG);
+                                    presenter.finishRobber(SettlersOfCatanConstants.PG);
                                 }
                              });
                             fp.add(player);
@@ -549,10 +549,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         presenter.finishRobber("");
                     }
                     break;
-                case Constants.MOVEROBBERPT3:
+                case SettlersOfCatanConstants.MOVEROBBERPT3:
                     presenter.finishMoveRobber();
                     break;
-                case Constants.MOVEROBBERPT4:
+                case SettlersOfCatanConstants.MOVEROBBERPT4:
                     message = new Label("You moved the robber! Good for you!");
                     fp.add(message);
                     Button robberDone = new Button("Make another move!");
@@ -560,13 +560,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(robberDone);
                     infoArea.add(fp);
                     break;
-                case Constants.ROLLED2:
+                case SettlersOfCatanConstants.ROLLED2:
                     message = new Label("You Rolled a 2! Dispersing Resources!");
                     fp.add(message);
                     Button makeAMove2 = new Button("Make a move!");
@@ -574,13 +574,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(makeAMove2);
                     infoArea.add(fp);
                     break;
-                case Constants.ROLLED3:
+                case SettlersOfCatanConstants.ROLLED3:
                     message = new Label("You Rolled a 3! Dispersing Resources!");
                     fp.add(message);
                     Button makeAMove3 = new Button("Make a move!");
@@ -588,13 +588,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(makeAMove3);
                     infoArea.add(fp);
                     break;
-                case Constants.ROLLED4:
+                case SettlersOfCatanConstants.ROLLED4:
                     message = new Label("You Rolled a 4! Dispersing Resources!");
                     fp.add(message);
                     Button makeAMove4 = new Button("Make a move!");
@@ -602,13 +602,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(makeAMove4);
                     infoArea.add(fp);
                     break;
-                case Constants.ROLLED5:
+                case SettlersOfCatanConstants.ROLLED5:
                     message = new Label("You Rolled a 5! Dispersing Resources!");
                     fp.add(message);
                     Button makeAMove5 = new Button("Make a move!");
@@ -616,13 +616,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(makeAMove5);
                     infoArea.add(fp);
                     break;
-                case Constants.ROLLED6:
+                case SettlersOfCatanConstants.ROLLED6:
                     message = new Label("You Rolled a 6! Dispersing Resources!");
                     fp.add(message);
                     Button makeAMove6 = new Button("Make a move!");
@@ -630,13 +630,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(makeAMove6);
                     infoArea.add(fp);
                     break;
-                case Constants.ROLLED8:
+                case SettlersOfCatanConstants.ROLLED8:
                     message = new Label("You Rolled an 8! Dispersing Resources!");
                     fp.add(message);
                     Button makeAMove8 = new Button("Make a move!");
@@ -644,13 +644,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(makeAMove8);
                     infoArea.add(fp);
                     break;
-                case Constants.ROLLED9:
+                case SettlersOfCatanConstants.ROLLED9:
                     message = new Label("You Rolled a 9! Dispersing Resources!");
                     fp.add(message);
                     Button makeAMove9 = new Button("Make a move!");
@@ -658,13 +658,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(makeAMove9);
                     infoArea.add(fp);
                     break;
-                case Constants.ROLLED10:
+                case SettlersOfCatanConstants.ROLLED10:
                     message = new Label("You Rolled a 10! Dispersing Resources!");
                     fp.add(message);
                     Button makeAMove10 = new Button("Make a move!");
@@ -672,13 +672,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(makeAMove10);
                     infoArea.add(fp);
                     break;
-                case Constants.ROLLED11:
+                case SettlersOfCatanConstants.ROLLED11:
                     message = new Label("You Rolled an 11! Dispersing Resources!");
                     fp.add(message);
                     Button makeAMove11 = new Button("Make a move!");
@@ -686,13 +686,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(makeAMove11);
                     infoArea.add(fp);
                     break;
-                case Constants.ROLLED12:
+                case SettlersOfCatanConstants.ROLLED12:
                     message = new Label("You Rolled a 12! Dispersing Resources!");
                     fp.add(message);
                     Button makeAMove12 = new Button("Make a move!");
@@ -700,21 +700,16 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(makeAMove12);
                     infoArea.add(fp);
                     break;
-                case Constants.BUILDROADPT1:
-                    FlowPanel fp3 = new FlowPanel();
-                    
-                    Label newText = new Label("Building road, plz wait...");
-                    fp3.add(newText);
-                    infoArea.add(fp3);
+                case SettlersOfCatanConstants.BUILDROADPT1:
                     presenter.finishRoadBuild();
                     break;
-                case Constants.BUILDROADPT2:
+                case SettlersOfCatanConstants.BUILDROADPT2:
                     message = new Label("You built a road! Good for you!");
                     fp.add(message);
                     Button roadBuild = new Button("Make another move!");
@@ -722,16 +717,16 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(roadBuild);
                     infoArea.add(fp);
                     break;
-                case Constants.BUILDSETTLEMENTPT1:
+                case SettlersOfCatanConstants.BUILDSETTLEMENTPT1:
                     presenter.finishSettlementBuild();
                     break;
-                case Constants.BUILDSETTLEMENTPT2:
+                case SettlersOfCatanConstants.BUILDSETTLEMENTPT2:
                     message = new Label("You built a settlement! Good for you!");
                     fp.add(message);
                     Button settlementBuild = new Button("Make another move!");
@@ -739,16 +734,16 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(settlementBuild);
                     infoArea.add(fp);
                     break;
-                case Constants.BUILDCITYPT1:
+                case SettlersOfCatanConstants.BUILDCITYPT1:
                     presenter.finishCityBuild();
                     break;
-                case Constants.BUILDCITYPT2:
+                case SettlersOfCatanConstants.BUILDCITYPT2:
                     message = new Label("You built a city! Good for you!");
                     fp.add(message);
                     Button cityBuild = new Button("Make another move!");
@@ -756,16 +751,16 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(cityBuild);
                     infoArea.add(fp);
                     break;
-                case Constants.BUYDEVELOPMENTCARDPT1:
+                case SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT1:
                     presenter.finishBuyingDevelopmentCard();
                     break;
-                case Constants.BUYDEVELOPMENTCARDPT2:
+                case SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT2:
                     message = new Label("You bought a Development Card! Good for you!");
                     fp.add(message);
                     Button buyDevelopmentCard = new Button("Make another move!");
@@ -773,33 +768,33 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(buyDevelopmentCard);
                     infoArea.add(fp);
                     break;
-                case Constants.ENDGAME:
+                case SettlersOfCatanConstants.ENDGAME:
                     message = new Label("You win!");
                     fp.add(message);
                     infoArea.add(fp);
                     break;
-                case Constants.HARBORTRADEPT1:
-                case Constants.THREETOONEHARBORTRADEPT1:
-                case Constants.TWOTOONEBRIHARBORTRADEPT1:
-                case Constants.TWOTOONEGRAHARBORTRADEPT1:
-                case Constants.TWOTOONELUMHARBORTRADEPT1:
-                case Constants.TWOTOONEOREHARBORTRADEPT1:
-                case Constants.TWOTOONEWOOHARBORTRADEPT1:
+                case SettlersOfCatanConstants.HARBORTRADEPT1:
+                case SettlersOfCatanConstants.THREETOONEHARBORTRADEPT1:
+                case SettlersOfCatanConstants.TWOTOONEBRIHARBORTRADEPT1:
+                case SettlersOfCatanConstants.TWOTOONEGRAHARBORTRADEPT1:
+                case SettlersOfCatanConstants.TWOTOONELUMHARBORTRADEPT1:
+                case SettlersOfCatanConstants.TWOTOONEOREHARBORTRADEPT1:
+                case SettlersOfCatanConstants.TWOTOONEWOOHARBORTRADEPT1:
                     presenter.finishHarborTrade();
                     break;
-                case Constants.HARBORTRADEPT2:
-                case Constants.THREETOONEHARBORTRADEPT2:
-                case Constants.TWOTOONEBRIHARBORTRADEPT2:
-                case Constants.TWOTOONEGRAHARBORTRADEPT2:
-                case Constants.TWOTOONELUMHARBORTRADEPT2:
-                case Constants.TWOTOONEOREHARBORTRADEPT2:
-                case Constants.TWOTOONEWOOHARBORTRADEPT2:
+                case SettlersOfCatanConstants.HARBORTRADEPT2:
+                case SettlersOfCatanConstants.THREETOONEHARBORTRADEPT2:
+                case SettlersOfCatanConstants.TWOTOONEBRIHARBORTRADEPT2:
+                case SettlersOfCatanConstants.TWOTOONEGRAHARBORTRADEPT2:
+                case SettlersOfCatanConstants.TWOTOONELUMHARBORTRADEPT2:
+                case SettlersOfCatanConstants.TWOTOONEOREHARBORTRADEPT2:
+                case SettlersOfCatanConstants.TWOTOONEWOOHARBORTRADEPT2:
                     message = new Label("You made a harbor trade! Good for you!");
                     fp.add(message);
                     Button harborTrade = new Button("Make another move!");
@@ -807,14 +802,14 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                        @Override
                        public void onClick(ClickEvent event) {
                            presenter.makeMove();
-                           createInfoArea(Constants.MAKEMOVE);
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                        }
                     });
                     fp.add(harborTrade);
                     infoArea.add(fp);
                     break;
                     
-                case Constants.MAKEMOVE:
+                case SettlersOfCatanConstants.MAKEMOVE:
                     message = new Label("Make a move!!");
                     fp.add(message);
                     
@@ -842,7 +837,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                       chooseSettlementEnabledDND = false;
                                       dragController.makeNotDraggable(settlementImage);
                                       presenter.makeMove();
-                                      createInfoArea(Constants.MAKEMOVE);
+                                      createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                   }
                               });
                               
@@ -878,7 +873,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                         chooseCityEnabledBegin = false;
                                         chooseCityEnabledDND = false;
                                         presenter.makeMove();
-                                        createInfoArea(Constants.MAKEMOVE);
+                                        createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                     }
                                 });
                                 
@@ -913,7 +908,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                        choosePathEnabledBegin = false;
                                        choosePathEnabledDND = false;
                                        dragController.makeNotDraggable(roadImage);
-                                       createInfoArea(Constants.MAKEMOVE);
+                                       createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                    }
                                });
                                
@@ -958,7 +953,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                    @Override
                                    public void onClick(ClickEvent event) {
                                        chooseDevelopmentCardEnabled = false;
-                                       createInfoArea(Constants.MAKEMOVE);
+                                       createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                    }
                                });
                                
@@ -970,11 +965,11 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         fp.add(canPlayDevelopmentCard);
                     }
                     
-                    if( presenter.canHarborTrade(Constants.ORE)
-                     || presenter.canHarborTrade(Constants.BRICK)
-                     || presenter.canHarborTrade(Constants.LUMBER)
-                     || presenter.canHarborTrade(Constants.GRAIN)
-                     || presenter.canHarborTrade(Constants.WOOL))
+                    if( presenter.canHarborTrade(SettlersOfCatanConstants.ORE)
+                     || presenter.canHarborTrade(SettlersOfCatanConstants.BRICK)
+                     || presenter.canHarborTrade(SettlersOfCatanConstants.LUMBER)
+                     || presenter.canHarborTrade(SettlersOfCatanConstants.GRAIN)
+                     || presenter.canHarborTrade(SettlersOfCatanConstants.WOOL))
                     {
                         Button canHarborTrade = new Button("HarborTrade");
                         
@@ -988,7 +983,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                
                                Label text = new Label("Choose a Resource Type to Trade");
                                
-                               if(presenter.canHarborTrade(Constants.ORE))
+                               if(presenter.canHarborTrade(SettlersOfCatanConstants.ORE))
                                {
                                    Button ore = new Button("Ore");
                                    ore.addClickHandler(new ClickHandler() {
@@ -1005,7 +1000,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            brick.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.ORE, Constants.BRICK);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.ORE, SettlersOfCatanConstants.BRICK);                                                   
                                                }
                                            });
                                            fp3.add(brick);
@@ -1014,7 +1009,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            lumber.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.ORE, Constants.LUMBER);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.ORE, SettlersOfCatanConstants.LUMBER);                                                   
                                                }
                                            });
                                            fp3.add(lumber);
@@ -1023,7 +1018,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            grain.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.ORE, Constants.GRAIN);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.ORE, SettlersOfCatanConstants.GRAIN);                                                   
                                                }
                                            });
                                            fp3.add(grain);
@@ -1032,7 +1027,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            wool.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.ORE, Constants.WOOL);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.ORE, SettlersOfCatanConstants.WOOL);                                                   
                                                }
                                            });
                                            fp3.add(wool);
@@ -1041,7 +1036,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            cancel.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   createInfoArea(Constants.MAKEMOVE);
+                                                   createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                                }
                                            });
                                            fp3.add(cancel);
@@ -1052,7 +1047,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                    fp2.add(ore);
                                }
                                
-                               if(presenter.canHarborTrade(Constants.BRICK))
+                               if(presenter.canHarborTrade(SettlersOfCatanConstants.BRICK))
                                {
                                    Button brick = new Button("Brick");
                                    brick.addClickHandler(new ClickHandler() {
@@ -1069,7 +1064,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            ore.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.BRICK, Constants.ORE);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.BRICK, SettlersOfCatanConstants.ORE);                                                   
                                                }
                                            });
                                            fp3.add(ore);
@@ -1078,7 +1073,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            lumber.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.BRICK, Constants.LUMBER);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.BRICK, SettlersOfCatanConstants.LUMBER);                                                   
                                                }
                                            });
                                            fp3.add(lumber);
@@ -1087,7 +1082,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            grain.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.BRICK, Constants.GRAIN);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.BRICK, SettlersOfCatanConstants.GRAIN);                                                   
                                                }
                                            });
                                            fp3.add(grain);
@@ -1096,7 +1091,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            wool.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.BRICK, Constants.WOOL);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.BRICK, SettlersOfCatanConstants.WOOL);                                                   
                                                }
                                            });
                                            fp3.add(wool);
@@ -1105,7 +1100,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            cancel.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   createInfoArea(Constants.MAKEMOVE);
+                                                   createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                                }
                                            });
                                            fp3.add(cancel);
@@ -1116,7 +1111,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                    fp2.add(brick);
                                }
                                
-                               if(presenter.canHarborTrade(Constants.LUMBER))
+                               if(presenter.canHarborTrade(SettlersOfCatanConstants.LUMBER))
                                {
                                    Button lumber = new Button("Lumber");
                                    lumber.addClickHandler(new ClickHandler() {
@@ -1133,7 +1128,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            ore.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.LUMBER, Constants.ORE);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.LUMBER, SettlersOfCatanConstants.ORE);                                                   
                                                }
                                            });
                                            fp3.add(ore);
@@ -1142,7 +1137,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            brick.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.LUMBER, Constants.BRICK);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.LUMBER, SettlersOfCatanConstants.BRICK);                                                   
                                                }
                                            });
                                            fp3.add(brick);
@@ -1151,7 +1146,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            grain.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.LUMBER, Constants.GRAIN);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.LUMBER, SettlersOfCatanConstants.GRAIN);                                                   
                                                }
                                            });
                                            fp3.add(grain);
@@ -1160,7 +1155,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            wool.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.LUMBER, Constants.WOOL);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.LUMBER, SettlersOfCatanConstants.WOOL);                                                   
                                                }
                                            });
                                            fp3.add(wool);
@@ -1169,7 +1164,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            cancel.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   createInfoArea(Constants.MAKEMOVE);
+                                                   createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                                }
                                            });
                                            fp3.add(cancel);
@@ -1180,7 +1175,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                    fp2.add(lumber);
                                }
                                
-                               if(presenter.canHarborTrade(Constants.GRAIN))
+                               if(presenter.canHarborTrade(SettlersOfCatanConstants.GRAIN))
                                {
                                    Button grain = new Button("Grain");
                                    grain.addClickHandler(new ClickHandler() {
@@ -1197,7 +1192,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            ore.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.GRAIN, Constants.ORE);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.GRAIN, SettlersOfCatanConstants.ORE);                                                   
                                                }
                                            });
                                            fp3.add(ore);
@@ -1206,7 +1201,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            brick.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.GRAIN, Constants.BRICK);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.GRAIN, SettlersOfCatanConstants.BRICK);                                                   
                                                }
                                            });
                                            fp3.add(brick);
@@ -1215,7 +1210,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            lumber.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.GRAIN, Constants.LUMBER);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.GRAIN, SettlersOfCatanConstants.LUMBER);                                                   
                                                }
                                            });
                                            fp3.add(lumber);
@@ -1224,7 +1219,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            wool.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.GRAIN, Constants.WOOL);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.GRAIN, SettlersOfCatanConstants.WOOL);                                                   
                                                }
                                            });
                                            fp3.add(wool);
@@ -1233,7 +1228,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            cancel.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   createInfoArea(Constants.MAKEMOVE);
+                                                   createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                                }
                                            });
                                            fp3.add(cancel);
@@ -1244,7 +1239,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                    fp2.add(grain);
                                }
                                
-                               if(presenter.canHarborTrade(Constants.WOOL))
+                               if(presenter.canHarborTrade(SettlersOfCatanConstants.WOOL))
                                {
                                    Button wool = new Button("Wool");
                                    wool.addClickHandler(new ClickHandler() {
@@ -1261,7 +1256,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            ore.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.WOOL, Constants.ORE);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.WOOL, SettlersOfCatanConstants.ORE);                                                   
                                                }
                                            });
                                            fp3.add(ore);
@@ -1270,7 +1265,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            brick.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.WOOL, Constants.BRICK);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.WOOL, SettlersOfCatanConstants.BRICK);                                                   
                                                }
                                            });
                                            fp3.add(brick);
@@ -1279,7 +1274,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            lumber.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.WOOL, Constants.LUMBER);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.WOOL, SettlersOfCatanConstants.LUMBER);                                                   
                                                }
                                            });
                                            fp3.add(lumber);
@@ -1288,7 +1283,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            grain.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   presenter.doHarborTrade(Constants.WOOL, Constants.GRAIN);                                                   
+                                                   presenter.doHarborTrade(SettlersOfCatanConstants.WOOL, SettlersOfCatanConstants.GRAIN);                                                   
                                                }
                                            });
                                            fp3.add(grain);
@@ -1297,7 +1292,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            cancel.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
-                                                   createInfoArea(Constants.MAKEMOVE);
+                                                   createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                                }
                                            });
                                            fp3.add(cancel);
@@ -1313,7 +1308,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                cancel.addClickHandler(new ClickHandler() {
                                    @Override
                                    public void onClick(ClickEvent event) {
-                                       createInfoArea(Constants.MAKEMOVE);
+                                       createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                    }
                                });
                                

@@ -43,32 +43,32 @@ public class SettlersOfCatanLogic {
     private List<String> playerIds;
     
     List<String> resourceList = Arrays.asList(
-            Constants.ORE,    Constants.ORE,    Constants.ORE,
-            Constants.GRAIN,  Constants.GRAIN,  Constants.GRAIN,  Constants.GRAIN,
-            Constants.LUMBER, Constants.LUMBER, Constants.LUMBER, Constants.LUMBER,
-            Constants.WOOL,   Constants.WOOL,   Constants.WOOL,   Constants.WOOL,
-            Constants.BRICK,  Constants.BRICK,  Constants.BRICK,
-            Constants.DESERT);
+            SettlersOfCatanConstants.ORE,    SettlersOfCatanConstants.ORE,    SettlersOfCatanConstants.ORE,
+            SettlersOfCatanConstants.GRAIN,  SettlersOfCatanConstants.GRAIN,  SettlersOfCatanConstants.GRAIN,  SettlersOfCatanConstants.GRAIN,
+            SettlersOfCatanConstants.LUMBER, SettlersOfCatanConstants.LUMBER, SettlersOfCatanConstants.LUMBER, SettlersOfCatanConstants.LUMBER,
+            SettlersOfCatanConstants.WOOL,   SettlersOfCatanConstants.WOOL,   SettlersOfCatanConstants.WOOL,   SettlersOfCatanConstants.WOOL,
+            SettlersOfCatanConstants.BRICK,  SettlersOfCatanConstants.BRICK,  SettlersOfCatanConstants.BRICK,
+            SettlersOfCatanConstants.DESERT);
     
     List<String> developmentCardTypeList = Arrays.asList(
-            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
-            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
-            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
-            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
-            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
-            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
-            Constants.DEVELOPMENTCARDTYPEDEF00, Constants.DEVELOPMENTCARDTYPEDEF00,
-            Constants.DEVELOPMENTCARDTYPEDEF01, Constants.DEVELOPMENTCARDTYPEDEF01,
-            Constants.DEVELOPMENTCARDTYPEDEF02, Constants.DEVELOPMENTCARDTYPEDEF02,
-            Constants.DEVELOPMENTCARDTYPEDEF03, Constants.DEVELOPMENTCARDTYPEDEF03,
-            Constants.DEVELOPMENTCARDTYPEDEF04, Constants.DEVELOPMENTCARDTYPEDEF05,
-            Constants.DEVELOPMENTCARDTYPEDEF06, Constants.DEVELOPMENTCARDTYPEDEF07,
-            Constants.DEVELOPMENTCARDTYPEDEF08);
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF01, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF01,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF04, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF05,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF06, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF07,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF08);
   
     List<String> harborTradeTypeList = Arrays.asList(
-            Constants.HARBORTYPE00, Constants.HARBORTYPE00, Constants.HARBORTYPE00,
-            Constants.HARBORTYPE00, Constants.HARBORTYPE01, Constants.HARBORTYPE02,
-            Constants.HARBORTYPE03, Constants.HARBORTYPE04, Constants.HARBORTYPE05);
+            SettlersOfCatanConstants.HARBORTYPE00, SettlersOfCatanConstants.HARBORTYPE00, SettlersOfCatanConstants.HARBORTYPE00,
+            SettlersOfCatanConstants.HARBORTYPE00, SettlersOfCatanConstants.HARBORTYPE01, SettlersOfCatanConstants.HARBORTYPE02,
+            SettlersOfCatanConstants.HARBORTYPE03, SettlersOfCatanConstants.HARBORTYPE04, SettlersOfCatanConstants.HARBORTYPE05);
     
     public VerifyMoveDone verify(VerifyMove verifyMove) {
         try {
@@ -122,11 +122,11 @@ public class SettlersOfCatanLogic {
 	    {
 	        if(i < 10)
 	            firstMove.add(
-	                    new Set(Constants.HEXTOKEN + "0" + i,
+	                    new Set(SettlersOfCatanConstants.HEXTOKEN + "0" + i,
 	                            resourceList.get(i)));
 	        else
                 firstMove.add(
-                        new Set(Constants.HEXTOKEN + i,
+                        new Set(SettlersOfCatanConstants.HEXTOKEN + i,
                                 resourceList.get(i)));
 	    }
         firstMove.add(new Shuffle(
@@ -138,11 +138,11 @@ public class SettlersOfCatanLogic {
         {
             if(i < 10)
                 firstMove.add(
-                        new Set(Constants.DEVELOPMENTCARDTOKEN + "0" + i,
+                        new Set(SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + "0" + i,
                                 developmentCardTypeList.get(i)));
             else
                 firstMove.add(
-                        new Set(Constants.DEVELOPMENTCARDTOKEN + i,
+                        new Set(SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + i,
                                 developmentCardTypeList.get(i)));
         }
         firstMove.add(new Shuffle(
@@ -157,35 +157,35 @@ public class SettlersOfCatanLogic {
         {
             if(i < 10)
                 firstMove.add(
-                        new SetVisibility(Constants.DEVELOPMENTCARDTOKEN + "0" + i,
-                                          Constants.visibleToNone));
+                        new SetVisibility(SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + "0" + i,
+                                          SettlersOfCatanConstants.visibleToNone));
             else
                 firstMove.add(
-                        new SetVisibility(Constants.DEVELOPMENTCARDTOKEN + i,
-                                          Constants.visibleToNone));
+                        new SetVisibility(SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + i,
+                                          SettlersOfCatanConstants.visibleToNone));
         }
 
         for(int i = 0; i < harborTradeTypeList.size(); i++)
         {
             firstMove.add(
-                    new Set(Constants.HARBORTRADETOKEN + "0" + i,
+                    new Set(SettlersOfCatanConstants.HARBORTRADETOKEN + "0" + i,
                             harborTradeTypeList.get(i)));
         }
         firstMove.add(new Shuffle(
                 Lists.newArrayList("MAR00", "MAR01", "MAR02", "MAR03", "MAR04",
                                    "MAR05", "MAR06", "MAR07", "MAR08")));
         
-        firstMove.add(new Set(Constants.SOLDIERCOUNTPB, 0));
-        firstMove.add(new Set(Constants.SOLDIERCOUNTPR, 0));
+        firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPB, 0));
+        firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPR, 0));
         
         if(playerIds.size() == 3)
         {
-            firstMove.add(new Set(Constants.SOLDIERCOUNTPY, 0));
+            firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPY, 0));
         }
         else if(playerIds.size() == 4)
         {
-            firstMove.add(new Set(Constants.SOLDIERCOUNTPY, 0));
-            firstMove.add(new Set(Constants.SOLDIERCOUNTPG, 0));
+            firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPY, 0));
+            firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPG, 0));
         }
 	    
 	    return firstMove;
@@ -201,9 +201,9 @@ public class SettlersOfCatanLogic {
         {
             String cardToSearchFor = "";
             if(i < 10)
-                cardToSearchFor = Constants.RESOURCECARDTOKEN + "0" + i + playerString;
+                cardToSearchFor = SettlersOfCatanConstants.RESOURCECARDTOKEN + "0" + i + playerString;
             else
-                cardToSearchFor = Constants.RESOURCECARDTOKEN + i + playerString;
+                cardToSearchFor = SettlersOfCatanConstants.RESOURCECARDTOKEN + i + playerString;
             
             if(state.containsKey(cardToSearchFor))
             {
@@ -223,9 +223,9 @@ public class SettlersOfCatanLogic {
         {
             String cardToSearchFor = "";
             if(i < 10)
-                cardToSearchFor = Constants.DEVELOPMENTCARDTOKEN + "0" + i;
+                cardToSearchFor = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + "0" + i;
             else
-                cardToSearchFor = Constants.DEVELOPMENTCARDTOKEN + i;
+                cardToSearchFor = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + i;
             
             if(state.containsKey(cardToSearchFor))
             {
@@ -260,16 +260,16 @@ public class SettlersOfCatanLogic {
             Map<String, Object> state,
             String playerString)
     {
-        return state.containsKey(Constants.LONGESTROAD)
-            && state.get(Constants.LONGESTROAD).toString().contains(playerString);
+        return state.containsKey(SettlersOfCatanConstants.LONGESTROAD)
+            && state.get(SettlersOfCatanConstants.LONGESTROAD).toString().contains(playerString);
     }
     
     public boolean hasLargestArmy(
             Map<String, Object> state,
             String playerString)
     {
-        return state.containsKey(Constants.LARGESTARMY)
-            && state.get(Constants.LARGESTARMY).toString().contains(playerString);
+        return state.containsKey(SettlersOfCatanConstants.LARGESTARMY)
+            && state.get(SettlersOfCatanConstants.LARGESTARMY).toString().contains(playerString);
     }
 	
 	// Umbrella function to test all moves
@@ -290,17 +290,17 @@ public class SettlersOfCatanLogic {
 	    
 	    switch(expectedMove)
 	    {
-    	    case Constants.FIRSTMOVE:
+    	    case SettlersOfCatanConstants.FIRSTMOVE:
     	        status = isFirstMoveLegal(lastMove, playerString, playerIds);
     	        break;
-            case Constants.FIRSTROUNDSETTLEMENT:
+            case SettlersOfCatanConstants.FIRSTROUNDSETTLEMENT:
                 status = isFirstRoundSettlementLegal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     settlementTurn = false;
                 }
                 break;
-            case Constants.FIRSTROUNDROAD:
+            case SettlersOfCatanConstants.FIRSTROUNDROAD:
                 status = isFirstRoundRoadLegal(lastMove, lastState, playerString, nextPlayerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
@@ -312,14 +312,14 @@ public class SettlersOfCatanLogic {
                     settlementTurn = true;
                 }
                 break;
-            case Constants.SECONDROUNDSETTLEMENT:
+            case SettlersOfCatanConstants.SECONDROUNDSETTLEMENT:
                 status = isSecondRoundSettlementLegal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     settlementTurn = false;
                 }
                 break;
-            case Constants.SECONDROUNDROAD:
+            case SettlersOfCatanConstants.SECONDROUNDROAD:
                 status = isSecondRoundRoadLegal(lastMove, lastState, playerString, previousPlayerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
@@ -332,96 +332,96 @@ public class SettlersOfCatanLogic {
                     }
                 }
                 break;
-            case Constants.ROLLDICE:
+            case SettlersOfCatanConstants.ROLLDICE:
                 status = isRollDiceLegal(lastMove, playerString);
                 break;
-            case Constants.CLEARROLL:
+            case SettlersOfCatanConstants.CLEARROLL:
                 status = isDiceClearLegal(lastMove, lastState, playerString);
                 break;
-    	    case Constants.CHANGETURN:
+    	    case SettlersOfCatanConstants.CHANGETURN:
                 status = isChangeTurnMoveLegal(lastMove, nextPlayerString, playerIds);
     	        break;
-            case Constants.MOVEROBBERPT3:
+            case SettlersOfCatanConstants.MOVEROBBERPT3:
                 status = isMoveRobberMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishRobberMove = true;
                 }
                 break;
-            case Constants.MOVEROBBERPT4:
+            case SettlersOfCatanConstants.MOVEROBBERPT4:
                 status = isMoveRobberMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishRobberMove = false;
                 }
                 break;
-    	    case Constants.BUILDCITYPT1:
+    	    case SettlersOfCatanConstants.BUILDCITYPT1:
                 status = isBuildCityMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishCityBuild = true;
                 }
                 break;
-            case Constants.BUILDCITYPT2:
+            case SettlersOfCatanConstants.BUILDCITYPT2:
                 status = isBuildCityMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishCityBuild = true;
                 }
                 break;
-            case Constants.BUILDSETTLEMENTPT1:
+            case SettlersOfCatanConstants.BUILDSETTLEMENTPT1:
                 status = isBuildSettlementMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishSettlementBuild = true;
                 }
                 break;
-            case Constants.BUILDSETTLEMENTPT2:
+            case SettlersOfCatanConstants.BUILDSETTLEMENTPT2:
                 status = isBuildSettlementMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishSettlementBuild = false;
                 }
                 break;
-            case Constants.BUILDROADPT1:
+            case SettlersOfCatanConstants.BUILDROADPT1:
                 status = isBuildRoadMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishRoadBuild = true;
                 }
                 break;
-            case Constants.BUILDROADPT2:
+            case SettlersOfCatanConstants.BUILDROADPT2:
                 status = isBuildRoadMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishRoadBuild = false;
                 }
                 break;
-            case Constants.BUYDEVELOPMENTCARDPT1:
+            case SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT1:
                 status = isBuyDevelopmentCardMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishBuyingDevelopmentCard = true;
                 }
                 break;
-            case Constants.BUYDEVELOPMENTCARDPT2:
+            case SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT2:
                 status = isBuyDevelopmentCardMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishBuyingDevelopmentCard = false;
                 }
                 break;
-            case Constants.PLAYDEVELOPMENTCARD:
+            case SettlersOfCatanConstants.PLAYDEVELOPMENTCARD:
                 status = isPlayDevelopmentCardMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
                 break;
-            case Constants.HARBORTRADEPT1:
+            case SettlersOfCatanConstants.HARBORTRADEPT1:
                 status = isHarborTradeMovePt1Legal(lastMove, lastState, playerString, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishHarborTrade = true;
                 }
                 break;
-            case Constants.HARBORTRADEPT2:
+            case SettlersOfCatanConstants.HARBORTRADEPT2:
                 status = isHarborTradeMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
@@ -543,26 +543,26 @@ public class SettlersOfCatanLogic {
             // Line 82
             status = status
                     && matchInitSoldierCount(
-                            lastMove.get(82),82, Constants.SOLDIERCOUNTTOKEN + Constants.PB);
+                            lastMove.get(82),82, SettlersOfCatanConstants.SOLDIERCOUNTTOKEN + SettlersOfCatanConstants.PB);
             
             // Line 83
             status = status
                     && matchInitSoldierCount(
-                            lastMove.get(83),83, Constants.SOLDIERCOUNTTOKEN + Constants.PR);
+                            lastMove.get(83),83, SettlersOfCatanConstants.SOLDIERCOUNTTOKEN + SettlersOfCatanConstants.PR);
             
             if(lastMove.size() > 84)
             {
                 // Line 84
                 status = status
                         && matchInitSoldierCount(
-                                lastMove.get(84),84, Constants.SOLDIERCOUNTTOKEN + Constants.PY);
+                                lastMove.get(84),84, SettlersOfCatanConstants.SOLDIERCOUNTTOKEN + SettlersOfCatanConstants.PY);
             
                 if(lastMove.size() > 85)
                 {
                     // Line 85
                     status = status
                             && matchInitSoldierCount(
-                                    lastMove.get(85),85, Constants.SOLDIERCOUNTTOKEN + Constants.PG);
+                                    lastMove.get(85),85, SettlersOfCatanConstants.SOLDIERCOUNTTOKEN + SettlersOfCatanConstants.PG);
                 }
             }
             
@@ -881,13 +881,13 @@ public class SettlersOfCatanLogic {
             status = status
                   && matchDieRoll(
                           lastMove.get(1), 1, 
-                          Constants.DIE0);
+                          SettlersOfCatanConstants.DIE0);
 
             // Line 2
             status = status
                   && matchDieRoll(
                           lastMove.get(2), 2, 
-                          Constants.DIE1);
+                          SettlersOfCatanConstants.DIE1);
         }
         else
         {
@@ -936,14 +936,14 @@ public class SettlersOfCatanLogic {
                   && matchDieClear(
                           lastMove.get(1), 1,
                           lastState,
-                          Constants.DIE0);
+                          SettlersOfCatanConstants.DIE0);
 
             // Line 2
             status = status
                   && matchDieClear(
                           lastMove.get(2), 2,
                           lastState,
-                          Constants.DIE1);
+                          SettlersOfCatanConstants.DIE1);
             
             for(int i = 3; (i+1) < lastMove.size(); i = i + 2 )
             {
@@ -1232,7 +1232,7 @@ public class SettlersOfCatanLogic {
                               lastState,
                               playerString,
                               playerId,
-                              Constants.ADDCITY);
+                              SettlersOfCatanConstants.ADDCITY);
             }
         }
         else
@@ -1359,7 +1359,7 @@ public class SettlersOfCatanLogic {
                               lastState,
                               playerString,
                               playerId,
-                              Constants.ADDSETTLEMENT);
+                              SettlersOfCatanConstants.ADDSETTLEMENT);
             }
         }
         else
@@ -1488,7 +1488,7 @@ public class SettlersOfCatanLogic {
                                   lastState,
                                   playerString,
                                   playerId,
-                                  Constants.ADDLONGESTROAD);
+                                  SettlersOfCatanConstants.ADDLONGESTROAD);
                 }
             }
         }
@@ -1644,7 +1644,7 @@ public class SettlersOfCatanLogic {
         
         boolean status = false;
         
-        if( findASetMoveInMoves(lastMove, Constants.ROBBER, "")
+        if( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.ROBBER, "")
          && ( lastMove.size() == 4
            || lastMove.size() == 5
            || lastMove.size() == 6 ) )
@@ -1661,7 +1661,7 @@ public class SettlersOfCatanLogic {
                           lastMove.get(1), 1,
                           lastState, 
                           playerString,
-                          Constants.DEVELOPMENTCARDTYPEDEF00);
+                          SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00);
               
               // Lines 2,3
               status = status
@@ -1695,7 +1695,7 @@ public class SettlersOfCatanLogic {
                                     newState,
                                     playerString,
                                     playerId,
-                                    Constants.ADDLONGESTROAD);
+                                    SettlersOfCatanConstants.ADDLONGESTROAD);
                   }
               }
         }
@@ -1712,7 +1712,7 @@ public class SettlersOfCatanLogic {
         //          Must assign DEVELOPMENTCARDXX to visible nobody
         // Lines 2,3 - Two RESOURCE cards for playerString to choose
 
-        else if( findASetMoveInMoves(lastMove, Constants.RESOURCECARDTOKEN, "")
+        else if( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.RESOURCECARDTOKEN, "")
               && lastMove.size() == 4 )
          {
              // Line 0
@@ -1727,7 +1727,7 @@ public class SettlersOfCatanLogic {
                            lastMove.get(1), 1, 
                            lastState, 
                            playerString,
-                           Constants.DEVELOPMENTCARDTYPEDEF01);
+                           SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF01);
                
                // Lines 2
                status = status
@@ -1759,7 +1759,7 @@ public class SettlersOfCatanLogic {
         // Line 2 - Assign the MONOPOLYRESOURCE to a specific resource
         // Line 3 - Assign the MONOPOLYBENEFACTOR to playerString
 
-        else if( findASetMoveInMoves(lastMove, Constants.MONOPOLYRESOURCE, "")
+        else if( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.MONOPOLYRESOURCE, "")
                 && lastMove.size() == 4 )
         {
             // Line 0
@@ -1774,7 +1774,7 @@ public class SettlersOfCatanLogic {
                             lastMove.get(1), 1, 
                             lastState, 
                             playerString,
-                            Constants.DEVELOPMENTCARDTYPEDEF02);
+                            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02);
              
             // Lines 2,3
             status = status
@@ -1818,7 +1818,7 @@ public class SettlersOfCatanLogic {
         //          for the current player and it pushes the current player
         //          at or over 10 victory points
         
-        else if( findASetMoveInMoves(lastMove, Constants.PATHTOKEN, playerString)
+        else if( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.PATHTOKEN, playerString)
                 && ( lastMove.size() == 6
                   || lastMove.size() == 7
                   || lastMove.size() == 8 ) )
@@ -1835,7 +1835,7 @@ public class SettlersOfCatanLogic {
                            lastMove.get(1), 1, 
                            lastState, 
                            playerString,
-                           Constants.DEVELOPMENTCARDTYPEDEF03);
+                           SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03);
 
              // Lines 2,3
              status = status
@@ -1878,7 +1878,7 @@ public class SettlersOfCatanLogic {
                                      newState,
                                      playerString,
                                      playerId,
-                                     Constants.ADDLONGESTROAD);
+                                     SettlersOfCatanConstants.ADDLONGESTROAD);
                    }
                }
          }
@@ -2102,9 +2102,9 @@ public class SettlersOfCatanLogic {
         
         String moveString = "";
         if(moveNum < 10)
-            moveString = Constants.HEXTOKEN + "0" + moveNum;
+            moveString = SettlersOfCatanConstants.HEXTOKEN + "0" + moveNum;
         else
-            moveString = Constants.HEXTOKEN + moveNum;
+            moveString = SettlersOfCatanConstants.HEXTOKEN + moveNum;
 
         if(!move.getMessageName().equals("Set"))
         {
@@ -2140,9 +2140,9 @@ public class SettlersOfCatanLogic {
         
         String moveString = "";
         if(moveNum < 10)
-            moveString = Constants.DEVELOPMENTCARDTOKEN + "0" + moveNum;
+            moveString = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + "0" + moveNum;
         else
-            moveString = Constants.DEVELOPMENTCARDTOKEN + moveNum;
+            moveString = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + moveNum;
 
         if(!move.getMessageName().equals("Set"))
         {
@@ -2176,7 +2176,7 @@ public class SettlersOfCatanLogic {
     {
         boolean status = false;
         
-        String moveString = Constants.HARBORTRADETOKEN + "0" + moveNum;
+        String moveString = SettlersOfCatanConstants.HARBORTRADETOKEN + "0" + moveNum;
 
         if(!move.getMessageName().equals("Set"))
         {
@@ -2335,9 +2335,9 @@ public class SettlersOfCatanLogic {
         
         String moveString = "";
         if(moveNum < 10)
-            moveString = Constants.DEVELOPMENTCARDTOKEN + "0" + moveNum;
+            moveString = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + "0" + moveNum;
         else
-            moveString = Constants.DEVELOPMENTCARDTOKEN + moveNum;
+            moveString = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + moveNum;
 
         if(!move.getMessageName().equals("SetVisibility"))
         {
@@ -2351,7 +2351,7 @@ public class SettlersOfCatanLogic {
                     + "SETVISDEV expects: SETVISIBILITY(DEVXX, visibleToNone))\n"
                     + "SETVISDEV name does not match";
         }
-        else if(!((SetVisibility)move).getVisibleToPlayerIds().equals(Constants.visibleToNone))
+        else if(!((SetVisibility)move).getVisibleToPlayerIds().equals(SettlersOfCatanConstants.visibleToNone))
         {
             err = "Incorrect Move Number: moveNum\n"
                     + "SETVISDEV expects: SETVISIBILITY(DEVXX, visibleToNone))\n"
@@ -2414,7 +2414,7 @@ public class SettlersOfCatanLogic {
                 + "BUILDCITY expects: DELETE(SETTLEMENTZZ + playerString)\n"
                 + "Delete move expected";
         }
-        else if(!((Delete)move1).getKey().contains(Constants.SETTLEMENTTOKEN))
+        else if(!((Delete)move1).getKey().contains(SettlersOfCatanConstants.SETTLEMENTTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDCITY expects: DELETE(SETTLEMENTZZ + playerString)\n"
@@ -2442,13 +2442,13 @@ public class SettlersOfCatanLogic {
                     + "BUILDCITY expects: SET(NODEXX, CITYYY + playerString)\n"
                     + "Set move expected";
             }
-            else if(!((Set)move2).getKey().contains(Constants.NODETOKEN))
+            else if(!((Set)move2).getKey().contains(SettlersOfCatanConstants.NODETOKEN))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUILDCITY expects: SET(NODEXX, CITYYY + playerString)\n"
                     + "NODE key expected";
             }
-            else if(!((Set)move2).getValue().toString().contains(Constants.CITYTOKEN))
+            else if(!((Set)move2).getValue().toString().contains(SettlersOfCatanConstants.CITYTOKEN))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUILDCITY expects: SET(NODEXX, CITYYY + playerString)\n"
@@ -2528,7 +2528,7 @@ public class SettlersOfCatanLogic {
                 + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
                 + "SetVisibility move expected";
         }
-        else if(!((SetVisibility)move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(!((SetVisibility)move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -2550,7 +2550,7 @@ public class SettlersOfCatanLogic {
                     + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
                     + "SetVisibility move expected";
             }
-            else if(!((SetVisibility)move2).getKey().contains(Constants.RESOURCECARDTOKEN))
+            else if(!((SetVisibility)move2).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -2578,7 +2578,7 @@ public class SettlersOfCatanLogic {
                         + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
                         + "SetVisibility move expected";
                 }
-                else if(!((SetVisibility)move3).getKey().contains(Constants.RESOURCECARDTOKEN))
+                else if(!((SetVisibility)move3).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
@@ -2612,7 +2612,7 @@ public class SettlersOfCatanLogic {
                             + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDDD + playerString)\n"
                             + "SetVisibility move expected";
                     }
-                    else if(!((SetVisibility)move4).getKey().contains(Constants.RESOURCECARDTOKEN))
+                    else if(!((SetVisibility)move4).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                     {
                         err = "Incorrect Move Number: " + move4Num + "\n"
                             + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDDD + playerString)\n"
@@ -2652,7 +2652,7 @@ public class SettlersOfCatanLogic {
                                 + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDEE + playerString)\n"
                                 + "SetVisibility move expected";
                         }
-                        else if(!((SetVisibility)move5).getKey().contains(Constants.RESOURCECARDTOKEN))
+                        else if(!((SetVisibility)move5).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                         {
                             err = "Incorrect Move Number: " + move5Num + "\n"
                                 + "BUILDCITY expects: SETVISIBILITY(RESOURCECARDEE + playerString)\n"
@@ -2757,50 +2757,50 @@ public class SettlersOfCatanLogic {
             String resourceCard5 = ((Delete)move5).getKey();
             switch(lastState.get(resourceCard1).toString())
             {
-                case Constants.ORE:
+                case SettlersOfCatanConstants.ORE:
                     ore--;
                     break;
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
             }
 
             switch(lastState.get(resourceCard2).toString())
             {
-                case Constants.ORE:
+                case SettlersOfCatanConstants.ORE:
                     ore--;
                     break;
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
             }
 
             switch(lastState.get(resourceCard3).toString())
             {
-                case Constants.ORE:
+                case SettlersOfCatanConstants.ORE:
                     ore--;
                     break;
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
             }
 
             switch(lastState.get(resourceCard4).toString())
             {
-                case Constants.ORE:
+                case SettlersOfCatanConstants.ORE:
                     ore--;
                     break;
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
             }
 
             switch(lastState.get(resourceCard5).toString())
             {
-                case Constants.ORE:
+                case SettlersOfCatanConstants.ORE:
                     ore--;
                     break;
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
             }
@@ -2842,13 +2842,13 @@ public class SettlersOfCatanLogic {
                 + "BUILDSETTLEMENT expects: SET(NODEXX, SETTLEMENTYY + playerString)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move1).getKey().contains(Constants.NODETOKEN))
+        else if(!((Set)move1).getKey().contains(SettlersOfCatanConstants.NODETOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDSETTLEMENT expects: SET(NODEXX, SETTLEMENTYY + playerString)\n"
                 + "NODE key expected";
         }
-        else if(!((Set)move1).getValue().toString().contains(Constants.SETTLEMENTTOKEN))
+        else if(!((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.SETTLEMENTTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDSETTLEMENT expects: SET(NODEXX, SETTLEMENTYY + playerString)\n"
@@ -2928,13 +2928,13 @@ public class SettlersOfCatanLogic {
                 + "BUILDSETTLEMENTFREE expects: SET(NODEXX, SETTLEMENTYY + playerString)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move1).getKey().contains(Constants.NODETOKEN))
+        else if(!((Set)move1).getKey().contains(SettlersOfCatanConstants.NODETOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDSETTLEMENTFREE expects: SET(NODEXX, SETTLEMENTYY + playerString)\n"
                 + "NODE key expected";
         }
-        else if(!((Set)move1).getValue().toString().contains(Constants.SETTLEMENTTOKEN))
+        else if(!((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.SETTLEMENTTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDSETTLEMENTFREE expects: SET(NODEXX, SETTLEMENTYY + playerString)\n"
@@ -3010,7 +3010,7 @@ public class SettlersOfCatanLogic {
                 + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
                 + "SetVisibility move expected";
         }
-        else if(!((SetVisibility)move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(!((SetVisibility)move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -3032,7 +3032,7 @@ public class SettlersOfCatanLogic {
                     + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
                     + "SetVisibility move expected";
             }
-            else if(!((SetVisibility)move2).getKey().contains(Constants.RESOURCECARDTOKEN))
+            else if(!((SetVisibility)move2).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -3060,7 +3060,7 @@ public class SettlersOfCatanLogic {
                         + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
                         + "SetVisibility move expected";
                 }
-                else if(!((SetVisibility)move3).getKey().contains(Constants.RESOURCECARDTOKEN))
+                else if(!((SetVisibility)move3).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
@@ -3094,7 +3094,7 @@ public class SettlersOfCatanLogic {
                             + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDDD + playerString)\n"
                             + "SetVisibility move expected";
                     }
-                    else if(!((SetVisibility)move4).getKey().contains(Constants.RESOURCECARDTOKEN))
+                    else if(!((SetVisibility)move4).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                     {
                         err = "Incorrect Move Number: " + move4Num + "\n"
                             + "BUILDSETTLEMENT expects: SETVISIBILITY(RESOURCECARDDD + playerString)\n"
@@ -3187,64 +3187,64 @@ public class SettlersOfCatanLogic {
             
             switch(lastState.get(resourceCard1).toString())
             {
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
-                case Constants.LUMBER:
+                case SettlersOfCatanConstants.LUMBER:
                     lumber--;
                     break;
-                case Constants.WOOL:
+                case SettlersOfCatanConstants.WOOL:
                     wool--;
                     break;
-                case Constants.BRICK:
+                case SettlersOfCatanConstants.BRICK:
                     brick--;
                     break;
             }
 
             switch(lastState.get(resourceCard2).toString())
             {
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
-                case Constants.LUMBER:
+                case SettlersOfCatanConstants.LUMBER:
                     lumber--;
                     break;
-                case Constants.WOOL:
+                case SettlersOfCatanConstants.WOOL:
                     wool--;
                     break;
-                case Constants.BRICK:
+                case SettlersOfCatanConstants.BRICK:
                     brick--;
                     break;
             }
 
             switch(lastState.get(resourceCard3).toString())
             {
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
-                case Constants.LUMBER:
+                case SettlersOfCatanConstants.LUMBER:
                     lumber--;
                     break;
-                case Constants.WOOL:
+                case SettlersOfCatanConstants.WOOL:
                     wool--;
                     break;
-                case Constants.BRICK:
+                case SettlersOfCatanConstants.BRICK:
                     brick--;
                     break;
             }
 
             switch(lastState.get(resourceCard4).toString())
             {
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
-                case Constants.LUMBER:
+                case SettlersOfCatanConstants.LUMBER:
                     lumber--;
                     break;
-                case Constants.WOOL:
+                case SettlersOfCatanConstants.WOOL:
                     wool--;
                     break;
-                case Constants.BRICK:
+                case SettlersOfCatanConstants.BRICK:
                     brick--;
                     break;
             }
@@ -3296,13 +3296,13 @@ public class SettlersOfCatanLogic {
                 + "BUILDROAD expects: SET(PATHXX, ROADYY + playerString)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move1).getKey().contains(Constants.PATHTOKEN))
+        else if(!((Set)move1).getKey().contains(SettlersOfCatanConstants.PATHTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDROAD expects: SET(PATHXX, ROADYY + playerString)\n"
                 + "PATH key expected";
         }
-        else if(!((Set)move1).getValue().toString().contains(Constants.ROADTOKEN))
+        else if(!((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.ROADTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDROAD expects: SET(PATHXX, ROADYY + playerString)\n"
@@ -3381,7 +3381,7 @@ public class SettlersOfCatanLogic {
                 + "BUILDROAD expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
                 + "SetVisibility move expected";
         }
-        else if(!((SetVisibility)move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(!((SetVisibility)move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUILDROAD expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -3403,7 +3403,7 @@ public class SettlersOfCatanLogic {
                     + "BUILDROAD expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
                     + "SetVisibility move expected";
             }
-            else if(!((SetVisibility)move2).getKey().contains(Constants.RESOURCECARDTOKEN))
+            else if(!((SetVisibility)move2).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUILDROAD expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -3463,20 +3463,20 @@ public class SettlersOfCatanLogic {
             
             switch(lastState.get(resourceCard1).toString())
             {
-                case Constants.LUMBER:
+                case SettlersOfCatanConstants.LUMBER:
                     lumber--;
                     break;
-                case Constants.BRICK:
+                case SettlersOfCatanConstants.BRICK:
                     brick--;
                     break;
             }
 
             switch(lastState.get(resourceCard2).toString())
             {
-                case Constants.LUMBER:
+                case SettlersOfCatanConstants.LUMBER:
                     lumber--;
                     break;
-                case Constants.BRICK:
+                case SettlersOfCatanConstants.BRICK:
                     brick--;
                     break;
             }
@@ -3516,7 +3516,7 @@ public class SettlersOfCatanLogic {
                 + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
                 + "Set move expected";
         }
-        else if(!((SetVisibility)move1).getKey().contains(Constants.DEVELOPMENTCARDTOKEN))
+        else if(!((SetVisibility)move1).getKey().contains(SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
@@ -3565,7 +3565,7 @@ public class SettlersOfCatanLogic {
                 + "PLAYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)\n"
                 + "Set move expected";
         }
-        else if(!((SetVisibility)move1).getKey().contains(Constants.DEVELOPMENTCARDTOKEN))
+        else if(!((SetVisibility)move1).getKey().contains(SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "PLAYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)\n"
@@ -3610,7 +3610,7 @@ public class SettlersOfCatanLogic {
                 + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
                 + "SetVisibility move expected";
         }
-        else if(!((SetVisibility)move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(!((SetVisibility)move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -3632,7 +3632,7 @@ public class SettlersOfCatanLogic {
                     + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
                     + "SetVisibility move expected";
             }
-            else if(!((SetVisibility)move2).getKey().contains(Constants.RESOURCECARDTOKEN))
+            else if(!((SetVisibility)move2).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -3660,7 +3660,7 @@ public class SettlersOfCatanLogic {
                         + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
                         + "SetVisibility move expected";
                 }
-                else if(!((SetVisibility)move3).getKey().contains(Constants.RESOURCECARDTOKEN))
+                else if(!((SetVisibility)move3).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "BUYDEVELOPMENTCARD expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
@@ -3737,39 +3737,39 @@ public class SettlersOfCatanLogic {
             
             switch(lastState.get(resourceCard1).toString())
             {
-                case Constants.ORE:
+                case SettlersOfCatanConstants.ORE:
                     ore--;
                     break;
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
-                case Constants.WOOL:
+                case SettlersOfCatanConstants.WOOL:
                     wool--;
                     break;
             }
 
             switch(lastState.get(resourceCard2).toString())
             {
-                case Constants.ORE:
+                case SettlersOfCatanConstants.ORE:
                     ore--;
                     break;
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
-                case Constants.WOOL:
+                case SettlersOfCatanConstants.WOOL:
                     wool--;
                     break;
             }
 
             switch(lastState.get(resourceCard3).toString())
             {
-                case Constants.ORE:
+                case SettlersOfCatanConstants.ORE:
                     ore--;
                     break;
-                case Constants.GRAIN:
+                case SettlersOfCatanConstants.GRAIN:
                     grain--;
                     break;
-                case Constants.WOOL:
+                case SettlersOfCatanConstants.WOOL:
                     wool--;
                     break;
             }
@@ -3819,7 +3819,7 @@ public class SettlersOfCatanLogic {
                 + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
                 + "SetVisibility move expected";
         }
-        else if(!((SetVisibility)move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(!((SetVisibility)move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -3841,7 +3841,7 @@ public class SettlersOfCatanLogic {
                     + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
                     + "SetVisibility move expected";
             }
-            else if(!((SetVisibility)move2).getKey().contains(Constants.RESOURCECARDTOKEN))
+            else if(!((SetVisibility)move2).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -3869,7 +3869,7 @@ public class SettlersOfCatanLogic {
                         + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
                         + "SetVisibility move expected";
                 }
-                else if(!((SetVisibility)move3).getKey().contains(Constants.RESOURCECARDTOKEN))
+                else if(!((SetVisibility)move3).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
@@ -3903,7 +3903,7 @@ public class SettlersOfCatanLogic {
                             + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDDD + playerString)\n"
                             + "SetVisibility move expected";
                     }
-                    else if(!((SetVisibility)move4).getKey().contains(Constants.RESOURCECARDTOKEN))
+                    else if(!((SetVisibility)move4).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                     {
                         err = "Incorrect Move Number: " + move4Num + "\n"
                             + "NORMALHARBORTRADE expects: SETVISIBILITY(RESOURCECARDDD + playerString)\n"
@@ -4010,7 +4010,7 @@ public class SettlersOfCatanLogic {
                         + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
                         + "SetVisibility move expected";
                 }
-                else if(!((Set)move5).getKey().contains(Constants.RESOURCECARDTOKEN))
+                else if(!((Set)move5).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                 {
                     err = "Incorrect Move Number: " + move5Num + "\n"
                         + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -4022,11 +4022,11 @@ public class SettlersOfCatanLogic {
                         + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
                         + "playerString key expected";
                 }
-                else if(!( ((Set)move5).getValue().toString().contains(Constants.ORE)
-                         ||((Set)move5).getValue().toString().contains(Constants.GRAIN)
-                         ||((Set)move5).getValue().toString().contains(Constants.LUMBER)
-                         ||((Set)move5).getValue().toString().contains(Constants.WOOL)
-                         ||((Set)move5).getValue().toString().contains(Constants.BRICK) ) )
+                else if(!( ((Set)move5).getValue().toString().contains(SettlersOfCatanConstants.ORE)
+                         ||((Set)move5).getValue().toString().contains(SettlersOfCatanConstants.GRAIN)
+                         ||((Set)move5).getValue().toString().contains(SettlersOfCatanConstants.LUMBER)
+                         ||((Set)move5).getValue().toString().contains(SettlersOfCatanConstants.WOOL)
+                         ||((Set)move5).getValue().toString().contains(SettlersOfCatanConstants.BRICK) ) )
                 {
                     err = "Incorrect Move Number: " + move5Num + "\n"
                         + "NORMALHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -4042,7 +4042,7 @@ public class SettlersOfCatanLogic {
                             + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
                             + "Set move expected";
                     }
-                    else if(!((SetVisibility) move6).getKey().contains(Constants.RESOURCECARDTOKEN))
+                    else if(!((SetVisibility) move6).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                     {
                         err = "Incorrect Move Number: " + move6Num + "\n"
                                 + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
@@ -4100,7 +4100,7 @@ public class SettlersOfCatanLogic {
                 + "THREETOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
                 + "SetVisibility move expected";
         }
-        else if(!((SetVisibility)move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(!((SetVisibility)move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "THREETOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -4122,7 +4122,7 @@ public class SettlersOfCatanLogic {
                     + "THREETOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
                     + "SetVisibility move expected";
             }
-            else if(!((SetVisibility)move2).getKey().contains(Constants.RESOURCECARDTOKEN))
+            else if(!((SetVisibility)move2).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "THREETOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -4150,7 +4150,7 @@ public class SettlersOfCatanLogic {
                         + "THREETOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
                         + "SetVisibility move expected";
                 }
-                else if(!((SetVisibility)move3).getKey().contains(Constants.RESOURCECARDTOKEN))
+                else if(!((SetVisibility)move3).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "THREETOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDCC + playerString)\n"
@@ -4239,7 +4239,7 @@ public class SettlersOfCatanLogic {
                         + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
                         + "SetVisibility move expected";
                 }
-                else if(!((Set)move4).getKey().contains(Constants.RESOURCECARDTOKEN))
+                else if(!((Set)move4).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                 {
                     err = "Incorrect Move Number: " + move4Num + "\n"
                         + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -4251,11 +4251,11 @@ public class SettlersOfCatanLogic {
                         + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
                         + "playerString key expected";
                 }
-                else if(!( ((Set)move4).getValue().toString().contains(Constants.ORE)
-                         ||((Set)move4).getValue().toString().contains(Constants.GRAIN)
-                         ||((Set)move4).getValue().toString().contains(Constants.LUMBER)
-                         ||((Set)move4).getValue().toString().contains(Constants.WOOL)
-                         ||((Set)move4).getValue().toString().contains(Constants.BRICK) ) )
+                else if(!( ((Set)move4).getValue().toString().contains(SettlersOfCatanConstants.ORE)
+                         ||((Set)move4).getValue().toString().contains(SettlersOfCatanConstants.GRAIN)
+                         ||((Set)move4).getValue().toString().contains(SettlersOfCatanConstants.LUMBER)
+                         ||((Set)move4).getValue().toString().contains(SettlersOfCatanConstants.WOOL)
+                         ||((Set)move4).getValue().toString().contains(SettlersOfCatanConstants.BRICK) ) )
                 {
                     err = "Incorrect Move Number: " + move4Num + "\n"
                         + "THREETOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -4276,7 +4276,7 @@ public class SettlersOfCatanLogic {
                             + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
                             + "Set move expected";
                     }
-                    else if(!((SetVisibility) move5).getKey().contains(Constants.RESOURCECARDTOKEN))
+                    else if(!((SetVisibility) move5).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                     {
                         err = "Incorrect Move Number: " + move5Num + "\n"
                                 + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
@@ -4332,7 +4332,7 @@ public class SettlersOfCatanLogic {
                 + "TWOTOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
                 + "SetVisibility move expected";
         }
-        else if(!((SetVisibility)move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(!((SetVisibility)move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "TWOTOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
@@ -4354,7 +4354,7 @@ public class SettlersOfCatanLogic {
                     + "TWOTOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
                     + "SetVisibility move expected";
             }
-            else if(!((SetVisibility)move2).getKey().contains(Constants.RESOURCECARDTOKEN))
+            else if(!((SetVisibility)move2).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                     + "TWOTOONEHARBORTRADE expects: SETVISIBILITY(RESOURCECARDBB + playerString)\n"
@@ -4428,7 +4428,7 @@ public class SettlersOfCatanLogic {
                         + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
                         + "SetVisibility move expected";
                 }
-                else if(!((Set)move3).getKey().contains(Constants.RESOURCECARDTOKEN))
+                else if(!((Set)move3).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -4440,11 +4440,11 @@ public class SettlersOfCatanLogic {
                         + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
                         + "playerString key expected";
                 }
-                else if(!( ((Set)move3).getValue().toString().contains(Constants.ORE)
-                         ||((Set)move3).getValue().toString().contains(Constants.GRAIN)
-                         ||((Set)move3).getValue().toString().contains(Constants.LUMBER)
-                         ||((Set)move3).getValue().toString().contains(Constants.WOOL)
-                         ||((Set)move3).getValue().toString().contains(Constants.BRICK) ) )
+                else if(!( ((Set)move3).getValue().toString().contains(SettlersOfCatanConstants.ORE)
+                         ||((Set)move3).getValue().toString().contains(SettlersOfCatanConstants.GRAIN)
+                         ||((Set)move3).getValue().toString().contains(SettlersOfCatanConstants.LUMBER)
+                         ||((Set)move3).getValue().toString().contains(SettlersOfCatanConstants.WOOL)
+                         ||((Set)move3).getValue().toString().contains(SettlersOfCatanConstants.BRICK) ) )
                 {
                     err = "Incorrect Move Number: " + move3Num + "\n"
                         + "TWOTOONEHARBORTRADE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -4465,7 +4465,7 @@ public class SettlersOfCatanLogic {
                             + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
                             + "Set move expected";
                     }
-                    else if(!((SetVisibility) move4).getKey().contains(Constants.RESOURCECARDTOKEN))
+                    else if(!((SetVisibility) move4).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
                     {
                         err = "Incorrect Move Number: " + move4Num + "\n"
                                 + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
@@ -4519,19 +4519,19 @@ public class SettlersOfCatanLogic {
                 + "ROBBER expects: SET(ROBBER, HEX)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move1).getKey().contains(Constants.ROBBER))
+        else if(!((Set)move1).getKey().contains(SettlersOfCatanConstants.ROBBER))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ROBBER expects: SET(ROBBER, HEX)\n"
                 + "MONOPOLYRESOURCE key expected";
         }
-        else if(!((Set)move1).getValue().toString().contains(Constants.HEXTOKEN))
+        else if(!((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.HEXTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ROBBER expects: SET(ROBBER, HEX)\n"
                 + "HEX value expected";
         }
-        else if(lastState.get(Constants.ROBBER).toString().equals(((Set)move1).getValue().toString()))
+        else if(lastState.get(SettlersOfCatanConstants.ROBBER).toString().equals(((Set)move1).getValue().toString()))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ROBBER expects: SET(ROBBER, HEX)\n"
@@ -4543,7 +4543,7 @@ public class SettlersOfCatanLogic {
                 + "ROBBER expects: SET(SOLDIERCOUNT + playerId, VAL)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move2).getKey().contains(Constants.SOLDIERCOUNTTOKEN))
+        else if(!((Set)move2).getKey().contains(SettlersOfCatanConstants.SOLDIERCOUNTTOKEN))
         {
             err = "Incorrect Move Number: " + move2Num + "\n"
                 + "ROBBER expects: SET(SOLDIERCOUNT + playerId, VAL)\n"
@@ -4592,13 +4592,13 @@ public class SettlersOfCatanLogic {
                 + "ROBBER expects: SET(ROBBER, HEX)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move1).getKey().contains(Constants.ROBBER))
+        else if(!((Set)move1).getKey().contains(SettlersOfCatanConstants.ROBBER))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ROBBER expects: SET(ROBBER, HEX)\n"
                 + "MONOPOLYRESOURCE key expected";
         }
-        else if(!((Set)move1).getValue().toString().contains(Constants.HEXTOKEN))
+        else if(!((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.HEXTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ROBBER expects: SET(ROBBER, HEX)\n"
@@ -4627,17 +4627,17 @@ public class SettlersOfCatanLogic {
                 + "MONOPOLY expects: SET(MONOPOLYRESOURCE, resource)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move1).getKey().contains(Constants.MONOPOLYRESOURCE))
+        else if(!((Set)move1).getKey().contains(SettlersOfCatanConstants.MONOPOLYRESOURCE))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "MONOPOLY expects: SET(MONOPOLYRESOURCE, resource)\n"
                 + "MONOPOLYRESOURCE key expected";
         }
-        else if(!( ((Set)move1).getValue().toString().contains(Constants.ORE)
-                 ||((Set)move1).getValue().toString().contains(Constants.GRAIN)
-                 ||((Set)move1).getValue().toString().contains(Constants.LUMBER)
-                 ||((Set)move1).getValue().toString().contains(Constants.WOOL)
-                 ||((Set)move1).getValue().toString().contains(Constants.BRICK) ) )
+        else if(!( ((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.ORE)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.GRAIN)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.LUMBER)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.WOOL)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.BRICK) ) )
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "MONOPOLY expects: SET(MONOPOLYRESOURCE, resource)\n"
@@ -4649,7 +4649,7 @@ public class SettlersOfCatanLogic {
                 + "MONOPOLY expects: SET(MONOPOLYBENEFACTOR, playerString)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move2).getKey().contains(Constants.MONOPOLYBENEFACTOR))
+        else if(!((Set)move2).getKey().contains(SettlersOfCatanConstants.MONOPOLYBENEFACTOR))
         {
             err = "Incorrect Move Number: " + move2Num + "\n"
                 + "MONOPOLY expects: SET(MONOPOLYBENEFACTOR, playerString)\n"
@@ -4683,7 +4683,7 @@ public class SettlersOfCatanLogic {
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
                 + "Set move expected";
         }
-        else if(((Set) move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(((Set) move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
@@ -4701,11 +4701,11 @@ public class SettlersOfCatanLogic {
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
                 + "ResourceCard already assigned";
         }
-        else if(!( ((Set)move1).getValue().toString().contains(Constants.ORE)
-                 ||((Set)move1).getValue().toString().contains(Constants.GRAIN)
-                 ||((Set)move1).getValue().toString().contains(Constants.LUMBER)
-                 ||((Set)move1).getValue().toString().contains(Constants.WOOL)
-                 ||((Set)move1).getValue().toString().contains(Constants.BRICK) ) )
+        else if(!( ((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.ORE)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.GRAIN)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.LUMBER)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.WOOL)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.BRICK) ) )
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -4733,7 +4733,7 @@ public class SettlersOfCatanLogic {
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
                 + "Set move expected";
         }
-        else if(!((SetVisibility) move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(!((SetVisibility) move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
@@ -4767,7 +4767,7 @@ public class SettlersOfCatanLogic {
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
                 + "Set move expected";
         }
-        else if(!((Delete) move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(!((Delete) move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
@@ -4886,7 +4886,7 @@ public class SettlersOfCatanLogic {
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
                 + "Set move expected";
         }
-        else if(!((Set) move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(!((Set) move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
@@ -4904,11 +4904,11 @@ public class SettlersOfCatanLogic {
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
                 + "ResourceCard already assigned";
         }
-        else if(!( ((Set)move1).getValue().toString().contains(Constants.ORE)
-                 ||((Set)move1).getValue().toString().contains(Constants.GRAIN)
-                 ||((Set)move1).getValue().toString().contains(Constants.LUMBER)
-                 ||((Set)move1).getValue().toString().contains(Constants.WOOL)
-                 ||((Set)move1).getValue().toString().contains(Constants.BRICK) ) )
+        else if(!( ((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.ORE)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.GRAIN)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.LUMBER)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.WOOL)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.BRICK) ) )
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -4930,7 +4930,7 @@ public class SettlersOfCatanLogic {
                     + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
                     + "Set move expected";
             }
-            else if(!((SetVisibility) move2).getKey().contains(Constants.RESOURCECARDTOKEN))
+            else if(!((SetVisibility) move2).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                         + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
@@ -4979,25 +4979,25 @@ public class SettlersOfCatanLogic {
         String resourceString = "";
         String playerId = "-1";
         String playerString = "";
-        if(((Set) move1).getKey().contains(Constants.PB))
+        if(((Set) move1).getKey().contains(SettlersOfCatanConstants.PB))
         {
             playerId = playerIds.get(0);
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         }
-        else if(((Set) move1).getKey().contains(Constants.PR))
+        else if(((Set) move1).getKey().contains(SettlersOfCatanConstants.PR))
         {
             playerId = playerIds.get(1);
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         }
-        else if(((Set) move1).getKey().contains(Constants.PY))
+        else if(((Set) move1).getKey().contains(SettlersOfCatanConstants.PY))
         {
             playerId = playerIds.get(2);
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         }
-        else if(((Set) move1).getKey().contains(Constants.PG))
+        else if(((Set) move1).getKey().contains(SettlersOfCatanConstants.PG))
         {
             playerId = playerIds.get(3);
-            playerString = Constants.PG;
+            playerString = SettlersOfCatanConstants.PG;
         }
 
         if(!move1.getMessageName().equals("Set"))
@@ -5006,7 +5006,7 @@ public class SettlersOfCatanLogic {
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
                 + "Set move expected";
         }
-        else if(!((Set) move1).getKey().contains(Constants.RESOURCECARDTOKEN))
+        else if(!((Set) move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
@@ -5024,11 +5024,11 @@ public class SettlersOfCatanLogic {
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA + playerString, resource)\n"
                 + "ResourceCard already assigned";
         }
-        else if(!( ((Set)move1).getValue().toString().contains(Constants.ORE)
-                 ||((Set)move1).getValue().toString().contains(Constants.GRAIN)
-                 ||((Set)move1).getValue().toString().contains(Constants.LUMBER)
-                 ||((Set)move1).getValue().toString().contains(Constants.WOOL)
-                 ||((Set)move1).getValue().toString().contains(Constants.BRICK) ) )
+        else if(!( ((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.ORE)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.GRAIN)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.LUMBER)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.WOOL)
+                 ||((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.BRICK) ) )
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ADDRESOURCE expects: SET(RESOURCECARDAA+ playerString, resource)\n"
@@ -5044,7 +5044,7 @@ public class SettlersOfCatanLogic {
                     + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
                     + "Set move expected";
             }
-            else if(!((SetVisibility) move2).getKey().contains(Constants.RESOURCECARDTOKEN))
+            else if(!((SetVisibility) move2).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
             {
                 err = "Incorrect Move Number: " + move2Num + "\n"
                         + "ADDRESOURCE expects: SETVISIBILITY(RESOURCECARDAA + playerString, playerId)\n"
@@ -5136,7 +5136,7 @@ public class SettlersOfCatanLogic {
                 + "LARGESTARMY expects: SET(LARGESTARMY, playerString)\n"
                 + "Set move expected";
         }
-        else if(!((Set) move1).getKey().contains(Constants.LARGESTARMY))
+        else if(!((Set) move1).getKey().contains(SettlersOfCatanConstants.LARGESTARMY))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "LARGESTARMY expects: SET(LARGESTARMY, playerString)\n"
@@ -5150,13 +5150,13 @@ public class SettlersOfCatanLogic {
         }
         else
         {
-            if( !lastState.containsKey(Constants.LARGESTARMY)
+            if( !lastState.containsKey(SettlersOfCatanConstants.LARGESTARMY)
               && Integer.parseInt(lastState.get(soldierCount).toString()) > 2)
             {
                 status = true;
             }
             else if( Integer.parseInt(lastState.get(soldierCount).toString())
-                   > Integer.parseInt(lastState.get(Constants.SOLDIERCOUNTTOKEN + lastState.get(Constants.LARGESTARMY).toString()).toString()) )
+                   > Integer.parseInt(lastState.get(SettlersOfCatanConstants.SOLDIERCOUNTTOKEN + lastState.get(SettlersOfCatanConstants.LARGESTARMY).toString()).toString()) )
             {
                 status = true;
             }
@@ -5185,7 +5185,7 @@ public class SettlersOfCatanLogic {
                 + "LONGESTROAD expects: SET(LONGESTROAD, playerString)\n"
                 + "Set move expected";
         }
-        else if(!((Set) move1).getKey().contains(Constants.LONGESTROAD))
+        else if(!((Set) move1).getKey().contains(SettlersOfCatanConstants.LONGESTROAD))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "LONGESTROAD expects: SET(LONGESTROAD, playerString)\n"
@@ -5207,9 +5207,9 @@ public class SettlersOfCatanLogic {
                 List<String> pathToCheck = new ArrayList<String>();
                 
                 if(i < 10)
-                    startingRoad = Constants.ROADTOKEN + "0" + i + playerString;
+                    startingRoad = SettlersOfCatanConstants.ROADTOKEN + "0" + i + playerString;
                 else
-                    startingRoad = Constants.ROADTOKEN + i + playerString;
+                    startingRoad = SettlersOfCatanConstants.ROADTOKEN + i + playerString;
                 
                 if(lastState.containsKey(startingRoad))
                 {
@@ -5227,14 +5227,14 @@ public class SettlersOfCatanLogic {
                 }
             }
             
-            if(!lastState.containsKey(Constants.LONGESTROAD)
+            if(!lastState.containsKey(SettlersOfCatanConstants.LONGESTROAD)
              && longestPath.size() > 4)
             {
                 status = true;
             }
             else
             {
-                String currentLongestPathHolder = lastState.get(Constants.LONGESTROAD).toString();
+                String currentLongestPathHolder = lastState.get(SettlersOfCatanConstants.LONGESTROAD).toString();
                 List<String> longestPathHolder = null;
                 
                 for (int i = 0; i < 10; i++)
@@ -5242,9 +5242,9 @@ public class SettlersOfCatanLogic {
                     List<String> pathToCheck = new ArrayList<String>();
                     
                     if(i < 10)
-                        startingRoad = Constants.ROADTOKEN + "0" + i + currentLongestPathHolder;
+                        startingRoad = SettlersOfCatanConstants.ROADTOKEN + "0" + i + currentLongestPathHolder;
                     else
-                        startingRoad = Constants.ROADTOKEN + i + currentLongestPathHolder;
+                        startingRoad = SettlersOfCatanConstants.ROADTOKEN + i + currentLongestPathHolder;
                     
                     if(lastState.containsKey(startingRoad))
                     {
@@ -5343,16 +5343,16 @@ public class SettlersOfCatanLogic {
         
         switch(priorMoveAdds)
         {
-            case Constants.ADDCITY:
+            case SettlersOfCatanConstants.ADDCITY:
                 victoryPoints = victoryPoints + 1;
                 break;
-            case Constants.ADDSETTLEMENT:
+            case SettlersOfCatanConstants.ADDSETTLEMENT:
                 victoryPoints = victoryPoints + 1;
                 break;
-            case Constants.ADDLONGESTROAD:
+            case SettlersOfCatanConstants.ADDLONGESTROAD:
                 victoryPoints = victoryPoints + 2;
                 break;
-            case Constants.ADDLARGESTARMY:
+            case SettlersOfCatanConstants.ADDLARGESTARMY:
                 victoryPoints = victoryPoints + 2;
                 break;
         }
@@ -5380,44 +5380,44 @@ public class SettlersOfCatanLogic {
         
         switch(playerString)
         {
-            case Constants.PB:
-                if(lastState.containsKey(Constants.CITY00PB))
+            case SettlersOfCatanConstants.PB:
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY00PB))
                     count = count + 2;
-                if(lastState.containsKey(Constants.CITY01PB))
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY01PB))
                     count = count + 2;
-                if(lastState.containsKey(Constants.CITY02PB))
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY02PB))
                     count = count + 2;
-                if(lastState.containsKey(Constants.CITY03PB))
-                    count = count + 2;
-                break;
-            case Constants.PR:
-                if(lastState.containsKey(Constants.CITY00PR))
-                    count = count + 2;
-                if(lastState.containsKey(Constants.CITY01PR))
-                    count = count + 2;
-                if(lastState.containsKey(Constants.CITY02PR))
-                    count = count + 2;
-                if(lastState.containsKey(Constants.CITY03PR))
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY03PB))
                     count = count + 2;
                 break;
-            case Constants.PY:
-                if(lastState.containsKey(Constants.CITY00PY))
+            case SettlersOfCatanConstants.PR:
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY00PR))
                     count = count + 2;
-                if(lastState.containsKey(Constants.CITY01PY))
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY01PR))
                     count = count + 2;
-                if(lastState.containsKey(Constants.CITY02PY))
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY02PR))
                     count = count + 2;
-                if(lastState.containsKey(Constants.CITY03PY))
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY03PR))
                     count = count + 2;
                 break;
-            case Constants.PG:
-                if(lastState.containsKey(Constants.CITY00PG))
+            case SettlersOfCatanConstants.PY:
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY00PY))
                     count = count + 2;
-                if(lastState.containsKey(Constants.CITY01PG))
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY01PY))
                     count = count + 2;
-                if(lastState.containsKey(Constants.CITY02PG))
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY02PY))
                     count = count + 2;
-                if(lastState.containsKey(Constants.CITY03PG))
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY03PY))
+                    count = count + 2;
+                break;
+            case SettlersOfCatanConstants.PG:
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY00PG))
+                    count = count + 2;
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY01PG))
+                    count = count + 2;
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY02PG))
+                    count = count + 2;
+                if(lastState.containsKey(SettlersOfCatanConstants.CITY03PG))
                     count = count + 2;
                 break;
         }
@@ -5435,52 +5435,52 @@ public class SettlersOfCatanLogic {
         
         switch(playerString)
         {
-            case Constants.PB:
-                if(lastState.containsKey(Constants.SETTLEMENT00PB))
+            case SettlersOfCatanConstants.PB:
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT00PB))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT01PB))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT01PB))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT02PB))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT02PB))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT03PB))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT03PB))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT04PB))
-                    count++;
-                break;
-            case Constants.PR:
-                if(lastState.containsKey(Constants.SETTLEMENT00PR))
-                    count++;
-                if(lastState.containsKey(Constants.SETTLEMENT01PR))
-                    count++;
-                if(lastState.containsKey(Constants.SETTLEMENT02PR))
-                    count++;
-                if(lastState.containsKey(Constants.SETTLEMENT03PR))
-                    count++;
-                if(lastState.containsKey(Constants.SETTLEMENT04PR))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT04PB))
                     count++;
                 break;
-            case Constants.PY:
-                if(lastState.containsKey(Constants.SETTLEMENT00PY))
+            case SettlersOfCatanConstants.PR:
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT00PR))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT01PY))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT01PR))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT02PY))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT02PR))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT03PY))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT03PR))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT04PY))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT04PR))
                     count++;
                 break;
-            case Constants.PG:
-                if(lastState.containsKey(Constants.SETTLEMENT00PG))
+            case SettlersOfCatanConstants.PY:
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT00PY))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT01PG))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT01PY))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT02PG))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT02PY))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT03PG))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT03PY))
                     count++;
-                if(lastState.containsKey(Constants.SETTLEMENT04PG))
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT04PY))
+                    count++;
+                break;
+            case SettlersOfCatanConstants.PG:
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT00PG))
+                    count++;
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT01PG))
+                    count++;
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT02PG))
+                    count++;
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT03PG))
+                    count++;
+                if(lastState.containsKey(SettlersOfCatanConstants.SETTLEMENT04PG))
                     count++;
                 break;
         }
@@ -5495,8 +5495,8 @@ public class SettlersOfCatanLogic {
     {
         int count = 0;
         
-        if( lastState.containsKey(Constants.LONGESTROAD)
-         && lastState.get(Constants.LONGESTROAD).toString().equals(playerString) )
+        if( lastState.containsKey(SettlersOfCatanConstants.LONGESTROAD)
+         && lastState.get(SettlersOfCatanConstants.LONGESTROAD).toString().equals(playerString) )
         {
             count = 2;
         }
@@ -5511,8 +5511,8 @@ public class SettlersOfCatanLogic {
     {
         int count = 0;
         
-        if( lastState.containsKey(Constants.LARGESTARMY)
-         && lastState.get(Constants.LARGESTARMY).toString().equals(playerString) )
+        if( lastState.containsKey(SettlersOfCatanConstants.LARGESTARMY)
+         && lastState.get(SettlersOfCatanConstants.LARGESTARMY).toString().equals(playerString) )
         {
             count = 2;
         }
@@ -5527,15 +5527,15 @@ public class SettlersOfCatanLogic {
     {
         int count = 0;
         
-        if(lastState.containsKey(Constants.DEVELOPMENTCARDTYPEDEF04))
+        if(lastState.containsKey(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF04))
             count++;
-        if(lastState.containsKey(Constants.DEVELOPMENTCARDTYPEDEF05))
+        if(lastState.containsKey(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF05))
             count++;
-        if(lastState.containsKey(Constants.DEVELOPMENTCARDTYPEDEF06))
+        if(lastState.containsKey(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF06))
             count++;
-        if(lastState.containsKey(Constants.DEVELOPMENTCARDTYPEDEF07))
+        if(lastState.containsKey(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF07))
             count++;
-        if(lastState.containsKey(Constants.DEVELOPMENTCARDTYPEDEF08))
+        if(lastState.containsKey(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF08))
             count++;
         
         return count;
@@ -5556,20 +5556,20 @@ public class SettlersOfCatanLogic {
         {
             switch(resource)
             {
-                case Constants.ORE:
-                    status = status || harborBonusList.get(i).equals(Constants.HARBORTYPE01);
+                case SettlersOfCatanConstants.ORE:
+                    status = status || harborBonusList.get(i).equals(SettlersOfCatanConstants.HARBORTYPE01);
                     break;
-                case Constants.GRAIN:
-                    status = status || harborBonusList.get(i).equals(Constants.HARBORTYPE02);
+                case SettlersOfCatanConstants.GRAIN:
+                    status = status || harborBonusList.get(i).equals(SettlersOfCatanConstants.HARBORTYPE02);
                     break;
-                case Constants.LUMBER:
-                    status = status || harborBonusList.get(i).equals(Constants.HARBORTYPE03);
+                case SettlersOfCatanConstants.LUMBER:
+                    status = status || harborBonusList.get(i).equals(SettlersOfCatanConstants.HARBORTYPE03);
                     break;
-                case Constants.WOOL:
-                    status = status || harborBonusList.get(i).equals(Constants.HARBORTYPE04);
+                case SettlersOfCatanConstants.WOOL:
+                    status = status || harborBonusList.get(i).equals(SettlersOfCatanConstants.HARBORTYPE04);
                     break;
-                case Constants.BRICK:
-                    status = status || harborBonusList.get(i).equals(Constants.HARBORTYPE05);
+                case SettlersOfCatanConstants.BRICK:
+                    status = status || harborBonusList.get(i).equals(SettlersOfCatanConstants.HARBORTYPE05);
                     break;
                 
             }
@@ -5591,7 +5591,7 @@ public class SettlersOfCatanLogic {
         
         for(int i = 0; i < harborBonusList.size(); i++)
         {
-            status = status || harborBonusList.get(i).equals(Constants.HARBORTYPE00);
+            status = status || harborBonusList.get(i).equals(SettlersOfCatanConstants.HARBORTYPE00);
         }
         
         return status;
@@ -5608,84 +5608,84 @@ public class SettlersOfCatanLogic {
         Builder<String> listBuilder = new Builder<String>();
         
         // Harbor 00
-        if( ((((String) state.get(Constants.NODE00)) != null)
-           && (((String) state.get(Constants.NODE00)).contains(playerString)))
-         || ((((String) state.get(Constants.NODE03)) != null)
-           && (((String) state.get(Constants.NODE03)).contains(playerString))))
+        if( ((((String) state.get(SettlersOfCatanConstants.NODE00)) != null)
+           && (((String) state.get(SettlersOfCatanConstants.NODE00)).contains(playerString)))
+         || ((((String) state.get(SettlersOfCatanConstants.NODE03)) != null)
+           && (((String) state.get(SettlersOfCatanConstants.NODE03)).contains(playerString))))
         {
-            listBuilder.add((String) state.get(Constants.HARBOR00));
+            listBuilder.add((String) state.get(SettlersOfCatanConstants.HARBOR00));
         }
 
         // Harbor 01
-        if( ((((String) state.get(Constants.NODE01)) != null)
-           && (((String) state.get(Constants.NODE01)).contains(playerString)))
-         || ((((String) state.get(Constants.NODE05)) != null)
-           && (((String) state.get(Constants.NODE05)).contains(playerString))))
+        if( ((((String) state.get(SettlersOfCatanConstants.NODE01)) != null)
+           && (((String) state.get(SettlersOfCatanConstants.NODE01)).contains(playerString)))
+         || ((((String) state.get(SettlersOfCatanConstants.NODE05)) != null)
+           && (((String) state.get(SettlersOfCatanConstants.NODE05)).contains(playerString))))
         {
-            listBuilder.add((String) state.get(Constants.HARBOR01));
+            listBuilder.add((String) state.get(SettlersOfCatanConstants.HARBOR01));
         }
 
         // Harbor 02
-        if( ((((String) state.get(Constants.NODE10)) != null)
-                && (((String) state.get(Constants.NODE10)).contains(playerString)))
-              || ((((String) state.get(Constants.NODE15)) != null)
-                && (((String) state.get(Constants.NODE15)).contains(playerString))))
+        if( ((((String) state.get(SettlersOfCatanConstants.NODE10)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE10)).contains(playerString)))
+              || ((((String) state.get(SettlersOfCatanConstants.NODE15)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE15)).contains(playerString))))
         {
-            listBuilder.add((String) state.get(Constants.HARBOR02));
+            listBuilder.add((String) state.get(SettlersOfCatanConstants.HARBOR02));
         }
 
         // Harbor 03
-        if( ((((String) state.get(Constants.NODE26)) != null)
-                && (((String) state.get(Constants.NODE26)).contains(playerString)))
-              || ((((String) state.get(Constants.NODE32)) != null)
-                && (((String) state.get(Constants.NODE32)).contains(playerString))))
+        if( ((((String) state.get(SettlersOfCatanConstants.NODE26)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE26)).contains(playerString)))
+              || ((((String) state.get(SettlersOfCatanConstants.NODE32)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE32)).contains(playerString))))
         {
-            listBuilder.add((String) state.get(Constants.HARBOR03));
+            listBuilder.add((String) state.get(SettlersOfCatanConstants.HARBOR03));
         }
 
         // Harbor 04
-        if( ((((String) state.get(Constants.NODE42)) != null)
-                && (((String) state.get(Constants.NODE42)).contains(playerString)))
-              || ((((String) state.get(Constants.NODE46)) != null)
-                && (((String) state.get(Constants.NODE46)).contains(playerString))))
+        if( ((((String) state.get(SettlersOfCatanConstants.NODE42)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE42)).contains(playerString)))
+              || ((((String) state.get(SettlersOfCatanConstants.NODE46)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE46)).contains(playerString))))
         {
-            listBuilder.add((String) state.get(Constants.HARBOR04));
+            listBuilder.add((String) state.get(SettlersOfCatanConstants.HARBOR04));
         }
 
         // Harbor 05
-        if( ((((String) state.get(Constants.NODE49)) != null)
-                && (((String) state.get(Constants.NODE49)).contains(playerString)))
-              || ((((String) state.get(Constants.NODE52)) != null)
-                && (((String) state.get(Constants.NODE52)).contains(playerString))))
+        if( ((((String) state.get(SettlersOfCatanConstants.NODE49)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE49)).contains(playerString)))
+              || ((((String) state.get(SettlersOfCatanConstants.NODE52)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE52)).contains(playerString))))
         {
-            listBuilder.add((String) state.get(Constants.HARBOR05));
+            listBuilder.add((String) state.get(SettlersOfCatanConstants.HARBOR05));
         }
 
         // Harbor 06
-        if( ((((String) state.get(Constants.NODE47)) != null)
-                && (((String) state.get(Constants.NODE47)).contains(playerString)))
-              || ((((String) state.get(Constants.NODE51)) != null)
-                && (((String) state.get(Constants.NODE51)).contains(playerString))))
+        if( ((((String) state.get(SettlersOfCatanConstants.NODE47)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE47)).contains(playerString)))
+              || ((((String) state.get(SettlersOfCatanConstants.NODE51)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE51)).contains(playerString))))
         {
-            listBuilder.add((String) state.get(Constants.HARBOR06));
+            listBuilder.add((String) state.get(SettlersOfCatanConstants.HARBOR06));
         }
 
         // Harbor 07
-        if( ((((String) state.get(Constants.NODE33)) != null)
-                && (((String) state.get(Constants.NODE33)).contains(playerString)))
-              || ((((String) state.get(Constants.NODE38)) != null)
-                && (((String) state.get(Constants.NODE38)).contains(playerString))))
+        if( ((((String) state.get(SettlersOfCatanConstants.NODE33)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE33)).contains(playerString)))
+              || ((((String) state.get(SettlersOfCatanConstants.NODE38)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE38)).contains(playerString))))
         {
-            listBuilder.add((String) state.get(Constants.HARBOR07));
+            listBuilder.add((String) state.get(SettlersOfCatanConstants.HARBOR07));
         }
 
         // Harbor 08
-        if( ((((String) state.get(Constants.NODE11)) != null)
-                && (((String) state.get(Constants.NODE11)).contains(playerString)))
-              || ((((String) state.get(Constants.NODE16)) != null)
-                && (((String) state.get(Constants.NODE16)).contains(playerString))))
+        if( ((((String) state.get(SettlersOfCatanConstants.NODE11)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE11)).contains(playerString)))
+              || ((((String) state.get(SettlersOfCatanConstants.NODE16)) != null)
+                && (((String) state.get(SettlersOfCatanConstants.NODE16)).contains(playerString))))
         {
-            listBuilder.add((String) state.get(Constants.HARBOR08));
+            listBuilder.add((String) state.get(SettlersOfCatanConstants.HARBOR08));
         }
         
         harborBonusList = listBuilder.build();
@@ -5703,364 +5703,364 @@ public class SettlersOfCatanLogic {
         
         switch (path)
         {
-            case Constants.PATH00:
+            case SettlersOfCatanConstants.PATH00:
                 nodeList = ImmutableList.of(
-                        Constants.NODE00,
-                        Constants.NODE03);
+                        SettlersOfCatanConstants.NODE00,
+                        SettlersOfCatanConstants.NODE03);
                 break;
-            case Constants.PATH01:
+            case SettlersOfCatanConstants.PATH01:
                 nodeList = ImmutableList.of(
-                        Constants.NODE00,
-                        Constants.NODE04);
+                        SettlersOfCatanConstants.NODE00,
+                        SettlersOfCatanConstants.NODE04);
                 break;
-            case Constants.PATH02:
+            case SettlersOfCatanConstants.PATH02:
                 nodeList = ImmutableList.of(
-                        Constants.NODE01,
-                        Constants.NODE04);
+                        SettlersOfCatanConstants.NODE01,
+                        SettlersOfCatanConstants.NODE04);
                 break;
-            case Constants.PATH03:
+            case SettlersOfCatanConstants.PATH03:
                 nodeList = ImmutableList.of(
-                        Constants.NODE01,
-                        Constants.NODE05);
+                        SettlersOfCatanConstants.NODE01,
+                        SettlersOfCatanConstants.NODE05);
                 break;
-            case Constants.PATH04:
+            case SettlersOfCatanConstants.PATH04:
                 nodeList = ImmutableList.of(
-                        Constants.NODE02,
-                        Constants.NODE05);
+                        SettlersOfCatanConstants.NODE02,
+                        SettlersOfCatanConstants.NODE05);
                 break;
-            case Constants.PATH05:
+            case SettlersOfCatanConstants.PATH05:
                 nodeList = ImmutableList.of(
-                        Constants.NODE02,
-                        Constants.NODE06);
+                        SettlersOfCatanConstants.NODE02,
+                        SettlersOfCatanConstants.NODE06);
                 break;
-            case Constants.PATH06:
+            case SettlersOfCatanConstants.PATH06:
                 nodeList = ImmutableList.of(
-                        Constants.NODE03,
-                        Constants.NODE07);
+                        SettlersOfCatanConstants.NODE03,
+                        SettlersOfCatanConstants.NODE07);
                 break;
-            case Constants.PATH07:
+            case SettlersOfCatanConstants.PATH07:
                 nodeList = ImmutableList.of(
-                        Constants.NODE04,
-                        Constants.NODE08);
+                        SettlersOfCatanConstants.NODE04,
+                        SettlersOfCatanConstants.NODE08);
                 break;
-            case Constants.PATH08:
+            case SettlersOfCatanConstants.PATH08:
                 nodeList = ImmutableList.of(
-                        Constants.NODE05,
-                        Constants.NODE09);
+                        SettlersOfCatanConstants.NODE05,
+                        SettlersOfCatanConstants.NODE09);
                 break;
-            case Constants.PATH09:
+            case SettlersOfCatanConstants.PATH09:
                 nodeList = ImmutableList.of(
-                        Constants.NODE06,
-                        Constants.NODE10);
-            case Constants.PATH10:
+                        SettlersOfCatanConstants.NODE06,
+                        SettlersOfCatanConstants.NODE10);
+            case SettlersOfCatanConstants.PATH10:
                 nodeList = ImmutableList.of(
-                        Constants.NODE07,
-                        Constants.NODE11);
+                        SettlersOfCatanConstants.NODE07,
+                        SettlersOfCatanConstants.NODE11);
                 break;
-            case Constants.PATH11:
+            case SettlersOfCatanConstants.PATH11:
                 nodeList = ImmutableList.of(
-                        Constants.NODE07,
-                        Constants.NODE12);
+                        SettlersOfCatanConstants.NODE07,
+                        SettlersOfCatanConstants.NODE12);
                 break;
-            case Constants.PATH12:
+            case SettlersOfCatanConstants.PATH12:
                 nodeList = ImmutableList.of(
-                        Constants.NODE08,
-                        Constants.NODE12);
+                        SettlersOfCatanConstants.NODE08,
+                        SettlersOfCatanConstants.NODE12);
                 break;
-            case Constants.PATH13:
+            case SettlersOfCatanConstants.PATH13:
                 nodeList = ImmutableList.of(
-                        Constants.NODE08,
-                        Constants.NODE13);
+                        SettlersOfCatanConstants.NODE08,
+                        SettlersOfCatanConstants.NODE13);
                 break;
-            case Constants.PATH14:
+            case SettlersOfCatanConstants.PATH14:
                 nodeList = ImmutableList.of(
-                        Constants.NODE09,
-                        Constants.NODE13);
+                        SettlersOfCatanConstants.NODE09,
+                        SettlersOfCatanConstants.NODE13);
                 break;
-            case Constants.PATH15:
+            case SettlersOfCatanConstants.PATH15:
                 nodeList = ImmutableList.of(
-                        Constants.NODE09,
-                        Constants.NODE14);
+                        SettlersOfCatanConstants.NODE09,
+                        SettlersOfCatanConstants.NODE14);
                 break;
-            case Constants.PATH16:
+            case SettlersOfCatanConstants.PATH16:
                 nodeList = ImmutableList.of(
-                        Constants.NODE10,
-                        Constants.NODE14);
+                        SettlersOfCatanConstants.NODE10,
+                        SettlersOfCatanConstants.NODE14);
                 break;
-            case Constants.PATH17:
+            case SettlersOfCatanConstants.PATH17:
                 nodeList = ImmutableList.of(
-                        Constants.NODE10,
-                        Constants.NODE15);
+                        SettlersOfCatanConstants.NODE10,
+                        SettlersOfCatanConstants.NODE15);
                 break;
-            case Constants.PATH18:
+            case SettlersOfCatanConstants.PATH18:
                 nodeList = ImmutableList.of(
-                        Constants.NODE11,
-                        Constants.NODE16);
+                        SettlersOfCatanConstants.NODE11,
+                        SettlersOfCatanConstants.NODE16);
                 break;
-            case Constants.PATH19:
+            case SettlersOfCatanConstants.PATH19:
                 nodeList = ImmutableList.of(
-                        Constants.NODE12,
-                        Constants.NODE17);
+                        SettlersOfCatanConstants.NODE12,
+                        SettlersOfCatanConstants.NODE17);
                 break;
-            case Constants.PATH20:
+            case SettlersOfCatanConstants.PATH20:
                 nodeList = ImmutableList.of(
-                        Constants.NODE13,
-                        Constants.NODE18);
+                        SettlersOfCatanConstants.NODE13,
+                        SettlersOfCatanConstants.NODE18);
                 break;
-            case Constants.PATH21:
+            case SettlersOfCatanConstants.PATH21:
                 nodeList = ImmutableList.of(
-                        Constants.NODE14,
-                        Constants.NODE19);
+                        SettlersOfCatanConstants.NODE14,
+                        SettlersOfCatanConstants.NODE19);
                 break;
-            case Constants.PATH22:
+            case SettlersOfCatanConstants.PATH22:
                 nodeList = ImmutableList.of(
-                        Constants.NODE15,
-                        Constants.NODE20);
+                        SettlersOfCatanConstants.NODE15,
+                        SettlersOfCatanConstants.NODE20);
                 break;
-            case Constants.PATH23:
+            case SettlersOfCatanConstants.PATH23:
                 nodeList = ImmutableList.of(
-                        Constants.NODE16,
-                        Constants.NODE21);
+                        SettlersOfCatanConstants.NODE16,
+                        SettlersOfCatanConstants.NODE21);
                 break;
-            case Constants.PATH24:
+            case SettlersOfCatanConstants.PATH24:
                 nodeList = ImmutableList.of(
-                        Constants.NODE16,
-                        Constants.NODE22);
+                        SettlersOfCatanConstants.NODE16,
+                        SettlersOfCatanConstants.NODE22);
                 break;
-            case Constants.PATH25:
+            case SettlersOfCatanConstants.PATH25:
                 nodeList = ImmutableList.of(
-                        Constants.NODE17,
-                        Constants.NODE22);
+                        SettlersOfCatanConstants.NODE17,
+                        SettlersOfCatanConstants.NODE22);
                 break;
-            case Constants.PATH26:
+            case SettlersOfCatanConstants.PATH26:
                 nodeList = ImmutableList.of(
-                        Constants.NODE17,
-                        Constants.NODE23);
+                        SettlersOfCatanConstants.NODE17,
+                        SettlersOfCatanConstants.NODE23);
                 break;
-            case Constants.PATH27:
+            case SettlersOfCatanConstants.PATH27:
                 nodeList = ImmutableList.of(
-                        Constants.NODE18,
-                        Constants.NODE23);
+                        SettlersOfCatanConstants.NODE18,
+                        SettlersOfCatanConstants.NODE23);
                 break;
-            case Constants.PATH28:
+            case SettlersOfCatanConstants.PATH28:
                 nodeList = ImmutableList.of(
-                        Constants.NODE18,
-                        Constants.NODE24);
+                        SettlersOfCatanConstants.NODE18,
+                        SettlersOfCatanConstants.NODE24);
                 break;
-            case Constants.PATH29:
+            case SettlersOfCatanConstants.PATH29:
                 nodeList = ImmutableList.of(
-                        Constants.NODE19,
-                        Constants.NODE24);
+                        SettlersOfCatanConstants.NODE19,
+                        SettlersOfCatanConstants.NODE24);
                 break;
-            case Constants.PATH30:
+            case SettlersOfCatanConstants.PATH30:
                 nodeList = ImmutableList.of(
-                        Constants.NODE19,
-                        Constants.NODE25);
+                        SettlersOfCatanConstants.NODE19,
+                        SettlersOfCatanConstants.NODE25);
                 break;
-            case Constants.PATH31:
+            case SettlersOfCatanConstants.PATH31:
                 nodeList = ImmutableList.of(
-                        Constants.NODE20,
-                        Constants.NODE25);
+                        SettlersOfCatanConstants.NODE20,
+                        SettlersOfCatanConstants.NODE25);
                 break;
-            case Constants.PATH32:
+            case SettlersOfCatanConstants.PATH32:
                 nodeList = ImmutableList.of(
-                        Constants.NODE20,
-                        Constants.NODE26);
+                        SettlersOfCatanConstants.NODE20,
+                        SettlersOfCatanConstants.NODE26);
                 break;
-            case Constants.PATH33:
+            case SettlersOfCatanConstants.PATH33:
                 nodeList = ImmutableList.of(
-                        Constants.NODE21,
-                        Constants.NODE27);
+                        SettlersOfCatanConstants.NODE21,
+                        SettlersOfCatanConstants.NODE27);
                 break;
-            case Constants.PATH34:
+            case SettlersOfCatanConstants.PATH34:
                 nodeList = ImmutableList.of(
-                        Constants.NODE22,
-                        Constants.NODE28);
+                        SettlersOfCatanConstants.NODE22,
+                        SettlersOfCatanConstants.NODE28);
                 break;
-            case Constants.PATH35:
+            case SettlersOfCatanConstants.PATH35:
                 nodeList = ImmutableList.of(
-                        Constants.NODE23,
-                        Constants.NODE29);
+                        SettlersOfCatanConstants.NODE23,
+                        SettlersOfCatanConstants.NODE29);
                 break;
-            case Constants.PATH36:
+            case SettlersOfCatanConstants.PATH36:
                 nodeList = ImmutableList.of(
-                        Constants.NODE24,
-                        Constants.NODE30);
+                        SettlersOfCatanConstants.NODE24,
+                        SettlersOfCatanConstants.NODE30);
                 break;
-            case Constants.PATH37:
+            case SettlersOfCatanConstants.PATH37:
                 nodeList = ImmutableList.of(
-                        Constants.NODE25,
-                        Constants.NODE31);
+                        SettlersOfCatanConstants.NODE25,
+                        SettlersOfCatanConstants.NODE31);
                 break;
-            case Constants.PATH38:
+            case SettlersOfCatanConstants.PATH38:
                 nodeList = ImmutableList.of(
-                        Constants.NODE26,
-                        Constants.NODE32);
+                        SettlersOfCatanConstants.NODE26,
+                        SettlersOfCatanConstants.NODE32);
                 break;
-            case Constants.PATH39:
+            case SettlersOfCatanConstants.PATH39:
                 nodeList = ImmutableList.of(
-                        Constants.NODE27,
-                        Constants.NODE33);
+                        SettlersOfCatanConstants.NODE27,
+                        SettlersOfCatanConstants.NODE33);
                 break;
-            case Constants.PATH40:
+            case SettlersOfCatanConstants.PATH40:
                 nodeList = ImmutableList.of(
-                        Constants.NODE28,
-                        Constants.NODE33);
+                        SettlersOfCatanConstants.NODE28,
+                        SettlersOfCatanConstants.NODE33);
                 break;
-            case Constants.PATH41:
+            case SettlersOfCatanConstants.PATH41:
                 nodeList = ImmutableList.of(
-                        Constants.NODE28,
-                        Constants.NODE34);
+                        SettlersOfCatanConstants.NODE28,
+                        SettlersOfCatanConstants.NODE34);
                 break;
-            case Constants.PATH42:
+            case SettlersOfCatanConstants.PATH42:
                 nodeList = ImmutableList.of(
-                        Constants.NODE29,
-                        Constants.NODE34);
+                        SettlersOfCatanConstants.NODE29,
+                        SettlersOfCatanConstants.NODE34);
                 break;
-            case Constants.PATH43:
+            case SettlersOfCatanConstants.PATH43:
                 nodeList = ImmutableList.of(
-                        Constants.NODE29,
-                        Constants.NODE35);
+                        SettlersOfCatanConstants.NODE29,
+                        SettlersOfCatanConstants.NODE35);
                 break;
-            case Constants.PATH44:
+            case SettlersOfCatanConstants.PATH44:
                 nodeList = ImmutableList.of(
-                        Constants.NODE30,
-                        Constants.NODE35);
+                        SettlersOfCatanConstants.NODE30,
+                        SettlersOfCatanConstants.NODE35);
                 break;
-            case Constants.PATH45:
+            case SettlersOfCatanConstants.PATH45:
                 nodeList = ImmutableList.of(
-                        Constants.NODE30,
-                        Constants.NODE36);
+                        SettlersOfCatanConstants.NODE30,
+                        SettlersOfCatanConstants.NODE36);
                 break;
-            case Constants.PATH46:
+            case SettlersOfCatanConstants.PATH46:
                 nodeList = ImmutableList.of(
-                        Constants.NODE31,
-                        Constants.NODE36);
+                        SettlersOfCatanConstants.NODE31,
+                        SettlersOfCatanConstants.NODE36);
                 break;
-            case Constants.PATH47:
+            case SettlersOfCatanConstants.PATH47:
                 nodeList = ImmutableList.of(
-                        Constants.NODE31,
-                        Constants.NODE37);
+                        SettlersOfCatanConstants.NODE31,
+                        SettlersOfCatanConstants.NODE37);
                 break;
-            case Constants.PATH48:
+            case SettlersOfCatanConstants.PATH48:
                 nodeList = ImmutableList.of(
-                        Constants.NODE32,
-                        Constants.NODE37);
+                        SettlersOfCatanConstants.NODE32,
+                        SettlersOfCatanConstants.NODE37);
                 break;
-            case Constants.PATH49:
+            case SettlersOfCatanConstants.PATH49:
                 nodeList = ImmutableList.of(
-                        Constants.NODE33,
-                        Constants.NODE38);
+                        SettlersOfCatanConstants.NODE33,
+                        SettlersOfCatanConstants.NODE38);
                 break;
-            case Constants.PATH50:
+            case SettlersOfCatanConstants.PATH50:
                 nodeList = ImmutableList.of(
-                        Constants.NODE34,
-                        Constants.NODE39);
+                        SettlersOfCatanConstants.NODE34,
+                        SettlersOfCatanConstants.NODE39);
                 break;
-            case Constants.PATH51:
+            case SettlersOfCatanConstants.PATH51:
                 nodeList = ImmutableList.of(
-                        Constants.NODE35,
-                        Constants.NODE40);
+                        SettlersOfCatanConstants.NODE35,
+                        SettlersOfCatanConstants.NODE40);
                 break;
-            case Constants.PATH52:
+            case SettlersOfCatanConstants.PATH52:
                 nodeList = ImmutableList.of(
-                        Constants.NODE36,
-                        Constants.NODE41);
+                        SettlersOfCatanConstants.NODE36,
+                        SettlersOfCatanConstants.NODE41);
                 break;
-            case Constants.PATH53:
+            case SettlersOfCatanConstants.PATH53:
                 nodeList = ImmutableList.of(
-                        Constants.NODE37,
-                        Constants.NODE42);
+                        SettlersOfCatanConstants.NODE37,
+                        SettlersOfCatanConstants.NODE42);
                 break;
-            case Constants.PATH54:
+            case SettlersOfCatanConstants.PATH54:
                 nodeList = ImmutableList.of(
-                        Constants.NODE38,
-                        Constants.NODE43);
+                        SettlersOfCatanConstants.NODE38,
+                        SettlersOfCatanConstants.NODE43);
                 break;
-            case Constants.PATH55:
+            case SettlersOfCatanConstants.PATH55:
                 nodeList = ImmutableList.of(
-                        Constants.NODE39,
-                        Constants.NODE43);
+                        SettlersOfCatanConstants.NODE39,
+                        SettlersOfCatanConstants.NODE43);
                 break;
-            case Constants.PATH56:
+            case SettlersOfCatanConstants.PATH56:
                 nodeList = ImmutableList.of(
-                        Constants.NODE39,
-                        Constants.NODE44);
+                        SettlersOfCatanConstants.NODE39,
+                        SettlersOfCatanConstants.NODE44);
                 break;
-            case Constants.PATH57:
+            case SettlersOfCatanConstants.PATH57:
                 nodeList = ImmutableList.of(
-                        Constants.NODE40,
-                        Constants.NODE44);
+                        SettlersOfCatanConstants.NODE40,
+                        SettlersOfCatanConstants.NODE44);
                 break;
-            case Constants.PATH58:
+            case SettlersOfCatanConstants.PATH58:
                 nodeList = ImmutableList.of(
-                        Constants.NODE40,
-                        Constants.NODE45);
+                        SettlersOfCatanConstants.NODE40,
+                        SettlersOfCatanConstants.NODE45);
                 break;
-            case Constants.PATH59:
+            case SettlersOfCatanConstants.PATH59:
                 nodeList = ImmutableList.of(
-                        Constants.NODE41,
-                        Constants.NODE45);
+                        SettlersOfCatanConstants.NODE41,
+                        SettlersOfCatanConstants.NODE45);
                 break;
-            case Constants.PATH60:
+            case SettlersOfCatanConstants.PATH60:
                 nodeList = ImmutableList.of(
-                        Constants.NODE41,
-                        Constants.NODE46);
+                        SettlersOfCatanConstants.NODE41,
+                        SettlersOfCatanConstants.NODE46);
                 break;
-            case Constants.PATH61:
+            case SettlersOfCatanConstants.PATH61:
                 nodeList = ImmutableList.of(
-                        Constants.NODE42,
-                        Constants.NODE46);
+                        SettlersOfCatanConstants.NODE42,
+                        SettlersOfCatanConstants.NODE46);
                 break;
-            case Constants.PATH62:
+            case SettlersOfCatanConstants.PATH62:
                 nodeList = ImmutableList.of(
-                        Constants.NODE43,
-                        Constants.NODE47);
+                        SettlersOfCatanConstants.NODE43,
+                        SettlersOfCatanConstants.NODE47);
                 break;
-            case Constants.PATH63:
+            case SettlersOfCatanConstants.PATH63:
                 nodeList = ImmutableList.of(
-                        Constants.NODE44,
-                        Constants.NODE48);
+                        SettlersOfCatanConstants.NODE44,
+                        SettlersOfCatanConstants.NODE48);
                 break;
-            case Constants.PATH64:
+            case SettlersOfCatanConstants.PATH64:
                 nodeList = ImmutableList.of(
-                        Constants.NODE45,
-                        Constants.NODE49);
+                        SettlersOfCatanConstants.NODE45,
+                        SettlersOfCatanConstants.NODE49);
                 break;
-            case Constants.PATH65:
+            case SettlersOfCatanConstants.PATH65:
                 nodeList = ImmutableList.of(
-                        Constants.NODE46,
-                        Constants.NODE50);
+                        SettlersOfCatanConstants.NODE46,
+                        SettlersOfCatanConstants.NODE50);
                 break;
-            case Constants.PATH66:
+            case SettlersOfCatanConstants.PATH66:
                 nodeList = ImmutableList.of(
-                        Constants.NODE47,
-                        Constants.NODE51);
+                        SettlersOfCatanConstants.NODE47,
+                        SettlersOfCatanConstants.NODE51);
                 break;
-            case Constants.PATH67:
+            case SettlersOfCatanConstants.PATH67:
                 nodeList = ImmutableList.of(
-                        Constants.NODE48,
-                        Constants.NODE51);
+                        SettlersOfCatanConstants.NODE48,
+                        SettlersOfCatanConstants.NODE51);
                 break;
-            case Constants.PATH68:
+            case SettlersOfCatanConstants.PATH68:
                 nodeList = ImmutableList.of(
-                        Constants.NODE48,
-                        Constants.NODE52);
+                        SettlersOfCatanConstants.NODE48,
+                        SettlersOfCatanConstants.NODE52);
                 break;
-            case Constants.PATH69:
+            case SettlersOfCatanConstants.PATH69:
                 nodeList = ImmutableList.of(
-                        Constants.NODE49,
-                        Constants.NODE52);
+                        SettlersOfCatanConstants.NODE49,
+                        SettlersOfCatanConstants.NODE52);
                 break;
-            case Constants.PATH70:
+            case SettlersOfCatanConstants.PATH70:
                 nodeList = ImmutableList.of(
-                        Constants.NODE49,
-                        Constants.NODE53);
+                        SettlersOfCatanConstants.NODE49,
+                        SettlersOfCatanConstants.NODE53);
                 break;
-            case Constants.PATH71:
+            case SettlersOfCatanConstants.PATH71:
                 nodeList = ImmutableList.of(
-                        Constants.NODE50,
-                        Constants.NODE53);
+                        SettlersOfCatanConstants.NODE50,
+                        SettlersOfCatanConstants.NODE53);
                 break;
         }
         
@@ -6077,311 +6077,311 @@ public class SettlersOfCatanLogic {
 	    
 	    switch(node)
 	    {
-	        case Constants.NODE00:
+	        case SettlersOfCatanConstants.NODE00:
 	            pathList = ImmutableList.of(
-	                    Constants.PATH00,
-                        Constants.PATH01);
+	                    SettlersOfCatanConstants.PATH00,
+                        SettlersOfCatanConstants.PATH01);
 	            break;
-            case Constants.NODE01:
+            case SettlersOfCatanConstants.NODE01:
                 pathList = ImmutableList.of(
-                        Constants.PATH02,
-                        Constants.PATH03);
+                        SettlersOfCatanConstants.PATH02,
+                        SettlersOfCatanConstants.PATH03);
                 break;
-            case Constants.NODE02:
+            case SettlersOfCatanConstants.NODE02:
                 pathList = ImmutableList.of(
-                        Constants.PATH04,
-                        Constants.PATH05);
+                        SettlersOfCatanConstants.PATH04,
+                        SettlersOfCatanConstants.PATH05);
                 break;
-            case Constants.NODE03:
+            case SettlersOfCatanConstants.NODE03:
                 pathList = ImmutableList.of(
-                        Constants.PATH00,
-                        Constants.PATH06);
+                        SettlersOfCatanConstants.PATH00,
+                        SettlersOfCatanConstants.PATH06);
                 break;
-            case Constants.NODE04:
+            case SettlersOfCatanConstants.NODE04:
                 pathList = ImmutableList.of(
-                        Constants.PATH01,
-                        Constants.PATH02,
-                        Constants.PATH07);
+                        SettlersOfCatanConstants.PATH01,
+                        SettlersOfCatanConstants.PATH02,
+                        SettlersOfCatanConstants.PATH07);
                 break;
-            case Constants.NODE05:
+            case SettlersOfCatanConstants.NODE05:
                 pathList = ImmutableList.of(
-                        Constants.PATH03,
-                        Constants.PATH04,
-                        Constants.PATH08);
+                        SettlersOfCatanConstants.PATH03,
+                        SettlersOfCatanConstants.PATH04,
+                        SettlersOfCatanConstants.PATH08);
                 break;
-            case Constants.NODE06:
+            case SettlersOfCatanConstants.NODE06:
                 pathList = ImmutableList.of(
-                        Constants.PATH05,
-                        Constants.PATH09);
+                        SettlersOfCatanConstants.PATH05,
+                        SettlersOfCatanConstants.PATH09);
                 break;
-            case Constants.NODE07:
+            case SettlersOfCatanConstants.NODE07:
                 pathList = ImmutableList.of(
-                        Constants.PATH06,
-                        Constants.PATH10,
-                        Constants.PATH11);
+                        SettlersOfCatanConstants.PATH06,
+                        SettlersOfCatanConstants.PATH10,
+                        SettlersOfCatanConstants.PATH11);
                 break;
-            case Constants.NODE08:
+            case SettlersOfCatanConstants.NODE08:
                 pathList = ImmutableList.of(
-                        Constants.PATH07,
-                        Constants.PATH12,
-                        Constants.PATH13);
+                        SettlersOfCatanConstants.PATH07,
+                        SettlersOfCatanConstants.PATH12,
+                        SettlersOfCatanConstants.PATH13);
                 break;
-            case Constants.NODE09:
+            case SettlersOfCatanConstants.NODE09:
                 pathList = ImmutableList.of(
-                        Constants.PATH08,
-                        Constants.PATH14,
-                        Constants.PATH15);
+                        SettlersOfCatanConstants.PATH08,
+                        SettlersOfCatanConstants.PATH14,
+                        SettlersOfCatanConstants.PATH15);
                 break;
-            case Constants.NODE10:
+            case SettlersOfCatanConstants.NODE10:
                 pathList = ImmutableList.of(
-                        Constants.PATH09,
-                        Constants.PATH16,
-                        Constants.PATH17);
+                        SettlersOfCatanConstants.PATH09,
+                        SettlersOfCatanConstants.PATH16,
+                        SettlersOfCatanConstants.PATH17);
                 break;
-            case Constants.NODE11:
+            case SettlersOfCatanConstants.NODE11:
                 pathList = ImmutableList.of(
-                        Constants.PATH10,
-                        Constants.PATH18);
+                        SettlersOfCatanConstants.PATH10,
+                        SettlersOfCatanConstants.PATH18);
                 break;
-            case Constants.NODE12:
+            case SettlersOfCatanConstants.NODE12:
                 pathList = ImmutableList.of(
-                        Constants.PATH11,
-                        Constants.PATH12,
-                        Constants.PATH19);
+                        SettlersOfCatanConstants.PATH11,
+                        SettlersOfCatanConstants.PATH12,
+                        SettlersOfCatanConstants.PATH19);
                 break;
-            case Constants.NODE13:
+            case SettlersOfCatanConstants.NODE13:
                 pathList = ImmutableList.of(
-                        Constants.PATH13,
-                        Constants.PATH14,
-                        Constants.PATH20);
+                        SettlersOfCatanConstants.PATH13,
+                        SettlersOfCatanConstants.PATH14,
+                        SettlersOfCatanConstants.PATH20);
                 break;
-            case Constants.NODE14:
+            case SettlersOfCatanConstants.NODE14:
                 pathList = ImmutableList.of(
-                        Constants.PATH15,
-                        Constants.PATH16,
-                        Constants.PATH21);
+                        SettlersOfCatanConstants.PATH15,
+                        SettlersOfCatanConstants.PATH16,
+                        SettlersOfCatanConstants.PATH21);
                 break;
-            case Constants.NODE15:
+            case SettlersOfCatanConstants.NODE15:
                 pathList = ImmutableList.of(
-                        Constants.PATH17,
-                        Constants.PATH22);
+                        SettlersOfCatanConstants.PATH17,
+                        SettlersOfCatanConstants.PATH22);
                 break;
-            case Constants.NODE16:
+            case SettlersOfCatanConstants.NODE16:
                 pathList = ImmutableList.of(
-                        Constants.PATH18,
-                        Constants.PATH23,
-                        Constants.PATH24);
+                        SettlersOfCatanConstants.PATH18,
+                        SettlersOfCatanConstants.PATH23,
+                        SettlersOfCatanConstants.PATH24);
                 break;
-            case Constants.NODE17:
+            case SettlersOfCatanConstants.NODE17:
                 pathList = ImmutableList.of(
-                        Constants.PATH19,
-                        Constants.PATH25,
-                        Constants.PATH26);
+                        SettlersOfCatanConstants.PATH19,
+                        SettlersOfCatanConstants.PATH25,
+                        SettlersOfCatanConstants.PATH26);
                 break;
-            case Constants.NODE18:
+            case SettlersOfCatanConstants.NODE18:
                 pathList = ImmutableList.of(
-                        Constants.PATH20,
-                        Constants.PATH27,
-                        Constants.PATH28);
+                        SettlersOfCatanConstants.PATH20,
+                        SettlersOfCatanConstants.PATH27,
+                        SettlersOfCatanConstants.PATH28);
                 break;
-            case Constants.NODE19:
+            case SettlersOfCatanConstants.NODE19:
                 pathList = ImmutableList.of(
-                        Constants.PATH21,
-                        Constants.PATH29,
-                        Constants.PATH30);
+                        SettlersOfCatanConstants.PATH21,
+                        SettlersOfCatanConstants.PATH29,
+                        SettlersOfCatanConstants.PATH30);
                 break;
-            case Constants.NODE20:
+            case SettlersOfCatanConstants.NODE20:
                 pathList = ImmutableList.of(
-                        Constants.PATH22,
-                        Constants.PATH31,
-                        Constants.PATH32);
+                        SettlersOfCatanConstants.PATH22,
+                        SettlersOfCatanConstants.PATH31,
+                        SettlersOfCatanConstants.PATH32);
                 break;
-            case Constants.NODE21:
+            case SettlersOfCatanConstants.NODE21:
                 pathList = ImmutableList.of(
-                        Constants.PATH23,
-                        Constants.PATH33);
+                        SettlersOfCatanConstants.PATH23,
+                        SettlersOfCatanConstants.PATH33);
                 break;
-            case Constants.NODE22:
+            case SettlersOfCatanConstants.NODE22:
                 pathList = ImmutableList.of(
-                        Constants.PATH24,
-                        Constants.PATH25,
-                        Constants.PATH34);
+                        SettlersOfCatanConstants.PATH24,
+                        SettlersOfCatanConstants.PATH25,
+                        SettlersOfCatanConstants.PATH34);
                 break;
-            case Constants.NODE23:
+            case SettlersOfCatanConstants.NODE23:
                 pathList = ImmutableList.of(
-                        Constants.PATH26,
-                        Constants.PATH27,
-                        Constants.PATH35);
+                        SettlersOfCatanConstants.PATH26,
+                        SettlersOfCatanConstants.PATH27,
+                        SettlersOfCatanConstants.PATH35);
                 break;
-            case Constants.NODE24:
+            case SettlersOfCatanConstants.NODE24:
                 pathList = ImmutableList.of(
-                        Constants.PATH28,
-                        Constants.PATH29,
-                        Constants.PATH36);
+                        SettlersOfCatanConstants.PATH28,
+                        SettlersOfCatanConstants.PATH29,
+                        SettlersOfCatanConstants.PATH36);
                 break;
-            case Constants.NODE25:
+            case SettlersOfCatanConstants.NODE25:
                 pathList = ImmutableList.of(
-                        Constants.PATH30,
-                        Constants.PATH31,
-                        Constants.PATH37);
+                        SettlersOfCatanConstants.PATH30,
+                        SettlersOfCatanConstants.PATH31,
+                        SettlersOfCatanConstants.PATH37);
                 break;
-            case Constants.NODE26:
+            case SettlersOfCatanConstants.NODE26:
                 pathList = ImmutableList.of(
-                        Constants.PATH32,
-                        Constants.PATH38);
+                        SettlersOfCatanConstants.PATH32,
+                        SettlersOfCatanConstants.PATH38);
                 break;
-            case Constants.NODE27:
+            case SettlersOfCatanConstants.NODE27:
                 pathList = ImmutableList.of(
-                        Constants.PATH33,
-                        Constants.PATH39);
+                        SettlersOfCatanConstants.PATH33,
+                        SettlersOfCatanConstants.PATH39);
                 break;
-            case Constants.NODE28:
+            case SettlersOfCatanConstants.NODE28:
                 pathList = ImmutableList.of(
-                        Constants.PATH34,
-                        Constants.PATH40,
-                        Constants.PATH41);
+                        SettlersOfCatanConstants.PATH34,
+                        SettlersOfCatanConstants.PATH40,
+                        SettlersOfCatanConstants.PATH41);
                 break;
-            case Constants.NODE29:
+            case SettlersOfCatanConstants.NODE29:
                 pathList = ImmutableList.of(
-                        Constants.PATH35,
-                        Constants.PATH42,
-                        Constants.PATH43);
+                        SettlersOfCatanConstants.PATH35,
+                        SettlersOfCatanConstants.PATH42,
+                        SettlersOfCatanConstants.PATH43);
                 break;
-            case Constants.NODE30:
+            case SettlersOfCatanConstants.NODE30:
                 pathList = ImmutableList.of(
-                        Constants.PATH36,
-                        Constants.PATH44,
-                        Constants.PATH45);
+                        SettlersOfCatanConstants.PATH36,
+                        SettlersOfCatanConstants.PATH44,
+                        SettlersOfCatanConstants.PATH45);
                 break;
-            case Constants.NODE31:
+            case SettlersOfCatanConstants.NODE31:
                 pathList = ImmutableList.of(
-                        Constants.PATH37,
-                        Constants.PATH46,
-                        Constants.PATH47);
+                        SettlersOfCatanConstants.PATH37,
+                        SettlersOfCatanConstants.PATH46,
+                        SettlersOfCatanConstants.PATH47);
                 break;
-            case Constants.NODE32:
+            case SettlersOfCatanConstants.NODE32:
                 pathList = ImmutableList.of(
-                        Constants.PATH38,
-                        Constants.PATH48);
+                        SettlersOfCatanConstants.PATH38,
+                        SettlersOfCatanConstants.PATH48);
                 break;
-            case Constants.NODE33:
+            case SettlersOfCatanConstants.NODE33:
                 pathList = ImmutableList.of(
-                        Constants.PATH39,
-                        Constants.PATH40,
-                        Constants.PATH49);
+                        SettlersOfCatanConstants.PATH39,
+                        SettlersOfCatanConstants.PATH40,
+                        SettlersOfCatanConstants.PATH49);
                 break;
-            case Constants.NODE34:
+            case SettlersOfCatanConstants.NODE34:
                 pathList = ImmutableList.of(
-                        Constants.PATH41,
-                        Constants.PATH42,
-                        Constants.PATH50);
+                        SettlersOfCatanConstants.PATH41,
+                        SettlersOfCatanConstants.PATH42,
+                        SettlersOfCatanConstants.PATH50);
                 break;
-            case Constants.NODE35:
+            case SettlersOfCatanConstants.NODE35:
                 pathList = ImmutableList.of(
-                        Constants.PATH43,
-                        Constants.PATH44,
-                        Constants.PATH51);
+                        SettlersOfCatanConstants.PATH43,
+                        SettlersOfCatanConstants.PATH44,
+                        SettlersOfCatanConstants.PATH51);
                 break;
-            case Constants.NODE36:
+            case SettlersOfCatanConstants.NODE36:
                 pathList = ImmutableList.of(
-                        Constants.PATH45,
-                        Constants.PATH46,
-                        Constants.PATH52);
+                        SettlersOfCatanConstants.PATH45,
+                        SettlersOfCatanConstants.PATH46,
+                        SettlersOfCatanConstants.PATH52);
                 break;
-            case Constants.NODE37:
+            case SettlersOfCatanConstants.NODE37:
                 pathList = ImmutableList.of(
-                        Constants.PATH47,
-                        Constants.PATH48,
-                        Constants.PATH53);
+                        SettlersOfCatanConstants.PATH47,
+                        SettlersOfCatanConstants.PATH48,
+                        SettlersOfCatanConstants.PATH53);
                 break;
-            case Constants.NODE38:
+            case SettlersOfCatanConstants.NODE38:
                 pathList = ImmutableList.of(
-                        Constants.PATH49,
-                        Constants.PATH54);
+                        SettlersOfCatanConstants.PATH49,
+                        SettlersOfCatanConstants.PATH54);
                 break;
-            case Constants.NODE39:
+            case SettlersOfCatanConstants.NODE39:
                 pathList = ImmutableList.of(
-                        Constants.PATH50,
-                        Constants.PATH55,
-                        Constants.PATH56);
+                        SettlersOfCatanConstants.PATH50,
+                        SettlersOfCatanConstants.PATH55,
+                        SettlersOfCatanConstants.PATH56);
                 break;
-            case Constants.NODE40:
+            case SettlersOfCatanConstants.NODE40:
                 pathList = ImmutableList.of(
-                        Constants.PATH51,
-                        Constants.PATH57,
-                        Constants.PATH58);
+                        SettlersOfCatanConstants.PATH51,
+                        SettlersOfCatanConstants.PATH57,
+                        SettlersOfCatanConstants.PATH58);
                 break;
-            case Constants.NODE41:
+            case SettlersOfCatanConstants.NODE41:
                 pathList = ImmutableList.of(
-                        Constants.PATH52,
-                        Constants.PATH59,
-                        Constants.PATH60);
+                        SettlersOfCatanConstants.PATH52,
+                        SettlersOfCatanConstants.PATH59,
+                        SettlersOfCatanConstants.PATH60);
                 break;
-            case Constants.NODE42:
+            case SettlersOfCatanConstants.NODE42:
                 pathList = ImmutableList.of(
-                        Constants.PATH53,
-                        Constants.PATH61);
+                        SettlersOfCatanConstants.PATH53,
+                        SettlersOfCatanConstants.PATH61);
                 break;
-            case Constants.NODE43:
+            case SettlersOfCatanConstants.NODE43:
                 pathList = ImmutableList.of(
-                        Constants.PATH54,
-                        Constants.PATH55,
-                        Constants.PATH62);
+                        SettlersOfCatanConstants.PATH54,
+                        SettlersOfCatanConstants.PATH55,
+                        SettlersOfCatanConstants.PATH62);
                 break;
-            case Constants.NODE44:
+            case SettlersOfCatanConstants.NODE44:
                 pathList = ImmutableList.of(
-                        Constants.PATH56,
-                        Constants.PATH57,
-                        Constants.PATH63);
+                        SettlersOfCatanConstants.PATH56,
+                        SettlersOfCatanConstants.PATH57,
+                        SettlersOfCatanConstants.PATH63);
                 break;
-            case Constants.NODE45:
+            case SettlersOfCatanConstants.NODE45:
                 pathList = ImmutableList.of(
-                        Constants.PATH58,
-                        Constants.PATH59,
-                        Constants.PATH64);
+                        SettlersOfCatanConstants.PATH58,
+                        SettlersOfCatanConstants.PATH59,
+                        SettlersOfCatanConstants.PATH64);
                 break;
-            case Constants.NODE46:
+            case SettlersOfCatanConstants.NODE46:
                 pathList = ImmutableList.of(
-                        Constants.PATH60,
-                        Constants.PATH61,
-                        Constants.PATH65);
+                        SettlersOfCatanConstants.PATH60,
+                        SettlersOfCatanConstants.PATH61,
+                        SettlersOfCatanConstants.PATH65);
                 break;
-            case Constants.NODE47:
+            case SettlersOfCatanConstants.NODE47:
                 pathList = ImmutableList.of(
-                        Constants.PATH62,
-                        Constants.PATH66);
+                        SettlersOfCatanConstants.PATH62,
+                        SettlersOfCatanConstants.PATH66);
                 break;
-            case Constants.NODE48:
+            case SettlersOfCatanConstants.NODE48:
                 pathList = ImmutableList.of(
-                        Constants.PATH63,
-                        Constants.PATH67,
-                        Constants.PATH68);
+                        SettlersOfCatanConstants.PATH63,
+                        SettlersOfCatanConstants.PATH67,
+                        SettlersOfCatanConstants.PATH68);
                 break;
-            case Constants.NODE49:
+            case SettlersOfCatanConstants.NODE49:
                 pathList = ImmutableList.of(
-                        Constants.PATH64,
-                        Constants.PATH69,
-                        Constants.PATH70);
+                        SettlersOfCatanConstants.PATH64,
+                        SettlersOfCatanConstants.PATH69,
+                        SettlersOfCatanConstants.PATH70);
                 break;
-            case Constants.NODE50:
+            case SettlersOfCatanConstants.NODE50:
                 pathList = ImmutableList.of(
-                        Constants.PATH65,
-                        Constants.PATH71);
+                        SettlersOfCatanConstants.PATH65,
+                        SettlersOfCatanConstants.PATH71);
                 break;
-            case Constants.NODE51:
+            case SettlersOfCatanConstants.NODE51:
                 pathList = ImmutableList.of(
-                        Constants.PATH66,
-                        Constants.PATH67);
+                        SettlersOfCatanConstants.PATH66,
+                        SettlersOfCatanConstants.PATH67);
                 break;
-            case Constants.NODE52:
+            case SettlersOfCatanConstants.NODE52:
                 pathList = ImmutableList.of(
-                        Constants.PATH68,
-                        Constants.PATH69);
+                        SettlersOfCatanConstants.PATH68,
+                        SettlersOfCatanConstants.PATH69);
                 break;
-            case Constants.NODE53:
+            case SettlersOfCatanConstants.NODE53:
                 pathList = ImmutableList.of(
-                        Constants.PATH70,
-                        Constants.PATH71);
+                        SettlersOfCatanConstants.PATH70,
+                        SettlersOfCatanConstants.PATH71);
                 break;
 	    }
 	    
@@ -6479,9 +6479,9 @@ public class SettlersOfCatanLogic {
         String firstOpen = "";
         
         if(firstOpenDevelopmentCard < 10)
-            firstOpen = Constants.DEVELOPMENTCARDTOKEN + "0" + firstOpenDevelopmentCard;
+            firstOpen = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + "0" + firstOpenDevelopmentCard;
         else if(firstOpenDevelopmentCard < 25)
-            firstOpen = Constants.DEVELOPMENTCARDTOKEN + firstOpenDevelopmentCard;
+            firstOpen = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + firstOpenDevelopmentCard;
         
         return firstOpen;
     }
@@ -6501,7 +6501,7 @@ public class SettlersOfCatanLogic {
         if ( lastState.isEmpty() )
         {
             initial = false;
-            expectedMove = Constants.FIRSTMOVE;
+            expectedMove = SettlersOfCatanConstants.FIRSTMOVE;
             firstFreeMove = true;
             settlementTurn = true;
         }
@@ -6509,107 +6509,107 @@ public class SettlersOfCatanLogic {
         {
             if(settlementTurn)
             {
-                expectedMove = Constants.FIRSTROUNDSETTLEMENT;
+                expectedMove = SettlersOfCatanConstants.FIRSTROUNDSETTLEMENT;
             }
             else
             {
-                expectedMove = Constants.FIRSTROUNDROAD;
+                expectedMove = SettlersOfCatanConstants.FIRSTROUNDROAD;
             }
         }
         else if(secondFreeMove)
         {
             if(settlementTurn)
             {
-                expectedMove = Constants.SECONDROUNDSETTLEMENT;
+                expectedMove = SettlersOfCatanConstants.SECONDROUNDSETTLEMENT;
             }
             else
             {
-                expectedMove = Constants.SECONDROUNDROAD;
+                expectedMove = SettlersOfCatanConstants.SECONDROUNDROAD;
             }
         }
         else if (finishRoadBuild)
         {
-            expectedMove = Constants.BUILDROADPT2;
+            expectedMove = SettlersOfCatanConstants.BUILDROADPT2;
         }
         else if (finishSettlementBuild)
         {
-            expectedMove = Constants.BUILDSETTLEMENTPT2;
+            expectedMove = SettlersOfCatanConstants.BUILDSETTLEMENTPT2;
         }
         else if (finishCityBuild)
         {
-            expectedMove = Constants.BUILDCITYPT2;
+            expectedMove = SettlersOfCatanConstants.BUILDCITYPT2;
         }
         else if (finishBuyingDevelopmentCard)
         {
-            expectedMove = Constants.BUYDEVELOPMENTCARDPT2;
+            expectedMove = SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT2;
         }
         else if(finishHarborTrade)
         {
-            expectedMove = Constants.HARBORTRADEPT2;
+            expectedMove = SettlersOfCatanConstants.HARBORTRADEPT2;
         }
         else if(finishRobberMove)
         {
-            expectedMove = Constants.MOVEROBBERPT4;
+            expectedMove = SettlersOfCatanConstants.MOVEROBBERPT4;
         }
         else if( findASetRandomIntegerInMoves(lastMove) )
         {
-            expectedMove = Constants.ROLLDICE;
+            expectedMove = SettlersOfCatanConstants.ROLLDICE;
         }
         else if( findADeleteDieInMoves(lastMove) )
         {
-            expectedMove = Constants.CLEARROLL;
+            expectedMove = SettlersOfCatanConstants.CLEARROLL;
         }
         // Move contains a SET Turn command with the next player string
         // This is a CHANGETURN move
-        else if ( findJustASetTurnMoveInMoves(lastMove, Constants.TURN) )
+        else if ( findJustASetTurnMoveInMoves(lastMove, SettlersOfCatanConstants.TURN) )
         {
-            expectedMove = Constants.CHANGETURN;
+            expectedMove = SettlersOfCatanConstants.CHANGETURN;
         }
         // Move contains a SET City command
         // This is a BUILDCITY move
-        else if ( findASetMoveInMoves(lastMove, Constants.CITYTOKEN, "") )
+        else if ( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.CITYTOKEN, "") )
         {
-            expectedMove = Constants.BUILDCITYPT1;
+            expectedMove = SettlersOfCatanConstants.BUILDCITYPT1;
         }
         // Move contains a SET Settlement command
         // This is a BUILDSETTLEMENT move
-        else if ( findASetMoveInMoves(lastMove, Constants.SETTLEMENTTOKEN, "") )
+        else if ( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.SETTLEMENTTOKEN, "") )
         {
-            expectedMove = Constants.BUILDSETTLEMENTPT1;
+            expectedMove = SettlersOfCatanConstants.BUILDSETTLEMENTPT1;
         }
         // Move contains a SET Road command
         // This is a BUILDROAD move
-        else if ( findASetMoveInMoves(lastMove, Constants.ROADTOKEN, "") )
+        else if ( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.ROADTOKEN, "") )
         {
-            expectedMove = Constants.BUILDROADPT1;
+            expectedMove = SettlersOfCatanConstants.BUILDROADPT1;
         }
         // Move contains a SET Development Card command with the current playerString
         // This is a BUYDEVELOPMENTCARD move
-        else if ( findASetVisibleMoveInMoves(lastMove, Constants.DEVELOPMENTCARDTOKEN) )
+        else if ( findASetVisibleMoveInMoves(lastMove, SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN) )
         {
-            expectedMove = Constants.BUYDEVELOPMENTCARDPT1;
+            expectedMove = SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT1;
         }
         // Move contains a SET Development Card command with the PLAYED tag
         // This is a PLAYDEVELOPMENTCARD move
-        else if ( findASetMoveInMoves(lastMove, Constants.DEVELOPMENTCARDTOKEN, "") )
+        else if ( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN, "") )
         {
-            expectedMove = Constants.PLAYDEVELOPMENTCARD;
+            expectedMove = SettlersOfCatanConstants.PLAYDEVELOPMENTCARD;
         }
         // Move contains a SET Robber Card
         // This is a PLAYDEVELOPMENTCARD move
-        else if ( findASetMoveInMoves(lastMove, Constants.ROBBER, "") )
+        else if ( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.ROBBER, "") )
         {
-            expectedMove = Constants.MOVEROBBERPT3;
+            expectedMove = SettlersOfCatanConstants.MOVEROBBERPT3;
         }
         // Move contains only a turn move and resources
         // This is a HARBORTRADE move
-        else if ( findASetTurnMoveInMoves(lastMove, Constants.TURN)
-               && !findASetMoveInMoves(lastMove, Constants.CITYTOKEN, "")
-               && !findASetMoveInMoves(lastMove, Constants.SETTLEMENTTOKEN, "")
-               && !findASetMoveInMoves(lastMove, Constants.ROADTOKEN, "")
-               && !findASetMoveInMoves(lastMove, Constants.DEVELOPMENTCARDTOKEN, ""))
+        else if ( findASetTurnMoveInMoves(lastMove, SettlersOfCatanConstants.TURN)
+               && !findASetMoveInMoves(lastMove, SettlersOfCatanConstants.CITYTOKEN, "")
+               && !findASetMoveInMoves(lastMove, SettlersOfCatanConstants.SETTLEMENTTOKEN, "")
+               && !findASetMoveInMoves(lastMove, SettlersOfCatanConstants.ROADTOKEN, "")
+               && !findASetMoveInMoves(lastMove, SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN, ""))
         {
-            expectedMove = Constants.HARBORTRADEPT1;
+            expectedMove = SettlersOfCatanConstants.HARBORTRADEPT1;
         }
         else
         {
@@ -6734,7 +6734,7 @@ public class SettlersOfCatanLogic {
         for(int i = 0; i < lastMove.size(); i++)
         {
             if( lastMove.get(i).getMessageName().equals("Delete")
-             && ((Delete)lastMove.get(i)).getKey().equals(Constants.DIE0))
+             && ((Delete)lastMove.get(i)).getKey().equals(SettlersOfCatanConstants.DIE0))
             {
                 status = true;
             }
@@ -6753,19 +6753,19 @@ public class SettlersOfCatanLogic {
         
         if(playerIds.get(0) == lastMovePlayerId)
         {
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         }
         else if(playerIds.get(1) == lastMovePlayerId)
         {
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         }
         else if(playerIds.get(2) == lastMovePlayerId)
         {
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         }
         else if(playerIds.get(3) == lastMovePlayerId)
         {
-            playerString = Constants.PG;
+            playerString = SettlersOfCatanConstants.PG;
         }
         
         return playerString;
@@ -6781,25 +6781,25 @@ public class SettlersOfCatanLogic {
         
         if(playerIds.get(0) == lastMovePlayerId)
         {
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         }
         else if(playerIds.get(1) == lastMovePlayerId)
         {
             if(playerIds.size() == 2)
-                playerString = Constants.PB;
+                playerString = SettlersOfCatanConstants.PB;
             else
-                playerString = Constants.PY;
+                playerString = SettlersOfCatanConstants.PY;
         }
         else if(playerIds.get(2) == lastMovePlayerId)
         {
             if(playerIds.size() == 3)
-                playerString = Constants.PB;
+                playerString = SettlersOfCatanConstants.PB;
             else
-                playerString = Constants.PG;
+                playerString = SettlersOfCatanConstants.PG;
         }
         else if(playerIds.get(3) == lastMovePlayerId)
         {
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         }
         
         return playerString;
@@ -6816,23 +6816,23 @@ public class SettlersOfCatanLogic {
         if(playerIds.get(0) == lastMovePlayerId)
         {
             if(playerIds.size() == 4)
-                playerString = Constants.PG;
+                playerString = SettlersOfCatanConstants.PG;
             else if (playerIds.size() == 3)
-                playerString = Constants.PY;
+                playerString = SettlersOfCatanConstants.PY;
             else
-                playerString = Constants.PR;
+                playerString = SettlersOfCatanConstants.PR;
         }
         else if(playerIds.get(1) == lastMovePlayerId)
         {
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         }
         else if(playerIds.get(2) == lastMovePlayerId)
         {
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         }
         else if(playerIds.get(3) == lastMovePlayerId)
         {
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         }
         
         return playerString;
@@ -6844,231 +6844,231 @@ public class SettlersOfCatanLogic {
         
         switch(node)
         {
-            case Constants.NODE00:
-                expectedResources.add(state.get(Constants.HEX00).toString());
+            case SettlersOfCatanConstants.NODE00:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX00).toString());
                 break;
-            case Constants.NODE01:
-                expectedResources.add(state.get(Constants.HEX01).toString());
+            case SettlersOfCatanConstants.NODE01:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX01).toString());
                 break;
-            case Constants.NODE02:
-                expectedResources.add(state.get(Constants.HEX02).toString());
+            case SettlersOfCatanConstants.NODE02:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX02).toString());
                 break;
-            case Constants.NODE03:
-                expectedResources.add(state.get(Constants.HEX00).toString());
+            case SettlersOfCatanConstants.NODE03:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX00).toString());
                 break;
-            case Constants.NODE04:
-                expectedResources.add(state.get(Constants.HEX00).toString());
-                expectedResources.add(state.get(Constants.HEX01).toString());
+            case SettlersOfCatanConstants.NODE04:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX00).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX01).toString());
                 break;
-            case Constants.NODE05:
-                expectedResources.add(state.get(Constants.HEX01).toString());
-                expectedResources.add(state.get(Constants.HEX02).toString());
+            case SettlersOfCatanConstants.NODE05:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX01).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX02).toString());
                 break;
-            case Constants.NODE06:
-                expectedResources.add(state.get(Constants.HEX02).toString());
+            case SettlersOfCatanConstants.NODE06:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX02).toString());
                 break;
-            case Constants.NODE07:
-                expectedResources.add(state.get(Constants.HEX00).toString());
-                expectedResources.add(state.get(Constants.HEX03).toString());
+            case SettlersOfCatanConstants.NODE07:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX00).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX03).toString());
                 break;
-            case Constants.NODE08:
-                expectedResources.add(state.get(Constants.HEX00).toString());
-                expectedResources.add(state.get(Constants.HEX01).toString());
-                expectedResources.add(state.get(Constants.HEX04).toString());
+            case SettlersOfCatanConstants.NODE08:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX00).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX01).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX04).toString());
                 break;
-            case Constants.NODE09:
-                expectedResources.add(state.get(Constants.HEX01).toString());
-                expectedResources.add(state.get(Constants.HEX02).toString());
-                expectedResources.add(state.get(Constants.HEX05).toString());
+            case SettlersOfCatanConstants.NODE09:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX01).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX02).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX05).toString());
                 break;
-            case Constants.NODE10:
-                expectedResources.add(state.get(Constants.HEX02).toString());
-                expectedResources.add(state.get(Constants.HEX06).toString());
+            case SettlersOfCatanConstants.NODE10:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX02).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX06).toString());
                 break;
-            case Constants.NODE11:
-                expectedResources.add(state.get(Constants.HEX03).toString());
+            case SettlersOfCatanConstants.NODE11:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX03).toString());
                 break;
-            case Constants.NODE12:
-                expectedResources.add(state.get(Constants.HEX00).toString());
-                expectedResources.add(state.get(Constants.HEX03).toString());
-                expectedResources.add(state.get(Constants.HEX04).toString());
+            case SettlersOfCatanConstants.NODE12:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX00).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX03).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX04).toString());
                 break;
-            case Constants.NODE13:
-                expectedResources.add(state.get(Constants.HEX01).toString());
-                expectedResources.add(state.get(Constants.HEX04).toString());
-                expectedResources.add(state.get(Constants.HEX05).toString());
+            case SettlersOfCatanConstants.NODE13:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX01).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX04).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX05).toString());
                 break;
-            case Constants.NODE14:
-                expectedResources.add(state.get(Constants.HEX02).toString());
-                expectedResources.add(state.get(Constants.HEX05).toString());
-                expectedResources.add(state.get(Constants.HEX06).toString());
+            case SettlersOfCatanConstants.NODE14:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX02).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX05).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX06).toString());
                 break;
-            case Constants.NODE15:
-                expectedResources.add(state.get(Constants.HEX06).toString());
+            case SettlersOfCatanConstants.NODE15:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX06).toString());
                 break;
-            case Constants.NODE16:
-                expectedResources.add(state.get(Constants.HEX03).toString());
-                expectedResources.add(state.get(Constants.HEX07).toString());
+            case SettlersOfCatanConstants.NODE16:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX03).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX07).toString());
                 break;
-            case Constants.NODE17:
-                expectedResources.add(state.get(Constants.HEX03).toString());
-                expectedResources.add(state.get(Constants.HEX04).toString());
-                expectedResources.add(state.get(Constants.HEX08).toString());
+            case SettlersOfCatanConstants.NODE17:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX03).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX04).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX08).toString());
                 break;
-            case Constants.NODE18:
-                expectedResources.add(state.get(Constants.HEX04).toString());
-                expectedResources.add(state.get(Constants.HEX05).toString());
-                expectedResources.add(state.get(Constants.HEX09).toString());
+            case SettlersOfCatanConstants.NODE18:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX04).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX05).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX09).toString());
                 break;
-            case Constants.NODE19:
-                expectedResources.add(state.get(Constants.HEX05).toString());
-                expectedResources.add(state.get(Constants.HEX06).toString());
-                expectedResources.add(state.get(Constants.HEX10).toString());
+            case SettlersOfCatanConstants.NODE19:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX05).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX06).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX10).toString());
                 break;
-            case Constants.NODE20:
-                expectedResources.add(state.get(Constants.HEX06).toString());
-                expectedResources.add(state.get(Constants.HEX11).toString());
+            case SettlersOfCatanConstants.NODE20:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX06).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX11).toString());
                 break;
-            case Constants.NODE21:
-                expectedResources.add(state.get(Constants.HEX07).toString());
+            case SettlersOfCatanConstants.NODE21:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX07).toString());
                 break;
-            case Constants.NODE22:
-                expectedResources.add(state.get(Constants.HEX03).toString());
-                expectedResources.add(state.get(Constants.HEX07).toString());
-                expectedResources.add(state.get(Constants.HEX08).toString());
+            case SettlersOfCatanConstants.NODE22:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX03).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX07).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX08).toString());
                 break;
-            case Constants.NODE23:
-                expectedResources.add(state.get(Constants.HEX04).toString());
-                expectedResources.add(state.get(Constants.HEX08).toString());
-                expectedResources.add(state.get(Constants.HEX09).toString());
+            case SettlersOfCatanConstants.NODE23:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX04).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX08).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX09).toString());
                 break;
-            case Constants.NODE24:
-                expectedResources.add(state.get(Constants.HEX05).toString());
-                expectedResources.add(state.get(Constants.HEX09).toString());
-                expectedResources.add(state.get(Constants.HEX10).toString());
+            case SettlersOfCatanConstants.NODE24:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX05).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX09).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX10).toString());
                 break;
-            case Constants.NODE25:
-                expectedResources.add(state.get(Constants.HEX06).toString());
-                expectedResources.add(state.get(Constants.HEX10).toString());
-                expectedResources.add(state.get(Constants.HEX11).toString());
+            case SettlersOfCatanConstants.NODE25:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX06).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX10).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX11).toString());
                 break;
-            case Constants.NODE26:
-                expectedResources.add(state.get(Constants.HEX11).toString());
+            case SettlersOfCatanConstants.NODE26:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX11).toString());
                 break;
-            case Constants.NODE27:
-                expectedResources.add(state.get(Constants.HEX07).toString());
+            case SettlersOfCatanConstants.NODE27:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX07).toString());
                 break;
-            case Constants.NODE28:
-                expectedResources.add(state.get(Constants.HEX07).toString());
-                expectedResources.add(state.get(Constants.HEX08).toString());
-                expectedResources.add(state.get(Constants.HEX12).toString());
+            case SettlersOfCatanConstants.NODE28:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX07).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX08).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX12).toString());
                 break;
-            case Constants.NODE29:
-                expectedResources.add(state.get(Constants.HEX08).toString());
-                expectedResources.add(state.get(Constants.HEX09).toString());
-                expectedResources.add(state.get(Constants.HEX13).toString());
+            case SettlersOfCatanConstants.NODE29:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX08).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX09).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX13).toString());
                 break;
-            case Constants.NODE30:
-                expectedResources.add(state.get(Constants.HEX09).toString());
-                expectedResources.add(state.get(Constants.HEX10).toString());
-                expectedResources.add(state.get(Constants.HEX14).toString());
+            case SettlersOfCatanConstants.NODE30:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX09).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX10).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX14).toString());
                 break;
-            case Constants.NODE31:
-                expectedResources.add(state.get(Constants.HEX10).toString());
-                expectedResources.add(state.get(Constants.HEX11).toString());
-                expectedResources.add(state.get(Constants.HEX15).toString());
+            case SettlersOfCatanConstants.NODE31:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX10).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX11).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX15).toString());
                 break;
-            case Constants.NODE32:
-                expectedResources.add(state.get(Constants.HEX11).toString());
+            case SettlersOfCatanConstants.NODE32:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX11).toString());
                 break;
-            case Constants.NODE33:
-                expectedResources.add(state.get(Constants.HEX07).toString());
-                expectedResources.add(state.get(Constants.HEX12).toString());
+            case SettlersOfCatanConstants.NODE33:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX07).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX12).toString());
                 break;
-            case Constants.NODE34:
-                expectedResources.add(state.get(Constants.HEX08).toString());
-                expectedResources.add(state.get(Constants.HEX12).toString());
-                expectedResources.add(state.get(Constants.HEX13).toString());
+            case SettlersOfCatanConstants.NODE34:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX08).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX12).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX13).toString());
                 break;
-            case Constants.NODE35:
-                expectedResources.add(state.get(Constants.HEX09).toString());
-                expectedResources.add(state.get(Constants.HEX13).toString());
-                expectedResources.add(state.get(Constants.HEX14).toString());
+            case SettlersOfCatanConstants.NODE35:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX09).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX13).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX14).toString());
                 break;
-            case Constants.NODE36:
-                expectedResources.add(state.get(Constants.HEX10).toString());
-                expectedResources.add(state.get(Constants.HEX14).toString());
-                expectedResources.add(state.get(Constants.HEX15).toString());
+            case SettlersOfCatanConstants.NODE36:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX10).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX14).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX15).toString());
                 break;
-            case Constants.NODE37:
-                expectedResources.add(state.get(Constants.HEX11).toString());
-                expectedResources.add(state.get(Constants.HEX15).toString());
+            case SettlersOfCatanConstants.NODE37:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX11).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX15).toString());
                 break;
-            case Constants.NODE38:
-                expectedResources.add(state.get(Constants.HEX12).toString());
+            case SettlersOfCatanConstants.NODE38:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX12).toString());
                 break;
-            case Constants.NODE39:
-                expectedResources.add(state.get(Constants.HEX12).toString());
-                expectedResources.add(state.get(Constants.HEX13).toString());
-                expectedResources.add(state.get(Constants.HEX16).toString());
+            case SettlersOfCatanConstants.NODE39:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX12).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX13).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX16).toString());
                 break;
-            case Constants.NODE40:
-                expectedResources.add(state.get(Constants.HEX13).toString());
-                expectedResources.add(state.get(Constants.HEX14).toString());
-                expectedResources.add(state.get(Constants.HEX17).toString());
+            case SettlersOfCatanConstants.NODE40:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX13).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX14).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX17).toString());
                 break;
-            case Constants.NODE41:
-                expectedResources.add(state.get(Constants.HEX14).toString());
-                expectedResources.add(state.get(Constants.HEX15).toString());
-                expectedResources.add(state.get(Constants.HEX18).toString());
+            case SettlersOfCatanConstants.NODE41:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX14).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX15).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX18).toString());
                 break;
-            case Constants.NODE42:
-                expectedResources.add(state.get(Constants.HEX15).toString());
+            case SettlersOfCatanConstants.NODE42:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX15).toString());
                 break;
-            case Constants.NODE43:
-                expectedResources.add(state.get(Constants.HEX12).toString());
-                expectedResources.add(state.get(Constants.HEX16).toString());
+            case SettlersOfCatanConstants.NODE43:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX12).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX16).toString());
                 break;
-            case Constants.NODE44:
-                expectedResources.add(state.get(Constants.HEX13).toString());
-                expectedResources.add(state.get(Constants.HEX16).toString());
-                expectedResources.add(state.get(Constants.HEX17).toString());
+            case SettlersOfCatanConstants.NODE44:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX13).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX16).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX17).toString());
                 break;
-            case Constants.NODE45:
-                expectedResources.add(state.get(Constants.HEX14).toString());
-                expectedResources.add(state.get(Constants.HEX17).toString());
-                expectedResources.add(state.get(Constants.HEX18).toString());
+            case SettlersOfCatanConstants.NODE45:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX14).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX17).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX18).toString());
                 break;
-            case Constants.NODE46:
-                expectedResources.add(state.get(Constants.HEX15).toString());
-                expectedResources.add(state.get(Constants.HEX18).toString());
+            case SettlersOfCatanConstants.NODE46:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX15).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX18).toString());
                 break;
-            case Constants.NODE47:
-                expectedResources.add(state.get(Constants.HEX16).toString());
+            case SettlersOfCatanConstants.NODE47:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX16).toString());
                 break;
-            case Constants.NODE48:
-                expectedResources.add(state.get(Constants.HEX16).toString());
-                expectedResources.add(state.get(Constants.HEX17).toString());
+            case SettlersOfCatanConstants.NODE48:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX16).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX17).toString());
                 break;
-            case Constants.NODE49:
-                expectedResources.add(state.get(Constants.HEX17).toString());
-                expectedResources.add(state.get(Constants.HEX18).toString());
+            case SettlersOfCatanConstants.NODE49:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX17).toString());
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX18).toString());
                 break;
-            case Constants.NODE50:
-                expectedResources.add(state.get(Constants.HEX18).toString());
+            case SettlersOfCatanConstants.NODE50:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX18).toString());
                 break;
-            case Constants.NODE51:
-                expectedResources.add(state.get(Constants.HEX16).toString());
+            case SettlersOfCatanConstants.NODE51:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX16).toString());
                 break;
-            case Constants.NODE52:
-                expectedResources.add(state.get(Constants.HEX17).toString());
+            case SettlersOfCatanConstants.NODE52:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX17).toString());
                 break;
-            case Constants.NODE53:
-                expectedResources.add(state.get(Constants.HEX18).toString());
+            case SettlersOfCatanConstants.NODE53:
+                expectedResources.add(state.get(SettlersOfCatanConstants.HEX18).toString());
                 break;
         }
         
-        expectedResources.remove(Constants.DESERT);
+        expectedResources.remove(SettlersOfCatanConstants.DESERT);
         
         return expectedResources;
     }
@@ -7100,9 +7100,9 @@ public class SettlersOfCatanLogic {
             List<String> pathToCheck = new ArrayList<String>();
             
             if(i < 10)
-                startingRoad = Constants.ROADTOKEN + "0" + i + playerString;
+                startingRoad = SettlersOfCatanConstants.ROADTOKEN + "0" + i + playerString;
             else
-                startingRoad = Constants.ROADTOKEN + i + playerString;
+                startingRoad = SettlersOfCatanConstants.ROADTOKEN + i + playerString;
             
             if(lastState.containsKey(startingRoad))
             {
@@ -7120,14 +7120,14 @@ public class SettlersOfCatanLogic {
             }
         }
         
-        if(!lastState.containsKey(Constants.LONGESTROAD)
+        if(!lastState.containsKey(SettlersOfCatanConstants.LONGESTROAD)
          && longestPath.size() > 4)
         {
             status = true;
         }
         else if(longestPath.size() > 4)
         {
-            String currentLongestPathHolder = lastState.get(Constants.LONGESTROAD).toString();
+            String currentLongestPathHolder = lastState.get(SettlersOfCatanConstants.LONGESTROAD).toString();
             List<String> longestPathHolder = null;
             
             for (int i = 0; i < 10; i++)
@@ -7135,9 +7135,9 @@ public class SettlersOfCatanLogic {
                 List<String> pathToCheck = new ArrayList<String>();
                 
                 if(i < 10)
-                    startingRoad = Constants.ROADTOKEN + "0" + i + currentLongestPathHolder;
+                    startingRoad = SettlersOfCatanConstants.ROADTOKEN + "0" + i + currentLongestPathHolder;
                 else
-                    startingRoad = Constants.ROADTOKEN + i + currentLongestPathHolder;
+                    startingRoad = SettlersOfCatanConstants.ROADTOKEN + i + currentLongestPathHolder;
                 
                 if(lastState.containsKey(startingRoad))
                 {

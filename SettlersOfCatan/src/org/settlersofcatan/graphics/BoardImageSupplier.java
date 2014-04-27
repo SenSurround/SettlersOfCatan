@@ -14,7 +14,7 @@
 // //////////////////////////////////////////////////////////////////////////////
 package org.settlersofcatan.graphics;
 
-import org.settlersofcatan.client.Constants;
+import org.settlersofcatan.client.SettlersOfCatanConstants;
 
 import com.google.gwt.resources.client.ImageResource;
 
@@ -31,17 +31,17 @@ public class BoardImageSupplier {
 
     public ImageResource getResourceBoardToken(String boardTokenKind) {
         switch (boardTokenKind) {
-            case Constants.BRICK:
+            case SettlersOfCatanConstants.BRICK:
                 return boardImages.brickToken();
-            case Constants.DESERT:
+            case SettlersOfCatanConstants.DESERT:
                 return boardImages.desertToken();
-            case Constants.GRAIN:
+            case SettlersOfCatanConstants.GRAIN:
                 return boardImages.grainToken();
-            case Constants.LUMBER:
+            case SettlersOfCatanConstants.LUMBER:
                 return boardImages.lumberToken();
-            case Constants.ORE:
+            case SettlersOfCatanConstants.ORE:
                 return boardImages.oreToken();
-            case Constants.WOOL:
+            case SettlersOfCatanConstants.WOOL:
                 return boardImages.woolToken();
             default:
                 throw new RuntimeException("Forgot kind=" + boardTokenKind);
@@ -167,17 +167,17 @@ public class BoardImageSupplier {
     public ImageResource getHarbor(String resource)
     {
         switch (resource) {
-            case Constants.HARBORTYPE00:
+            case SettlersOfCatanConstants.HARBORTYPE00:
                 return boardImages.threeToOneHarber();
-            case Constants.HARBORTYPE01:
+            case SettlersOfCatanConstants.HARBORTYPE01:
                 return boardImages.twoToOneOreHarbor();
-            case Constants.HARBORTYPE02:
+            case SettlersOfCatanConstants.HARBORTYPE02:
                 return boardImages.twoToOneGrainHarbor();
-            case Constants.HARBORTYPE03:
+            case SettlersOfCatanConstants.HARBORTYPE03:
                 return boardImages.twoToOneLumberHarbor();
-            case Constants.HARBORTYPE04:
+            case SettlersOfCatanConstants.HARBORTYPE04:
                 return boardImages.twoToOneWoolHarbor();
-            case Constants.HARBORTYPE05:
+            case SettlersOfCatanConstants.HARBORTYPE05:
                 return boardImages.twoToOneBrickHarbor();
             default:
                 throw new RuntimeException("Forgot kind=" + resource);
@@ -297,15 +297,15 @@ public class BoardImageSupplier {
 
     public ImageResource getResourceCard(String resource) {
         switch (resource) {
-            case Constants.BRICK:
+            case SettlersOfCatanConstants.BRICK:
                 return boardImages.brickCard();
-            case Constants.GRAIN:
+            case SettlersOfCatanConstants.GRAIN:
                 return boardImages.grainCard();
-            case Constants.LUMBER:
+            case SettlersOfCatanConstants.LUMBER:
                 return boardImages.lumberCard();
-            case Constants.ORE:
+            case SettlersOfCatanConstants.ORE:
                 return boardImages.oreCard();
-            case Constants.WOOL:
+            case SettlersOfCatanConstants.WOOL:
                 return boardImages.woolCard();
             default:
                 throw new RuntimeException("Forgot kind=" + resource);
@@ -314,23 +314,23 @@ public class BoardImageSupplier {
     
     public ImageResource getDevelopmentCard(String developmentCard) {
         switch (developmentCard) {
-            case Constants.DEVELOPMENTCARDTYPEDEF00:
+            case SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00:
                 return boardImages.soldierDevelopmentCard();
-            case Constants.DEVELOPMENTCARDTYPEDEF01:
+            case SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF01:
                 return boardImages.yearOfPlentyDevelopmentCard();
-            case Constants.DEVELOPMENTCARDTYPEDEF02:
+            case SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02:
                 return boardImages.monopolyDevelopmentCard();
-            case Constants.DEVELOPMENTCARDTYPEDEF03:
+            case SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03:
                 return boardImages.roadBuildingDevelopmentCard();
-            case Constants.DEVELOPMENTCARDTYPEDEF04:
+            case SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF04:
                 return boardImages.libraryDevelopmentCard();
-            case Constants.DEVELOPMENTCARDTYPEDEF05:
+            case SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF05:
                 return boardImages.governorsHouseDevelopmentCard();
-            case Constants.DEVELOPMENTCARDTYPEDEF06:
+            case SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF06:
                 return boardImages.universityOfCatanDevelopmentCard();
-            case Constants.DEVELOPMENTCARDTYPEDEF07:
+            case SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF07:
                 return boardImages.chapelDevelopmentCard();
-            case Constants.DEVELOPMENTCARDTYPEDEF08:
+            case SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF08:
                 return boardImages.marketDevelopmentCard();
             default:
                 throw new RuntimeException("Forgot kind=" + developmentCard);

@@ -161,12 +161,12 @@ public class SettlersOfCatanPresenter {
             if (myPlayer == 0)
             {
                 currentPlayer = 0;
-                infoMessage = Constants.MAKEFIRSTFREEMOVESETTLEMENT;
+                infoMessage = SettlersOfCatanConstants.MAKEFIRSTFREEMOVESETTLEMENT;
                 sendInitialMove(playerIds);
             }
             else
             {
-                infoMessage = Constants.MAKEFIRSTFREEMOVESETTLEMENT;
+                infoMessage = SettlersOfCatanConstants.MAKEFIRSTFREEMOVESETTLEMENT;
             }
             
             return;
@@ -195,8 +195,8 @@ public class SettlersOfCatanPresenter {
         if(isDiceRoll(theState) && myPlayer == currentPlayer)
         {
             view.handleDiceRoll(
-                    Integer.parseInt(theState.get(Constants.DIE0).toString()),
-                    Integer.parseInt(theState.get(Constants.DIE1).toString()));
+                    Integer.parseInt(theState.get(SettlersOfCatanConstants.DIE0).toString()),
+                    Integer.parseInt(theState.get(SettlersOfCatanConstants.DIE1).toString()));
             
             return;
         }
@@ -232,37 +232,37 @@ public class SettlersOfCatanPresenter {
         
         switch(option)
         {
-        case Constants.BUILDSETTLEMENTPT1:
-        case Constants.BUILDSETTLEMENTPT2:
-            retVal = myResourceCards.contains(Constants.BRICK)
-                  && myResourceCards.contains(Constants.LUMBER)
-                  && myResourceCards.contains(Constants.WOOL)
-                  && myResourceCards.contains(Constants.GRAIN);
+        case SettlersOfCatanConstants.BUILDSETTLEMENTPT1:
+        case SettlersOfCatanConstants.BUILDSETTLEMENTPT2:
+            retVal = myResourceCards.contains(SettlersOfCatanConstants.BRICK)
+                  && myResourceCards.contains(SettlersOfCatanConstants.LUMBER)
+                  && myResourceCards.contains(SettlersOfCatanConstants.WOOL)
+                  && myResourceCards.contains(SettlersOfCatanConstants.GRAIN);
             break;
-        case Constants.BUILDCITYPT1:
-        case Constants.BUILDCITYPT2:
+        case SettlersOfCatanConstants.BUILDCITYPT1:
+        case SettlersOfCatanConstants.BUILDCITYPT2:
             int ore = 0;
             int grain = 0;
             for(int i = 0; i < myResourceCards.size(); i++)
             {
-                if(myResourceCards.get(i).equals(Constants.ORE))
+                if(myResourceCards.get(i).equals(SettlersOfCatanConstants.ORE))
                     ore++;
-                else if(myResourceCards.get(i).equals(Constants.GRAIN))
+                else if(myResourceCards.get(i).equals(SettlersOfCatanConstants.GRAIN))
                     grain++;
             }
             
             retVal = ore > 2 && grain > 1;
             break;
-        case Constants.BUILDROADPT1:
-        case Constants.BUILDROADPT2:
-            retVal = myResourceCards.contains(Constants.BRICK)
-                  && myResourceCards.contains(Constants.LUMBER);
+        case SettlersOfCatanConstants.BUILDROADPT1:
+        case SettlersOfCatanConstants.BUILDROADPT2:
+            retVal = myResourceCards.contains(SettlersOfCatanConstants.BRICK)
+                  && myResourceCards.contains(SettlersOfCatanConstants.LUMBER);
             break;
-        case Constants.BUYDEVELOPMENTCARDPT1:
-        case Constants.BUYDEVELOPMENTCARDPT2:
-            retVal = myResourceCards.contains(Constants.ORE)
-                  && myResourceCards.contains(Constants.WOOL)
-                  && myResourceCards.contains(Constants.GRAIN);
+        case SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT1:
+        case SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT2:
+            retVal = myResourceCards.contains(SettlersOfCatanConstants.ORE)
+                  && myResourceCards.contains(SettlersOfCatanConstants.WOOL)
+                  && myResourceCards.contains(SettlersOfCatanConstants.GRAIN);
             break;
         }
         
@@ -274,7 +274,7 @@ public class SettlersOfCatanPresenter {
         boolean status = false;
         
         if( theBoard.hasAvailableSettlements(myPlayer)
-         && hasResourcesForUse(Constants.BUILDSETTLEMENTPT1))
+         && hasResourcesForUse(SettlersOfCatanConstants.BUILDSETTLEMENTPT1))
         {
             status = true;
         }
@@ -287,7 +287,7 @@ public class SettlersOfCatanPresenter {
         boolean status = false;
         
         if( theBoard.hasAvailableCities(myPlayer)
-         && hasResourcesForUse(Constants.BUILDCITYPT1)
+         && hasResourcesForUse(SettlersOfCatanConstants.BUILDCITYPT1)
          && theBoard.hasOneSettlementOut(myPlayer))
         {
             status = true;
@@ -301,7 +301,7 @@ public class SettlersOfCatanPresenter {
         boolean status = false;
         
         if( theBoard.hasAvailableRoads(myPlayer)
-         && hasResourcesForUse(Constants.BUILDROADPT1))
+         && hasResourcesForUse(SettlersOfCatanConstants.BUILDROADPT1))
         {
             status = true;
         }
@@ -314,7 +314,7 @@ public class SettlersOfCatanPresenter {
         boolean status = false;
         
         if( currentDevelopmentCard < 25
-         && hasResourcesForUse(Constants.BUYDEVELOPMENTCARDPT1))
+         && hasResourcesForUse(SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT1))
         {
             status = true;
         }
@@ -357,10 +357,10 @@ public class SettlersOfCatanPresenter {
         boolean status = false;
         for(int i = 0; i < myDevelopmentCards.size(); i++)
         {
-            if(myDevelopmentCards.get(i).equals(Constants.DEVELOPMENTCARDTYPEDEF00)
-            || myDevelopmentCards.get(i).equals(Constants.DEVELOPMENTCARDTYPEDEF01)
-            || myDevelopmentCards.get(i).equals(Constants.DEVELOPMENTCARDTYPEDEF02)
-            || myDevelopmentCards.get(i).equals(Constants.DEVELOPMENTCARDTYPEDEF03))
+            if(myDevelopmentCards.get(i).equals(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00)
+            || myDevelopmentCards.get(i).equals(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF01)
+            || myDevelopmentCards.get(i).equals(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02)
+            || myDevelopmentCards.get(i).equals(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03))
             {
                 status = true;
             }
@@ -390,8 +390,8 @@ public class SettlersOfCatanPresenter {
     public String setRobber(int hex)
     {
         robberDestination = hex;
-        infoMessage = Constants.MOVEROBBERPT2;
-        return Constants.MOVEROBBERPT2 + theBoard.addWhoToRob(hex, myPlayer, theState);
+        infoMessage = SettlersOfCatanConstants.MOVEROBBERPT2;
+        return SettlersOfCatanConstants.MOVEROBBERPT2 + theBoard.addWhoToRob(hex, myPlayer, theState);
     }
     
     public void setPathToBuild(int path)
@@ -400,20 +400,20 @@ public class SettlersOfCatanPresenter {
         String playerString = "";
         
         if(path < 10)
-            pathString = Constants.PATHTOKEN + "0" + path;
+            pathString = SettlersOfCatanConstants.PATHTOKEN + "0" + path;
         else
-            pathString = Constants.PATHTOKEN + path;
+            pathString = SettlersOfCatanConstants.PATHTOKEN + path;
         
         if(myPlayer == 0)
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         else if(myPlayer == 1)
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         else if(myPlayer == 2)
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         else if(myPlayer == 3)
-            playerString = Constants.PG;
+            playerString = SettlersOfCatanConstants.PG;
         
-        if(infoMessage == Constants.MAKEFIRSTFREEMOVEROAD)
+        if(infoMessage == SettlersOfCatanConstants.MAKEFIRSTFREEMOVEROAD)
         {
             if(settlersOfCatanLogic.canAddRoadHere(theState, pathString, playerString))
             {
@@ -421,24 +421,24 @@ public class SettlersOfCatanPresenter {
                 if(currentPlayer != playerIds.size() - 1)
                 {
                     player = (currentPlayer + 1) % playerIds.size();
-                    //infoMessage = Constants.MAKEFIRSTFREEMOVESETTLEMENT;
+                    //infoMessage = SettlersOfCatanConstants.MAKEFIRSTFREEMOVESETTLEMENT;
                 }
                 else
                 {
                     player = currentPlayer;
-                    //infoMessage = Constants.MAKESECONDFREEMOVESETTLEMENT;
+                    //infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT;
                 }
-                infoMessage = Constants.MAKESECONDFREEMOVESETTLEMENT;
+                infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT;
                 
                 List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
                 addSettlementFirstMove.add(new SetTurn(playerIds.get(player)));
-                addSettlementFirstMove.add(new Set(pathString, Constants.ROADTOKEN + "00" + playerString));
-                addSettlementFirstMove.add(new Set(Constants.ROADTOKEN + "00" + playerString, pathString));
+                addSettlementFirstMove.add(new Set(pathString, SettlersOfCatanConstants.ROADTOKEN + "00" + playerString));
+                addSettlementFirstMove.add(new Set(SettlersOfCatanConstants.ROADTOKEN + "00" + playerString, pathString));
                 buildRoadSound.play();
                 container.sendMakeMove(addSettlementFirstMove);
             }
         }
-        else if(infoMessage == Constants.MAKESECONDFREEMOVEROAD)
+        else if(infoMessage == SettlersOfCatanConstants.MAKESECONDFREEMOVEROAD)
         {
             if(settlersOfCatanLogic.canAddRoadHere(theState, pathString, playerString))
             {
@@ -446,24 +446,24 @@ public class SettlersOfCatanPresenter {
                 if(currentPlayer != 0)
                 {
                     player = (currentPlayer - 1) % playerIds.size();
-                    //infoMessage = Constants.MAKESECONDFREEMOVESETTLEMENT;
+                    //infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT;
                 }
                 else
                 {
                     player = currentPlayer;
-                    //infoMessage = Constants.ROLLDICE;
+                    //infoMessage = SettlersOfCatanConstants.ROLLDICE;
                 }
-                infoMessage = Constants.ROLLDICE;
+                infoMessage = SettlersOfCatanConstants.ROLLDICE;
                 
                 List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
                 addSettlementFirstMove.add(new SetTurn(playerIds.get(player)));
-                addSettlementFirstMove.add(new Set(pathString, Constants.ROADTOKEN + "01" + playerString));
-                addSettlementFirstMove.add(new Set(Constants.ROADTOKEN + "01" + playerString, pathString));
+                addSettlementFirstMove.add(new Set(pathString, SettlersOfCatanConstants.ROADTOKEN + "01" + playerString));
+                addSettlementFirstMove.add(new Set(SettlersOfCatanConstants.ROADTOKEN + "01" + playerString, pathString));
                 buildRoadSound.play();
                 container.sendMakeMove(addSettlementFirstMove);
             }
         }
-        else if(infoMessage.equals(Constants.MAKEMOVE))
+        else if(infoMessage.equals(SettlersOfCatanConstants.MAKEMOVE))
         {
             if(settlersOfCatanLogic.canAddRoadHere(theState, pathString, playerString))
             {
@@ -471,11 +471,11 @@ public class SettlersOfCatanPresenter {
                 addRoad.add(new SetTurn(playerIds.get(currentPlayer)));
                 addRoad.add(new Set(pathString, getFirstAvailableRoad()));
                 addRoad.add(new Set(getFirstAvailableRoad(), pathString));
-                addRoad.add(new SetVisibility(getFirstAvailableResource(Constants.BRICK, 0)));
-                addRoad.add(new SetVisibility(getFirstAvailableResource(Constants.LUMBER, 0)));
+                addRoad.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.BRICK, 0)));
+                addRoad.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.LUMBER, 0)));
                 
                 pathAdding = pathString;
-                infoMessage = Constants.BUILDROADPT1;
+                infoMessage = SettlersOfCatanConstants.BUILDROADPT1;
                 container.sendMakeMove(addRoad);
             }
         }
@@ -484,30 +484,30 @@ public class SettlersOfCatanPresenter {
     public void finishRoadBuild()
     {
         List<Operation> addRoad = new ArrayList<Operation>();
-        addRoad.add(new Delete(getFirstAvailableResource(Constants.BRICK, 0)));
-        addRoad.add(new Delete(getFirstAvailableResource(Constants.LUMBER, 0)));
+        addRoad.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.BRICK, 0)));
+        addRoad.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.LUMBER, 0)));
         
-        infoMessage = Constants.BUILDROADPT2;
+        infoMessage = SettlersOfCatanConstants.BUILDROADPT2;
         
         if(takesLongestRoad(pathAdding))
         {
             String playerString = "";
             
             if(myPlayer == 0)
-                playerString = Constants.PB;
+                playerString = SettlersOfCatanConstants.PB;
             else if(myPlayer == 1)
-                playerString = Constants.PR;
+                playerString = SettlersOfCatanConstants.PR;
             else if(myPlayer == 2)
-                playerString = Constants.PY;
+                playerString = SettlersOfCatanConstants.PY;
             else if(myPlayer == 3)
-                playerString = Constants.PG;
+                playerString = SettlersOfCatanConstants.PG;
             
-            addRoad.add(new Set(Constants.LONGESTROAD,playerString));
+            addRoad.add(new Set(SettlersOfCatanConstants.LONGESTROAD,playerString));
 
             if(myVictoryPoints >= 8)
             {
                 addRoad.add(new EndGame(playerIds.get(myPlayer)));
-                infoMessage = Constants.ENDGAME;
+                infoMessage = SettlersOfCatanConstants.ENDGAME;
             }
         }
         
@@ -521,40 +521,40 @@ public class SettlersOfCatanPresenter {
         String playerString = "";
         
         if(node < 10)
-            nodeString = Constants.NODETOKEN + "0" + node;
+            nodeString = SettlersOfCatanConstants.NODETOKEN + "0" + node;
         else
-            nodeString = Constants.NODETOKEN + node;
+            nodeString = SettlersOfCatanConstants.NODETOKEN + node;
         
         if(myPlayer == 0)
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         else if(myPlayer == 1)
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         else if(myPlayer == 2)
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         else if(myPlayer == 3)
-            playerString = Constants.PG;
+            playerString = SettlersOfCatanConstants.PG;
         
-        if(infoMessage == Constants.MAKEFIRSTFREEMOVESETTLEMENT)
+        if(infoMessage == SettlersOfCatanConstants.MAKEFIRSTFREEMOVESETTLEMENT)
         {
             if(settlersOfCatanLogic.canAddSettlementHereFirstMove(theState, nodeString, playerString))
             {
                 List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
                 addSettlementFirstMove.add(new SetTurn(playerIds.get(currentPlayer)));
-                addSettlementFirstMove.add(new Set(nodeString, Constants.SETTLEMENTTOKEN + "00" + playerString));
-                addSettlementFirstMove.add(new Set(Constants.SETTLEMENTTOKEN + "00" + playerString, nodeString));
-                infoMessage = Constants.MAKEFIRSTFREEMOVEROAD;
+                addSettlementFirstMove.add(new Set(nodeString, SettlersOfCatanConstants.SETTLEMENTTOKEN + "00" + playerString));
+                addSettlementFirstMove.add(new Set(SettlersOfCatanConstants.SETTLEMENTTOKEN + "00" + playerString, nodeString));
+                infoMessage = SettlersOfCatanConstants.MAKEFIRSTFREEMOVEROAD;
                 buildHouseSound.play();
                 container.sendMakeMove(addSettlementFirstMove);
             }
         }
-        else if(infoMessage == Constants.MAKESECONDFREEMOVESETTLEMENT)
+        else if(infoMessage == SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT)
         {
             if(settlersOfCatanLogic.canAddSettlementHereFirstMove(theState, nodeString, playerString))
             {
                 List<Operation> addSettlementSecondMode = new ArrayList<Operation>();
                 addSettlementSecondMode.add(new SetTurn(playerIds.get(currentPlayer)));
-                addSettlementSecondMode.add(new Set(nodeString, Constants.SETTLEMENTTOKEN + "01" + playerString));
-                addSettlementSecondMode.add(new Set(Constants.SETTLEMENTTOKEN + "01" + playerString, nodeString));
+                addSettlementSecondMode.add(new Set(nodeString, SettlersOfCatanConstants.SETTLEMENTTOKEN + "01" + playerString));
+                addSettlementSecondMode.add(new Set(SettlersOfCatanConstants.SETTLEMENTTOKEN + "01" + playerString, nodeString));
                 
                 List<String> resources = theBoard.getResoucesForNode(node);
                 
@@ -562,20 +562,20 @@ public class SettlersOfCatanPresenter {
                 {
                     addSettlementSecondMode.add(
                             new Set(
-                                    Constants.RESOURCECARDTOKEN + "0" + i + playerString,
+                                    SettlersOfCatanConstants.RESOURCECARDTOKEN + "0" + i + playerString,
                                     resources.get(i)));
                     addSettlementSecondMode.add(
                             new SetVisibility(
-                                    Constants.RESOURCECARDTOKEN + "0" + i + playerString, 
+                                    SettlersOfCatanConstants.RESOURCECARDTOKEN + "0" + i + playerString, 
                                     Arrays.asList(playerIds.get(myPlayer))));
                 }
                 
-                infoMessage = Constants.MAKESECONDFREEMOVEROAD;
+                infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVEROAD;
                 buildHouseSound.play();
                 container.sendMakeMove(addSettlementSecondMode);
             }
         }
-        else if(lookingForCity && infoMessage.equals(Constants.MAKEMOVE))
+        else if(lookingForCity && infoMessage.equals(SettlersOfCatanConstants.MAKEMOVE))
         {
             if(canPlaceCity(node))
             {
@@ -584,17 +584,17 @@ public class SettlersOfCatanPresenter {
                 addCity.add(new Set(nodeString, getFirstAvailableCity()));
                 addCity.add(new Set(getFirstAvailableCity(), nodeString));
                 addCity.add(new Delete(theState.get(nodeString).toString()));
-                addCity.add(new SetVisibility(getFirstAvailableResource(Constants.ORE, 0)));
-                addCity.add(new SetVisibility(getFirstAvailableResource(Constants.ORE, 1)));
-                addCity.add(new SetVisibility(getFirstAvailableResource(Constants.ORE, 2)));
-                addCity.add(new SetVisibility(getFirstAvailableResource(Constants.GRAIN, 0)));
-                addCity.add(new SetVisibility(getFirstAvailableResource(Constants.GRAIN, 1)));
+                addCity.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.ORE, 0)));
+                addCity.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.ORE, 1)));
+                addCity.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.ORE, 2)));
+                addCity.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.GRAIN, 0)));
+                addCity.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.GRAIN, 1)));
                 
-                infoMessage = Constants.BUILDCITYPT1;
+                infoMessage = SettlersOfCatanConstants.BUILDCITYPT1;
                 container.sendMakeMove(addCity);
             }
         }
-        else if(infoMessage.equals(Constants.MAKEMOVE))
+        else if(infoMessage.equals(SettlersOfCatanConstants.MAKEMOVE))
         {
             if(settlersOfCatanLogic.canAddSettlementHere(theState, nodeString, playerString))
             {
@@ -602,12 +602,12 @@ public class SettlersOfCatanPresenter {
                 addSettlement.add(new SetTurn(playerIds.get(currentPlayer)));
                 addSettlement.add(new Set(nodeString, getFirstAvailableSettlement()));
                 addSettlement.add(new Set(getFirstAvailableSettlement(), nodeString));
-                addSettlement.add(new SetVisibility(getFirstAvailableResource(Constants.BRICK, 0)));
-                addSettlement.add(new SetVisibility(getFirstAvailableResource(Constants.LUMBER, 0)));
-                addSettlement.add(new SetVisibility(getFirstAvailableResource(Constants.WOOL, 0)));
-                addSettlement.add(new SetVisibility(getFirstAvailableResource(Constants.GRAIN, 0)));
+                addSettlement.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.BRICK, 0)));
+                addSettlement.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.LUMBER, 0)));
+                addSettlement.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.WOOL, 0)));
+                addSettlement.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.GRAIN, 0)));
                 
-                infoMessage = Constants.BUILDSETTLEMENTPT1;
+                infoMessage = SettlersOfCatanConstants.BUILDSETTLEMENTPT1;
                 container.sendMakeMove(addSettlement);
             }
         }
@@ -616,17 +616,17 @@ public class SettlersOfCatanPresenter {
     public void finishSettlementBuild()
     {
         List<Operation> addSettlement = new ArrayList<Operation>();
-        addSettlement.add(new Delete(getFirstAvailableResource(Constants.BRICK, 0)));
-        addSettlement.add(new Delete(getFirstAvailableResource(Constants.LUMBER, 0)));
-        addSettlement.add(new Delete(getFirstAvailableResource(Constants.WOOL, 0)));
-        addSettlement.add(new Delete(getFirstAvailableResource(Constants.GRAIN, 0)));
+        addSettlement.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.BRICK, 0)));
+        addSettlement.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.LUMBER, 0)));
+        addSettlement.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.WOOL, 0)));
+        addSettlement.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.GRAIN, 0)));
         
-        infoMessage = Constants.BUILDSETTLEMENTPT2;
+        infoMessage = SettlersOfCatanConstants.BUILDSETTLEMENTPT2;
         
         if(myVictoryPoints == 9)
         {
             addSettlement.add(new EndGame(playerIds.get(myPlayer)));
-            infoMessage = Constants.ENDGAME;
+            infoMessage = SettlersOfCatanConstants.ENDGAME;
         }
         buildHouseSound.play();
         container.sendMakeMove(addSettlement);
@@ -635,18 +635,18 @@ public class SettlersOfCatanPresenter {
     public void finishCityBuild()
     {
         List<Operation> addCity = new ArrayList<Operation>();
-        addCity.add(new Delete(getFirstAvailableResource(Constants.ORE, 0)));
-        addCity.add(new Delete(getFirstAvailableResource(Constants.ORE, 1)));
-        addCity.add(new Delete(getFirstAvailableResource(Constants.ORE, 2)));
-        addCity.add(new Delete(getFirstAvailableResource(Constants.GRAIN, 0)));
-        addCity.add(new Delete(getFirstAvailableResource(Constants.GRAIN, 1)));
+        addCity.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.ORE, 0)));
+        addCity.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.ORE, 1)));
+        addCity.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.ORE, 2)));
+        addCity.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.GRAIN, 0)));
+        addCity.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.GRAIN, 1)));
         
-        infoMessage = Constants.BUILDCITYPT2;
+        infoMessage = SettlersOfCatanConstants.BUILDCITYPT2;
         
         if(myVictoryPoints == 9)
         {
             addCity.add(new EndGame(playerIds.get(myPlayer)));
-            infoMessage = Constants.ENDGAME;
+            infoMessage = SettlersOfCatanConstants.ENDGAME;
         }
         buildHouseSound.play();
         container.sendMakeMove(addCity);
@@ -654,7 +654,7 @@ public class SettlersOfCatanPresenter {
     
     public void buyDevelopmentCard()
     {   
-        if(infoMessage.equals(Constants.MAKEMOVE))
+        if(infoMessage.equals(SettlersOfCatanConstants.MAKEMOVE))
         {
             String card = getFirstAvailableDevelopmentCard();
             
@@ -663,11 +663,11 @@ public class SettlersOfCatanPresenter {
                 List<Operation> buyDevelopmentCard = new ArrayList<Operation>();
                 buyDevelopmentCard.add(new SetTurn(playerIds.get(currentPlayer)));
                 buyDevelopmentCard.add(new SetVisibility(card, Arrays.asList(playerIds.get(myPlayer))));
-                buyDevelopmentCard.add(new SetVisibility(getFirstAvailableResource(Constants.ORE, 0)));
-                buyDevelopmentCard.add(new SetVisibility(getFirstAvailableResource(Constants.WOOL, 0)));
-                buyDevelopmentCard.add(new SetVisibility(getFirstAvailableResource(Constants.GRAIN, 0)));
+                buyDevelopmentCard.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.ORE, 0)));
+                buyDevelopmentCard.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.WOOL, 0)));
+                buyDevelopmentCard.add(new SetVisibility(getFirstAvailableResource(SettlersOfCatanConstants.GRAIN, 0)));
                 
-                infoMessage = Constants.BUYDEVELOPMENTCARDPT1;
+                infoMessage = SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT1;
                 container.sendMakeMove(buyDevelopmentCard);
             }
         }
@@ -676,23 +676,23 @@ public class SettlersOfCatanPresenter {
     public void finishBuyingDevelopmentCard()
     {
         List<Operation> buyDevelopmentCard = new ArrayList<Operation>();
-        buyDevelopmentCard.add(new Delete(getFirstAvailableResource(Constants.ORE, 0)));
-        buyDevelopmentCard.add(new Delete(getFirstAvailableResource(Constants.WOOL, 0)));
-        buyDevelopmentCard.add(new Delete(getFirstAvailableResource(Constants.GRAIN, 0)));
+        buyDevelopmentCard.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.ORE, 0)));
+        buyDevelopmentCard.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.WOOL, 0)));
+        buyDevelopmentCard.add(new Delete(getFirstAvailableResource(SettlersOfCatanConstants.GRAIN, 0)));
         
-        infoMessage = Constants.BUYDEVELOPMENTCARDPT2;
+        infoMessage = SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT2;
         
         if( myVictoryPoints == 10)
         {
             buyDevelopmentCard.add(new EndGame(playerIds.get(myPlayer)));
-            infoMessage = Constants.ENDGAME;
+            infoMessage = SettlersOfCatanConstants.ENDGAME;
         }
         container.sendMakeMove(buyDevelopmentCard);
     }
     
     public void doHarborTrade(String resource1, String resource2)
     {
-        if(infoMessage.equals(Constants.MAKEMOVE))
+        if(infoMessage.equals(SettlersOfCatanConstants.MAKEMOVE))
         {
             if(theBoard.ownsTwoToOnePort(myPlayer, resource1))
             {
@@ -701,16 +701,16 @@ public class SettlersOfCatanPresenter {
                 harborTrade.add(new SetVisibility(getFirstAvailableResource(resource1, 0)));
                 harborTrade.add(new SetVisibility(getFirstAvailableResource(resource1, 1)));
                 
-                if(resource1.equals(Constants.ORE))
-                    infoMessage = Constants.TWOTOONEOREHARBORTRADEPT1;
-                else if(resource1.equals(Constants.LUMBER))
-                    infoMessage = Constants.TWOTOONELUMHARBORTRADEPT1;
-                else if(resource1.equals(Constants.BRICK))
-                    infoMessage = Constants.TWOTOONEBRIHARBORTRADEPT1;
-                else if(resource1.equals(Constants.WOOL))
-                    infoMessage = Constants.TWOTOONEWOOHARBORTRADEPT1;
-                else if(resource1.equals(Constants.GRAIN))
-                    infoMessage = Constants.TWOTOONEGRAHARBORTRADEPT1;
+                if(resource1.equals(SettlersOfCatanConstants.ORE))
+                    infoMessage = SettlersOfCatanConstants.TWOTOONEOREHARBORTRADEPT1;
+                else if(resource1.equals(SettlersOfCatanConstants.LUMBER))
+                    infoMessage = SettlersOfCatanConstants.TWOTOONELUMHARBORTRADEPT1;
+                else if(resource1.equals(SettlersOfCatanConstants.BRICK))
+                    infoMessage = SettlersOfCatanConstants.TWOTOONEBRIHARBORTRADEPT1;
+                else if(resource1.equals(SettlersOfCatanConstants.WOOL))
+                    infoMessage = SettlersOfCatanConstants.TWOTOONEWOOHARBORTRADEPT1;
+                else if(resource1.equals(SettlersOfCatanConstants.GRAIN))
+                    infoMessage = SettlersOfCatanConstants.TWOTOONEGRAHARBORTRADEPT1;
                 
                 storedResourceOut = resource1;
                 storedResourceIn = resource2;
@@ -725,7 +725,7 @@ public class SettlersOfCatanPresenter {
                 harborTrade.add(new SetVisibility(getFirstAvailableResource(resource1, 1)));
                 harborTrade.add(new SetVisibility(getFirstAvailableResource(resource1, 2)));
                 
-                infoMessage = Constants.THREETOONEHARBORTRADEPT1;
+                infoMessage = SettlersOfCatanConstants.THREETOONEHARBORTRADEPT1;
 
                 storedResourceOut = resource1;
                 storedResourceIn = resource2;
@@ -741,7 +741,7 @@ public class SettlersOfCatanPresenter {
                 harborTrade.add(new SetVisibility(getFirstAvailableResource(resource1, 2)));
                 harborTrade.add(new SetVisibility(getFirstAvailableResource(resource1, 3)));
                 
-                infoMessage = Constants.HARBORTRADEPT1;
+                infoMessage = SettlersOfCatanConstants.HARBORTRADEPT1;
 
                 storedResourceOut = resource1;
                 storedResourceIn = resource2;
@@ -753,7 +753,7 @@ public class SettlersOfCatanPresenter {
     
     public void finishHarborTrade()
     {
-        if(infoMessage.equals(Constants.HARBORTRADEPT1))
+        if(infoMessage.equals(SettlersOfCatanConstants.HARBORTRADEPT1))
         {
             List<Operation> harborTrade = new ArrayList<Operation>();
             harborTrade.add(new Delete(getFirstAvailableResource(storedResourceOut, 0)));
@@ -765,14 +765,14 @@ public class SettlersOfCatanPresenter {
                     getFirstAvailableResource(storedResourceOut, 0), 
                             Arrays.asList(playerIds.get(myPlayer))));
             
-            infoMessage = Constants.HARBORTRADEPT2;
+            infoMessage = SettlersOfCatanConstants.HARBORTRADEPT2;
             
             container.sendMakeMove(harborTrade);
 
             storedResourceOut = "";
             storedResourceIn = "";
         }
-        else if(infoMessage.equals(Constants.THREETOONEHARBORTRADEPT1))
+        else if(infoMessage.equals(SettlersOfCatanConstants.THREETOONEHARBORTRADEPT1))
         {
             List<Operation> harborTrade = new ArrayList<Operation>();
             harborTrade.add(new Delete(getFirstAvailableResource(storedResourceOut, 0)));
@@ -783,14 +783,14 @@ public class SettlersOfCatanPresenter {
                     getFirstAvailableResource(storedResourceOut, 0), 
                             Arrays.asList(playerIds.get(myPlayer))));
             
-            infoMessage = Constants.THREETOONEHARBORTRADEPT2;
+            infoMessage = SettlersOfCatanConstants.THREETOONEHARBORTRADEPT2;
             
             container.sendMakeMove(harborTrade);
 
             storedResourceOut = "";
             storedResourceIn = "";
         }
-        else if(infoMessage.equals(Constants.TWOTOONEBRIHARBORTRADEPT1))
+        else if(infoMessage.equals(SettlersOfCatanConstants.TWOTOONEBRIHARBORTRADEPT1))
         {
             List<Operation> harborTrade = new ArrayList<Operation>();
             harborTrade.add(new Delete(getFirstAvailableResource(storedResourceOut, 0)));
@@ -800,14 +800,14 @@ public class SettlersOfCatanPresenter {
                     getFirstAvailableResource(storedResourceOut, 0), 
                             Arrays.asList(playerIds.get(myPlayer))));
             
-            infoMessage = Constants.TWOTOONEBRIHARBORTRADEPT2;
+            infoMessage = SettlersOfCatanConstants.TWOTOONEBRIHARBORTRADEPT2;
             
             container.sendMakeMove(harborTrade);
 
             storedResourceOut = "";
             storedResourceIn = "";
         }
-        else if(infoMessage.equals(Constants.TWOTOONEOREHARBORTRADEPT1))
+        else if(infoMessage.equals(SettlersOfCatanConstants.TWOTOONEOREHARBORTRADEPT1))
         {
             List<Operation> harborTrade = new ArrayList<Operation>();
             harborTrade.add(new Delete(getFirstAvailableResource(storedResourceOut, 0)));
@@ -817,14 +817,14 @@ public class SettlersOfCatanPresenter {
                     getFirstAvailableResource(storedResourceOut, 0), 
                             Arrays.asList(playerIds.get(myPlayer))));
             
-            infoMessage = Constants.TWOTOONEOREHARBORTRADEPT2;
+            infoMessage = SettlersOfCatanConstants.TWOTOONEOREHARBORTRADEPT2;
             
             container.sendMakeMove(harborTrade);
 
             storedResourceOut = "";
             storedResourceIn = "";
         }
-        else if(infoMessage.equals(Constants.TWOTOONELUMHARBORTRADEPT1))
+        else if(infoMessage.equals(SettlersOfCatanConstants.TWOTOONELUMHARBORTRADEPT1))
         {
             List<Operation> harborTrade = new ArrayList<Operation>();
             harborTrade.add(new Delete(getFirstAvailableResource(storedResourceOut, 0)));
@@ -834,14 +834,14 @@ public class SettlersOfCatanPresenter {
                     getFirstAvailableResource(storedResourceOut, 0), 
                             Arrays.asList(playerIds.get(myPlayer))));
             
-            infoMessage = Constants.TWOTOONELUMHARBORTRADEPT2;
+            infoMessage = SettlersOfCatanConstants.TWOTOONELUMHARBORTRADEPT2;
             
             container.sendMakeMove(harborTrade);
 
             storedResourceOut = "";
             storedResourceIn = "";
         }
-        else if(infoMessage.equals(Constants.TWOTOONEGRAHARBORTRADEPT1))
+        else if(infoMessage.equals(SettlersOfCatanConstants.TWOTOONEGRAHARBORTRADEPT1))
         {
             List<Operation> harborTrade = new ArrayList<Operation>();
             harborTrade.add(new Delete(getFirstAvailableResource(storedResourceOut, 0)));
@@ -851,14 +851,14 @@ public class SettlersOfCatanPresenter {
                     getFirstAvailableResource(storedResourceOut, 0), 
                             Arrays.asList(playerIds.get(myPlayer))));
             
-            infoMessage = Constants.TWOTOONEGRAHARBORTRADEPT2;
+            infoMessage = SettlersOfCatanConstants.TWOTOONEGRAHARBORTRADEPT2;
             
             container.sendMakeMove(harborTrade);
 
             storedResourceOut = "";
             storedResourceIn = "";
         }
-        else if(infoMessage.equals(Constants.TWOTOONEWOOHARBORTRADEPT1))
+        else if(infoMessage.equals(SettlersOfCatanConstants.TWOTOONEWOOHARBORTRADEPT1))
         {
             List<Operation> harborTrade = new ArrayList<Operation>();
             harborTrade.add(new Delete(getFirstAvailableResource(storedResourceOut, 0)));
@@ -868,7 +868,7 @@ public class SettlersOfCatanPresenter {
                     getFirstAvailableResource(storedResourceOut, 0), 
                             Arrays.asList(playerIds.get(myPlayer))));
             
-            infoMessage = Constants.TWOTOONEWOOHARBORTRADEPT2;
+            infoMessage = SettlersOfCatanConstants.TWOTOONEWOOHARBORTRADEPT2;
             
             container.sendMakeMove(harborTrade);
 
@@ -889,18 +889,18 @@ public class SettlersOfCatanPresenter {
         String playerString = "";
         
         if(node < 10)
-            nodeString = Constants.NODETOKEN + "0" + node;
+            nodeString = SettlersOfCatanConstants.NODETOKEN + "0" + node;
         else
-            nodeString = Constants.NODETOKEN + node;
+            nodeString = SettlersOfCatanConstants.NODETOKEN + node;
         
         if(myPlayer == 0)
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         else if(myPlayer == 1)
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         else if(myPlayer == 2)
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         else if(myPlayer == 3)
-            playerString = Constants.PG;
+            playerString = SettlersOfCatanConstants.PG;
         
         if(settlersOfCatanLogic.initial || settlersOfCatanLogic.firstFreeMove || settlersOfCatanLogic.secondFreeMove)
         {
@@ -931,18 +931,18 @@ public class SettlersOfCatanPresenter {
         String playerString = "";
         
         if(path < 10)
-            pathString = Constants.PATHTOKEN + "0" + path;
+            pathString = SettlersOfCatanConstants.PATHTOKEN + "0" + path;
         else
-            pathString = Constants.PATHTOKEN + path;
+            pathString = SettlersOfCatanConstants.PATHTOKEN + path;
         
         if(myPlayer == 0)
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         else if(myPlayer == 1)
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         else if(myPlayer == 2)
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         else if(myPlayer == 3)
-            playerString = Constants.PG;
+            playerString = SettlersOfCatanConstants.PG;
         
         status = settlersOfCatanLogic.canAddRoadHere(theState, pathString, playerString);
         
@@ -953,22 +953,22 @@ public class SettlersOfCatanPresenter {
     {
         List<Operation> rollDiceMove = new ArrayList<Operation>();
         rollDiceMove.add(new SetTurn(playerIds.get(currentPlayer)));
-        rollDiceMove.add(new SetRandomInteger(Constants.DIE0, 1, 6));
-        rollDiceMove.add(new SetRandomInteger(Constants.DIE1, 1, 6));
+        rollDiceMove.add(new SetRandomInteger(SettlersOfCatanConstants.DIE0, 1, 6));
+        rollDiceMove.add(new SetRandomInteger(SettlersOfCatanConstants.DIE1, 1, 6));
         container.sendMakeMove(rollDiceMove);
     }
     
     private boolean isDiceRoll(Map<String, Object> state)
     {
-        return state.containsKey(Constants.DIE0) && state.containsKey(Constants.DIE1);
+        return state.containsKey(SettlersOfCatanConstants.DIE0) && state.containsKey(SettlersOfCatanConstants.DIE1);
     }
 
     public void dispenseResources(int rollTotal)
     {
         List<Operation> dispenseResourcesMove = new ArrayList<Operation>();
         dispenseResourcesMove.add(new SetTurn(playerIds.get(currentPlayer)));
-        dispenseResourcesMove.add(new Delete(Constants.DIE0));
-        dispenseResourcesMove.add(new Delete(Constants.DIE1));
+        dispenseResourcesMove.add(new Delete(SettlersOfCatanConstants.DIE0));
+        dispenseResourcesMove.add(new Delete(SettlersOfCatanConstants.DIE1));
         
         int blueCount = 0;
         int redCount = 0;
@@ -982,7 +982,7 @@ public class SettlersOfCatanPresenter {
         {
             if(theBoard.nodeList.get(nodes.get(i)).getPlayer() == 0)
             {
-                String card = getOpenResourceCardSlot(Constants.PB, blueCount);
+                String card = getOpenResourceCardSlot(SettlersOfCatanConstants.PB, blueCount);
                 if(!card.equals(""))
                 {
                     dispenseResourcesMove.add(
@@ -998,7 +998,7 @@ public class SettlersOfCatanPresenter {
                 
                     if(theBoard.nodeList.get(nodes.get(i)).getSettlement() == 2)
                     {
-                        card = getOpenResourceCardSlot(Constants.PB, blueCount);
+                        card = getOpenResourceCardSlot(SettlersOfCatanConstants.PB, blueCount);
                         if(!card.equals(""))
                         {
                             dispenseResourcesMove.add(
@@ -1017,7 +1017,7 @@ public class SettlersOfCatanPresenter {
             }
             else if(theBoard.nodeList.get(nodes.get(i)).getPlayer() == 1)
             {
-                String card = getOpenResourceCardSlot(Constants.PR, redCount);
+                String card = getOpenResourceCardSlot(SettlersOfCatanConstants.PR, redCount);
                 if(!card.equals(""))
                 {
                     dispenseResourcesMove.add(
@@ -1032,7 +1032,7 @@ public class SettlersOfCatanPresenter {
                     
                     if(theBoard.nodeList.get(nodes.get(i)).getSettlement() == 2)
                     {
-                        card = getOpenResourceCardSlot(Constants.PR, redCount);
+                        card = getOpenResourceCardSlot(SettlersOfCatanConstants.PR, redCount);
                         if(!card.equals(""))
                         {
                             dispenseResourcesMove.add(
@@ -1050,7 +1050,7 @@ public class SettlersOfCatanPresenter {
             }
             else if(theBoard.nodeList.get(nodes.get(i)).getPlayer() == 2)
             {
-                String card = getOpenResourceCardSlot(Constants.PY, yellowCount);
+                String card = getOpenResourceCardSlot(SettlersOfCatanConstants.PY, yellowCount);
                 if(!card.equals(""))
                 {
                     dispenseResourcesMove.add(
@@ -1065,7 +1065,7 @@ public class SettlersOfCatanPresenter {
                     
                     if(theBoard.nodeList.get(nodes.get(i)).getSettlement() == 2)
                     {
-                        card = getOpenResourceCardSlot(Constants.PY, yellowCount);
+                        card = getOpenResourceCardSlot(SettlersOfCatanConstants.PY, yellowCount);
                         if(!card.equals(""))
                         {
                             dispenseResourcesMove.add(
@@ -1083,7 +1083,7 @@ public class SettlersOfCatanPresenter {
             }
             else if(theBoard.nodeList.get(nodes.get(i)).getPlayer() == 3)
             {
-                String card = getOpenResourceCardSlot(Constants.PG, greenCount);
+                String card = getOpenResourceCardSlot(SettlersOfCatanConstants.PG, greenCount);
                 if(!card.equals(""))
                 {
                     dispenseResourcesMove.add(
@@ -1098,7 +1098,7 @@ public class SettlersOfCatanPresenter {
                     
                     if(theBoard.nodeList.get(nodes.get(i)).getSettlement() == 2)
                     {
-                        card = getOpenResourceCardSlot(Constants.PG, greenCount);
+                        card = getOpenResourceCardSlot(SettlersOfCatanConstants.PG, greenCount);
                         if(!card.equals(""))
                         {
                             dispenseResourcesMove.add(
@@ -1116,7 +1116,7 @@ public class SettlersOfCatanPresenter {
             }
         }
         
-        infoMessage = Constants.ROLLEDTOK + rollTotal;
+        infoMessage = SettlersOfCatanConstants.ROLLEDTOK + rollTotal;
         container.sendMakeMove(dispenseResourcesMove);
     }
 
@@ -1124,9 +1124,9 @@ public class SettlersOfCatanPresenter {
     {
         List<Operation> clearRoll = new ArrayList<Operation>();
         clearRoll.add(new SetTurn(playerIds.get(currentPlayer)));
-        clearRoll.add(new Delete(Constants.DIE0));
-        clearRoll.add(new Delete(Constants.DIE1));
-        infoMessage = Constants.MOVEROBBERPT1;
+        clearRoll.add(new Delete(SettlersOfCatanConstants.DIE0));
+        clearRoll.add(new Delete(SettlersOfCatanConstants.DIE1));
+        infoMessage = SettlersOfCatanConstants.MOVEROBBERPT1;
         container.sendMakeMove(clearRoll);
     }
     
@@ -1139,9 +1139,9 @@ public class SettlersOfCatanPresenter {
         for(int i = 0; i < 30 && cardSlot.equals(""); i++)
         {
             if(i < 10)
-                currentSearch = Constants.RESOURCECARDTOKEN + "0" + i + playerString;
+                currentSearch = SettlersOfCatanConstants.RESOURCECARDTOKEN + "0" + i + playerString;
             else
-                currentSearch = Constants.RESOURCECARDTOKEN + i + playerString;
+                currentSearch = SettlersOfCatanConstants.RESOURCECARDTOKEN + i + playerString;
             
             if(!theState.containsKey(currentSearch))
             {
@@ -1165,7 +1165,7 @@ public class SettlersOfCatanPresenter {
         int player = (currentPlayer + 1) % playerIds.size();
         dispenseResourcesMove.add(new SetTurn(playerIds.get(player)));
         
-        infoMessage = Constants.ROLLDICE;
+        infoMessage = SettlersOfCatanConstants.ROLLDICE;
         container.sendMakeMove(dispenseResourcesMove);
     }
     
@@ -1176,17 +1176,17 @@ public class SettlersOfCatanPresenter {
         String playerString = "";
         
         if(myPlayer == 0)
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         else if(myPlayer == 1)
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         else if(myPlayer == 2)
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         else if(myPlayer == 3)
-            playerString = Constants.PG;
+            playerString = SettlersOfCatanConstants.PG;
         
         for(int i = 0; i < 5 && settlementToFind.equals(""); i++)
         {
-            settlementToSearch = Constants.SETTLEMENTTOKEN + "0" + i + playerString;
+            settlementToSearch = SettlersOfCatanConstants.SETTLEMENTTOKEN + "0" + i + playerString;
             if(!theState.containsKey(settlementToSearch))
             {
                 settlementToFind = settlementToSearch;
@@ -1203,17 +1203,17 @@ public class SettlersOfCatanPresenter {
         String playerString = "";
         
         if(myPlayer == 0)
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         else if(myPlayer == 1)
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         else if(myPlayer == 2)
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         else if(myPlayer == 3)
-            playerString = Constants.PG;
+            playerString = SettlersOfCatanConstants.PG;
         
         for(int i = 0; i < 4 && cityToFind.equals(""); i++)
         {
-            cityToSearch = Constants.CITYTOKEN + "0" + i + playerString;
+            cityToSearch = SettlersOfCatanConstants.CITYTOKEN + "0" + i + playerString;
             if(!theState.containsKey(cityToSearch))
             {
                 cityToFind = cityToSearch;
@@ -1230,20 +1230,20 @@ public class SettlersOfCatanPresenter {
         String playerString = "";
         
         if(myPlayer == 0)
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         else if(myPlayer == 1)
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         else if(myPlayer == 2)
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         else if(myPlayer == 3)
-            playerString = Constants.PG;
+            playerString = SettlersOfCatanConstants.PG;
         
         for(int i = 0; i < 15 && roadToFind.equals(""); i++)
         {
             if(i < 10)
-                roadToSearch = Constants.ROADTOKEN + "0" + i + playerString;
+                roadToSearch = SettlersOfCatanConstants.ROADTOKEN + "0" + i + playerString;
             else
-                roadToSearch = Constants.ROADTOKEN + i + playerString;
+                roadToSearch = SettlersOfCatanConstants.ROADTOKEN + i + playerString;
             
             if(!theState.containsKey(roadToSearch))
             {
@@ -1262,20 +1262,20 @@ public class SettlersOfCatanPresenter {
         int ourSkip = skip;
         
         if(myPlayer == 0)
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         else if(myPlayer == 1)
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         else if(myPlayer == 2)
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         else if(myPlayer == 3)
-            playerString = Constants.PG;
+            playerString = SettlersOfCatanConstants.PG;
         
         for(int i = 0; i < 30 && resourceToFind.equals(""); i++)
         {
             if(i < 10)
-                resourceToSearch = Constants.RESOURCECARDTOKEN + "0" + i + playerString;
+                resourceToSearch = SettlersOfCatanConstants.RESOURCECARDTOKEN + "0" + i + playerString;
             else
-                resourceToSearch = Constants.RESOURCECARDTOKEN + i + playerString;
+                resourceToSearch = SettlersOfCatanConstants.RESOURCECARDTOKEN + i + playerString;
             
             if( theState.containsKey(resourceToSearch)
               && theState.get(resourceToSearch).toString().equals(resource))
@@ -1292,7 +1292,7 @@ public class SettlersOfCatanPresenter {
 
     public void makeMove()
     {
-        infoMessage = Constants.MAKEMOVE;
+        infoMessage = SettlersOfCatanConstants.MAKEMOVE;
     }
     
     public String getFirstAvailableDevelopmentCard()
@@ -1303,9 +1303,9 @@ public class SettlersOfCatanPresenter {
         for(int i = 0; i < 25 && developmentCardToFind.equals(""); i++)
         {
             if(i < 10)
-                developmentCardToSearch = Constants.DEVELOPMENTCARDTOKEN + "0" + i;
+                developmentCardToSearch = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + "0" + i;
             else
-                developmentCardToSearch = Constants.DEVELOPMENTCARDTOKEN + i;
+                developmentCardToSearch = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + i;
             
             if(i == currentDevelopmentCard)
             {
@@ -1324,13 +1324,13 @@ public class SettlersOfCatanPresenter {
         String playerString = "";
         
         if(myPlayer == 0)
-            playerString = Constants.PB;
+            playerString = SettlersOfCatanConstants.PB;
         else if(myPlayer == 1)
-            playerString = Constants.PR;
+            playerString = SettlersOfCatanConstants.PR;
         else if(myPlayer == 2)
-            playerString = Constants.PY;
+            playerString = SettlersOfCatanConstants.PY;
         else if(myPlayer == 3)
-            playerString = Constants.PG;
+            playerString = SettlersOfCatanConstants.PG;
         
         Map<String, Object> testState = new HashMap<String, Object>(theState);
         
@@ -1345,33 +1345,33 @@ public class SettlersOfCatanPresenter {
     {
         String hex = "";
         if(robberDestination < 10)
-            hex = Constants.HEXTOKEN + "0" + robberDestination;
+            hex = SettlersOfCatanConstants.HEXTOKEN + "0" + robberDestination;
         else
-            hex = Constants.HEXTOKEN + robberDestination;
+            hex = SettlersOfCatanConstants.HEXTOKEN + robberDestination;
         
         String randomCard = "";
         
         if(!victim.equals(""))
             randomCard = getRandomCard(victim);
         
-        if(infoMessage.equals(Constants.MOVEROBBERPT2))
+        if(infoMessage.equals(SettlersOfCatanConstants.MOVEROBBERPT2))
         {
             List<Operation> setRobber = new ArrayList<Operation>();
             setRobber.add(new SetTurn(playerIds.get(currentPlayer)));
-            setRobber.add(new Set(Constants.ROBBER, hex));
+            setRobber.add(new Set(SettlersOfCatanConstants.ROBBER, hex));
             if(!randomCard.equals(""))
             {
                 setRobber.add(new SetVisibility(randomCard));
                 savedRandomCard = randomCard;
             }
-            infoMessage = Constants.MOVEROBBERPT3;
+            infoMessage = SettlersOfCatanConstants.MOVEROBBERPT3;
             container.sendMakeMove(setRobber);
         }
     }
     
     public void finishMoveRobber()
     {
-        if(infoMessage.equals(Constants.MOVEROBBERPT3))
+        if(infoMessage.equals(SettlersOfCatanConstants.MOVEROBBERPT3))
         {
             List<Operation> setRobber = new ArrayList<Operation>();
             if(!savedRandomCard.equals(""))
@@ -1382,7 +1382,7 @@ public class SettlersOfCatanPresenter {
                 setRobber.add(new SetVisibility(getOpenResourceCardSlot(resource, 0), Arrays.asList(playerIds.get(myPlayer))));
             }
             
-            infoMessage = Constants.MOVEROBBERPT4;
+            infoMessage = SettlersOfCatanConstants.MOVEROBBERPT4;
             container.sendMakeMove(setRobber);
             
             savedRandomCard = "";
@@ -1399,9 +1399,9 @@ public class SettlersOfCatanPresenter {
         for(int i = 0; i < 30; i++)
         {
             if(i < 10)
-                cardToSearch = Constants.RESOURCECARDTOKEN + "0" + i + victim;
+                cardToSearch = SettlersOfCatanConstants.RESOURCECARDTOKEN + "0" + i + victim;
             else
-                cardToSearch = Constants.RESOURCECARDTOKEN + i + victim;
+                cardToSearch = SettlersOfCatanConstants.RESOURCECARDTOKEN + i + victim;
             
             if(theState.containsKey(cardToSearch))
             {

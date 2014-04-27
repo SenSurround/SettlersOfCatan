@@ -25,42 +25,42 @@ public class Board {
     {
         int desert = -1;
         hexList = Arrays.asList(
-        new Hex(0 , 4 , 8 , 12, 7 , 3 , state.get(Constants.HEX00).toString()),
-        new Hex(1 , 5 , 9 , 13, 8 , 4 , state.get(Constants.HEX01).toString()),
-        new Hex(2 , 6 , 10, 14, 9 , 5 , state.get(Constants.HEX02).toString()),
+        new Hex(0 , 4 , 8 , 12, 7 , 3 , state.get(SettlersOfCatanConstants.HEX00).toString()),
+        new Hex(1 , 5 , 9 , 13, 8 , 4 , state.get(SettlersOfCatanConstants.HEX01).toString()),
+        new Hex(2 , 6 , 10, 14, 9 , 5 , state.get(SettlersOfCatanConstants.HEX02).toString()),
                 
-        new Hex(7 , 12, 17, 22, 16, 11, state.get(Constants.HEX03).toString()),
-        new Hex(8 , 13, 18, 23, 17, 12, state.get(Constants.HEX04).toString()),
-        new Hex(9 , 14, 19, 24, 18, 13, state.get(Constants.HEX05).toString()),
-        new Hex(10, 15, 20, 25, 19, 14, state.get(Constants.HEX06).toString()),
+        new Hex(7 , 12, 17, 22, 16, 11, state.get(SettlersOfCatanConstants.HEX03).toString()),
+        new Hex(8 , 13, 18, 23, 17, 12, state.get(SettlersOfCatanConstants.HEX04).toString()),
+        new Hex(9 , 14, 19, 24, 18, 13, state.get(SettlersOfCatanConstants.HEX05).toString()),
+        new Hex(10, 15, 20, 25, 19, 14, state.get(SettlersOfCatanConstants.HEX06).toString()),
                 
-        new Hex(16, 22, 28, 33, 27, 21, state.get(Constants.HEX07).toString()),
-        new Hex(17, 23, 29, 34, 28, 22, state.get(Constants.HEX08).toString()),
-        new Hex(18, 24, 30, 35, 29, 23, state.get(Constants.HEX09).toString()),
-        new Hex(19, 25, 31, 36, 30, 24, state.get(Constants.HEX10).toString()),
-        new Hex(20, 26, 32, 37, 31, 25, state.get(Constants.HEX11).toString()),
+        new Hex(16, 22, 28, 33, 27, 21, state.get(SettlersOfCatanConstants.HEX07).toString()),
+        new Hex(17, 23, 29, 34, 28, 22, state.get(SettlersOfCatanConstants.HEX08).toString()),
+        new Hex(18, 24, 30, 35, 29, 23, state.get(SettlersOfCatanConstants.HEX09).toString()),
+        new Hex(19, 25, 31, 36, 30, 24, state.get(SettlersOfCatanConstants.HEX10).toString()),
+        new Hex(20, 26, 32, 37, 31, 25, state.get(SettlersOfCatanConstants.HEX11).toString()),
                 
-        new Hex(28, 34, 39, 43, 38, 33, state.get(Constants.HEX12).toString()),
-        new Hex(29, 35, 40, 44, 39, 34, state.get(Constants.HEX13).toString()),
-        new Hex(30, 36, 41, 45, 40, 35, state.get(Constants.HEX14).toString()),
-        new Hex(31, 37, 42, 46, 41, 36, state.get(Constants.HEX15).toString()),
+        new Hex(28, 34, 39, 43, 38, 33, state.get(SettlersOfCatanConstants.HEX12).toString()),
+        new Hex(29, 35, 40, 44, 39, 34, state.get(SettlersOfCatanConstants.HEX13).toString()),
+        new Hex(30, 36, 41, 45, 40, 35, state.get(SettlersOfCatanConstants.HEX14).toString()),
+        new Hex(31, 37, 42, 46, 41, 36, state.get(SettlersOfCatanConstants.HEX15).toString()),
                 
-        new Hex(39, 44, 48, 51, 47, 43, state.get(Constants.HEX16).toString()),
-        new Hex(40, 45, 49, 52, 48, 44, state.get(Constants.HEX17).toString()),
-        new Hex(41, 46, 50, 53, 49, 45, state.get(Constants.HEX18).toString()));
+        new Hex(39, 44, 48, 51, 47, 43, state.get(SettlersOfCatanConstants.HEX16).toString()),
+        new Hex(40, 45, 49, 52, 48, 44, state.get(SettlersOfCatanConstants.HEX17).toString()),
+        new Hex(41, 46, 50, 53, 49, 45, state.get(SettlersOfCatanConstants.HEX18).toString()));
         
         int adjust = 0;
         
         for (int i = 0; i < 19; i++) {
-            if (!hexList.get(dieHexList[i]).getResource().equals(Constants.DESERT)) {
+            if (!hexList.get(dieHexList[i]).getResource().equals(SettlersOfCatanConstants.DESERT)) {
                 hexList.get(dieHexList[i]).setDieRoll(dieList[i - adjust]);
             } else {
                 desert = dieHexList[i];
                 adjust++;
             }
         }
-        if(state.containsKey(Constants.ROBBER))
-            hexList.get(Integer.parseInt(state.get(Constants.ROBBER).toString().substring(3))).setRobber(true);
+        if(state.containsKey(SettlersOfCatanConstants.ROBBER))
+            hexList.get(Integer.parseInt(state.get(SettlersOfCatanConstants.ROBBER).toString().substring(3))).setRobber(true);
         else
             hexList.get(desert).setRobber(true);
             
@@ -131,46 +131,46 @@ public class Board {
         for(int i = 0; i < 54; i++)
         {
             if(i < 10)
-                searchMe = Constants.NODETOKEN + "0" + i;
+                searchMe = SettlersOfCatanConstants.NODETOKEN + "0" + i;
             else
-                searchMe = Constants.NODETOKEN + i;
+                searchMe = SettlersOfCatanConstants.NODETOKEN + i;
             
             if(state.containsKey(searchMe))
             {
-                if(state.get(searchMe).toString().contains(Constants.PB))
+                if(state.get(searchMe).toString().contains(SettlersOfCatanConstants.PB))
                     nodeList.get(i).setPlayer(0);
-                else if(state.get(searchMe).toString().contains(Constants.PR))
+                else if(state.get(searchMe).toString().contains(SettlersOfCatanConstants.PR))
                     nodeList.get(i).setPlayer(1);
-                else if(state.get(searchMe).toString().contains(Constants.PY))
+                else if(state.get(searchMe).toString().contains(SettlersOfCatanConstants.PY))
                     nodeList.get(i).setPlayer(2);
-                else if(state.get(searchMe).toString().contains(Constants.PG))
+                else if(state.get(searchMe).toString().contains(SettlersOfCatanConstants.PG))
                     nodeList.get(i).setPlayer(3);
                 
-                if(state.get(searchMe).toString().contains(Constants.SETTLEMENTTOKEN))
+                if(state.get(searchMe).toString().contains(SettlersOfCatanConstants.SETTLEMENTTOKEN))
                     nodeList.get(i).setSettlement(1);
-                else if(state.get(searchMe).toString().contains(Constants.CITYTOKEN))
+                else if(state.get(searchMe).toString().contains(SettlersOfCatanConstants.CITYTOKEN))
                     nodeList.get(i).setSettlement(2);
             }
         }
         
-        nodeList.get(0).setHarborBonus(state.get(Constants.HARBOR00).toString());
-        nodeList.get(3).setHarborBonus(state.get(Constants.HARBOR00).toString());
-        nodeList.get(1).setHarborBonus(state.get(Constants.HARBOR01).toString());
-        nodeList.get(5).setHarborBonus(state.get(Constants.HARBOR01).toString());
-        nodeList.get(10).setHarborBonus(state.get(Constants.HARBOR02).toString());
-        nodeList.get(15).setHarborBonus(state.get(Constants.HARBOR02).toString());
-        nodeList.get(26).setHarborBonus(state.get(Constants.HARBOR03).toString());
-        nodeList.get(32).setHarborBonus(state.get(Constants.HARBOR03).toString());
-        nodeList.get(42).setHarborBonus(state.get(Constants.HARBOR04).toString());
-        nodeList.get(46).setHarborBonus(state.get(Constants.HARBOR04).toString());
-        nodeList.get(49).setHarborBonus(state.get(Constants.HARBOR05).toString());
-        nodeList.get(52).setHarborBonus(state.get(Constants.HARBOR05).toString());
-        nodeList.get(47).setHarborBonus(state.get(Constants.HARBOR06).toString());
-        nodeList.get(51).setHarborBonus(state.get(Constants.HARBOR06).toString());
-        nodeList.get(33).setHarborBonus(state.get(Constants.HARBOR07).toString());
-        nodeList.get(38).setHarborBonus(state.get(Constants.HARBOR07).toString());
-        nodeList.get(11).setHarborBonus(state.get(Constants.HARBOR08).toString());
-        nodeList.get(16).setHarborBonus(state.get(Constants.HARBOR08).toString());
+        nodeList.get(0).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR00).toString());
+        nodeList.get(3).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR00).toString());
+        nodeList.get(1).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR01).toString());
+        nodeList.get(5).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR01).toString());
+        nodeList.get(10).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR02).toString());
+        nodeList.get(15).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR02).toString());
+        nodeList.get(26).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR03).toString());
+        nodeList.get(32).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR03).toString());
+        nodeList.get(42).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR04).toString());
+        nodeList.get(46).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR04).toString());
+        nodeList.get(49).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR05).toString());
+        nodeList.get(52).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR05).toString());
+        nodeList.get(47).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR06).toString());
+        nodeList.get(51).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR06).toString());
+        nodeList.get(33).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR07).toString());
+        nodeList.get(38).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR07).toString());
+        nodeList.get(11).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR08).toString());
+        nodeList.get(16).setHarborBonus(state.get(SettlersOfCatanConstants.HARBOR08).toString());
     }
     
     private void prepPathList(Map<String, Object> state)
@@ -254,19 +254,19 @@ public class Board {
         for(int i = 0; i < 72; i++)
         {
             if(i < 10)
-                searchMe = Constants.PATHTOKEN + "0" + i;
+                searchMe = SettlersOfCatanConstants.PATHTOKEN + "0" + i;
             else
-                searchMe = Constants.PATHTOKEN + i;
+                searchMe = SettlersOfCatanConstants.PATHTOKEN + i;
             
             if(state.containsKey(searchMe))
             {
-                if(state.get(searchMe).toString().contains(Constants.PB))
+                if(state.get(searchMe).toString().contains(SettlersOfCatanConstants.PB))
                         pathList.get(i).setPlayer(0);
-                else if(state.get(searchMe).toString().contains(Constants.PR))
+                else if(state.get(searchMe).toString().contains(SettlersOfCatanConstants.PR))
                         pathList.get(i).setPlayer(1);
-                else if(state.get(searchMe).toString().contains(Constants.PY))
+                else if(state.get(searchMe).toString().contains(SettlersOfCatanConstants.PY))
                         pathList.get(i).setPlayer(2);
-                else if(state.get(searchMe).toString().contains(Constants.PG))
+                else if(state.get(searchMe).toString().contains(SettlersOfCatanConstants.PG))
                         pathList.get(i).setPlayer(3);
             }
         }
@@ -420,7 +420,7 @@ public class Board {
         for(int i = 0; i < 54; i++)
         {
             if( nodeList.get(i).getPlayer() == playerId
-             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE00))
+             && nodeList.get(i).getHarborBonus().equals(SettlersOfCatanConstants.HARBORTYPE00))
                 retVal = true;
         }
         
@@ -434,28 +434,28 @@ public class Board {
         for(int i = 0; i < 54; i++)
         {
             if( nodeList.get(i).getPlayer() == playerId
-             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE01)
-             && resource.equals(Constants.ORE))
+             && nodeList.get(i).getHarborBonus().equals(SettlersOfCatanConstants.HARBORTYPE01)
+             && resource.equals(SettlersOfCatanConstants.ORE))
                 retVal = true;
 
             if( nodeList.get(i).getPlayer() == playerId
-             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE02)
-             && resource.equals(Constants.GRAIN))
+             && nodeList.get(i).getHarborBonus().equals(SettlersOfCatanConstants.HARBORTYPE02)
+             && resource.equals(SettlersOfCatanConstants.GRAIN))
                 retVal = true;
 
             if( nodeList.get(i).getPlayer() == playerId
-             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE03)
-             && resource.equals(Constants.LUMBER))
+             && nodeList.get(i).getHarborBonus().equals(SettlersOfCatanConstants.HARBORTYPE03)
+             && resource.equals(SettlersOfCatanConstants.LUMBER))
                 retVal = true;
 
             if( nodeList.get(i).getPlayer() == playerId
-             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE04)
-             && resource.equals(Constants.WOOL))
+             && nodeList.get(i).getHarborBonus().equals(SettlersOfCatanConstants.HARBORTYPE04)
+             && resource.equals(SettlersOfCatanConstants.WOOL))
                 retVal = true;
 
             if( nodeList.get(i).getPlayer() == playerId
-             && nodeList.get(i).getHarborBonus().equals(Constants.HARBORTYPE05)
-             && resource.equals(Constants.BRICK))
+             && nodeList.get(i).getHarborBonus().equals(SettlersOfCatanConstants.HARBORTYPE05)
+             && resource.equals(SettlersOfCatanConstants.BRICK))
                 retVal = true;
         }
         
@@ -472,7 +472,7 @@ public class Board {
             {
                 if(hexList.get(i).getLocation(j) == node)
                 {
-                    if(hexList.get(i).getResource() != Constants.DESERT)
+                    if(hexList.get(i).getResource() != SettlersOfCatanConstants.DESERT)
                         resources.add(hexList.get(i).getResource());
                 }
             }
@@ -541,17 +541,17 @@ public class Board {
         {
             if(i < 10)
             {
-                blueString = Constants.RESOURCECARDTOKEN + "0" + i + Constants.PB;
-                redString = Constants.RESOURCECARDTOKEN + "0" + i + Constants.PR;
-                yellowString = Constants.RESOURCECARDTOKEN + "0" + i + Constants.PY;
-                greenString = Constants.RESOURCECARDTOKEN + "0" + i + Constants.PG;
+                blueString = SettlersOfCatanConstants.RESOURCECARDTOKEN + "0" + i + SettlersOfCatanConstants.PB;
+                redString = SettlersOfCatanConstants.RESOURCECARDTOKEN + "0" + i + SettlersOfCatanConstants.PR;
+                yellowString = SettlersOfCatanConstants.RESOURCECARDTOKEN + "0" + i + SettlersOfCatanConstants.PY;
+                greenString = SettlersOfCatanConstants.RESOURCECARDTOKEN + "0" + i + SettlersOfCatanConstants.PG;
             }
             else
             {
-                blueString = Constants.RESOURCECARDTOKEN + i + Constants.PB;
-                redString = Constants.RESOURCECARDTOKEN + i + Constants.PR;
-                yellowString = Constants.RESOURCECARDTOKEN + i + Constants.PY;
-                greenString = Constants.RESOURCECARDTOKEN + i + Constants.PG;
+                blueString = SettlersOfCatanConstants.RESOURCECARDTOKEN + i + SettlersOfCatanConstants.PB;
+                redString = SettlersOfCatanConstants.RESOURCECARDTOKEN + i + SettlersOfCatanConstants.PR;
+                yellowString = SettlersOfCatanConstants.RESOURCECARDTOKEN + i + SettlersOfCatanConstants.PY;
+                greenString = SettlersOfCatanConstants.RESOURCECARDTOKEN + i + SettlersOfCatanConstants.PG;
             }
             
             if(lastState.containsKey(blueString))
@@ -578,25 +578,25 @@ public class Board {
              && nodeList.get(hexList.get(hex).locations[i]).getPlayer() != playerId
              && canStealFromBlue)
             {
-                output = output + Constants.PB;
+                output = output + SettlersOfCatanConstants.PB;
             }
             else if( nodeList.get(hexList.get(hex).locations[i]).getPlayer() == 1
                   && nodeList.get(hexList.get(hex).locations[i]).getPlayer() != playerId
                   && canStealFromRed)
             {
-                output = output + Constants.PR;
+                output = output + SettlersOfCatanConstants.PR;
             }
             else if( nodeList.get(hexList.get(hex).locations[i]).getPlayer() == 2
                   && nodeList.get(hexList.get(hex).locations[i]).getPlayer() != playerId
                   && canStealFromYellow)
             {
-                output = output + Constants.PY;
+                output = output + SettlersOfCatanConstants.PY;
             }
             else if( nodeList.get(hexList.get(hex).locations[i]).getPlayer() == 3
                   && nodeList.get(hexList.get(hex).locations[i]).getPlayer() != playerId
                   && canStealFromBlue)
             {
-                output = output + Constants.PG;
+                output = output + SettlersOfCatanConstants.PG;
             }
         }
         

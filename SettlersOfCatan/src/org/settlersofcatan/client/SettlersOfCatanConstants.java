@@ -4,8 +4,15 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.gwt.core.shared.GWT;
 
-public class Constants {
+public class SettlersOfCatanConstants {
+    
+    public void useSettlersOfCanaLanguageFormatConstants()
+    {
+        SettlersOfCatanLanguageFormatConstants constants = (SettlersOfCatanLanguageFormatConstants) GWT.create(SettlersOfCatanLanguageFormatConstants.class);
+        
+    }
     
     public static final String MAKEFIRSTFREEMOVESETTLEMENT = "MAKEFIRSTFREEMOVESETTLEMENT";
     public static final String MAKEFIRSTFREEMOVEROAD = "MAKEFIRSTFREEMOVEROAD";
