@@ -8,12 +8,6 @@ import com.google.gwt.core.shared.GWT;
 
 public class SettlersOfCatanConstants {
     
-    public void useSettlersOfCanaLanguageFormatConstants()
-    {
-        SettlersOfCatanLanguageFormatConstants constants = (SettlersOfCatanLanguageFormatConstants) GWT.create(SettlersOfCatanLanguageFormatConstants.class);
-        
-    }
-    
     public static final String MAKEFIRSTFREEMOVESETTLEMENT = "MAKEFIRSTFREEMOVESETTLEMENT";
     public static final String MAKEFIRSTFREEMOVEROAD = "MAKEFIRSTFREEMOVEROAD";
     public static final String MAKESECONDFREEMOVESETTLEMENT = "MAKESECONDFREEMOVESETTLEMENT";

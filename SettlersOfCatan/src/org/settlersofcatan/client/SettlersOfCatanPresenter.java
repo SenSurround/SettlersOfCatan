@@ -421,14 +421,14 @@ public class SettlersOfCatanPresenter {
                 if(currentPlayer != playerIds.size() - 1)
                 {
                     player = (currentPlayer + 1) % playerIds.size();
-                    //infoMessage = SettlersOfCatanConstants.MAKEFIRSTFREEMOVESETTLEMENT;
+                    infoMessage = SettlersOfCatanConstants.MAKEFIRSTFREEMOVESETTLEMENT;
                 }
                 else
                 {
                     player = currentPlayer;
-                    //infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT;
+                    infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT;
                 }
-                infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT;
+                //infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT;
                 
                 List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
                 addSettlementFirstMove.add(new SetTurn(playerIds.get(player)));
@@ -446,14 +446,14 @@ public class SettlersOfCatanPresenter {
                 if(currentPlayer != 0)
                 {
                     player = (currentPlayer - 1) % playerIds.size();
-                    //infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT;
+                    infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT;
                 }
                 else
                 {
                     player = currentPlayer;
-                    //infoMessage = SettlersOfCatanConstants.ROLLDICE;
+                    infoMessage = SettlersOfCatanConstants.ROLLDICE;
                 }
-                infoMessage = SettlersOfCatanConstants.ROLLDICE;
+                //infoMessage = SettlersOfCatanConstants.ROLLDICE;
                 
                 List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
                 addSettlementFirstMove.add(new SetTurn(playerIds.get(player)));

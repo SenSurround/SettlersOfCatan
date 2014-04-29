@@ -295,14 +295,14 @@ public class SettlersOfCatanLogic {
     	        break;
             case SettlersOfCatanConstants.FIRSTROUNDSETTLEMENT:
                 status = isFirstRoundSettlementLegal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     settlementTurn = false;
                 }
                 break;
             case SettlersOfCatanConstants.FIRSTROUNDROAD:
                 status = isFirstRoundRoadLegal(lastMove, lastState, playerString, nextPlayerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     if(playerId == playerIds.get(playerIds.size() - 1))
                     {
@@ -314,14 +314,14 @@ public class SettlersOfCatanLogic {
                 break;
             case SettlersOfCatanConstants.SECONDROUNDSETTLEMENT:
                 status = isSecondRoundSettlementLegal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     settlementTurn = false;
                 }
                 break;
             case SettlersOfCatanConstants.SECONDROUNDROAD:
                 status = isSecondRoundRoadLegal(lastMove, lastState, playerString, previousPlayerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     settlementTurn = true;
                     if(playerId == playerIds.get(0))
@@ -343,70 +343,70 @@ public class SettlersOfCatanLogic {
     	        break;
             case SettlersOfCatanConstants.MOVEROBBERPT3:
                 status = isMoveRobberMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishRobberMove = true;
                 }
                 break;
             case SettlersOfCatanConstants.MOVEROBBERPT4:
                 status = isMoveRobberMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishRobberMove = false;
                 }
                 break;
     	    case SettlersOfCatanConstants.BUILDCITYPT1:
                 status = isBuildCityMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishCityBuild = true;
                 }
                 break;
             case SettlersOfCatanConstants.BUILDCITYPT2:
                 status = isBuildCityMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishCityBuild = true;
                 }
                 break;
             case SettlersOfCatanConstants.BUILDSETTLEMENTPT1:
                 status = isBuildSettlementMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishSettlementBuild = true;
                 }
                 break;
             case SettlersOfCatanConstants.BUILDSETTLEMENTPT2:
                 status = isBuildSettlementMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishSettlementBuild = false;
                 }
                 break;
             case SettlersOfCatanConstants.BUILDROADPT1:
                 status = isBuildRoadMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishRoadBuild = true;
                 }
                 break;
             case SettlersOfCatanConstants.BUILDROADPT2:
                 status = isBuildRoadMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishRoadBuild = false;
                 }
                 break;
             case SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT1:
                 status = isBuyDevelopmentCardMovePt1Legal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishBuyingDevelopmentCard = true;
                 }
                 break;
             case SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT2:
                 status = isBuyDevelopmentCardMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishBuyingDevelopmentCard = false;
                 }
@@ -416,14 +416,14 @@ public class SettlersOfCatanLogic {
                 break;
             case SettlersOfCatanConstants.HARBORTRADEPT1:
                 status = isHarborTradeMovePt1Legal(lastMove, lastState, playerString, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishHarborTrade = true;
                 }
                 break;
             case SettlersOfCatanConstants.HARBORTRADEPT2:
                 status = isHarborTradeMovePt2Legal(lastMove, lastState, playerString, playerId, playerIds);
-                if(status)// && ++verifyCount % playerIds.size() == 0)
+                if(status && ++verifyCount % playerIds.size() == 0)
                 {
                     finishHarborTrade = false;
                 }

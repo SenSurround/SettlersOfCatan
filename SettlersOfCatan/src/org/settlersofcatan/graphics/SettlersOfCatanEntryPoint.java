@@ -20,8 +20,8 @@ import com.google.gwt.user.client.ui.RootPanel;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class SettlersOfCatanEntryPoint implements EntryPoint {
-  //IteratingPlayerContainer container;
-  ContainerConnector container;
+  IteratingPlayerContainer container;
+  //ContainerConnector container;
   SettlersOfCatanPresenter settlersOfCatanPresenter;
   SettlersOfCatanLogic settlersOfCatanLogic;
 
@@ -40,33 +40,33 @@ public class SettlersOfCatanEntryPoint implements EntryPoint {
         settlersOfCatanPresenter.updateUI(updateUI);
       }
     };
-    //container = new IteratingPlayerContainer(game, 2);
-    container = new ContainerConnector(game);
+    container = new IteratingPlayerContainer(game, 2);
+    //container = new ContainerConnector(game);
     SettlersOfCatanGraphics settlersOfCatanGraphics = new SettlersOfCatanGraphics();
     if(settlersOfCatanPresenter == null)
         settlersOfCatanPresenter =
             new SettlersOfCatanPresenter(settlersOfCatanGraphics, container);
-    //final ListBox playerSelect = new ListBox();
-    //playerSelect.addItem("BluePlayer");
-    //playerSelect.addItem("RedPlayer");
+    final ListBox playerSelect = new ListBox();
+    playerSelect.addItem("BluePlayer");
+    playerSelect.addItem("RedPlayer");
     //playerSelect.addItem("YellowPlayer");
     //playerSelect.addItem("GreenPlayer");
     //playerSelect.addItem("Viewer");
-    //playerSelect.addChangeHandler(new ChangeHandler() {
-    //  @Override
-    //  public void onChange(ChangeEvent event) {
-    //    int selectedIndex = playerSelect.getSelectedIndex();
-    //    String playerId = selectedIndex == 4 ? GameApi.VIEWER_ID
-    //        : container.getPlayerIds().get(selectedIndex);
-    //    container.updateUi(playerId);
-    //  }
-    //});
+    playerSelect.addChangeHandler(new ChangeHandler() {
+      @Override
+      public void onChange(ChangeEvent event) {
+        int selectedIndex = playerSelect.getSelectedIndex();
+        String playerId = selectedIndex == 4 ? GameApi.VIEWER_ID
+            : container.getPlayerIds().get(selectedIndex);
+        container.updateUi(playerId);
+      }
+    });
     
     FlowPanel flowPanel = new FlowPanel();
-    //flowPanel.add(playerSelect);
+    flowPanel.add(playerSelect);
     flowPanel.add(settlersOfCatanGraphics);
     RootPanel.get("mainDiv").add(flowPanel);
     container.sendGameReady();
-    //container.updateUi(container.getPlayerIds().get(0));
+    container.updateUi(container.getPlayerIds().get(0));
   }
 }

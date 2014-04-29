@@ -32,4 +32,7 @@
 
   <!-- allow Super Dev Mode -->
   <add-linker name="xsiframe"/>
+  
+  <extend-property name="locale" values="es"/>
+  
 </module>

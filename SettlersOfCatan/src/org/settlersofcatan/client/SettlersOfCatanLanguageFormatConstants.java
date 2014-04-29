@@ -49,6 +49,9 @@ public interface SettlersOfCatanLanguageFormatConstants extends Constants {
     @DefaultStringValue("Make another move!")
     String makeAnotherMove();
 
+    @DefaultStringValue("Make a move!")
+    String makeAMove();
+
     @DefaultStringValue("You Rolled a 2! Dispersing Resources!")
     String roll2();
 
