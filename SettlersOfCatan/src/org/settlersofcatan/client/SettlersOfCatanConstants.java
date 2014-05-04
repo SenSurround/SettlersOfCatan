@@ -36,6 +36,13 @@ public class SettlersOfCatanConstants {
     public static final String FIRSTROUNDROAD = "FIRSTROUNDROAD";
     public static final String SECONDROUNDSETTLEMENT = "SECONDROUNDSETTLEMENT";
     public static final String SECONDROUNDROAD = "SECONDROUNDROAD";
+    public static final String PLAYSOLDIER = "PLAYSOLDIER";
+    public static final String PLAYYEAROFPLENTY = "PLAYYEAROFPLENTY";
+    public static final String FINISHYEAROFPLENTY = "FINISHYEAROFPLENTY";
+    public static final String PLAYMONOPOLY = "PLAYMONOPOLY";
+    public static final String PLAYROADBUILDING = "PLAYROADBUILDING";
+    public static final String PLAYROADBUILDINGPT1 = "PLAYROADBUILDINGPT1";
+    public static final String PLAYROADBUILDINGPT2 = "PLAYROADBUILDINGPT2";
     public static final String MOVEROBBERPT1 = "MOVEROBBERPT1";
     public static final String MOVEROBBERPT2 = "MOVEROBBERPT2";
     public static final String MOVEROBBERPT3 = "MOVEROBBERPT3";
@@ -63,7 +70,16 @@ public class SettlersOfCatanConstants {
     public static final String TWOTOONEWOOHARBORTRADEPT2 = "TWOTOONEWOOHARBORTRADEPT2";
     public static final String TWOTOONEBRIHARBORTRADEPT1 = "TWOTOONBRIEHARBORTRADEPT1";
     public static final String TWOTOONEBRIHARBORTRADEPT2 = "TWOTOONBRIEHARBORTRADEPT2";
-    public static final String PLAYDEVELOPMENTCARD = "PLAYDEVELOPMENTCARD";
+    public static final String PLAYDEVELOPMENTCARDPT1 = "PLAYDEVELOPMENTCARDPT1";
+    public static final String PLAYDEVELOPMENTCARDPT2 = "PLAYDEVELOPMENTCARDPT2";
+    public static final String PLAYMONOPOLYPT1 = "PLAYMONOPOLYPT1";
+    
+    public static final String MONOPOLY = "MONOPOLY";
+    public static final String MONOPOLYPB = "MONOPOLYPB";
+    public static final String MONOPOLYPR = "MONOPOLYPR";
+    public static final String MONOPOLYPY = "MONOPOLYPY";
+    public static final String MONOPOLYPG = "MONOPOLYPG";
+    public static final String FINISHMONOPOLY = "FINISHMONOPOLY";
 
     public static final String NODETOKEN = "NOD";
     public static final String CITYTOKEN = "CIT";

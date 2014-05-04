@@ -27,8 +27,9 @@ public class SettlersOfCatanLogic {
     // Global Error String
     // For Debug Purposes
     private String err = "";
-    private int firstOpenDevelopmentCard = 0;
+    public int firstOpenDevelopmentCard = 0;
     private int verifyCount = 0;
+    private int seconddaryVerifyCount = 0;
     public boolean firstFreeMove = false;
     public boolean secondFreeMove = false;
     private boolean settlementTurn = false;
@@ -38,7 +39,20 @@ public class SettlersOfCatanLogic {
     private boolean finishBuyingDevelopmentCard = false;
     private boolean finishHarborTrade = false;
     private boolean finishRobberMove = false;
+    private boolean finishPlayDevelopmentCardMove = false;
+    private boolean yearOfPlentyNext = false;
+    private boolean roadBuilding1 = false;
+    private boolean roadBuilding2 = false;
+    private boolean monopoly1 = false;
+    private boolean monopoly2 = false;
+    private boolean monopoly3 = false;
+    private boolean monopoly4 = false;
+    private boolean monopolyFinish = false;
     public boolean initial = true;
+    
+    public boolean verifyAll = false;
+    
+    public boolean checkMe = false;
     
     private List<String> playerIds;
     
@@ -50,7 +64,7 @@ public class SettlersOfCatanLogic {
             SettlersOfCatanConstants.BRICK,  SettlersOfCatanConstants.BRICK,  SettlersOfCatanConstants.BRICK,
             SettlersOfCatanConstants.DESERT);
     
-    List<String> developmentCardTypeList = Arrays.asList(
+    List<String> developmentCardTypeList = Arrays.asList(/*
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
@@ -63,7 +77,20 @@ public class SettlersOfCatanLogic {
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03,
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF04, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF05,
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF06, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF07,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF08);
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF08*/
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02);
   
     List<String> harborTradeTypeList = Arrays.asList(
             SettlersOfCatanConstants.HARBORTYPE00, SettlersOfCatanConstants.HARBORTYPE00, SettlersOfCatanConstants.HARBORTYPE00,
@@ -72,7 +99,8 @@ public class SettlersOfCatanLogic {
     
     public VerifyMoveDone verify(VerifyMove verifyMove) {
         try {
-            checkMoveIsLegal(verifyMove);
+            if(!verifyAll)
+                checkMoveIsLegal(verifyMove);
             return new VerifyMoveDone();
         } catch (Exception e) {
             return new VerifyMoveDone(verifyMove.getLastMovePlayerId(), e.getMessage());
@@ -176,14 +204,20 @@ public class SettlersOfCatanLogic {
                                    "MAR05", "MAR06", "MAR07", "MAR08")));
         
         firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPB, 0));
-        firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPR, 0));
+
         
-        if(playerIds.size() == 3)
+        if(playerIds.size() == 2)
         {
+            firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPR, 0));
+        }
+        else if(playerIds.size() == 3)
+        {
+            firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPR, 0));
             firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPY, 0));
         }
         else if(playerIds.size() == 4)
         {
+            firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPR, 0));
             firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPY, 0));
             firstMove.add(new Set(SettlersOfCatanConstants.SOLDIERCOUNTPG, 0));
         }
@@ -411,8 +445,44 @@ public class SettlersOfCatanLogic {
                     finishBuyingDevelopmentCard = false;
                 }
                 break;
-            case SettlersOfCatanConstants.PLAYDEVELOPMENTCARD:
+            case SettlersOfCatanConstants.PLAYDEVELOPMENTCARDPT1:
+                sayHelloInJava("Prep" + playerId);
+                status = isPrepForPlayDevelopmentCardMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status)// && ++verifyCount % playerIds.size() == 0)
+                {
+                    sayHelloInJava("SetPrep" + playerId);
+                    finishPlayDevelopmentCardMove = true;
+                }
+                break;
+            case SettlersOfCatanConstants.PLAYDEVELOPMENTCARDPT2:
+                sayHelloInJava("Pt2" + playerId);
                 status = isPlayDevelopmentCardMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status)// && ++verifyCount % playerIds.size() == 0)
+                {
+                    finishPlayDevelopmentCardMove = false;
+                }
+                break;
+            case SettlersOfCatanConstants.PLAYYEAROFPLENTY:
+                status = isPlayYearOfPlentyMoveLegal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status)// && ++verifyCount % playerIds.size() == 0)
+                {
+                    yearOfPlentyNext = false;
+                }
+                break;
+            case SettlersOfCatanConstants.PLAYROADBUILDINGPT1:
+                status = isRoadBuildingMoveLegal(lastMove, lastState, playerString, nextPlayerString, playerId, playerIds);
+                if(status)// && ++verifyCount % playerIds.size() == 0)
+                {
+                    roadBuilding1 = false;
+                    roadBuilding2 = true;
+                }
+                break;
+            case SettlersOfCatanConstants.PLAYROADBUILDINGPT2:
+                status = isRoadBuildingMoveLegal(lastMove, lastState, playerString, nextPlayerString, playerId, playerIds);
+                if(status)// && ++verifyCount % playerIds.size() == 0)
+                {
+                    roadBuilding2 = false;
+                }
                 break;
             case SettlersOfCatanConstants.HARBORTRADEPT1:
                 status = isHarborTradeMovePt1Legal(lastMove, lastState, playerString, playerIds);
@@ -426,6 +496,54 @@ public class SettlersOfCatanLogic {
                 if(status)// && ++verifyCount % playerIds.size() == 0)
                 {
                     finishHarborTrade = false;
+                }
+                break;
+            case SettlersOfCatanConstants.MONOPOLYPB:
+                status = isMonopolyLegal(lastMove, lastState, playerString, nextPlayerString, playerId, playerIds, SettlersOfCatanConstants.PB);
+                if(status)// && ++verifyCount % playerIds.size() == 0)
+                {
+                    monopoly1 = false;
+                    if(!playerIds.get(playerIds.size()-1).equals(playerId))
+                        monopoly2 = true;
+                    else
+                        monopolyFinish = true;
+                }
+                break;
+            case SettlersOfCatanConstants.MONOPOLYPR:
+                status = isMonopolyLegal(lastMove, lastState, playerString, nextPlayerString, playerId, playerIds, SettlersOfCatanConstants.PB);
+                if(status)// && ++verifyCount % playerIds.size() == 0)
+                {
+                    monopoly2 = false;
+                    if(!playerIds.get(playerIds.size()-1).equals(playerId))
+                        monopoly3 = true;
+                    else
+                        monopolyFinish = true;
+                }
+                break;
+            case SettlersOfCatanConstants.MONOPOLYPY:
+                status = isMonopolyLegal(lastMove, lastState, playerString, nextPlayerString, playerId, playerIds, SettlersOfCatanConstants.PB);
+                if(status)// && ++verifyCount % playerIds.size() == 0)
+                {
+                    monopoly3 = false;
+                    if(!playerIds.get(playerIds.size()-1).equals(playerId))
+                        monopoly4 = true;
+                    else
+                        monopolyFinish = true;
+                }
+                break;
+            case SettlersOfCatanConstants.MONOPOLYPG:
+                status = isMonopolyLegal(lastMove, lastState, playerString, nextPlayerString, playerId, playerIds, SettlersOfCatanConstants.PB);
+                if(status)// && ++verifyCount % playerIds.size() == 0)
+                {
+                    monopoly4 = false;
+                    monopolyFinish = true;
+                }
+                break;
+            case SettlersOfCatanConstants.FINISHMONOPOLY:
+                status = isFinishMonopolyLegal(lastMove, lastState, playerString, playerId, playerIds);
+                if(status)// && ++verifyCount % playerIds.size() == 0)
+                {
+                    monopolyFinish = false;
                 }
                 break;
             default:
@@ -678,6 +796,84 @@ public class SettlersOfCatanLogic {
                           lastMove.get(2), 2, 
                           lastState, 
                           playerString);
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "BUILDROADFIRST expects: 3";
+        }
+        
+        return status;
+        
+    }
+    
+    private boolean isRoadBuildingMoveLegal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            String nextPlayerString,
+            String playerId,
+            List<String> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // SETTURN(playerId)
+        // SET(PATHXX, ROADYY + playerString)
+        // SET(ROADYY + playerString, PATHXX)
+        
+        // REQUIREMENTS
+        // Line 0 - Turn must match playerString
+        // Lines 1,2 - PATH and ROAD must be the same
+        //             PATH must be empty prior
+        
+        // Ensure move is exactly 3 lines
+        boolean status = lastMove.size() == 3 ||
+                         lastMove.size() == 4 ||
+                         lastMove.size() == 5;
+        
+        if(status)
+        {
+            // Line 0
+            status = status
+                  && matchTurnMoveForSamePlayer(
+                          lastMove.get(0), 0, 
+                          playerString,
+                          playerIds);
+            
+            // Lines 1,2
+            status = status
+                  && matchRoadAndPathPair(
+                          lastMove.get(1), 1, 
+                          lastMove.get(2), 2, 
+                          lastState, 
+                          playerString);
+
+            
+            if(lastMove.size() > 3)
+            {              
+                Map<String, Object> testState = new HashMap<String, Object>(lastState);
+                testState.put(((Set)lastMove.get(1)).getKey(), ((Set)lastMove.get(1)).getValue());
+                testState.put(((Set)lastMove.get(2)).getKey(), ((Set)lastMove.get(2)).getValue());
+                
+                // Line 3
+                status = status
+                      && processLongestRoadClaim(
+                              lastMove.get(3), 3, 
+                              testState,
+                              playerString);
+                
+                if(lastMove.size() == 5)
+                {
+                    // Line 4
+                    status = status
+                          && matchEndGame(
+                                  lastMove.get(4), 4, 
+                                  lastState,
+                                  playerString,
+                                  playerId,
+                                  SettlersOfCatanConstants.ADDLONGESTROAD);
+                }
+            }
         }
         else
         {
@@ -1374,6 +1570,161 @@ public class SettlersOfCatanLogic {
 
     // Parent Function for Building Roads
     // Determines if this entire move matches for building a road
+    private boolean isMonopolyLegal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            String nextPlayerString,
+            String playerId,
+            List<String> playerIds,
+            String specificPlayer)
+    {
+        // EXPECTED MOVE FORM
+        // SET(TURN, playerString)
+        // OPTIONAL - SETVISIBILITY(RESOURCECARDAA + playerString)
+        
+        // REQUIREMENTS
+        // Line 0 - Turn must match playerString
+        // Lines 1... - Must match expected resource
+        
+        boolean status = true;
+        
+        if(status)
+        {
+            String nextMove = "";
+            String resource = "";
+            
+            if(lastState.containsKey(SettlersOfCatanConstants.MONOPOLYPB))
+            {
+                nextMove = SettlersOfCatanConstants.PB;
+                resource = lastState.get(SettlersOfCatanConstants.MONOPOLYPB).toString();
+            }
+            else if(lastState.containsKey(SettlersOfCatanConstants.MONOPOLYPR))
+            {
+                nextMove = SettlersOfCatanConstants.PR;
+                resource = lastState.get(SettlersOfCatanConstants.MONOPOLYPR).toString();
+            }
+            else if(lastState.containsKey(SettlersOfCatanConstants.MONOPOLYPY))
+            {
+                nextMove = SettlersOfCatanConstants.PY;
+                resource = lastState.get(SettlersOfCatanConstants.MONOPOLYPY).toString();
+            }
+            else if(lastState.containsKey(SettlersOfCatanConstants.MONOPOLYPG))
+            {
+                nextMove = SettlersOfCatanConstants.PG;
+                resource = lastState.get(SettlersOfCatanConstants.MONOPOLYPG).toString();
+            }
+            
+            if(!playerIds.get(playerIds.size()-1).equals(playerId))
+            {
+                // Line 0
+                status = status
+                      && matchTurnMoveForSamePlayer(
+                              lastMove.get(0), 0, 
+                              nextPlayerString,
+                              playerIds);
+            }
+            else
+            {
+                
+                // Line 0
+                status = status
+                      && matchTurnMoveForSamePlayer(
+                              lastMove.get(0), 0, 
+                              nextMove,
+                              playerIds);
+            }
+            
+            for(int i = 1; i < lastMove.size(); i++)
+            {
+                // Line i
+                status = status
+                      && matchMonopolyResource(
+                              lastMove.get(i), i, 
+                              lastState,
+                              playerString,
+                              resource
+                              );
+            }
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "BUILDROAD expects: 5";
+        }
+        
+        return status;
+    }
+    
+    // Parent Function for Building City
+    // Determines if this entire move matches for building a city
+    private boolean isFinishMonopolyLegal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            String playerId,
+            List<String> playerIds)
+    {
+        // EXPECTED MOVE FORM
+        // SET(TURN, playerString)
+        // DELETE(MONOPOLY)
+        // OPTIONAL - SET(RESOURCECARDAA + playerString, resource)
+        // OPTIONAL - SETVISIBILITY(RESOURCECARDAA + playerString)
+        // OPTIONAL - DELETE(RESOURCECARDAA + playerString)
+        
+        // Ensure move is exactly 5 or 6 lines
+        boolean status = ((lastMove.size() % 3) == 2);
+        
+        if(status)
+        {
+            // Line 0
+            status = status
+                  && matchTurnMoveForSamePlayer(
+                          lastMove.get(0), 0, 
+                          playerString,
+                          playerIds);
+            
+            // Line 1
+            status = status
+                  && lastMove.get(1).getMessageName().equals("Delete")
+                  && lastState.containsKey(((Delete)lastMove.get(1)).getKey().toString());
+            
+            for(int i = 2; i < lastMove.size(); i = i + 3)
+            {
+                // Lines 2 + 3
+                status = status
+                      && matchResourceCardAdd(
+                              lastMove.get(i), i,
+                              lastMove.get(i+1), i+1,
+                              lastState, 
+                              playerString,
+                              playerId,
+                              lastState.get(((Delete)lastMove.get(1)).getKey().toString()).toString());
+                
+                // Line 4
+                status = status
+                      && lastMove.get(i+2).getMessageName().equals("Delete")
+                      && lastState.containsKey(((Delete)lastMove.get(i+2)).getKey().toString())
+                      && lastState.get(((Delete)lastMove.get(i+2)).getKey()) != null
+                      && lastState.get(((Delete)lastMove.get(i+2)).getKey()).toString().equals(
+                              ((Set)lastMove.get(i)).getValue());
+            }
+            
+            
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "isFinishMonopolyLegal expects: %3 == 2";
+        }
+        
+        return status;
+    }
+
+    // Parent Function for Building Roads
+    // Determines if this entire move matches for building a road
     private boolean isBuildRoadMovePt1Legal(
             List<Operation> lastMove,
             Map<String, Object> lastState,
@@ -1616,12 +1967,13 @@ public class SettlersOfCatanLogic {
             List<String> playerIds)
     {
         // There are 4 types of cards that can be played
+        
+        String moveType = lastState.get( ((SetVisibility)lastMove.get(1)).getKey() ).toString();
 
         // EXPECTED PLAY SOLDIER FORM
         // SET(TURN, playerString)
         // SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)
-        // SET(ROBBER, HEX)
-        // SET(SOLDIERCOUNT + playerId, VAL)
+        // SET(SOLDIERCOUNT + playerString, +1)
         // OPTIONAL - SET(LARGESTARMY, playerString)
         // OPTIONAL - ENDGAME(playerId)
         //
@@ -1629,26 +1981,25 @@ public class SettlersOfCatanLogic {
         // Line 0 - Turn must match playerString
         // Line 1 - DEVELOPMENTCARDXX must be owned by playerString
         //          Must assign DEVELOPMENTCARDXX to visible nobody
-        // Line 2 - Determine where to move the robber
-        //          Must be different than the current robber HEX
-        // Line 3 - Update the SOLDIERCOUNT for the current player
-        //          Must increment the previous value
-        // Line 4 - Set the LARGESTARMY to the current player.
+        // Line 1 - SOLDIERCOUNT must be owned by playerString
+        //          Must increment by 1
+        // Line 2 - Set the LARGESTARMY to the current player.
         //          This line only happens when the SOLDIERCOUNT set
         //          earlier is one greater than the current holder of
         //          LARGESTARMY
-        // Line 5 - Sets the ENDGAME for the current player.
+        // Line 3 - Sets the ENDGAME for the current player.
         //          This line only happens if LARGESTARMY is set
         //          for the current player and it pushes the current player
         //          at or over 10 victory points
         
         boolean status = false;
         
-        if( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.ROBBER, "")
-         && ( lastMove.size() == 4
-           || lastMove.size() == 5
-           || lastMove.size() == 6 ) )
+        if( moveType == SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00
+         && ( lastMove.size() == 3
+           || lastMove.size() == 4
+           || lastMove.size() == 5 ) )
         {
+            sayHelloInJava("Soldier" + playerId);
             // Line 0
             status = matchTurnMoveForSamePlayer(
                             lastMove.get(0), 0, 
@@ -1662,40 +2013,38 @@ public class SettlersOfCatanLogic {
                           lastState, 
                           playerString,
                           SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00);
-              
-              // Lines 2,3
-              status = status
-                    && matchRobber(
-                            lastMove.get(2), 2,
-                            lastMove.get(3), 3,
-                            lastState,
-                            playerString
-                            );
-              
-              if(lastMove.size() > 4)
+            
+            // Line 2
+            status = status
+                  && matchSoldierIncrement(
+                          lastMove.get(2), 2,
+                          lastState, 
+                          playerString);
+            
+              if(lastMove.size() > 3)
               {
                   // Create a new state with the path added, to verify longest road claim
                   Map<String, Object> newState = new HashMap<String, Object>(lastState);
-                  newState.put(((Set)lastMove.get(3)).getKey(), ((Set)lastMove.get(3)).getValue());
+                  newState.put(((Set)lastMove.get(2)).getKey(), ((Set)lastMove.get(2)).getValue());
                   
-                  // Line 4
+                  // Line 3
                   status = status
                         && processLargestArmyClaim(
-                                lastMove.get(4), 4, 
+                                lastMove.get(3), 3, 
                                 newState,
                                 playerString,
                                 ((Set)lastMove.get(3)).getKey());
                   
-                  if(lastMove.size() == 6)
+                  if(lastMove.size() == 5)
                   {
-                      // Line 5
+                      // Line 4
                       status = status
                             && matchEndGame(
-                                    lastMove.get(5), 5, 
+                                    lastMove.get(4), 4, 
                                     newState,
                                     playerString,
                                     playerId,
-                                    SettlersOfCatanConstants.ADDLONGESTROAD);
+                                    SettlersOfCatanConstants.ADDLARGESTARMY);
                   }
               }
         }
@@ -1703,18 +2052,16 @@ public class SettlersOfCatanLogic {
         // EXPECTED YEAR OF PLENTY FORM
         // SET(TURN, playerString)
         // SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)
-        // SET(RESOURCECARDAA + playerString, resource)
-        // SET(RESOURCECARDBB + playerString, resource)
         //
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
         // Line 1 - DEVELOPMENTCARDXX must be owned by playerString
         //          Must assign DEVELOPMENTCARDXX to visible nobody
-        // Lines 2,3 - Two RESOURCE cards for playerString to choose
 
-        else if( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.RESOURCECARDTOKEN, "")
-              && lastMove.size() == 4 )
+        else if( moveType == SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF01 
+              && lastMove.size() == 2 )
          {
+            sayHelloInJava("YOP" + playerId);
              // Line 0
              status = matchTurnMoveForSamePlayer(
                              lastMove.get(0), 0, 
@@ -1723,49 +2070,34 @@ public class SettlersOfCatanLogic {
              
              // Line 1
              status = status
-                   && matchDevelopmentCardandDevelopmentCardTypePlayedPair(
-                           lastMove.get(1), 1, 
-                           lastState, 
-                           playerString,
-                           SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF01);
-               
-               // Lines 2
-               status = status
-                     && matchAddResource(
-                             lastMove.get(2), 2,
-                             lastState,
-                             playerString
-                             );
-               
-               // Lines 3
-               status = status
-                     && matchAddResource(
-                             lastMove.get(3), 3,
-                             lastState,
-                             playerString
-                             );
+                     && matchDevelopmentCardandDevelopmentCardTypePlayedPair(
+                             lastMove.get(1), 1,
+                             lastState, 
+                             playerString,
+                             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF01);
+
+             //if(++seconddaryVerifyCount % playerIds.size() == 0)
+                 yearOfPlentyNext = true;
          }
         
         // EXPECTED MONOPOLY FORM
         // SET(TURN, playerString)
         // SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)
-        // SET(MONOPOLYRESOURCE, resource)
-        // SET(MONOPOLYBENEFACTOR, playerString)
+        // SET(MONOPOLY, resource)
         //
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
         // Line 1 - DEVELOPMENTCARDXX must be owned by playerString
         //          Must assign DEVELOPMENTCARDXX to visible nobody
-        // Line 2 - Assign the MONOPOLYRESOURCE to a specific resource
-        // Line 3 - Assign the MONOPOLYBENEFACTOR to playerString
+        // Line 2 - Assign the MONOPOLY to a specific resource
 
-        else if( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.MONOPOLYRESOURCE, "")
-                && lastMove.size() == 4 )
+        else if( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, "")
+                && lastMove.size() == 3 )
         {
             // Line 0
             status = matchTurnMoveForSamePlayer(
                             lastMove.get(0), 0, 
-                            playerString,
+                            SettlersOfCatanConstants.PB,
                             playerIds);
            
             // Line 1
@@ -1775,118 +2107,150 @@ public class SettlersOfCatanLogic {
                             lastState, 
                             playerString,
                             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02);
+
              
             // Lines 2,3
             status = status
                     && matchMonopoly(
                             lastMove.get(2), 2,
-                            lastMove.get(3), 3,
                             lastState,
                             playerString
                             );
+
+            
+            //if(++seconddaryVerifyCount % playerIds.size() == 0)
+                monopoly1 = true;
+                checkMe = true;
         }
         
         // EXPECTED ROAD BUILDING
         // SET(TURN, playerString)
         // SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)
-        // SET(PATHXX, ROADYY + playerString)
-        // SET(ROADYY + playerString, PATHXX)
-        // SET(PATHZZ, ROADTT + playerString)
-        // SET(ROADTT + playerString, PATHZZ)
-        // OPTIONAL - SET(LONGESTROAD, playerString)
-        // OPTIONAL - ENDGAME(playerId)
         //
         // REQUIREMENTS
         // Line 0 - Turn must match playerString
         // Line 1 - DEVELOPMENTCARDXX must be owned by playerString
         //          Must assign DEVELOPMENTCARDXX to visible nobody
-        // Lines 2,3 - PATH and ROAD must be the same
-        //             PATH must be empty prior
-        //             PATH must pass canAddRoadHere
-        //             ROAD must not have an attached NODE prior
-        // Lines 4,5 - PATH and ROAD must be the same
-        //             PATH must be empty prior
-        //             PATH must pass canAddRoadHere
-        //             ROAD must not have an attached NODE prior
-        // Line 6 - Set the LONGESTROAD to the current player.
-        //          This line only happens when the length of the
-        //          current player's longest road is at least
-        //          one greater than the current holder of
-        //          LONGESTROAD
-        // Line 7 - Sets the ENDGAME for the current player.
-        //          This line only happens if LARGESTARMY is set
-        //          for the current player and it pushes the current player
-        //          at or over 10 victory points
-        
-        else if( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.PATHTOKEN, playerString)
-                && ( lastMove.size() == 6
-                  || lastMove.size() == 7
-                  || lastMove.size() == 8 ) )
-         {
-             // Line 0
-             status = matchTurnMoveForSamePlayer(
-                             lastMove.get(0), 0, 
-                             playerString,
-                             playerIds);
-             
-             // Line 1
-             status = status
-                   && matchDevelopmentCardandDevelopmentCardTypePlayedPair(
-                           lastMove.get(1), 1, 
-                           lastState, 
-                           playerString,
-                           SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03);
 
-             // Lines 2,3
-             status = status
-                   && matchRoadAndPathPair(
-                           lastMove.get(2), 2, 
-                           lastMove.get(3), 3, 
-                           lastState, 
-                           playerString);
-
-             // Lines 4,5
-             status = status
-                   && matchRoadAndPathPair(
-                           lastMove.get(4), 4, 
-                           lastMove.get(5), 5, 
-                           lastState, 
-                           playerString);
-               
-               if(lastMove.size() > 6)
-               {
-                   // Create a new state with the paths added, to verify longest road claim
-                   Map<String, Object> newState = new HashMap<String, Object>(lastState);
-                   newState.put(((Set)lastMove.get(2)).getKey(), ((Set)lastMove.get(2)).getValue());
-                   newState.put(((Set)lastMove.get(3)).getKey(), ((Set)lastMove.get(3)).getValue());
-                   newState.put(((Set)lastMove.get(4)).getKey(), ((Set)lastMove.get(4)).getValue());
-                   newState.put(((Set)lastMove.get(5)).getKey(), ((Set)lastMove.get(5)).getValue());
-                   
-                   // Line 6
-                   status = status
-                         && processLongestRoadClaim(
-                                 lastMove.get(6), 6, 
-                                 newState,
-                                 playerString);
-                   
-                   if(lastMove.size() == 9)
-                   {
-                       // Line 7
-                       status = status
-                             && matchEndGame(
-                                     lastMove.get(7), 7, 
-                                     newState,
-                                     playerString,
-                                     playerId,
-                                     SettlersOfCatanConstants.ADDLONGESTROAD);
-                   }
-               }
-         }
+        else if( moveType == SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03
+              && lastMove.size() == 2 )
+        {
+            sayHelloInJava("RB" + playerId);
+            // Line 0
+            status = matchTurnMoveForSamePlayer(
+                            lastMove.get(0), 0, 
+                            playerString,
+                            playerIds);
+            
+            // Line 1
+            status = status
+                    && matchDevelopmentCardandDevelopmentCardTypePlayedPair(
+                            lastMove.get(1), 1,
+                            lastState, 
+                            playerString,
+                            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03);
+            
+            //if(++seconddaryVerifyCount % playerIds.size() == 0)
+                roadBuilding1 = true;
+        }
         else
         {
             err = "Incorrect Number Of Moves: "
                 + lastMove.size() + "\n"
                 + "BUYDEVELOPMENTCARD expects: 8";
+        }
+        
+        return status;
+    }
+    
+ // Determines if this entire move matches for playing a development card
+    private boolean isPrepForPlayDevelopmentCardMoveLegal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            String playerId,
+            List<String> playerIds)
+    {
+        // EXPECTED FORM
+        // SET(TURN, playerString)
+        // SET(DEVELOPMENTCARDXX, visibleTo + all)
+        //
+        // REQUIREMENTS
+        // Line 0 - Turn must match playerString
+        // Line 1 - Must assign DEVELOPMENTCARDXX to visible nobody
+        
+        boolean status = false;
+        
+        if( lastMove.size() == 2 )
+        {
+            // Line 0
+            status = matchTurnMoveForSamePlayer(
+                            lastMove.get(0), 0, 
+                            playerString,
+                            playerIds);
+            
+            // Line 1
+            status = status && lastMove.get(1).getMessageName().equals("SetVisibility")
+                            && ((SetVisibility)lastMove.get(1)).getVisibleToPlayerIds().equals("ALL");
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "BUYDEVELOPMENTCARD expects: 2";
+        }
+        
+        return status;
+    }
+    
+ // Determines if this entire move matches for playing a development card
+    private boolean isPlayYearOfPlentyMoveLegal(
+            List<Operation> lastMove,
+            Map<String, Object> lastState,
+            String playerString,
+            String playerId,
+            List<String> playerIds)
+    {
+        // EXPECTED FORM
+        // SET(TURN, playerString)
+        // SET(RESOURCECARDXX, RESOURCE)
+        // SETVISIBILITY(RESOURCECARDXX, playerId)
+        // SET(RESOURCECARDXX, RESOURCE)
+        // SETVISIBILITY(RESOURCECARDXX, playerId)
+        //
+        // REQUIREMENTS
+        // Line 0 - Turn must match playerString
+        // Line 1 - Must assign DEVELOPMENTCARDXX to visible nobody
+        
+        boolean status = false;
+        
+        if( lastMove.size() == 5 )
+        {
+            // Line 0
+            status = matchTurnMoveForSamePlayer(
+                            lastMove.get(0), 0, 
+                            playerString,
+                            playerIds);
+            
+            // Lines 1,2
+            status = status
+                  && matchResourceCardAddIgnoreExpected(
+                          lastMove.get(1), 1,
+                          lastMove.get(2), 2,
+                          lastState);
+            
+            // Lines 3,4
+            status = status
+                  && matchResourceCardAddIgnoreExpected(
+                          lastMove.get(3), 3,
+                          lastMove.get(4), 4,
+                          lastState);
+        }
+        else
+        {
+            err = "Incorrect Number Of Moves: "
+                + lastMove.size() + "\n"
+                + "isPlayYearOfPlentyMoveLegal expects: 5";
         }
         
         return status;
@@ -3363,6 +3727,48 @@ public class SettlersOfCatanLogic {
         
         return status;
     }
+    
+    // Returns whether the list of moves for a road and path match
+    private boolean matchMonopolyResource(
+            Operation move1, int move1Num,
+            Map<String, Object> lastState,
+            String playerString,
+            String resource)
+    {
+
+        boolean status = false;
+        
+        if(!move1.getMessageName().equals("SetVisibility"))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "matchMonopolyResource expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
+                + "SetVisibility move expected";
+        }
+        else if(!((SetVisibility)move1).getKey().contains(SettlersOfCatanConstants.RESOURCECARDTOKEN))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "matchMonopolyResource expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
+                + "RESOURCECARD key expected";
+        }
+        else if(!((SetVisibility)move1).getKey().contains(playerString))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "matchMonopolyResource expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
+                + "playerString key expected";
+        }
+        else if(!lastState.containsKey(((SetVisibility)move1).getKey()))
+        {
+            err = "Incorrect Move Number: " + move1Num + "\n"
+                + "matchMonopolyResource expects: SETVISIBILITY(RESOURCECARDAA + playerString)\n"
+                + "not seen";
+        }
+        else
+        {
+            status = true;
+        }
+        
+        return status;
+    }
 
     // Returns whether the list of resources matches for a build road move
     private boolean matchRoadResourcesPt1(
@@ -3570,12 +3976,6 @@ public class SettlersOfCatanLogic {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "PLAYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + nobody)\n"
                 + "DEVELOPMENTCARD key expected";
-        }
-        else if(((ImmutableList<Integer>)((SetVisibility)move1).getVisibleToPlayerIds()).size() > 0)
-        {
-            err = "Incorrect Move Number: " + move1Num + "\n"
-                + "PLAYDEVELOPMENTCARD expects: SETVISIBILITY(DEVELOPMENTCARDXX, visibleTo + playerString)\n"
-                + "VisibleTo is not none";
         }
         else if(!(lastState.containsKey(((SetVisibility)move1).getKey())))
         {
@@ -4505,9 +4905,8 @@ public class SettlersOfCatanLogic {
     }
     
     // Returns whether the robber moves match
-    private boolean matchRobber(
+    private boolean matchSoldierIncrement(
             Operation move1, int move1Num,
-            Operation move2, int move2Num,
             Map<String, Object> lastState,
             String playerString)
     {
@@ -4516,55 +4915,31 @@ public class SettlersOfCatanLogic {
         if(!move1.getMessageName().equals("Set"))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
-                + "ROBBER expects: SET(ROBBER, HEX)\n"
-                + "Set move expected";
-        }
-        else if(!((Set)move1).getKey().contains(SettlersOfCatanConstants.ROBBER))
-        {
-            err = "Incorrect Move Number: " + move1Num + "\n"
-                + "ROBBER expects: SET(ROBBER, HEX)\n"
-                + "MONOPOLYRESOURCE key expected";
-        }
-        else if(!((Set)move1).getValue().toString().contains(SettlersOfCatanConstants.HEXTOKEN))
-        {
-            err = "Incorrect Move Number: " + move1Num + "\n"
-                + "ROBBER expects: SET(ROBBER, HEX)\n"
-                + "HEX value expected";
-        }
-        else if(lastState.get(SettlersOfCatanConstants.ROBBER).toString().equals(((Set)move1).getValue().toString()))
-        {
-            err = "Incorrect Move Number: " + move1Num + "\n"
-                + "ROBBER expects: SET(ROBBER, HEX)\n"
-                + "ROBBER did not move";
-        }
-        else if(!move2.getMessageName().equals("Set"))
-        {
-            err = "Incorrect Move Number: " + move2Num + "\n"
                 + "ROBBER expects: SET(SOLDIERCOUNT + playerId, VAL)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move2).getKey().contains(SettlersOfCatanConstants.SOLDIERCOUNTTOKEN))
+        else if(!((Set)move1).getKey().contains(SettlersOfCatanConstants.SOLDIERCOUNTTOKEN))
         {
-            err = "Incorrect Move Number: " + move2Num + "\n"
+            err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ROBBER expects: SET(SOLDIERCOUNT + playerId, VAL)\n"
                 + "SOLDIERCOUNTTOKEN key expected";
         }
-        else if(!((Set)move2).getKey().contains(playerString))
+        else if(!((Set)move1).getKey().contains(playerString))
         {
-            err = "Incorrect Move Number: " + move2Num + "\n"
+            err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ROBBER expects: SET(SOLDIERCOUNT + playerId, VAL)\n"
                 + "playerString key expected";
         }
-        else if(!isInteger(((Set)move2).getValue().toString()))
+        else if(!isInteger(((Set)move1).getValue().toString()))
         {
-            err = "Incorrect Move Number: " + move2Num + "\n"
+            err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ROBBER expects: SET(SOLDIERCOUNT + playerId, VAL)\n"
                 + "SOLDIERCOUNT value is not an integer";
         }
-        else if( Integer.parseInt(lastState.get(((Set)move2).getKey()).toString()) + 1
-              != Integer.parseInt((((Set)move2).getValue()).toString()) )
+        else if( Integer.parseInt(lastState.get(((Set)move1).getKey()).toString()) + 1
+              != Integer.parseInt((((Set)move1).getValue()).toString()) )
         {
-            err = "Incorrect Move Number: " + move2Num + "\n"
+            err = "Incorrect Move Number: " + move1Num + "\n"
                 + "ROBBER expects: SET(SOLDIERCOUNT + playerId, VAL)\n"
                 + "SOLDIERCOUNT not updated correctly";
         }
@@ -4615,7 +4990,6 @@ public class SettlersOfCatanLogic {
     // Returns whether the monopoly moves match
     private boolean matchMonopoly(
             Operation move1, int move1Num,
-            Operation move2, int move2Num,
             Map<String, Object> lastState,
             String playerString)
     {
@@ -4627,7 +5001,7 @@ public class SettlersOfCatanLogic {
                 + "MONOPOLY expects: SET(MONOPOLYRESOURCE, resource)\n"
                 + "Set move expected";
         }
-        else if(!((Set)move1).getKey().contains(SettlersOfCatanConstants.MONOPOLYRESOURCE))
+        else if(!((Set)move1).getKey().contains(SettlersOfCatanConstants.MONOPOLY))
         {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "MONOPOLY expects: SET(MONOPOLYRESOURCE, resource)\n"
@@ -4642,24 +5016,6 @@ public class SettlersOfCatanLogic {
             err = "Incorrect Move Number: " + move1Num + "\n"
                 + "MONOPOLY expects: SET(MONOPOLYRESOURCE, resource)\n"
                 + "A type of resource value expected";
-        }
-        else if(!move2.getMessageName().equals("Set"))
-        {
-            err = "Incorrect Move Number: " + move2Num + "\n"
-                + "MONOPOLY expects: SET(MONOPOLYBENEFACTOR, playerString)\n"
-                + "Set move expected";
-        }
-        else if(!((Set)move2).getKey().contains(SettlersOfCatanConstants.MONOPOLYBENEFACTOR))
-        {
-            err = "Incorrect Move Number: " + move2Num + "\n"
-                + "MONOPOLY expects: SET(MONOPOLYBENEFACTOR, playerString)\n"
-                + "MONOPOLYBENEFACTOR key expected";
-        }
-        else if(!((Set)move2).getValue().toString().contains(playerString))
-        {
-            err = "Incorrect Move Number: " + move2Num + "\n"
-                + "MONOPOLY expects: SET(MONOPOLYBENEFACTOR, playerString)\n"
-                + "playerString value expected";
         }
         else
         {
@@ -5081,6 +5437,7 @@ public class SettlersOfCatanLogic {
         return status;
     }
     
+    
     // Returns whether the list of moves matches for an End Game
     private boolean matchEndGame(
             Operation move1, int move1Num,
@@ -5237,7 +5594,7 @@ public class SettlersOfCatanLogic {
                 String currentLongestPathHolder = lastState.get(SettlersOfCatanConstants.LONGESTROAD).toString();
                 List<String> longestPathHolder = null;
                 
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 15; i++)
                 {
                     List<String> pathToCheck = new ArrayList<String>();
                     
@@ -5285,7 +5642,7 @@ public class SettlersOfCatanLogic {
             String lastPath,
             String playerString)
     {
-        List<String> longestPath = null;
+        List<String> longestPath = currentPath;
         
         if( currentPath == null
          || !currentPath.contains(lastPath) )
@@ -5527,15 +5884,15 @@ public class SettlersOfCatanLogic {
     {
         int count = 0;
         
-        if(lastState.containsKey(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF04))
+        if(lastState.containsValue(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF04))
             count++;
-        if(lastState.containsKey(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF05))
+        if(lastState.containsValue(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF05))
             count++;
-        if(lastState.containsKey(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF06))
+        if(lastState.containsValue(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF06))
             count++;
-        if(lastState.containsKey(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF07))
+        if(lastState.containsValue(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF07))
             count++;
-        if(lastState.containsKey(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF08))
+        if(lastState.containsValue(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF08))
             count++;
         
         return count;
@@ -5752,6 +6109,7 @@ public class SettlersOfCatanLogic {
                 nodeList = ImmutableList.of(
                         SettlersOfCatanConstants.NODE06,
                         SettlersOfCatanConstants.NODE10);
+                break;
             case SettlersOfCatanConstants.PATH10:
                 nodeList = ImmutableList.of(
                         SettlersOfCatanConstants.NODE07,
@@ -6450,20 +6808,23 @@ public class SettlersOfCatanLogic {
     {
         boolean status = false;
         
-        ImmutableList<String> nodesFromPath = getNodesFromPath(path);
-        
-        for(int i = 0; i < nodesFromPath.size(); i++)
+        if(!lastState.containsKey(path))
         {
-            ImmutableList<String> paths = getPathsFromNode(nodesFromPath.get(i));
+            ImmutableList<String> nodesFromPath = getNodesFromPath(path);
             
-            for(int j = 0; j < paths.size(); j++)
+            for(int i = 0; i < nodesFromPath.size(); i++)
             {
-                status = status || ( lastState.containsKey(paths.get(j))
-                                  && lastState.get(paths.get(j)).toString().contains(playerString));
+                ImmutableList<String> paths = getPathsFromNode(nodesFromPath.get(i));
+                
+                for(int j = 0; j < paths.size(); j++)
+                {
+                    status = status || ( lastState.containsKey(paths.get(j))
+                                      && lastState.get(paths.get(j)).toString().contains(playerString));
+                }
+                
+                status = status || ( lastState.containsKey(nodesFromPath.get(i))
+                        && lastState.get(nodesFromPath.get(i)).toString().contains(playerString));
             }
-            
-            status = status || ( lastState.containsKey(nodesFromPath.get(i))
-                    && lastState.get(nodesFromPath.get(i)).toString().contains(playerString));
         }
         
         return status;
@@ -6482,6 +6843,9 @@ public class SettlersOfCatanLogic {
             firstOpen = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + "0" + firstOpenDevelopmentCard;
         else if(firstOpenDevelopmentCard < 25)
             firstOpen = SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN + firstOpenDevelopmentCard;
+        
+        //if(++seconddaryVerifyCount % playerIds.size() == 0)
+            firstOpenDevelopmentCard++;
         
         return firstOpen;
     }
@@ -6559,6 +6923,42 @@ public class SettlersOfCatanLogic {
         {
             expectedMove = SettlersOfCatanConstants.CLEARROLL;
         }
+        else if( finishPlayDevelopmentCardMove )
+        {
+            expectedMove = SettlersOfCatanConstants.PLAYDEVELOPMENTCARDPT2;
+        }
+        else if (yearOfPlentyNext )
+        {
+            expectedMove = SettlersOfCatanConstants.PLAYYEAROFPLENTY;
+        }
+        else if (roadBuilding1 )
+        {
+            expectedMove = SettlersOfCatanConstants.PLAYROADBUILDINGPT1;
+        }
+        else if (roadBuilding2 )
+        {
+            expectedMove = SettlersOfCatanConstants.PLAYROADBUILDINGPT2;
+        }
+        else if (monopoly1)
+        {
+            expectedMove = SettlersOfCatanConstants.MONOPOLYPB;
+        }
+        else if (monopoly2)
+        {
+            expectedMove = SettlersOfCatanConstants.MONOPOLYPR;
+        }
+        else if (monopoly3)
+        {
+            expectedMove = SettlersOfCatanConstants.MONOPOLYPY;
+        }
+        else if (monopoly4)
+        {
+            expectedMove = SettlersOfCatanConstants.MONOPOLYPG;
+        }
+        else if (monopolyFinish)
+        {
+            expectedMove = SettlersOfCatanConstants.FINISHMONOPOLY;
+        }
         // Move contains a SET Turn command with the next player string
         // This is a CHANGETURN move
         else if ( findJustASetTurnMoveInMoves(lastMove, SettlersOfCatanConstants.TURN) )
@@ -6583,17 +6983,17 @@ public class SettlersOfCatanLogic {
         {
             expectedMove = SettlersOfCatanConstants.BUILDROADPT1;
         }
+        // Move contains a SET Development Card command with the PLAYED tag
+        // This is a PLAYDEVELOPMENTCARD move
+        else if ( findASetVisibleMoveInMovesForDev(lastMove, SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN) )
+        {
+            expectedMove = SettlersOfCatanConstants.PLAYDEVELOPMENTCARDPT1;
+        }
         // Move contains a SET Development Card command with the current playerString
         // This is a BUYDEVELOPMENTCARD move
         else if ( findASetVisibleMoveInMoves(lastMove, SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN) )
         {
             expectedMove = SettlersOfCatanConstants.BUYDEVELOPMENTCARDPT1;
-        }
-        // Move contains a SET Development Card command with the PLAYED tag
-        // This is a PLAYDEVELOPMENTCARD move
-        else if ( findASetMoveInMoves(lastMove, SettlersOfCatanConstants.DEVELOPMENTCARDTOKEN, "") )
-        {
-            expectedMove = SettlersOfCatanConstants.PLAYDEVELOPMENTCARD;
         }
         // Move contains a SET Robber Card
         // This is a PLAYDEVELOPMENTCARD move
@@ -6708,6 +7108,28 @@ public class SettlersOfCatanLogic {
         return status;
     }
     
+    // Returns whether the list of moves contains a Set move with the given Key and Value
+    // Searches all the SET moves in a move list and returns true if it finds
+    // at least one move that has a key and value that contain the two input searches
+    private boolean findASetVisibleMoveInMovesForDev(
+            List<Operation> lastMove,
+            String containsKeyString)
+    {
+        boolean status = false;
+        
+        for(int i = 0; i < lastMove.size(); i++)
+        {
+            if(lastMove.get(i).getMessageName().equals("SetVisibility"))
+            {
+                status = status
+                      || (((SetVisibility)lastMove.get(i)).getKey().contains(containsKeyString)
+                       && ((SetVisibility)lastMove.get(i)).getVisibleToPlayerIds() == "ALL");
+            }
+        }
+        
+        return status;
+    }
+    
     // Returns whether the list of moves contains a SetRandomInteger move
     private boolean findASetRandomIntegerInMoves(
             List<Operation> lastMove)
@@ -6781,7 +7203,10 @@ public class SettlersOfCatanLogic {
         
         if(playerIds.get(0) == lastMovePlayerId)
         {
-            playerString = SettlersOfCatanConstants.PR;
+            if(playerIds.size() == 1)
+                playerString = SettlersOfCatanConstants.PB;
+            else
+                playerString = SettlersOfCatanConstants.PR;
         }
         else if(playerIds.get(1) == lastMovePlayerId)
         {
@@ -6819,8 +7244,10 @@ public class SettlersOfCatanLogic {
                 playerString = SettlersOfCatanConstants.PG;
             else if (playerIds.size() == 3)
                 playerString = SettlersOfCatanConstants.PY;
-            else
+            else if (playerIds.size() == 2)
                 playerString = SettlersOfCatanConstants.PR;
+            else if (playerIds.size() == 1)
+                playerString = SettlersOfCatanConstants.PB;
         }
         else if(playerIds.get(1) == lastMovePlayerId)
         {
@@ -7163,4 +7590,9 @@ public class SettlersOfCatanLogic {
         
         return status;
     }
+    
+    // A Java method using JSNI
+    native void sayHelloInJava(String name) /*-{
+      $wnd.sayHello(name); // $wnd is a JSNI synonym for 'window'
+    }-*/;
 }

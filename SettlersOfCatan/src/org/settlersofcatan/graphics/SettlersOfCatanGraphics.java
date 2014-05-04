@@ -279,9 +279,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             nodeImage = new Image(boardImageSupplier.getNodeToken(
                     nodeList.get(i).getPlayer(),
                     nodeList.get(i).getSettlement()));
-            if(nodeList.get(i).getPlayer() == -1 && (presenter.canPlaceSettlement(i) || presenter.canPlaceCity(i)))
+            if((nodeList.get(i).getPlayer() == -1 && presenter.canPlaceSettlement(i)) || presenter.canPlaceCity(i))
             {
                 final int num = i;
+                final int playerAt = nodeList.get(i).getPlayer();
                 
                 SimpleDropController dropController = new SimpleDropController(nodeImage)
                 {
@@ -300,8 +301,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                 nodeImage.addClickHandler(new ClickHandler() {
                             @Override
                             public void onClick(ClickEvent event) {
-                                if (chooseSettlementEnabledEnd) {
+                                if (chooseSettlementEnabledEnd && (playerAt == -1 && presenter.canPlaceSettlement(num))) {
                                     chooseSettlementEnabledEnd = false;
+                                    currentAnimation.runAnimation(SettlersOfCatanConstants.NODE_XY[2*num], SettlersOfCatanConstants.NODE_XY[(2*num)+1], num);
+                                }
+                                
+                                if (chooseCityEnabledEnd && presenter.canPlaceCity(num)) {
+                                    chooseCityEnabledEnd = false;
                                     currentAnimation.runAnimation(SettlersOfCatanConstants.NODE_XY[2*num], SettlersOfCatanConstants.NODE_XY[(2*num)+1], num);
                                 }
                             }
@@ -401,13 +407,19 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         ap.setWidth("950px");
         for (int i = 0; i < developmentCards.size(); i++) {
             final int j = i;
+            final String card = developmentCards.get(i);
             Image resourceCardImage = new Image(
                     boardImageSupplier.getDevelopmentCard(developmentCards.get(i)));
             resourceCardImage.addClickHandler(new ClickHandler() {
                 @Override
                 public void onClick(ClickEvent event) {
-                  if (chooseResourceCardEnabled) {
-                    presenter.setResourceCardSelected(j);
+                  if (chooseDevelopmentCardEnabled &&
+                          ( card.equals(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00)
+                         || card.equals(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF01)
+                         || card.equals(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02)
+                         || card.equals(SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03))) {
+                      chooseDevelopmentCardEnabled = false;
+                      presenter.prepDevelopmentCardToPlay(j);
                   }
                 }
               });
@@ -423,10 +435,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         infoArea.clear();
         
         AbsolutePanel ap = new AbsolutePanel();
-        ap.setHeight("40px");
+        ap.setHeight("80px");
         ap.setWidth("950px");
         FlowPanel fp = new FlowPanel();
-        fp.setHeight("40px");
+        fp.setHeight("80px");
         fp.setWidth("950px");
         
         Label message;
@@ -504,7 +516,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                           presenter.rollDice();
                        }
                     });
-                    ap.add(rollDiceButton, 100, 5);
+                    ap.add(rollDiceButton, 200, 5);
                     break;
                 case SettlersOfCatanConstants.MOVEROBBERPT1:
                     message = new Label(constants.roll7());
@@ -512,6 +524,29 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp.add(message);
                     chooseHexEnabled = true;
                     infoArea.add(fp);
+                    break;
+                case SettlersOfCatanConstants.PLAYSOLDIER:
+                    message = new Label(constants.playSoldier());
+                    message.getElement().getStyle().setFontSize(2, Unit.EM);
+                    fp.add(message);
+                    chooseHexEnabled = true;
+                    infoArea.add(fp);
+                    break;
+                case SettlersOfCatanConstants.PLAYROADBUILDINGPT1:
+                    message = new Label(constants.roadBuilding1());
+                    message.getElement().getStyle().setFontSize(2, Unit.EM);
+                    ap.add(message, 5, 5);
+                    choosePathEnabledBegin = true;
+                    choosePathEnabledDND = true;
+                    //dragController.makeDraggable(roadImage);
+                    break;
+                case SettlersOfCatanConstants.PLAYROADBUILDINGPT2:
+                    message = new Label(constants.roadBuilding2());
+                    message.getElement().getStyle().setFontSize(2, Unit.EM);
+                    ap.add(message, 5, 5);
+                    choosePathEnabledBegin = true;
+                    choosePathEnabledDND = true;
+                    //dragController.makeDraggable(roadImage);
                     break;
                 case SettlersOfCatanConstants.MOVEROBBERPT2:
                     if(!secondary.equals(""))
@@ -814,6 +849,144 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp.add(buyDevelopmentCard);
                     infoArea.add(fp);
                     break;
+                case SettlersOfCatanConstants.PLAYDEVELOPMENTCARDPT1:
+                    presenter.finishDevelopmentCardSelected("");
+                    break;
+                case SettlersOfCatanConstants.PLAYMONOPOLYPT1:
+                    infoArea.clear();
+                    
+                    FlowPanel fp4 = new FlowPanel();
+                    
+                    Label newText2 = new Label(constants.chooseMonopolyResource());
+                    newText2.getElement().getStyle().setFontSize(2, Unit.EM);
+                    fp4.add(newText2);
+                    
+                    Button brick2 = new Button(constants.brick());
+                    brick2.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            presenter.finishDevelopmentCardSelected(SettlersOfCatanConstants.BRICK);                                                   
+                        }
+                    });
+                    fp4.add(brick2);
+                    
+                    Button lumber2 = new Button(constants.lumber());
+                    lumber2.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            presenter.finishDevelopmentCardSelected(SettlersOfCatanConstants.LUMBER);                                                   
+                        }
+                    });
+                    fp4.add(lumber2);
+                    
+                    Button grain2 = new Button(constants.grain());
+                    grain2.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            presenter.finishDevelopmentCardSelected(SettlersOfCatanConstants.GRAIN);                                                   
+                        }
+                    });
+                    fp4.add(grain2);
+                    
+                    Button wool2 = new Button(constants.wool());
+                    wool2.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            presenter.finishDevelopmentCardSelected(SettlersOfCatanConstants.WOOL);                                                   
+                        }
+                    });
+                    fp4.add(wool2);
+                    
+                    Button ore2 = new Button(constants.ore());
+                    ore2.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            presenter.finishDevelopmentCardSelected(SettlersOfCatanConstants.ORE);  
+                        }
+                    });
+                    fp4.add(ore2);
+                    
+                    infoArea.add(fp4);
+                    break;
+                case SettlersOfCatanConstants.PLAYMONOPOLY:
+                    presenter.displayResources();
+                    break;
+                    
+                case SettlersOfCatanConstants.FINISHMONOPOLY:
+                    // Add thingy where I take all the resources and then clear it
+                    presenter.finishMonopoly();
+                    break;
+                case SettlersOfCatanConstants.PLAYYEAROFPLENTY:
+                    infoArea.clear();
+                    
+                    FlowPanel fp3 = new FlowPanel();
+                    
+                    Label newText = new Label(constants.chooseDesiredResource());
+                    newText.getElement().getStyle().setFontSize(2, Unit.EM);
+                    fp3.add(newText);
+                    
+                    Button brick = new Button(constants.brick());
+                    brick.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            presenter.performYearOfPlenty(SettlersOfCatanConstants.BRICK);                                                   
+                        }
+                    });
+                    fp3.add(brick);
+                    
+                    Button lumber = new Button(constants.lumber());
+                    lumber.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            presenter.performYearOfPlenty(SettlersOfCatanConstants.LUMBER);                                                   
+                        }
+                    });
+                    fp3.add(lumber);
+                    
+                    Button grain = new Button(constants.grain());
+                    grain.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            presenter.performYearOfPlenty(SettlersOfCatanConstants.GRAIN);                                                   
+                        }
+                    });
+                    fp3.add(grain);
+                    
+                    Button wool = new Button(constants.wool());
+                    wool.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            presenter.performYearOfPlenty(SettlersOfCatanConstants.WOOL);                                                   
+                        }
+                    });
+                    fp3.add(wool);
+                    
+                    Button ore = new Button(constants.ore());
+                    ore.addClickHandler(new ClickHandler() {
+                        @Override
+                        public void onClick(ClickEvent event) {
+                            presenter.performYearOfPlenty(SettlersOfCatanConstants.ORE);  
+                        }
+                    });
+                    fp3.add(ore);
+                    
+                    infoArea.add(fp3);
+                    break;
+                case SettlersOfCatanConstants.FINISHYEAROFPLENTY:
+                    message = new Label(constants.yearOfPlenty());
+                    message.getElement().getStyle().setFontSize(2, Unit.EM);
+                    fp.add(message);
+                    Button yop = new Button(constants.makeAnotherMove());
+                    yop.addClickHandler(new ClickHandler() {
+                       @Override
+                       public void onClick(ClickEvent event) {
+                           presenter.makeMove();
+                           createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
+                       }
+                    });
+                    fp.add(yop);
+                    infoArea.add(fp);
+                    break;
                 case SettlersOfCatanConstants.ENDGAME:
                     message = new Label(constants.youWin());
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
@@ -968,16 +1141,16 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     
                     if(presenter.canBuyDevelopmentCard())
                     {
-                        Button buyDevelopementCard = new Button(constants.buyDevelopmentCard());
+                        Button buyDevelopmentCard2 = new Button(constants.buyDevelopmentCard());
                         
                         //add a clickListener to the button
-                        buyDevelopementCard.addClickHandler(new ClickHandler() {
+                        buyDevelopmentCard2.addClickHandler(new ClickHandler() {
                            @Override
                            public void onClick(ClickEvent event) {
                               presenter.buyDevelopmentCard();
                            }
                         });
-                        fp.add(buyDevelopementCard);
+                        fp.add(buyDevelopmentCard2);
                     }
                     
                     if(presenter.canPlayDevelopmentCard())
@@ -1475,6 +1648,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
 
     public void handleDiceRoll(int roll0, int roll1)
     {
+        System.out.println(roll0 + roll1);
         switch(roll0 + roll1)
         {
         case 7:

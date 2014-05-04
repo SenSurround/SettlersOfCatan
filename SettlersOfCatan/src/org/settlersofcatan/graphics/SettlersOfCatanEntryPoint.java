@@ -44,8 +44,11 @@ public class SettlersOfCatanEntryPoint implements EntryPoint {
     container = new ContainerConnector(game);
     SettlersOfCatanGraphics settlersOfCatanGraphics = new SettlersOfCatanGraphics();
     if(settlersOfCatanPresenter == null)
+    {
         settlersOfCatanPresenter =
-            new SettlersOfCatanPresenter(settlersOfCatanGraphics, container);
+            new SettlersOfCatanPresenter(settlersOfCatanGraphics, container, settlersOfCatanLogic);
+        settlersOfCatanPresenter.settlersOfCatanLogic = settlersOfCatanLogic;
+    }
     //final ListBox playerSelect = new ListBox();
     //playerSelect.addItem("BluePlayer");
     //playerSelect.addItem("RedPlayer");

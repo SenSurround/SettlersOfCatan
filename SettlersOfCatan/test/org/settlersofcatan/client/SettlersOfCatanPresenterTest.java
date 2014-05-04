@@ -127,7 +127,7 @@ public class SettlersOfCatanPresenterTest {
     public void runBefore() {
       mockView = Mockito.mock(View.class);
       mockContainer = Mockito.mock(Container.class);
-      settlersOfCatanPresenter = new SettlersOfCatanPresenter(mockView, mockContainer);
+      settlersOfCatanPresenter = new SettlersOfCatanPresenter(mockView, mockContainer, settlersOfCatanLogic);
       verify(mockView).setPresenter(settlersOfCatanPresenter);
     }
 

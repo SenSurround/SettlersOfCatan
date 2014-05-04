@@ -118,7 +118,7 @@ public interface SettlersOfCatanLanguageFormatConstants extends Constants {
     @DefaultStringValue("Choose a path or cancel")
     String choosePath();
 
-    @DefaultStringValue("BuyDevelopementCard")
+    @DefaultStringValue("BuyDevelopmentCard")
     String buyDevelopmentCard();
 
     @DefaultStringValue("PlayDevelopementCard")
@@ -156,5 +156,20 @@ public interface SettlersOfCatanLanguageFormatConstants extends Constants {
 
     @DefaultStringValue("NOT YOUR TURN.")
     String notYourTurn();
+
+    @DefaultStringValue("You played a soldier! Choose a new location for the robber")
+    String playSoldier();
+
+    @DefaultStringValue("You played year of plenty!")
+    String yearOfPlenty();
+
+    @DefaultStringValue("Place one free road: Please choose a path (1/2)")
+    String roadBuilding1();
+
+    @DefaultStringValue("Place one free road: Please choose a path (2/2)")
+    String roadBuilding2();
+
+    @DefaultStringValue("Choose a desired resource to steal from opponents")
+    String chooseMonopolyResource();
 
 }
