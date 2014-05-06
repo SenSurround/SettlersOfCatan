@@ -57,18 +57,17 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
     private final BoardImageSupplier boardImageSupplier;
     private SettlersOfCatanPresenter presenter;
     private boolean chooseHexEnabled;
-    private boolean choosePathEnabledBegin;
     private boolean choosePathEnabledEnd;
     private boolean choosePathEnabledDND;
-    private boolean chooseSettlementEnabledBegin;
     private boolean chooseSettlementEnabledEnd;
     private boolean chooseSettlementEnabledDND;
-    private boolean chooseCityEnabledBegin;
     private boolean chooseCityEnabledEnd;
     private boolean chooseCityEnabledDND;
     private boolean chooseResourceCardEnabled;
     private boolean chooseDevelopmentCardEnabled;
     private boolean myTurn;
+    
+    private AbsolutePanel storedAp;
     
     private Image settlementImage;
     private Image cityImage;
@@ -76,7 +75,6 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
     
     
     private BoardPieceMovingAnimation currentAnimation;
-    private PickupDragController dragController;
     
     SettlersOfCatanLanguageFormatConstants constants;
     
@@ -106,32 +104,12 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         preAp.setHeight("850px");
         preAp.setWidth("950px");
         
-        dragController = new PickupDragController(preAp, false);
-        dragController.setBehaviorDragStartSensitivity(1);
-        dragController.addDragHandler(new DragHandlerAdapter(){});
-        
         // Draw road/city/settlement cache
         if(presenter.myPlayer > -1 && presenter.myPlayer < 4)
         {
             settlementImage = new Image(boardImageSupplier.getNodeTokenSolo(
                     presenter.myPlayer,
                     1));
-            
-            if(myTurn)
-            {
-                settlementImage.addClickHandler(new ClickHandler() {
-                            @Override
-                            public void onClick(ClickEvent event) {
-                              if (chooseSettlementEnabledBegin) {
-                                  chooseSettlementEnabledBegin = false;
-                                  currentAnimation = new BoardPieceMovingAnimation(
-                                          boardArea, preAp, presenter, true, settlementImage);
-                                  currentAnimation.setStartPoint(250,770);
-                                  chooseSettlementEnabledEnd = true;
-                              }
-                            }
-                          });
-            }
             
             Label sc = new Label(" x " + presenter.getBoard().numAvailableSettlements(presenter.myPlayer));
             sc.getElement().getStyle().setFontSize(2, Unit.EM);
@@ -144,23 +122,6 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             cityImage = new Image(boardImageSupplier.getNodeTokenSolo(
                     presenter.myPlayer,
                     2));
-
-            if(myTurn)
-            {
-                
-                cityImage.addClickHandler(new ClickHandler() {
-                            @Override
-                            public void onClick(ClickEvent event) {
-                              if (chooseCityEnabledBegin) {
-                                  chooseCityEnabledBegin = false;
-                                  currentAnimation = new BoardPieceMovingAnimation(
-                                          boardArea, preAp, presenter, true, cityImage);
-                                  currentAnimation.setStartPoint(400,770);
-                                  chooseCityEnabledEnd = true;
-                              }
-                            }
-                          });
-            }
             
             sc = new Label(" x " + presenter.getBoard().numAvailableCities(presenter.myPlayer));
             sc.getElement().getStyle().setFontSize(2, Unit.EM);
@@ -174,23 +135,6 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     presenter.myPlayer,
                     6));
             
-
-            if(myTurn)
-            {
-                roadImage.addClickHandler(new ClickHandler() {
-                            @Override
-                            public void onClick(ClickEvent event) {
-                                if (choosePathEnabledBegin) {
-                                    choosePathEnabledBegin = false;
-                                    currentAnimation = new BoardPieceMovingAnimation(
-                                            boardArea, preAp, presenter, false, roadImage);
-                                    currentAnimation.setStartPoint(550,800);
-                                    choosePathEnabledEnd = true;
-                                }
-                            }
-                          });
-            }
-            
             sc = new Label(" x " + presenter.getBoard().numAvailableRoads(presenter.myPlayer));
             sc.getElement().getStyle().setFontSize(2, Unit.EM);
 
@@ -198,6 +142,8 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
             //preAp.add(sc, 70, 152);
             preAp.add(roadImage, 550,770);
             preAp.add(sc, 600, 782);
+            
+            storedAp = preAp;
         }
 
         AbsolutePanel ap = createHexImage(hexList, preAp);
@@ -290,13 +236,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     public void onDrop(DragContext context) {
                         if (chooseSettlementEnabledDND) {
                             chooseSettlementEnabledDND = false;
-                            dragController.makeNotDraggable(settlementImage);
                             presenter.setNodeToBuild(num);
                         }
                     }
                 };
-                
-                dragController.registerDropController(dropController);
                 
                 nodeImage.addClickHandler(new ClickHandler() {
                             @Override
@@ -346,13 +289,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     public void onDrop(DragContext context) {
                         if (choosePathEnabledDND) {
                             choosePathEnabledDND = false;
-                            dragController.makeNotDraggable(roadImage);
                             presenter.setPathToBuild(num);
                         }
                     }
                 };
-                
-                dragController.registerDropController(dropController);
                 
                 pathImage.addClickHandler(new ClickHandler() {
                             @Override
@@ -377,21 +317,66 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         AbsolutePanel ap = new AbsolutePanel();
         ap.setHeight("110px");
         ap.setWidth("950px");
+        
+        int ore = 0;
+        int brick = 0;
+        int lumber = 0;
+        int grain = 0;
+        int wool = 0;
+        
         for (int i = 0; i < resourceCards.size(); i++) {
-            final int j = i;
-            Image resourceCardImage = new Image(
-                    boardImageSupplier.getResourceCard(resourceCards.get(i)));
-            resourceCardImage.addClickHandler(new ClickHandler() {
-                @Override
-                public void onClick(ClickEvent event) {
-                  if (chooseResourceCardEnabled) {
-                    presenter.setResourceCardSelected(j);
-                  }
-                }
-              });
-            
-            ap.add(resourceCardImage, 5 + (i*70), 5);
+            if(resourceCards.get(i).equals(SettlersOfCatanConstants.ORE))
+                ore++;
+            else if(resourceCards.get(i).equals(SettlersOfCatanConstants.BRICK))
+                brick++;
+            else if(resourceCards.get(i).equals(SettlersOfCatanConstants.LUMBER))
+                lumber++;
+            else if(resourceCards.get(i).equals(SettlersOfCatanConstants.GRAIN))
+                grain ++;
+            else if(resourceCards.get(i).equals(SettlersOfCatanConstants.WOOL))
+                wool++;
         }
+        
+
+        Image resourceCardImage = new Image(
+                boardImageSupplier.getResourceCard(SettlersOfCatanConstants.ORE));
+        ap.add(resourceCardImage, 5 + 70, 5);
+
+        Label sc = new Label(" x " + ore);
+        sc.getElement().getStyle().setFontSize(2, Unit.EM);
+        ap.add(sc, 155, 40);
+
+        resourceCardImage = new Image(
+                boardImageSupplier.getResourceCard(SettlersOfCatanConstants.BRICK));
+        ap.add(resourceCardImage, 5 + 210, 5);
+
+        sc = new Label(" x " + brick);
+        sc.getElement().getStyle().setFontSize(2, Unit.EM);
+        ap.add(sc, 295, 40);
+
+        resourceCardImage = new Image(
+                boardImageSupplier.getResourceCard(SettlersOfCatanConstants.LUMBER));
+        ap.add(resourceCardImage, 5 + 350, 5);
+
+        sc = new Label(" x " + lumber);
+        sc.getElement().getStyle().setFontSize(2, Unit.EM);
+        ap.add(sc, 435, 40);
+
+        resourceCardImage = new Image(
+                boardImageSupplier.getResourceCard(SettlersOfCatanConstants.GRAIN));
+        ap.add(resourceCardImage, 5 + 490, 5);
+
+        sc = new Label(" x " + grain);
+        sc.getElement().getStyle().setFontSize(2, Unit.EM);
+        ap.add(sc, 575, 40);
+
+        resourceCardImage = new Image(
+                boardImageSupplier.getResourceCard(SettlersOfCatanConstants.WOOL));
+        ap.add(resourceCardImage, 5 + 630, 5);
+
+        sc = new Label(" x " + wool);
+        sc.getElement().getStyle().setFontSize(2, Unit.EM);
+        ap.add(sc, 735, 40);
         
         playerResourceCardArea.add(ap);
     }
@@ -456,9 +441,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         {
             message = new Label(constants.enjoyWatching());
             message.getElement().getStyle().setFontSize(2, Unit.EM);
-            chooseSettlementEnabledBegin = false;
-            choosePathEnabledBegin = false;
-            chooseCityEnabledBegin = false;
+            //currentAnimation = null;
             chooseSettlementEnabledEnd = false;
             choosePathEnabledEnd = false;
             chooseCityEnabledEnd = false;
@@ -475,7 +458,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message = new Label(constants.placeFreeSettlement1());
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     ap.add(message, 5, 5);
-                    chooseSettlementEnabledBegin = true;
+                    chooseSettlementEnabledEnd = true;
+                    currentAnimation = new BoardPieceMovingAnimation(
+                            boardArea, storedAp, presenter, true, settlementImage);
+                    currentAnimation.setStartPoint(250,770);
                     chooseSettlementEnabledDND = true;
                     //dragController.makeDraggable(settlementImage);
                     break;
@@ -483,7 +469,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message = new Label(constants.placeFreeRoad());
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     ap.add(message, 5, 5);
-                    choosePathEnabledBegin = true;
+                    choosePathEnabledEnd = true;
+                    currentAnimation = new BoardPieceMovingAnimation(
+                            boardArea, storedAp, presenter, false, roadImage);
+                    currentAnimation.setStartPoint(550,800);
                     choosePathEnabledDND = true;
                     //dragController.makeDraggable(roadImage);
                     break;
@@ -491,7 +480,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message = new Label(constants.placeFreeSettlement2());
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     ap.add(message, 5, 5);
-                    chooseSettlementEnabledBegin = true;
+                    chooseSettlementEnabledEnd = true;
+                    currentAnimation = new BoardPieceMovingAnimation(
+                            boardArea, storedAp, presenter, true, settlementImage);
+                    currentAnimation.setStartPoint(250,770);
                     chooseSettlementEnabledDND = true;
                     //dragController.makeDraggable(settlementImage);
                     break;
@@ -499,7 +491,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message = new Label(constants.placeFreeRoad());
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     ap.add(message, 5, 5);
-                    choosePathEnabledBegin = true;
+                    choosePathEnabledEnd = true;
+                    currentAnimation = new BoardPieceMovingAnimation(
+                            boardArea, storedAp, presenter, false, roadImage);
+                    currentAnimation.setStartPoint(550,800);
                     choosePathEnabledDND = true;
                     //dragController.makeDraggable(roadImage);
                     break;
@@ -508,6 +503,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     ap.add(message, 5, 5);
                     Button rollDiceButton = new Button(constants.rollDice());
+                    rollDiceButton.getElement().getStyle().setFontSize(2, Unit.EM);
                     
                     //add a clickListener to the button
                     rollDiceButton.addClickHandler(new ClickHandler() {
@@ -536,7 +532,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message = new Label(constants.roadBuilding1());
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     ap.add(message, 5, 5);
-                    choosePathEnabledBegin = true;
+                    choosePathEnabledEnd = true;
+                    currentAnimation = new BoardPieceMovingAnimation(
+                            boardArea, storedAp, presenter, false, roadImage);
+                    currentAnimation.setStartPoint(550,800);
                     choosePathEnabledDND = true;
                     //dragController.makeDraggable(roadImage);
                     break;
@@ -544,7 +543,10 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message = new Label(constants.roadBuilding2());
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     ap.add(message, 5, 5);
-                    choosePathEnabledBegin = true;
+                    choosePathEnabledEnd = true;
+                    currentAnimation = new BoardPieceMovingAnimation(
+                            boardArea, storedAp, presenter, false, roadImage);
+                    currentAnimation.setStartPoint(550,800);
                     choosePathEnabledDND = true;
                     //dragController.makeDraggable(roadImage);
                     break;
@@ -558,6 +560,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         if(secondary.contains(SettlersOfCatanConstants.PB))
                         {
                             Button player = new Button(constants.blue());
+                            player.getElement().getStyle().setFontSize(2, Unit.EM);
                             player.addClickHandler(new ClickHandler() {
                                 @Override
                                 public void onClick(ClickEvent event) {
@@ -570,6 +573,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         if(secondary.contains(SettlersOfCatanConstants.PR))
                         {
                             Button player = new Button(constants.red());
+                            player.getElement().getStyle().setFontSize(2, Unit.EM);
                             player.addClickHandler(new ClickHandler() {
                                 @Override
                                 public void onClick(ClickEvent event) {
@@ -582,6 +586,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         if(secondary.contains(SettlersOfCatanConstants.PY))
                         {
                             Button player = new Button(constants.yellow());
+                            player.getElement().getStyle().setFontSize(2, Unit.EM);
                             player.addClickHandler(new ClickHandler() {
                                 @Override
                                 public void onClick(ClickEvent event) {
@@ -594,6 +599,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                         if(secondary.contains(SettlersOfCatanConstants.PG))
                         {
                             Button player = new Button(constants.green());
+                            player.getElement().getStyle().setFontSize(2, Unit.EM);
                             player.addClickHandler(new ClickHandler() {
                                 @Override
                                 public void onClick(ClickEvent event) {
@@ -617,6 +623,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button robberDone = new Button(constants.makeAnotherMove());
+                    robberDone.getElement().getStyle().setFontSize(2, Unit.EM);
                     robberDone.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -632,6 +639,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button makeAMove2 = new Button(constants.makeAMove());
+                    makeAMove2.getElement().getStyle().setFontSize(2, Unit.EM);
                     makeAMove2.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -647,6 +655,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button makeAMove3 = new Button(constants.makeAMove());
+                    makeAMove3.getElement().getStyle().setFontSize(2, Unit.EM);
                     makeAMove3.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -662,6 +671,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button makeAMove4 = new Button(constants.makeAMove());
+                    makeAMove4.getElement().getStyle().setFontSize(2, Unit.EM);
                     makeAMove4.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -677,6 +687,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button makeAMove5 = new Button(constants.makeAMove());
+                    makeAMove5.getElement().getStyle().setFontSize(2, Unit.EM);
                     makeAMove5.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -692,6 +703,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button makeAMove6 = new Button(constants.makeAMove());
+                    makeAMove6.getElement().getStyle().setFontSize(2, Unit.EM);
                     makeAMove6.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -707,6 +719,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button makeAMove8 = new Button(constants.makeAMove());
+                    makeAMove8.getElement().getStyle().setFontSize(2, Unit.EM);
                     makeAMove8.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -722,6 +735,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button makeAMove9 = new Button(constants.makeAMove());
+                    makeAMove9.getElement().getStyle().setFontSize(2, Unit.EM);
                     makeAMove9.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -737,6 +751,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button makeAMove10 = new Button(constants.makeAMove());
+                    makeAMove10.getElement().getStyle().setFontSize(2, Unit.EM);
                     makeAMove10.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -752,6 +767,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button makeAMove11 = new Button(constants.makeAMove());
+                    makeAMove11.getElement().getStyle().setFontSize(2, Unit.EM);
                     makeAMove11.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -767,6 +783,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button makeAMove12 = new Button(constants.makeAMove());
+                    makeAMove12.getElement().getStyle().setFontSize(2, Unit.EM);
                     makeAMove12.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -785,6 +802,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button roadBuild = new Button(constants.makeAnotherMove());
+                    roadBuild.getElement().getStyle().setFontSize(2, Unit.EM);
                     roadBuild.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -803,6 +821,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button settlementBuild = new Button(constants.makeAnotherMove());
+                    settlementBuild.getElement().getStyle().setFontSize(2, Unit.EM);
                     settlementBuild.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -821,6 +840,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button cityBuild = new Button(constants.makeAnotherMove());
+                    cityBuild.getElement().getStyle().setFontSize(2, Unit.EM);
                     cityBuild.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -839,6 +859,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button buyDevelopmentCard = new Button(constants.makeAnotherMove());
+                    buyDevelopmentCard.getElement().getStyle().setFontSize(2, Unit.EM);
                     buyDevelopmentCard.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -862,6 +883,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp4.add(newText2);
                     
                     Button brick2 = new Button(constants.brick());
+                    brick2.getElement().getStyle().setFontSize(2, Unit.EM);
                     brick2.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
@@ -871,6 +893,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp4.add(brick2);
                     
                     Button lumber2 = new Button(constants.lumber());
+                    lumber2.getElement().getStyle().setFontSize(2, Unit.EM);
                     lumber2.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
@@ -880,6 +903,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp4.add(lumber2);
                     
                     Button grain2 = new Button(constants.grain());
+                    grain2.getElement().getStyle().setFontSize(2, Unit.EM);
                     grain2.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
@@ -889,6 +913,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp4.add(grain2);
                     
                     Button wool2 = new Button(constants.wool());
+                    wool2.getElement().getStyle().setFontSize(2, Unit.EM);
                     wool2.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
@@ -898,6 +923,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp4.add(wool2);
                     
                     Button ore2 = new Button(constants.ore());
+                    ore2.getElement().getStyle().setFontSize(2, Unit.EM);
                     ore2.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
@@ -926,6 +952,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp3.add(newText);
                     
                     Button brick = new Button(constants.brick());
+                    brick.getElement().getStyle().setFontSize(2, Unit.EM);
                     brick.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
@@ -935,6 +962,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp3.add(brick);
                     
                     Button lumber = new Button(constants.lumber());
+                    lumber.getElement().getStyle().setFontSize(2, Unit.EM);
                     lumber.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
@@ -944,6 +972,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp3.add(lumber);
                     
                     Button grain = new Button(constants.grain());
+                    grain.getElement().getStyle().setFontSize(2, Unit.EM);
                     grain.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
@@ -953,6 +982,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp3.add(grain);
                     
                     Button wool = new Button(constants.wool());
+                    wool.getElement().getStyle().setFontSize(2, Unit.EM);
                     wool.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
@@ -962,6 +992,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     fp3.add(wool);
                     
                     Button ore = new Button(constants.ore());
+                    ore.getElement().getStyle().setFontSize(2, Unit.EM);
                     ore.addClickHandler(new ClickHandler() {
                         @Override
                         public void onClick(ClickEvent event) {
@@ -977,6 +1008,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button yop = new Button(constants.makeAnotherMove());
+                    yop.getElement().getStyle().setFontSize(2, Unit.EM);
                     yop.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -1013,6 +1045,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     message.getElement().getStyle().setFontSize(2, Unit.EM);
                     fp.add(message);
                     Button harborTrade = new Button(constants.makeAnotherMove());
+                    harborTrade.getElement().getStyle().setFontSize(2, Unit.EM);
                     harborTrade.addClickHandler(new ClickHandler() {
                        @Override
                        public void onClick(ClickEvent event) {
@@ -1032,12 +1065,16 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     if(presenter.canBuildSettlement())
                     {
                         Button buildSettlement = new Button(constants.buildSettlement());
+                        buildSettlement.getElement().getStyle().setFontSize(2, Unit.EM);
                         
                         //add a clickListener to the button
                         buildSettlement.addClickHandler(new ClickHandler() {
                            @Override
                            public void onClick(ClickEvent event) {
-                              chooseSettlementEnabledBegin = true;
+                              chooseSettlementEnabledEnd = true;
+                              currentAnimation = new BoardPieceMovingAnimation(
+                                      boardArea, storedAp, presenter, true, settlementImage);
+                              currentAnimation.setStartPoint(250,770);
                               chooseSettlementEnabledDND = true;
                               //dragController.makeDraggable(settlementImage);
                               infoArea.clear();
@@ -1047,12 +1084,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                               Label text = new Label(constants.chooseNode());
                               text.getElement().getStyle().setFontSize(2, Unit.EM);
                               Button cancel = new Button(constants.cancel());
+                              cancel.getElement().getStyle().setFontSize(2, Unit.EM);
                               cancel.addClickHandler(new ClickHandler() {
                                   @Override
                                   public void onClick(ClickEvent event) {
-                                      chooseSettlementEnabledBegin = false;
+                                      chooseSettlementEnabledEnd = false;
+                                      //currentAnimation = null;
                                       chooseSettlementEnabledDND = false;
-                                      dragController.makeNotDraggable(settlementImage);
                                       presenter.makeMove();
                                       createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                   }
@@ -1069,13 +1107,17 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     if(presenter.canBuildCity())
                     {
                         Button buildCity = new Button(constants.buildCity());
+                        buildCity.getElement().getStyle().setFontSize(2, Unit.EM);
                         
                         //add a clickListener to the button
                         buildCity.addClickHandler(new ClickHandler() {
                             @Override
                             public void onClick(ClickEvent event) {
                                 presenter.lookingForCity = true;
-                                chooseCityEnabledBegin = true;
+                                chooseCityEnabledEnd = true;
+                                currentAnimation = new BoardPieceMovingAnimation(
+                                        boardArea, storedAp, presenter, true, cityImage);
+                                currentAnimation.setStartPoint(400,770);
                                 chooseCityEnabledDND = true;
                                 infoArea.clear();
                                 
@@ -1084,11 +1126,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                 Label text = new Label(constants.chooseNode());
                                 text.getElement().getStyle().setFontSize(2, Unit.EM);
                                 Button cancel = new Button(constants.cancel());
+                                cancel.getElement().getStyle().setFontSize(2, Unit.EM);
                                 cancel.addClickHandler(new ClickHandler() {
                                     @Override
                                     public void onClick(ClickEvent event) {
                                         presenter.lookingForCity = false;
-                                        chooseCityEnabledBegin = false;
+                                        chooseCityEnabledEnd = false;
+                                        //currentAnimation = null;
                                         chooseCityEnabledDND = false;
                                         presenter.makeMove();
                                         createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
@@ -1106,12 +1150,16 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     if(presenter.canBuildRoad())
                     {
                         Button buildRoad = new Button(constants.buildRoad());
+                        buildRoad.getElement().getStyle().setFontSize(2, Unit.EM);
                         
                         //add a clickListener to the button
                         buildRoad.addClickHandler(new ClickHandler() {
                             @Override
                             public void onClick(ClickEvent event) {
-                               choosePathEnabledBegin = true;
+                               choosePathEnabledEnd = true;
+                               currentAnimation = new BoardPieceMovingAnimation(
+                                       boardArea, storedAp, presenter, false, roadImage);
+                               currentAnimation.setStartPoint(550,800);
                                choosePathEnabledDND = true;
                                //dragController.makeDraggable(roadImage);
                                infoArea.clear();
@@ -1121,12 +1169,13 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                Label text = new Label(constants.choosePath());
                                text.getElement().getStyle().setFontSize(2, Unit.EM);
                                Button cancel = new Button(constants.cancel());
+                               cancel.getElement().getStyle().setFontSize(2, Unit.EM);
                                cancel.addClickHandler(new ClickHandler() {
                                    @Override
                                    public void onClick(ClickEvent event) {
-                                       choosePathEnabledBegin = false;
+                                       choosePathEnabledEnd = false;
+                                       //currentAnimation = null;
                                        choosePathEnabledDND = false;
-                                       dragController.makeNotDraggable(roadImage);
                                        createInfoArea(SettlersOfCatanConstants.MAKEMOVE);
                                    }
                                });
@@ -1142,6 +1191,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     if(presenter.canBuyDevelopmentCard())
                     {
                         Button buyDevelopmentCard2 = new Button(constants.buyDevelopmentCard());
+                        buyDevelopmentCard2.getElement().getStyle().setFontSize(2, Unit.EM);
                         
                         //add a clickListener to the button
                         buyDevelopmentCard2.addClickHandler(new ClickHandler() {
@@ -1156,6 +1206,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     if(presenter.canPlayDevelopmentCard())
                     {
                         Button canPlayDevelopmentCard = new Button(constants.playDevelopmentCard());
+                        canPlayDevelopmentCard.getElement().getStyle().setFontSize(2, Unit.EM);
                         
                       //add a clickListener to the button
                         canPlayDevelopmentCard.addClickHandler(new ClickHandler() {
@@ -1169,6 +1220,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                Label text = new Label(constants.chooseDevelopmentCard());
                                text.getElement().getStyle().setFontSize(2, Unit.EM);
                                Button cancel = new Button(constants.cancel());
+                               cancel.getElement().getStyle().setFontSize(2, Unit.EM);
                                cancel.addClickHandler(new ClickHandler() {
                                    @Override
                                    public void onClick(ClickEvent event) {
@@ -1192,6 +1244,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                      || presenter.canHarborTrade(SettlersOfCatanConstants.WOOL))
                     {
                         Button canHarborTrade = new Button(constants.harborTrade());
+                        canHarborTrade.getElement().getStyle().setFontSize(2, Unit.EM);
                         
                       //add a clickListener to the button
                         canHarborTrade.addClickHandler(new ClickHandler() {
@@ -1207,6 +1260,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                if(presenter.canHarborTrade(SettlersOfCatanConstants.ORE))
                                {
                                    Button ore = new Button(constants.ore());
+                                   ore.getElement().getStyle().setFontSize(2, Unit.EM);
                                    ore.addClickHandler(new ClickHandler() {
                                        @Override
                                        public void onClick(ClickEvent event) {
@@ -1219,6 +1273,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(newText);
                                            
                                            Button brick = new Button(constants.brick());
+                                           brick.getElement().getStyle().setFontSize(2, Unit.EM);
                                            brick.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1228,6 +1283,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(brick);
                                            
                                            Button lumber = new Button(constants.lumber());
+                                           lumber.getElement().getStyle().setFontSize(2, Unit.EM);
                                            lumber.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1237,6 +1293,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(lumber);
                                            
                                            Button grain = new Button(constants.grain());
+                                           grain.getElement().getStyle().setFontSize(2, Unit.EM);
                                            grain.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1246,6 +1303,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(grain);
                                            
                                            Button wool = new Button(constants.wool());
+                                           wool.getElement().getStyle().setFontSize(2, Unit.EM);
                                            wool.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1255,6 +1313,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(wool);
                                            
                                            Button cancel = new Button(constants.cancel());
+                                           cancel.getElement().getStyle().setFontSize(2, Unit.EM);
                                            cancel.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1272,6 +1331,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                if(presenter.canHarborTrade(SettlersOfCatanConstants.BRICK))
                                {
                                    Button brick = new Button(constants.brick());
+                                   brick.getElement().getStyle().setFontSize(2, Unit.EM);
                                    brick.addClickHandler(new ClickHandler() {
                                        @Override
                                        public void onClick(ClickEvent event) {
@@ -1284,6 +1344,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(newText);
                                            
                                            Button ore = new Button(constants.ore());
+                                           ore.getElement().getStyle().setFontSize(2, Unit.EM);
                                            ore.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1293,6 +1354,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(ore);
                                            
                                            Button lumber = new Button(constants.lumber());
+                                           lumber.getElement().getStyle().setFontSize(2, Unit.EM);
                                            lumber.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1302,6 +1364,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(lumber);
                                            
                                            Button grain = new Button(constants.grain());
+                                           grain.getElement().getStyle().setFontSize(2, Unit.EM);
                                            grain.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1311,6 +1374,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(grain);
                                            
                                            Button wool = new Button(constants.wool());
+                                           wool.getElement().getStyle().setFontSize(2, Unit.EM);
                                            wool.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1320,6 +1384,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(wool);
                                            
                                            Button cancel = new Button(constants.cancel());
+                                           cancel.getElement().getStyle().setFontSize(2, Unit.EM);
                                            cancel.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1337,6 +1402,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                if(presenter.canHarborTrade(SettlersOfCatanConstants.LUMBER))
                                {
                                    Button lumber = new Button(constants.lumber());
+                                   lumber.getElement().getStyle().setFontSize(2, Unit.EM);
                                    lumber.addClickHandler(new ClickHandler() {
                                        @Override
                                        public void onClick(ClickEvent event) {
@@ -1349,6 +1415,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(newText);
                                            
                                            Button ore = new Button(constants.ore());
+                                           ore.getElement().getStyle().setFontSize(2, Unit.EM);
                                            ore.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1358,6 +1425,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(ore);
                                            
                                            Button brick = new Button(constants.brick());
+                                           brick.getElement().getStyle().setFontSize(2, Unit.EM);
                                            brick.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1367,6 +1435,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(brick);
                                            
                                            Button grain = new Button(constants.grain());
+                                           grain.getElement().getStyle().setFontSize(2, Unit.EM);
                                            grain.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1376,6 +1445,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(grain);
                                            
                                            Button wool = new Button(constants.wool());
+                                           wool.getElement().getStyle().setFontSize(2, Unit.EM);
                                            wool.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1385,6 +1455,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(wool);
                                            
                                            Button cancel = new Button(constants.cancel());
+                                           cancel.getElement().getStyle().setFontSize(2, Unit.EM);
                                            cancel.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1402,6 +1473,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                if(presenter.canHarborTrade(SettlersOfCatanConstants.GRAIN))
                                {
                                    Button grain = new Button(constants.grain());
+                                   grain.getElement().getStyle().setFontSize(2, Unit.EM);
                                    grain.addClickHandler(new ClickHandler() {
                                        @Override
                                        public void onClick(ClickEvent event) {
@@ -1414,6 +1486,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(newText);
                                            
                                            Button ore = new Button(constants.ore());
+                                           ore.getElement().getStyle().setFontSize(2, Unit.EM);
                                            ore.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1423,6 +1496,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(ore);
                                            
                                            Button brick = new Button(constants.brick());
+                                           brick.getElement().getStyle().setFontSize(2, Unit.EM);
                                            brick.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1432,6 +1506,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(brick);
                                            
                                            Button lumber = new Button(constants.lumber());
+                                           lumber.getElement().getStyle().setFontSize(2, Unit.EM);
                                            lumber.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1441,6 +1516,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(lumber);
                                            
                                            Button wool = new Button(constants.wool());
+                                           wool.getElement().getStyle().setFontSize(2, Unit.EM);
                                            wool.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1450,6 +1526,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(wool);
                                            
                                            Button cancel = new Button(constants.cancel());
+                                           cancel.getElement().getStyle().setFontSize(2, Unit.EM);
                                            cancel.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1467,6 +1544,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                if(presenter.canHarborTrade(SettlersOfCatanConstants.WOOL))
                                {
                                    Button wool = new Button(constants.wool());
+                                   wool.getElement().getStyle().setFontSize(2, Unit.EM);
                                    wool.addClickHandler(new ClickHandler() {
                                        @Override
                                        public void onClick(ClickEvent event) {
@@ -1479,6 +1557,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(newText);
                                            
                                            Button ore = new Button(constants.ore());
+                                           ore.getElement().getStyle().setFontSize(2, Unit.EM);
                                            ore.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1488,6 +1567,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(ore);
                                            
                                            Button brick = new Button(constants.brick());
+                                           brick.getElement().getStyle().setFontSize(2, Unit.EM);
                                            brick.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1497,6 +1577,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(brick);
                                            
                                            Button lumber = new Button(constants.lumber());
+                                           lumber.getElement().getStyle().setFontSize(2, Unit.EM);
                                            lumber.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1506,6 +1587,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(lumber);
                                            
                                            Button grain = new Button(constants.grain());
+                                           grain.getElement().getStyle().setFontSize(2, Unit.EM);
                                            grain.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1515,6 +1597,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                            fp3.add(grain);
                                            
                                            Button cancel = new Button(constants.cancel());
+                                           cancel.getElement().getStyle().setFontSize(2, Unit.EM);
                                            cancel.addClickHandler(new ClickHandler() {
                                                @Override
                                                public void onClick(ClickEvent event) {
@@ -1531,6 +1614,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                                
                                
                                Button cancel = new Button(constants.cancel());
+                               cancel.getElement().getStyle().setFontSize(2, Unit.EM);
                                cancel.addClickHandler(new ClickHandler() {
                                    @Override
                                    public void onClick(ClickEvent event) {
@@ -1547,6 +1631,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
                     }
 
                     Button endTurn = new Button(constants.endTurn());
+                    endTurn.getElement().getStyle().setFontSize(2, Unit.EM);
                     
                     //add a clickListener to the button
                     endTurn.addClickHandler(new ClickHandler() {
@@ -1576,9 +1661,7 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
         {
             message = new Label(constants.notYourTurn());
             message.getElement().getStyle().setFontSize(2, Unit.EM);
-            chooseSettlementEnabledBegin = false;
-            choosePathEnabledBegin = false;
-            chooseCityEnabledBegin = false;
+            //currentAnimation = null;
             chooseSettlementEnabledEnd = false;
             choosePathEnabledEnd = false;
             chooseCityEnabledEnd = false;
@@ -1648,7 +1731,6 @@ public class SettlersOfCatanGraphics extends Composite implements SettlersOfCata
 
     public void handleDiceRoll(int roll0, int roll1)
     {
-        System.out.println(roll0 + roll1);
         switch(roll0 + roll1)
         {
         case 7:

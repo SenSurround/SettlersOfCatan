@@ -64,7 +64,7 @@ public class SettlersOfCatanLogic {
             SettlersOfCatanConstants.BRICK,  SettlersOfCatanConstants.BRICK,  SettlersOfCatanConstants.BRICK,
             SettlersOfCatanConstants.DESERT);
     
-    List<String> developmentCardTypeList = Arrays.asList(/*
+    List<String> developmentCardTypeList = Arrays.asList(
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF00,
@@ -77,20 +77,7 @@ public class SettlersOfCatanLogic {
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF03,
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF04, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF05,
             SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF06, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF07,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF08*/
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02, SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02,
-            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF02);
+            SettlersOfCatanConstants.DEVELOPMENTCARDTYPEDEF08);
   
     List<String> harborTradeTypeList = Arrays.asList(
             SettlersOfCatanConstants.HARBORTYPE00, SettlersOfCatanConstants.HARBORTYPE00, SettlersOfCatanConstants.HARBORTYPE00,

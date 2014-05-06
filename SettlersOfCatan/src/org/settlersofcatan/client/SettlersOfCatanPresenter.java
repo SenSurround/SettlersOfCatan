@@ -133,12 +133,12 @@ public class SettlersOfCatanPresenter {
     private Audio buildHouseSound;
     private Audio moveRobberSound;
     
-    private boolean isAIopponent = false;
-    private boolean isAITurn = false;
+    //private boolean isAIopponent = false;
+    //private boolean isAITurn = false;
     private boolean isAIDice = false;
     private boolean isAIDiceClear = false;
     
-    private boolean isAISet1 = false;
+    private boolean isAISet1 = true;
     private boolean isAIRoad1 = false;
     private boolean isAISet2 = false;
     private boolean isAIRoad2 = false;
@@ -181,17 +181,17 @@ public class SettlersOfCatanPresenter {
         
         if(updateUI.getState().isEmpty())
         {
+            if(playerIds.size() == 2 && playerIds.get(1).equals("0"))
+            {
+                //isAIopponent = true;
+                storedUI = updateUI;
+                settlersOfCatanLogic.verifyAll = true;
+            }
+            
             // Blue must send the initial move
             if (myPlayer == 0)
             {
                 currentPlayer = 0;
-                
-                if(playerIds.size() == 1)
-                {
-                    isAIopponent = true;
-                    storedUI = updateUI;
-                    settlersOfCatanLogic.verifyAll = true;
-                }
                 
                 infoMessage = SettlersOfCatanConstants.MAKEFIRSTFREEMOVESETTLEMENT;
                 sendInitialMove(playerIds);
@@ -219,7 +219,7 @@ public class SettlersOfCatanPresenter {
             
             return;
         }
-        if(isAITurn)
+        if(updateUI.getYourPlayerId().equals("0") && currentPlayer == myPlayer)
         {
             if(isAISet1)
             {
@@ -375,13 +375,13 @@ public class SettlersOfCatanPresenter {
                     pathString = SettlersOfCatanConstants.PATHTOKEN + i;
                 
                 List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
-                addSettlementFirstMove.add(new SetTurn(playerIds.get(currentPlayer)));
+                addSettlementFirstMove.add(new SetTurn(playerIds.get((currentPlayer - 1))));
                 addSettlementFirstMove.add(new Set(pathString, SettlersOfCatanConstants.ROADTOKEN + "01" + "PR"));
                 addSettlementFirstMove.add(new Set(SettlersOfCatanConstants.ROADTOKEN + "01" + "PR", pathString));
 
                 infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT;
                 isAIRoad2 = false;
-                isAITurn = false;
+                isAIDice = true;
                 sendMakeMove(addSettlementFirstMove);
             }
             else if(isAIDice)
@@ -649,11 +649,11 @@ public class SettlersOfCatanPresenter {
                 }
                 infoMessage = SettlersOfCatanConstants.MAKESECONDFREEMOVESETTLEMENT;
                 
-                if(isAIopponent)
-                {
-                    isAITurn = true;
-                    isAISet1 = true;
-                }
+                //if(isAIopponent)
+                //{
+                //    isAITurn = true;
+                //    isAISet1 = true;
+                //}
                 
                 List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
                 addSettlementFirstMove.add(new SetTurn(playerIds.get(player)));
@@ -1731,6 +1731,9 @@ public class SettlersOfCatanPresenter {
 
     public void dispenseResources(int rollTotal)
     {
+        if(playerIds.get(myPlayer).equals("0"))
+            sayHelloInJava("AI rolled a " + rollTotal + "!");
+        
         List<Operation> dispenseResourcesMove = new ArrayList<Operation>();
         dispenseResourcesMove.add(new SetTurn(playerIds.get(currentPlayer)));
         dispenseResourcesMove.add(new Delete(SettlersOfCatanConstants.DIE0));
@@ -1790,7 +1793,7 @@ public class SettlersOfCatanPresenter {
                             new Set(
                                     card,
                                     resources.get(i)));
-                    if(!isAIopponent)
+                    //if(!isAIopponent)
                         dispenseResourcesMove.add(
                                 new SetVisibility(
                                         card, 
@@ -1806,7 +1809,7 @@ public class SettlersOfCatanPresenter {
                                     new Set(
                                             card,
                                             resources.get(i)));
-                            if(!isAIopponent)
+                            //if(!isAIopponent)
                                 dispenseResourcesMove.add(
                                         new SetVisibility(
                                                 card, 
@@ -1933,11 +1936,11 @@ public class SettlersOfCatanPresenter {
         int player = (currentPlayer + 1) % playerIds.size();
         dispenseResourcesMove.add(new SetTurn(playerIds.get(player)));
         
-        if(isAIopponent)
+        /*if(isAIopponent)
         {
             isAITurn = true;
             isAIDice = true;
-        }
+        }*/
         
         infoMessage = SettlersOfCatanConstants.ROLLDICE;
         sendMakeMove(dispenseResourcesMove);
@@ -2357,6 +2360,7 @@ public class SettlersOfCatanPresenter {
         int settlements = 0;
         int roads = 0;
         boolean tryForCities = false;
+        boolean tryForRoads = !canAIPlaceSettlement();
         
         boolean orePort = theBoard.ownsTwoToOnePort(1, SettlersOfCatanConstants.ORE);
         boolean brickPort = theBoard.ownsTwoToOnePort(1, SettlersOfCatanConstants.BRICK);
@@ -2468,7 +2472,8 @@ public class SettlersOfCatanPresenter {
             {
                 //THE GAME IS OVER;
             }
-            
+
+            sayHelloInJava("AI built a city!");
             sendMakeMove(addSettlementFirstMove);
         }
         else if(settlements < 5 && brick >= 1 && lumber >= 1 && grain >= 1 && wool >= 1 && canAIPlaceSettlement())
@@ -2514,7 +2519,8 @@ public class SettlersOfCatanPresenter {
             {
                 //THE GAME IS OVER;
             }
-            
+
+            sayHelloInJava("AI built a settlement!");
             sendMakeMove(addSettlementFirstMove);
         }
         else if(roads < 15 && brick >= 1 && lumber >= 1 && !canAIPlaceSettlement())
@@ -2567,7 +2573,117 @@ public class SettlersOfCatanPresenter {
 
             isAIRoad1 = false;
             isAISet2 = true;
+            sayHelloInJava("AI built a road!");
             sendMakeMove(addSettlementFirstMove);
+        }
+        else if(tryForRoads)
+        {            
+            String have = "";
+            int num = 4;
+            String want = "";
+            
+            if(brick > lumber)
+                want = SettlersOfCatanConstants.LUMBER;
+            else
+                want = SettlersOfCatanConstants.BRICK;
+            
+            boolean trade = true;
+
+            if(woolPort && wool > 1)
+            {
+                have = SettlersOfCatanConstants.WOOL;
+                num = 2;
+            }
+            else if(orePort && ore > 1)
+            {
+                have = SettlersOfCatanConstants.ORE;
+                num = 2;
+            }
+            else if(grainPort && grain > 1)
+            {
+                have = SettlersOfCatanConstants.GRAIN;
+                num = 2;
+            }
+            else if(brickPort && brick > 2)
+            {
+                have = SettlersOfCatanConstants.BRICK;
+                num = 2;
+            }
+            else if(lumberPort && lumber > 2)
+            {
+                have = SettlersOfCatanConstants.LUMBER;
+                num = 2;
+            }
+            else if(genericPort && wool > 2)
+            {
+                have = SettlersOfCatanConstants.WOOL;
+                num = 3;
+            }
+            else if(genericPort && ore > 2)
+            {
+                have = SettlersOfCatanConstants.ORE;
+                num = 3;
+            }
+            else if(genericPort && grain > 2)
+            {
+                have = SettlersOfCatanConstants.GRAIN;
+                num = 3;
+            }
+            else if(genericPort && brick > 3)
+            {
+                have = SettlersOfCatanConstants.BRICK;
+                num = 3;
+            }
+            else if(genericPort && lumber > 3)
+            {
+                have = SettlersOfCatanConstants.LUMBER;
+                num = 3;
+            }
+            else if(wool > 3)
+            {
+                have = SettlersOfCatanConstants.WOOL;
+            }
+            else if(ore > 3)
+            {
+                have = SettlersOfCatanConstants.ORE;
+            }
+            else if(grain > 3)
+            {
+                have = SettlersOfCatanConstants.GRAIN;
+            }
+            else if(brick > 4)
+            {
+                have = SettlersOfCatanConstants.BRICK;
+            }
+            else if(lumber > 4)
+            {
+                have = SettlersOfCatanConstants.LUMBER;
+            }
+            else
+            {
+                trade = false;
+                //isAITurn = false; 
+                isAIDice = true;
+                //infoMessage = SettlersOfCatanConstants.ROLLDICE;
+                List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
+                addSettlementFirstMove.add(new SetTurn(playerIds.get(currentPlayer - 1)));
+                sendMakeMove(addSettlementFirstMove);
+            }
+            
+            if(trade)
+            {
+                sayHelloInJava("AI traded " + have + " for " + want + "!");
+                List<Operation> harborTrade = new ArrayList<Operation>();
+                harborTrade.add(new SetTurn(playerIds.get(currentPlayer)));
+                
+                for(int i = 0; i < num; i++)
+                {
+                    harborTrade.add(new Delete(getFirstAvailableAIResource(have, i)));
+                }
+                harborTrade.add(new Set(getFirstAvailableAIResource(have, 0), want));
+                
+                sendMakeMove(harborTrade);
+            }
         }
         else if(tryForCities)
         {            
@@ -2655,15 +2771,17 @@ public class SettlersOfCatanPresenter {
             else
             {
                 trade = false;
-                isAITurn = false; 
-                infoMessage = SettlersOfCatanConstants.ROLLDICE;
+                //isAITurn = false; 
+                isAIDice = true;
+                //infoMessage = SettlersOfCatanConstants.ROLLDICE;
                 List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
-                addSettlementFirstMove.add(new SetTurn(playerIds.get(currentPlayer)));
+                addSettlementFirstMove.add(new SetTurn(playerIds.get(currentPlayer - 1)));
                 sendMakeMove(addSettlementFirstMove);
             }
             
             if(trade)
             {
+                sayHelloInJava("AI traded " + have + " for " + want + "!");
                 List<Operation> harborTrade = new ArrayList<Operation>();
                 harborTrade.add(new SetTurn(playerIds.get(currentPlayer)));
                 
@@ -2767,15 +2885,17 @@ public class SettlersOfCatanPresenter {
             else
             {
                 trade = false;
-                isAITurn = false; 
+                //isAITurn = false; 
+                isAIDice = true;
                 infoMessage = SettlersOfCatanConstants.ROLLDICE;
                 List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
-                addSettlementFirstMove.add(new SetTurn(playerIds.get(currentPlayer)));
+                addSettlementFirstMove.add(new SetTurn(playerIds.get(currentPlayer - 1)));
                 sendMakeMove(addSettlementFirstMove);
             }
             
             if(trade)
             {
+                sayHelloInJava("AI traded " + have + " for " + want + "!");
                 List<Operation> harborTrade = new ArrayList<Operation>();
                 harborTrade.add(new SetTurn(playerIds.get(currentPlayer)));
                 
@@ -2790,10 +2910,11 @@ public class SettlersOfCatanPresenter {
         }
         else
         {
-            isAITurn = false; 
+            //isAITurn = false; 
+            isAIDice = true;
             infoMessage = SettlersOfCatanConstants.ROLLDICE;
             List<Operation> addSettlementFirstMove = new ArrayList<Operation>();
-            addSettlementFirstMove.add(new SetTurn(playerIds.get(currentPlayer)));
+            addSettlementFirstMove.add(new SetTurn(playerIds.get(currentPlayer - 1)));
             sendMakeMove(addSettlementFirstMove);
         }
     }
@@ -2811,7 +2932,7 @@ public class SettlersOfCatanPresenter {
             else
                 nodeString = SettlersOfCatanConstants.NODETOKEN + i;
             
-            if(settlersOfCatanLogic.canAddSettlementHereFirstMove(theState, nodeString, "PR"))
+            if(settlersOfCatanLogic.canAddSettlementHere(theState, nodeString, "PR"))
             {
                 status = true;
             }
