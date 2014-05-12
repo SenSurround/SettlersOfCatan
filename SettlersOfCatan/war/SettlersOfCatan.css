@@ -32,3 +32,13 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+html {
+	overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+body {
+	overflow-y: scroll;
+  overflow-x: hidden;
+}
